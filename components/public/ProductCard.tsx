@@ -51,7 +51,16 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="p-4 bg-white">
           <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-indigo-900 group-hover:text-indigo-700 transition-colors">{product.name}</h3>
-          {product.category && (
+          {/* Show multiple categories if available, otherwise show single category */}
+          {product.categories && product.categories.length > 0 ? (
+            <div className="flex flex-wrap gap-1 mb-2">
+              {product.categories.map((pc, idx) => (
+                <span key={idx} className="text-xs px-2 py-0.5 bg-teal-100 text-teal-700 rounded">
+                  {pc.category.name}
+                </span>
+              ))}
+            </div>
+          ) : product.category && (
             <p className="text-sm text-teal-600 mb-2">{product.category.name}</p>
           )}
           {displayPrice && (

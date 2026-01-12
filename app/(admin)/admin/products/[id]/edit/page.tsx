@@ -17,7 +17,8 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     .select(`
       *,
       images:product_images(*),
-      variants:product_variants(*)
+      variants:product_variants(*),
+      product_categories:product_categories(category_id)
     `)
     .eq('id', id)
     .single()
@@ -31,10 +32,21 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     .select('*')
     .order('name')
 
+  // Extract category IDs from product_categories junction table
+  const productCategoryIds = product.product_categories?.map((pc: any) => pc.category_id) || []
+  
+  // Add category_ids to product object for form
+  const productWithCategories = {
+    ...product,
+    category_ids: productCategoryIds,
+    // Keep category_id for backward compatibility (use first category if exists)
+    category_id: productCategoryIds.length > 0 ? productCategoryIds[0] : product.category_id
+  }
+
   return (
     <div className="px-4 md:px-0">
       <h1 className="text-2xl font-bold mb-6">Edit Product</h1>
-      <ProductForm product={product} categories={categories || []} />
+      <ProductForm product={productWithCategories} categories={categories || []} />
     </div>
   )
 }

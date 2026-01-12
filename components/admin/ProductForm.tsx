@@ -36,7 +36,8 @@ const productSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   slug: z.string().min(1, 'Slug is required'),
   description: z.string().optional(),
-  category_id: z.string().optional().nullable(),
+  category_id: z.string().optional().nullable(), // Keep for backward compatibility
+  category_ids: z.array(z.string()).optional(), // New: multiple categories
   price: z.number().optional().nullable(),
   quantity: z.number().optional().nullable(),
   size: z.string().optional().nullable(),
@@ -85,6 +86,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       slug: product?.slug || '',
       description: product?.description || '',
       category_id: product?.category_id || null,
+      category_ids: product?.category_ids || [],
       price: product?.price || null,
       quantity: product?.quantity || null,
       size: product?.size || null,
@@ -148,8 +150,10 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       // Add to categories list
       setCategories([...categories, newCategory])
       
-      // Set as selected category
-      setValue('category_id', newCategory.id)
+      // Add new category to selected categories
+      const currentIds = watch('category_ids') || []
+      setValue('category_ids', [...currentIds, newCategory.id])
+      setValue('category_id', newCategory.id) // Also set for backward compatibility
       
       // Reset form
       setNewCategoryName('')
@@ -197,7 +201,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         name: data.name,
         slug: data.slug,
         description: data.description || null,
-        category_id: data.category_id || null,
+        category_id: data.category_ids && data.category_ids.length > 0 ? data.category_ids[0] : null, // Keep first category for backward compatibility
         price: data.price || null,
         quantity: data.quantity || null,
         size: data.size || null,
@@ -217,6 +221,9 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
         // Delete existing images
         await supabase.from('product_images').delete().eq('product_id', productId)
+        
+        // Delete existing product_categories
+        await supabase.from('product_categories').delete().eq('product_id', productId)
       } else {
         const { data: newProduct, error } = await supabase
           .from('products')
@@ -226,6 +233,20 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
         if (error) throw error
         productId = newProduct.id
+      }
+
+      // Insert product categories (many-to-many)
+      if (data.category_ids && data.category_ids.length > 0) {
+        const categoryData = data.category_ids.map((categoryId: string) => ({
+          product_id: productId,
+          category_id: categoryId,
+        }))
+
+        const { error: categoryError } = await supabase
+          .from('product_categories')
+          .insert(categoryData)
+
+        if (categoryError) throw categoryError
       }
 
       // Insert images
@@ -394,7 +415,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <Label htmlFor="category_id">Category</Label>
+          <Label>Categories (Select multiple)</Label>
           <Button
             type="button"
             variant="outline"
@@ -441,17 +462,38 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             </div>
           </div>
         ) : (
-          <Select
-            id="category_id"
-            {...register('category_id')}
-          >
-            <option value="">No Category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </Select>
+          <div className="border rounded-lg p-4 max-h-60 overflow-y-auto bg-white">
+            <div className="space-y-2">
+              {categories.map((cat) => {
+                const categoryIds = watch('category_ids') || []
+                const isSelected = categoryIds.includes(cat.id)
+                return (
+                  <label
+                    key={cat.id}
+                    className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={(e) => {
+                        const currentIds = watch('category_ids') || []
+                        if (e.target.checked) {
+                          setValue('category_ids', [...currentIds, cat.id])
+                        } else {
+                          setValue('category_ids', currentIds.filter((id: string) => id !== cat.id))
+                        }
+                      }}
+                      className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    />
+                    <span className="text-sm text-gray-900">{cat.name}</span>
+                  </label>
+                )
+              })}
+              {categories.length === 0 && (
+                <p className="text-sm text-gray-500">No categories available. Create one above.</p>
+              )}
+            </div>
+          </div>
         )}
       </div>
 

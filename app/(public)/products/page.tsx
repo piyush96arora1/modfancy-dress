@@ -27,6 +27,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     .select(`
       *,
       category:categories(*),
+      categories:product_categories(category:categories(*)),
       images:product_images(*),
       variants:product_variants(*)
     `)
@@ -38,7 +39,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
   }
 
-  // Apply category filter
+  // Apply category filter - check both old category_id and new product_categories junction table
   if (category) {
     const { data: categoryData } = await supabase
       .from('categories')
@@ -47,7 +48,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       .single()
 
     if (categoryData) {
-      query = query.eq('category_id', categoryData.id)
+      // First get product IDs from junction table
+      const { data: productCategories } = await supabase
+        .from('product_categories')
+        .select('product_id')
+        .eq('category_id', categoryData.id)
+
+      const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
+      
+      // Filter by products that have this category_id OR are in the junction table
+      if (productIdsFromJunction.length > 0) {
+        query = query.or(`category_id.eq.${categoryData.id},id.in.(${productIdsFromJunction.join(',')})`)
+      } else {
+        query = query.eq('category_id', categoryData.id)
+      }
     }
   }
 

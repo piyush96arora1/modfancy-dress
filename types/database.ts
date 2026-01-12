@@ -76,8 +76,17 @@ export type OrderItem = {
   created_at: string
 }
 
+export type ProductCategoryJunction = {
+  id: string
+  product_id: string
+  category_id: string
+  category: Category
+  created_at: string
+}
+
 export type ProductWithDetails = Product & {
-  category: Category | null
+  category: Category | null // Keep for backward compatibility
+  categories?: ProductCategoryJunction[] // New: multiple categories
   images: ProductImage[]
   variants: ProductVariant[]
 }
