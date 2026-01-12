@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { SearchBar } from '@/components/public/SearchBar'
-import { SortSelect } from '@/components/public/SortSelect'
 import { CategoryFilter } from '@/components/public/CategoryFilter'
 import type { ProductWithDetails } from '@/types/database'
 
@@ -10,7 +9,6 @@ interface ProductsPageProps {
   searchParams: Promise<{
     search?: string
     category?: string
-    sort?: string
   }>
 }
 
@@ -21,7 +19,7 @@ export const metadata = {
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const supabase = await createClient()
-  const { search, category, sort } = await searchParams
+  const { search, category } = await searchParams
 
   // Build query - filter out deleted products
   let query = supabase
@@ -53,13 +51,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }
   }
 
-  // Apply sorting
-  const sortOrder = sort === 'price-low' ? 'asc' : sort === 'price-high' ? 'desc' : 'desc'
-  if (sort?.includes('price')) {
-    query = query.order('price', { ascending: sortOrder === 'asc' })
-  } else {
-    query = query.order('created_at', { ascending: false })
-  }
+  // Order by created_at descending (newest first)
+  query = query.order('created_at', { ascending: false })
 
   const { data: products } = await query
 
@@ -87,14 +80,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           )}
         </div>
         
-        {/* Search and Sort Row */}
-        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-          <div className="flex-1">
-            <SearchBar />
-          </div>
-          <div className="w-full sm:w-auto sm:min-w-[180px]">
-            <SortSelect />
-          </div>
+        {/* Search Bar */}
+        <div className="w-full">
+          <SearchBar />
         </div>
 
         {/* Category Filter - Always shown but compact */}

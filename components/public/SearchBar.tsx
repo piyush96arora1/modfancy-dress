@@ -29,22 +29,18 @@ export function SearchBar() {
     const trimmedQuery = query.trim()
     if (trimmedQuery) {
       startTransition(() => {
-        // Preserve category and sort params if they exist
+        // Preserve category param if it exists
         const category = searchParams.get('category')
-        const sort = searchParams.get('sort')
         const params = new URLSearchParams()
         params.set('search', trimmedQuery)
         if (category) params.set('category', category)
-        if (sort) params.set('sort', sort)
         router.push(`/products?${params.toString()}`)
       })
     } else {
       // If query is empty, remove search param
       const category = searchParams.get('category')
-      const sort = searchParams.get('sort')
       const params = new URLSearchParams()
       if (category) params.set('category', category)
-      if (sort) params.set('sort', sort)
       const queryString = params.toString()
       router.push(queryString ? `/products?${queryString}` : '/products')
     }

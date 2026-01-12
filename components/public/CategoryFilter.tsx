@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, ChevronUp, X } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
 
 interface CategoryFilterProps {
   categories: Array<{ id: string; name: string; slug: string }>
@@ -12,15 +11,12 @@ interface CategoryFilterProps {
 }
 
 export function CategoryFilter({ categories, currentCategory, searchQuery }: CategoryFilterProps) {
-  const searchParams = useSearchParams()
   const [isExpanded, setIsExpanded] = useState(false)
-  const sort = searchParams.get('sort')
 
   const buildUrl = (catSlug: string | null) => {
     const params = new URLSearchParams()
     if (searchQuery) params.set('search', searchQuery)
     if (catSlug) params.set('category', catSlug)
-    if (sort) params.set('sort', sort)
     const queryString = params.toString()
     return queryString ? `/products?${queryString}` : '/products'
   }
@@ -28,7 +24,6 @@ export function CategoryFilter({ categories, currentCategory, searchQuery }: Cat
   const clearCategory = () => {
     const params = new URLSearchParams()
     if (searchQuery) params.set('search', searchQuery)
-    if (sort) params.set('sort', sort)
     const queryString = params.toString()
     return queryString ? `/products?${queryString}` : '/products'
   }
