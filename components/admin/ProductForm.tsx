@@ -20,30 +20,16 @@ import { SIZE_OPTIONS } from '@/lib/constants/sizes'
 const optionalString = z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional()
 
 const variantSchema = z.object({
-  sku: z.preprocess(
-    (val) => (val === '' ? undefined : val),
-    z.string().optional()
-  ),
-  size: z.preprocess(
-    (val) => (val === '' ? undefined : val),
-    z.string().min(1, 'Size is required')
-  ),
-  color: z.preprocess(
-    (val) => (val === '' ? undefined : val),
-    z.string().optional()
-  ),
-  quantity: z.preprocess(
-    (val) => {
-      if (val === '' || val === null || val === undefined) return undefined
-      const num = Number(val)
-      return isNaN(num) ? undefined : num
-    },
-    z.number().optional()
-  ),
-  price_override: z.preprocess(
-    (val) => (val === '' || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(0, 'Price must be 0 or greater')
-  ),
+  sku: z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional(),
+  size: z.string().min(1, 'Size is required'),
+  color: z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional(),
+  quantity: z.union([z.number(), z.string(), z.literal('')]).transform(val => {
+    if (val === '' || val === null || val === undefined) return undefined
+    if (typeof val === 'number') return val
+    const num = Number(val)
+    return isNaN(num) ? undefined : num
+  }).optional(),
+  price_override: z.coerce.number().min(0, 'Price must be 0 or greater').default(0),
 })
 
 const productSchema = z.object({
@@ -92,7 +78,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
     control,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as any,
     shouldFocusError: false, // Disable auto-focus on validation errors
     defaultValues: {
       name: product?.name || '',
@@ -357,7 +343,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
           Object.entries(obj).forEach(([key, value]) => {
             const currentPath = path ? `${path}.${key}` : key
             if (value && typeof value === 'object') {
-              if (value.message) {
+              if ('message' in value && typeof value.message === 'string') {
                 errorMessage = String(value.message)
                 errorPath = currentPath
                 return
@@ -630,7 +616,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => append({})}
+            onClick={() => append({ size: '', price_override: 0 } as any)}
           >
             Add Variant
           </Button>
