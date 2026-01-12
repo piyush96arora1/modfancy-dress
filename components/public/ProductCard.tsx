@@ -29,12 +29,12 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.slug}`} onClick={handleClick} className="group relative block">
       {isPending && (
-        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-xl shadow-lg">
+        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-2xl shadow-lg">
           <LoadingSpinner size="lg" />
         </div>
       )}
-      <div className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 border border-gray-100 group-hover:border-indigo-200 h-full flex flex-col">
-        <div className="aspect-square relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-indigo-200 group-hover:-translate-y-1 h-full flex flex-col">
+        <div className="aspect-square relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-2xl">
           {primaryImage ? (
             <Image
               src={primaryImage.image_url}

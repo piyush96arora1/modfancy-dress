@@ -68,7 +68,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-6 md:mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Shop by Category</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+          <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 md:gap-4">
             {categories.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}

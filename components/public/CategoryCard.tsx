@@ -28,16 +28,16 @@ export function CategoryCard({ category }: CategoryCardProps) {
     <Link 
       href={`/category/${category.slug}`} 
       onClick={handleClick}
-      className="bg-white rounded-xl p-6 md:p-8 text-center shadow-card hover:shadow-card-hover transition-all duration-300 border border-gray-100 hover:border-indigo-200 relative block group overflow-hidden"
+      className="bg-white rounded-2xl p-4 md:p-5 text-center shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-indigo-300 hover:-translate-y-1 relative block group overflow-hidden"
     >
       {isPending && (
-        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-xl">
-          <LoadingSpinner size="md" />
+        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-2xl">
+          <LoadingSpinner size="sm" />
         </div>
       )}
-      {/* Gradient background on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/0 to-purple-50/0 group-hover:from-indigo-50 group-hover:to-purple-50 transition-all duration-300" />
-      <h3 className={`relative z-10 font-bold text-lg md:text-xl text-gray-900 group-hover:text-indigo-600 transition-all duration-300 ${isPending ? 'opacity-50' : ''}`}>
+      {/* Subtle gradient background on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/0 via-purple-50/0 to-pink-50/0 group-hover:from-indigo-50/50 group-hover:via-purple-50/30 group-hover:to-pink-50/20 transition-all duration-300 rounded-2xl" />
+      <h3 className={`relative z-10 font-semibold text-sm md:text-base text-gray-800 group-hover:text-indigo-600 transition-all duration-300 leading-tight ${isPending ? 'opacity-50' : ''}`}>
         {category.name}
       </h3>
     </Link>

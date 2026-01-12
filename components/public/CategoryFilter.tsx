@@ -33,7 +33,7 @@ export function CategoryFilter({ categories, currentCategory, searchQuery }: Cat
   const hiddenCategories = categories.slice(5)
 
   return (
-    <div className="border rounded-lg bg-white">
+    <div className="border border-gray-200 rounded-xl bg-white shadow-sm">
       <div className="flex items-center justify-between p-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-sm font-medium text-gray-700">Category:</span>
