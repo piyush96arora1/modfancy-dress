@@ -52,6 +52,62 @@ export default function ContactPage() {
           </div>
         </div>
 
+        {/* Bulk Orders Section */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 md:p-8 mb-8 border-2 border-green-200">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Phone className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">Bulk Orders</h2>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                Planning a large event or need multiple costumes? We specialize in bulk orders for school functions, 
+                dance performances, and large celebrations. <strong>Contact us first</strong> and we'll create a 
+                customized quotation tailored to your specific needs and budget.
+              </p>
+              <div className="bg-white rounded-xl p-4 mb-4 border border-green-200">
+                <h3 className="font-semibold text-gray-900 mb-2">Why Contact Us First?</h3>
+                <ul className="space-y-2 text-gray-700 text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold mt-1">✓</span>
+                    <span>Better pricing and discounts for bulk orders</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold mt-1">✓</span>
+                    <span>Customized quotation based on your requirements</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold mt-1">✓</span>
+                    <span>Flexible payment and delivery options</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold mt-1">✓</span>
+                    <span>Expert guidance on costume selection</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-600 font-bold mt-1">✓</span>
+                    <span>Dedicated support for your event</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a href="tel:+919211077110" className="flex-1">
+                  <Button size="lg" className="w-full bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg">
+                    <Phone className="w-5 h-5 mr-2" />
+                    Call for Bulk Order Quote
+                  </Button>
+                </a>
+                <a href="https://wa.me/919211077110?text=Hi, I'm interested in placing a bulk order. Can you help me with a quotation?" target="_blank" rel="noopener noreferrer" className="flex-1">
+                  <Button size="lg" variant="outline" className="w-full border-green-600 text-green-700 hover:bg-green-50">
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    WhatsApp for Quote
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Contact Information */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Phone Numbers */}
