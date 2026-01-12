@@ -26,28 +26,16 @@ CREATE POLICY "Product categories are viewable by everyone" ON product_categorie
 
 CREATE POLICY "Product categories can be inserted by admins" ON product_categories
   FOR INSERT WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM auth.users
-      WHERE auth.users.id = auth.uid()
-      AND (auth.users.raw_user_meta_data->>'role')::text = 'admin'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'role')::text = 'admin'
   );
 
 CREATE POLICY "Product categories can be updated by admins" ON product_categories
   FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM auth.users
-      WHERE auth.users.id = auth.uid()
-      AND (auth.users.raw_user_meta_data->>'role')::text = 'admin'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'role')::text = 'admin'
   );
 
 CREATE POLICY "Product categories can be deleted by admins" ON product_categories
   FOR DELETE USING (
-    EXISTS (
-      SELECT 1 FROM auth.users
-      WHERE auth.users.id = auth.uid()
-      AND (auth.users.raw_user_meta_data->>'role')::text = 'admin'
-    )
+    (auth.jwt() -> 'user_metadata' ->> 'role')::text = 'admin'
   );
 
