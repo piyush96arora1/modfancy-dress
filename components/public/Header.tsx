@@ -54,7 +54,7 @@ export function Header() {
             </Link>
             <Link 
               href="/contact" 
-              className="text-indigo-700 hover:text-indigo-900 transition-colors"
+              className="text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center"
             >
               Contact
             </Link>
@@ -125,7 +125,7 @@ export function Header() {
           </Link>
           <Link 
             href="/contact" 
-            className="text-sm text-indigo-700 hover:text-indigo-900 transition-colors"
+            className="text-sm text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center"
           >
             Contact
           </Link>
