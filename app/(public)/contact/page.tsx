@@ -255,7 +255,7 @@ export default function ContactPage() {
             <Star className="w-8 h-8 text-yellow-500 fill-yellow-500" />
             <div>
               <h3 className="text-2xl font-bold text-gray-900">Customer Reviews</h3>
-              <p className="text-gray-600">4.8 out of 5 stars from 150+ reviews</p>
+              <p className="text-gray-600">4.7 out of 5 stars from 700+ reviews</p>
             </div>
           </div>
           

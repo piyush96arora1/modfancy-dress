@@ -44,8 +44,8 @@ export function OrganizationSchema() {
     priceRange: '₹₹',
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '150',
+      ratingValue: '4.7',
+      reviewCount: '700',
       bestRating: '5',
       worstRating: '1',
     },
@@ -137,8 +137,8 @@ export function ReviewSchema() {
     name: 'Mod Fancy Dress',
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '150',
+      ratingValue: '4.7',
+      reviewCount: '700',
       bestRating: '5',
       worstRating: '1',
     },
