@@ -34,11 +34,11 @@ export function Header() {
     <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
+          <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all flex-shrink-0">
             Mod Fancy Dress
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
             <Link 
               href="/products" 
               onClick={(e) => {
@@ -47,14 +47,14 @@ export function Header() {
                   router.push('/products')
                 })
               }}
-              className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isProductsPending ? 'opacity-50' : ''}`}
+              className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 font-medium ${isProductsPending ? 'opacity-50' : ''}`}
             >
               {isProductsPending && <LoadingSpinner size="sm" />}
               Products
             </Link>
             <Link 
               href="/contact" 
-              className="text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center"
+              className="text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center font-medium"
             >
               Contact
             </Link>
@@ -67,7 +67,7 @@ export function Header() {
                     router.push('/admin/products')
                   })
                 }}
-                className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isAdminPending ? 'opacity-50' : ''}`}
+                className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 font-medium ${isAdminPending ? 'opacity-50' : ''}`}
               >
                 {isAdminPending && <LoadingSpinner size="sm" />}
                 Admin
@@ -75,7 +75,7 @@ export function Header() {
             )}
           </nav>
 
-          <div className="flex items-center gap-3 md:gap-5">
+          <div className="flex items-center gap-3 md:gap-5 flex-shrink-0">
             <Link href="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
               <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
               {itemCount > 0 && (
