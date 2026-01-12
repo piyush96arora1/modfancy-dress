@@ -36,29 +36,39 @@ export default async function HomePage() {
   return (
     <div className="px-4 md:px-0 bg-white">
       {/* Hero Section */}
-      <section className="text-center py-12 md:py-16 mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-indigo-900">
-          Welcome to Mod Fancy Dress
-        </h1>
-        <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
-          Discover amazing fancy dress costumes and accessories
-        </p>
+      <section className="relative text-center py-16 md:py-24 mb-12 md:mb-16 overflow-hidden">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 opacity-50" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.1),transparent_50%)]" />
         
-        {/* Search Bar */}
-        <div className="max-w-2xl mx-auto mb-6 md:mb-8">
-          <SearchBar />
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
+            Welcome to Mod Fancy Dress
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-700 mb-8 md:mb-10 font-medium">
+            Discover amazing fancy dress costumes and accessories
+          </p>
+          
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-8 md:mb-10">
+            <SearchBar />
+          </div>
+          
+          <Link href="/products">
+            <Button size="lg" className="shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 px-8 py-6 text-lg">
+              Shop Now
+            </Button>
+          </Link>
         </div>
-        
-        <Link href="/products">
-          <Button size="lg">Shop Now</Button>
-        </Link>
       </section>
 
       {/* Categories Section */}
       {categories && categories.length > 0 && (
-        <section className="mb-8 md:mb-12">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-indigo-900">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <section className="mb-12 md:mb-16">
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Shop by Category</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
             {categories.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
@@ -67,11 +77,13 @@ export default async function HomePage() {
       )}
 
       {/* Featured Products */}
-      <section>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-indigo-900">Featured Products</h2>
+      <section className="mb-12 md:mb-16">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Featured Products</h2>
           <Link href="/products" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full sm:w-auto">View All</Button>
+            <Button variant="outline" className="w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+              View All Products
+            </Button>
           </Link>
         </div>
         {products && products.length > 0 ? (

@@ -28,14 +28,16 @@ export function CategoryCard({ category }: CategoryCardProps) {
     <Link 
       href={`/category/${category.slug}`} 
       onClick={handleClick}
-      className="border border-gray-200 rounded-lg p-6 text-center hover:shadow-lg hover:border-indigo-300 transition-all bg-white relative block group"
+      className="bg-white rounded-xl p-6 md:p-8 text-center shadow-card hover:shadow-card-hover transition-all duration-300 border border-gray-100 hover:border-indigo-200 relative block group overflow-hidden"
     >
       {isPending && (
-        <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10 rounded-lg">
+        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-xl">
           <LoadingSpinner size="md" />
         </div>
       )}
-      <h3 className={`font-semibold text-indigo-900 group-hover:text-indigo-700 transition-opacity ${isPending ? 'opacity-50' : ''}`}>
+      {/* Gradient background on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/0 to-purple-50/0 group-hover:from-indigo-50 group-hover:to-purple-50 transition-all duration-300" />
+      <h3 className={`relative z-10 font-bold text-lg md:text-xl text-gray-900 group-hover:text-indigo-600 transition-all duration-300 ${isPending ? 'opacity-50' : ''}`}>
         {category.name}
       </h3>
     </Link>

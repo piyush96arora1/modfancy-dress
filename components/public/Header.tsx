@@ -31,10 +31,10 @@ export function Header() {
   }
 
   return (
-    <header className="border-b bg-white sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 md:py-4">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold text-indigo-900 hover:text-indigo-700 transition-colors">
+    <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
+      <div className="container mx-auto px-4 py-4 md:py-5">
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
             Mod Fancy Dress
           </Link>
 
@@ -69,12 +69,12 @@ export function Header() {
             )}
           </nav>
 
-          <div className="flex items-center gap-2 md:gap-4">
-            <Link href="/cart" className="relative">
-              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link href="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-[10px] md:text-xs">
-                  {itemCount}
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center shadow-lg animate-pulse">
+                  {itemCount > 99 ? '99+' : itemCount}
                 </span>
               )}
             </Link>
