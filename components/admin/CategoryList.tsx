@@ -60,7 +60,7 @@ export async function CategoryList({ categories }: CategoryListProps) {
           <tbody className="divide-y divide-gray-200">
             {categories.map((category) => (
               <tr key={category.id}>
-                <td className="px-6 py-4 font-medium">{category.name}</td>
+                <td className="px-6 py-4 font-medium text-gray-900">{category.name}</td>
                 <td className="px-6 py-4 text-gray-600">{category.slug}</td>
                 <td className="px-6 py-4 text-gray-600">
                   {category.description || '—'}
@@ -91,7 +91,7 @@ export async function CategoryList({ categories }: CategoryListProps) {
         {categories.map((category) => (
           <div key={category.id} className="bg-white rounded-lg border p-4 space-y-3">
             <div>
-              <div className="font-semibold text-lg mb-1">{category.name}</div>
+              <div className="font-semibold text-lg mb-1 text-gray-900">{category.name}</div>
               <div className="text-sm text-gray-500 mb-2">/{category.slug}</div>
               {category.description && (
                 <div className="text-sm text-gray-600">{category.description}</div>

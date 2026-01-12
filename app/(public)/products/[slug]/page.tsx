@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const basePrice = productData.price
 
   return (
-    <div className="px-4 md:px-0">
+    <div className="px-4 md:px-0 bg-white">
       {!productData.is_active && (
         <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-4">
           This product is currently inactive.
@@ -124,17 +124,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Product Info */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">{productData.name}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900">{productData.name}</h1>
         {productData.category && (
           <p className="text-gray-600 mb-4">{productData.category.name}</p>
         )}
         {basePrice && (
-          <p className="text-3xl font-bold mb-6">₹{basePrice.toFixed(2)}</p>
+          <p className="text-3xl font-bold mb-6 text-gray-900">₹{basePrice.toFixed(2)}</p>
         )}
 
         {productData.description && (
           <div className="mb-6">
-            <h2 className="font-semibold mb-2">Description</h2>
+            <h2 className="font-semibold mb-2 text-gray-900">Description</h2>
             <p className="text-gray-700 whitespace-pre-line">{productData.description}</p>
           </div>
         )}
@@ -152,7 +152,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Product Details */}
         {productData.variants.length > 0 && (
           <div className="border-t pt-6">
-            <h3 className="font-semibold mb-2">Available Options</h3>
+            <h3 className="font-semibold mb-2 text-gray-900">Available Options</h3>
             <ul className="space-y-1 text-sm text-gray-600">
               {sizes.length > 0 && (
                 <li>

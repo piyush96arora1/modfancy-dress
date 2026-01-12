@@ -58,8 +58,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="px-4 md:px-0">
-      <h1 className="text-2xl md:text-3xl font-bold mb-2">{category.name}</h1>
+    <div className="px-4 md:px-0 bg-white">
+      <h1 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900">{category.name}</h1>
       {category.description && (
         <p className="text-gray-600 mb-6 md:mb-8">{category.description}</p>
       )}

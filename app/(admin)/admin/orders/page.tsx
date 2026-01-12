@@ -17,8 +17,8 @@ export default async function AdminOrdersPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="px-4 md:px-0">
-      <h1 className="text-2xl font-bold mb-6">Orders</h1>
+    <div className="px-4 md:px-0 bg-white">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">Orders</h1>
       <OrderList orders={orders || []} />
     </div>
   )

@@ -82,15 +82,15 @@ export async function OrderList({ orders }: OrderListProps) {
 
               return (
                 <tr key={order.id}>
-                  <td className="px-6 py-4 font-medium">{order.order_number}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{order.order_number}</td>
                   <td className="px-6 py-4">
                     <div>
-                      <div className="font-medium">{order.customer_name}</div>
+                      <div className="font-medium text-gray-900">{order.customer_name}</div>
                       <div className="text-sm text-gray-500">{order.customer_email}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">{itemCount} item(s)</td>
-                  <td className="px-6 py-4 font-medium">
+                  <td className="px-6 py-4 text-gray-900">{itemCount} item(s)</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">
                     ₹{order.total_amount.toFixed(2)}
                   </td>
                   <td className="px-6 py-4">
@@ -150,7 +150,7 @@ export async function OrderList({ orders }: OrderListProps) {
             <div key={order.id} className="bg-white rounded-lg border p-4 space-y-3">
               <div className="flex justify-between items-start">
                 <div>
-                  <div className="font-semibold text-lg">{order.order_number}</div>
+                  <div className="font-semibold text-lg text-gray-900">{order.order_number}</div>
                   <div className="text-sm text-gray-500 mt-1">
                     {new Date(order.created_at).toLocaleDateString()}
                   </div>
@@ -173,16 +173,16 @@ export async function OrderList({ orders }: OrderListProps) {
               <div className="space-y-2 text-sm">
                 <div>
                   <span className="text-gray-600">Customer:</span>
-                  <div className="font-medium">{order.customer_name}</div>
+                  <div className="font-medium text-gray-900">{order.customer_name}</div>
                   <div className="text-gray-500 text-xs">{order.customer_email}</div>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Items:</span>
-                  <span className="font-medium">{itemCount} item(s)</span>
+                  <span className="font-medium text-gray-900">{itemCount} item(s)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total:</span>
-                  <span className="font-bold text-lg">₹{order.total_amount.toFixed(2)}</span>
+                  <span className="font-bold text-lg text-gray-900">₹{order.total_amount.toFixed(2)}</span>
                 </div>
               </div>
 

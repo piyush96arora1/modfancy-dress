@@ -68,9 +68,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     .order('name')
 
   return (
-    <div className="px-4 md:px-0">
+    <div className="px-4 md:px-0 bg-white">
       <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-4">All Products</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">All Products</h1>
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
           <div className="flex-1">
             <SearchBar />
@@ -82,13 +82,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
         {/* Sidebar Filters */}
         <aside className="md:col-span-1">
-          <div className="border rounded-lg p-4 md:sticky md:top-24">
-            <h3 className="font-semibold mb-4">Categories</h3>
+          <div className="border rounded-lg p-4 md:sticky md:top-24 bg-white">
+            <h3 className="font-semibold mb-4 text-gray-900">Categories</h3>
             <ul className="space-y-2">
               <li>
                 <a
                   href="/products"
-                  className={`text-sm ${!category ? 'font-semibold' : 'text-gray-600 hover:text-gray-900'}`}
+                  className={`text-sm ${!category ? 'font-semibold text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
                 >
                   All Categories
                 </a>
@@ -97,7 +97,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <li key={cat.id}>
                   <a
                     href={`/products?category=${cat.slug}`}
-                    className={`text-sm ${category === cat.slug ? 'font-semibold' : 'text-gray-600 hover:text-gray-900'}`}
+                    className={`text-sm ${category === cat.slug ? 'font-semibold text-gray-900' : 'text-gray-600 hover:text-gray-900'}`}
                   >
                     {cat.name}
                   </a>

@@ -106,11 +106,11 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-4 font-medium">{product.name}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{product.name}</td>
                   <td className="px-6 py-4 text-gray-600">
                     {product.category?.name || '—'}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-900">
                     {product.price ? `₹${product.price.toFixed(2)}` : '—'}
                   </td>
                   <td className="px-6 py-4">
@@ -184,12 +184,12 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-lg mb-1">{product.name}</div>
+                  <div className="font-semibold text-lg mb-1 text-gray-900">{product.name}</div>
                   <div className="text-sm text-gray-600 mb-2">
                     {product.category?.name || 'No category'}
                   </div>
                   {product.price && (
-                    <div className="font-bold text-lg">₹{product.price.toFixed(2)}</div>
+                    <div className="font-bold text-lg text-gray-900">₹{product.price.toFixed(2)}</div>
                   )}
                 </div>
               </div>

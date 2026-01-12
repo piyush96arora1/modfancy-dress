@@ -39,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-8 md:mt-12 px-4">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
+    <div className="max-w-md mx-auto mt-8 md:mt-12 px-4 bg-white">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">Login</h1>
       <form onSubmit={handleLogin} className="space-y-4">
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">

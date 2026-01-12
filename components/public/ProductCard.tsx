@@ -30,13 +30,13 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
         </div>
-        <div className="p-4">
-          <h3 className="font-semibold text-lg mb-2 line-clamp-2">{product.name}</h3>
+        <div className="p-4 bg-white">
+          <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">{product.name}</h3>
           {product.category && (
             <p className="text-sm text-gray-500 mb-2">{product.category.name}</p>
           )}
           {displayPrice && (
-            <p className="text-xl font-bold">₹{displayPrice.toFixed(2)}</p>
+            <p className="text-xl font-bold text-gray-900">₹{displayPrice.toFixed(2)}</p>
           )}
         </div>
       </div>

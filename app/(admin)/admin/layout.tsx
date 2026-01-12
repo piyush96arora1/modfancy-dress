@@ -18,7 +18,7 @@ export default function AdminLayout({
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4 md:gap-8">
-              <Link href="/admin/products" className="text-lg md:text-xl font-bold">
+              <Link href="/admin/products" className="text-lg md:text-xl font-bold text-gray-900">
                 Admin Panel
               </Link>
 

@@ -22,16 +22,16 @@ export function Header() {
     <header className="border-b bg-white sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold">
+          <Link href="/" className="text-xl md:text-2xl font-bold text-gray-900">
             Mod Fancy Dress
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/products" className="hover:text-gray-600">
+            <Link href="/products" className="text-gray-900 hover:text-gray-600">
               Products
             </Link>
             {isAdmin && (
-              <Link href="/admin/products" className="hover:text-gray-600">
+              <Link href="/admin/products" className="text-gray-900 hover:text-gray-600">
                 Admin
               </Link>
             )}
@@ -72,17 +72,17 @@ export function Header() {
         
         {/* Mobile Navigation */}
         <nav className="md:hidden mt-3 pt-3 border-t flex items-center gap-4">
-          <Link href="/products" className="text-sm hover:text-gray-600">
+          <Link href="/products" className="text-sm text-gray-900 hover:text-gray-600">
             Products
           </Link>
           {isAdmin && (
-            <Link href="/admin/products" className="text-sm hover:text-gray-600">
+            <Link href="/admin/products" className="text-sm text-gray-900 hover:text-gray-600">
               Admin
             </Link>
           )}
           {user && (
             <div className="flex items-center gap-2 ml-auto">
-              <User className="w-4 h-4" />
+              <User className="w-4 h-4 text-gray-900" />
               <span className="text-xs text-gray-600 truncate max-w-[120px]">{user.email}</span>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 <LogOut className="w-4 h-4" />

@@ -243,3 +243,4 @@ Supabase should work out of the box, but if you encounter CORS issues:
 - Vercel Docs: https://vercel.com/docs
 - Next.js Deployment: https://nextjs.org/docs/deployment
 - Supabase Docs: https://supabase.com/docs
+
