@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
@@ -38,13 +38,22 @@ export function SearchBar() {
       })
     } else {
       // If query is empty, remove search param
+      clearSearch()
+    }
+  }
+
+  const clearSearch = () => {
+    setQuery('')
+    startTransition(() => {
       const category = searchParams.get('category')
       const params = new URLSearchParams()
       if (category) params.set('category', category)
       const queryString = params.toString()
       router.push(queryString ? `/products?${queryString}` : '/products')
-    }
+    })
   }
+
+  const hasSearchQuery = Boolean(query || searchParams.get('search'))
 
   return (
     <form onSubmit={handleSearch} className="flex gap-2 w-full">
@@ -54,9 +63,19 @@ export function SearchBar() {
           placeholder="Search products..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full pr-10 text-gray-900 bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+          className={`w-full ${hasSearchQuery ? 'pr-20' : 'pr-10'} text-gray-900 bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500`}
         />
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        {hasSearchQuery ? (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="absolute right-10 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Clear search"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        ) : null}
+        <Search className={`absolute ${hasSearchQuery ? 'right-3' : 'right-3'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
       </div>
       <Button 
         type="submit" 

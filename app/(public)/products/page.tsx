@@ -70,9 +70,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       {/* Compact Header Section */}
       <div className="mb-4 md:mb-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
-          <h1 className="text-xl md:text-2xl font-bold text-indigo-900">
-            {search ? `Search: "${search}"` : 'All Products'}
-          </h1>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-xl md:text-2xl font-bold text-indigo-900">
+              {search ? `Search: "${search}"` : 'All Products'}
+            </h1>
+            {search && (
+              <Link 
+                href={category ? `/products?category=${category}` : '/products'}
+                className="text-sm text-indigo-600 hover:text-indigo-800 underline font-medium"
+              >
+                Clear search
+              </Link>
+            )}
+          </div>
           {resultsCount > 0 && (
             <p className="text-sm text-gray-600 font-medium">
               {resultsCount} {resultsCount === 1 ? 'product' : 'products'}
