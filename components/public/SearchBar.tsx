@@ -56,32 +56,32 @@ export function SearchBar() {
   const hasSearchQuery = Boolean(query || searchParams.get('search'))
 
   return (
-    <form onSubmit={handleSearch} className="flex gap-2 w-full">
+    <form onSubmit={handleSearch} className="flex gap-3 w-full">
       <div className="relative flex-1">
         <Input
           type="text"
-          placeholder="Search products..."
+          placeholder="Search for costumes, accessories..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className={`w-full ${hasSearchQuery ? 'pr-20' : 'pr-10'} text-gray-900 bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500`}
+          className={`w-full ${hasSearchQuery ? 'pr-12' : 'pr-12'} h-12 md:h-14 text-base text-gray-900 bg-white border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg shadow-sm hover:shadow-md transition-all`}
         />
         {hasSearchQuery ? (
           <button
             type="button"
             onClick={clearSearch}
-            className="absolute right-10 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-14 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-all"
             aria-label="Clear search"
           >
             <X className="w-4 h-4" />
           </button>
         ) : null}
-        <Search className={`absolute ${hasSearchQuery ? 'right-3' : 'right-3'} top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none`} />
+        <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
       </div>
       <Button 
         type="submit" 
         variant="default" 
         disabled={isPending} 
-        className="min-w-[100px] px-4"
+        className="min-w-[120px] md:min-w-[140px] h-12 md:h-14 px-6 text-base font-semibold"
       >
         {isPending ? (
           <>
@@ -91,8 +91,8 @@ export function SearchBar() {
           </>
         ) : (
           <>
-            <Search className="w-4 h-4 mr-2" />
-            <span className="hidden sm:inline">Search</span>
+            <Search className="w-5 h-5 mr-2" />
+            <span>Search</span>
           </>
         )}
       </Button>
