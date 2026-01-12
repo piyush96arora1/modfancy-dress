@@ -34,11 +34,11 @@ export function Header() {
     <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-6 md:gap-8">
-            <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
-              Mod Fancy Dress
-            </Link>
+          <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
+            Mod Fancy Dress
+          </Link>
 
+          <div className="flex items-center gap-6 md:gap-8">
             <nav className="hidden md:flex items-center gap-6">
               <Link 
                 href="/products" 
@@ -75,7 +75,6 @@ export function Header() {
                 </Link>
               )}
             </nav>
-          </div>
 
           <div className="flex items-center gap-3 md:gap-5">
             <Link href="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
