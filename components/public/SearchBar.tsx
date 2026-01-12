@@ -18,6 +18,9 @@ export function SearchBar() {
     const searchParam = searchParams.get('search')
     if (searchParam) {
       setQuery(decodeURIComponent(searchParam))
+    } else {
+      // Clear input when search param is removed
+      setQuery('')
     }
   }, [searchParams])
 

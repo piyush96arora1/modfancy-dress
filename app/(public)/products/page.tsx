@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { SearchBar } from '@/components/public/SearchBar'
 import { SortSelect } from '@/components/public/SortSelect'
+import { CategoryFilter } from '@/components/public/CategoryFilter'
 import type { ProductWithDetails } from '@/types/database'
 
 interface ProductsPageProps {
@@ -73,126 +74,58 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="px-4 md:px-0 bg-white">
-      <div className="mb-6 md:mb-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-          <h1 className="text-2xl md:text-3xl font-bold text-indigo-900">
-            {search ? `Search Results for "${search}"` : 'All Products'}
+      {/* Compact Header Section */}
+      <div className="mb-4 md:mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
+          <h1 className="text-xl md:text-2xl font-bold text-indigo-900">
+            {search ? `Search: "${search}"` : 'All Products'}
           </h1>
-          {search && resultsCount > 0 && (
-            <p className="text-sm text-gray-600">
-              {resultsCount} {resultsCount === 1 ? 'product' : 'products'} found
+          {resultsCount > 0 && (
+            <p className="text-sm text-gray-600 font-medium">
+              {resultsCount} {resultsCount === 1 ? 'product' : 'products'}
             </p>
           )}
         </div>
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-          <div className="flex-1 w-full">
+        
+        {/* Search and Sort Row */}
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+          <div className="flex-1">
             <SearchBar />
           </div>
-          <div className="w-full md:w-auto">
+          <div className="w-full sm:w-auto sm:min-w-[180px]">
             <SortSelect />
           </div>
         </div>
-        {search && (
-          <div className="mt-2">
-            <Link 
-              href="/products" 
-              className="text-sm text-indigo-600 hover:text-indigo-800 underline"
-            >
-              Clear search
-            </Link>
-          </div>
-        )}
+
+        {/* Category Filter - Always shown but compact */}
+        <div className="mt-3">
+          <CategoryFilter 
+            categories={categories || []} 
+            currentCategory={category || null}
+            searchQuery={search || null}
+          />
+        </div>
       </div>
 
-      {/* Horizontal Category Filters - Shown when searching or as compact option */}
-      {isSearching && (
-        <div className="mb-6 pb-4 border-b">
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-sm font-medium text-gray-700 mr-2">Filter by category:</span>
-            <Link
-              href={search ? `/products?search=${encodeURIComponent(search)}` : '/products'}
-              className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                !category 
-                  ? 'bg-indigo-600 text-white border-indigo-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-500 hover:text-indigo-700'
-              }`}
-            >
-              All
-            </Link>
-            {categories?.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/products?search=${encodeURIComponent(search || '')}&category=${cat.slug}`}
-                className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
-                  category === cat.slug
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-500 hover:text-indigo-700'
-                }`}
+      {/* Products Grid - Full Width */}
+      <div className="w-full">
+        {products && products.length > 0 ? (
+          <ProductGrid products={products as ProductWithDetails[]} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500 mb-2 text-lg">
+              {search ? `No products found for "${search}"` : 'No products found.'}
+            </p>
+            {search && (
+              <Link 
+                href="/products" 
+                className="text-sm text-indigo-600 hover:text-indigo-800 underline font-medium"
               >
-                {cat.name}
+                Browse all products
               </Link>
-            ))}
+            )}
           </div>
-        </div>
-      )}
-
-      <div className={`grid grid-cols-1 gap-4 md:gap-6 ${isSearching ? 'md:grid-cols-1' : 'md:grid-cols-4'}`}>
-        {/* Sidebar Filters - Only shown when NOT searching */}
-        {!isSearching && (
-          <aside className="md:col-span-1">
-            <div className="border rounded-lg p-4 md:sticky md:top-24 bg-white">
-              <h3 className="font-semibold mb-4 text-indigo-900">Categories</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/products"
-                    className={`text-sm ${!category ? 'font-semibold text-indigo-900' : 'text-gray-600 hover:text-indigo-700'}`}
-                  >
-                    All Categories
-                  </Link>
-                </li>
-                {categories?.map((cat) => (
-                  <li key={cat.id}>
-                    <Link
-                      href={`/products?category=${cat.slug}`}
-                      className={`text-sm ${category === cat.slug ? 'font-semibold text-indigo-900' : 'text-gray-600 hover:text-indigo-700'}`}
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
         )}
-
-        {/* Products Grid */}
-        <div className={isSearching ? 'w-full' : 'md:col-span-3'}>
-          {products && products.length > 0 ? (
-            <>
-              {isSearching && (
-                <div className="mb-4 text-sm text-gray-600">
-                  Showing {resultsCount} {resultsCount === 1 ? 'result' : 'results'}
-                </div>
-              )}
-              <ProductGrid products={products as ProductWithDetails[]} />
-            </>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 mb-2">
-                {search ? `No products found for "${search}"` : 'No products found.'}
-              </p>
-              {search && (
-                <Link 
-                  href="/products" 
-                  className="text-sm text-indigo-600 hover:text-indigo-800 underline"
-                >
-                  Browse all products
-                </Link>
-              )}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   )
