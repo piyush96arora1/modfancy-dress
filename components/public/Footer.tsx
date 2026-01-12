@@ -26,6 +26,11 @@ export function Footer() {
                   Shopping Cart
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="text-gray-600 hover:text-indigo-600 transition-colors inline-block">
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

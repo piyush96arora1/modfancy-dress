@@ -52,6 +52,12 @@ export function Header() {
               {isProductsPending && <LoadingSpinner size="sm" />}
               Products
             </Link>
+            <Link 
+              href="/contact" 
+              className="text-indigo-700 hover:text-indigo-900 transition-colors"
+            >
+              Contact
+            </Link>
             {isAdmin && (
               <Link 
                 href="/admin/products" 
@@ -116,6 +122,12 @@ export function Header() {
           >
             {isProductsPending && <LoadingSpinner size="sm" />}
             Products
+          </Link>
+          <Link 
+            href="/contact" 
+            className="text-sm text-indigo-700 hover:text-indigo-900 transition-colors"
+          >
+            Contact
           </Link>
           {isAdmin && (
             <Link 
