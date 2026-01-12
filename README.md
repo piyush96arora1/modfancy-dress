@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mod Fancy Dress - E-commerce Application
 
-## Getting Started
+A fullstack Next.js e-commerce application for Mod Fancy Dress built with Next.js 14+ and Supabase.
 
-First, run the development server:
+## Features
+
+### Public Features
+- Browse products with search and category filtering
+- Product detail pages with variant selection (size, color)
+- Shopping cart (localStorage-based)
+- Order submission (no payment required)
+- SEO-friendly pages
+
+### Admin Features
+- Product management (CRUD operations)
+- Category management
+- Image upload to Supabase Storage
+- Product variants (SKU, size, color, quantity, price override)
+- Order management and status updates
+- Role-based access control
+
+## Tech Stack
+
+- **Frontend:** Next.js 14+ (App Router), TypeScript, Tailwind CSS
+- **Backend:** Supabase (PostgreSQL, Auth, Storage)
+- **State Management:** Zustand (for cart)
+- **Form Handling:** React Hook Form + Zod
+- **UI Components:** Custom components with Tailwind CSS
+
+## Setup Instructions
+
+### 1. Prerequisites
+
+- Node.js 18+ installed
+- Supabase account (free tier works)
+
+### 2. Clone and Install
+
+```bash
+cd modfacnydress
+npm install
+```
+
+### 3. Supabase Setup
+
+1. Create a new Supabase project at https://supabase.com
+2. Go to SQL Editor and run the migration file:
+   - Copy contents from `supabase/migrations/001_initial_schema.sql`
+   - Paste and execute in Supabase SQL Editor
+
+3. Create Storage Bucket:
+   - Go to Storage in Supabase dashboard
+   - Create a new bucket named `product-images`
+   - Set it to **Public** (for public read access)
+   - Add policy: Allow authenticated users to upload
+
+4. Get your Supabase credentials:
+   - Go to Project Settings > API
+   - Copy your Project URL and anon/public key
+
+### 4. Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+### 5. Create Admin User
+
+1. Sign up at `/signup` with role "admin"
+2. Or manually update user metadata in Supabase:
+   - Go to Authentication > Users
+   - Edit user and set `raw_user_meta_data` → `role` to `"admin"`
+
+### 6. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+modfacnydress/
+├── app/
+│   ├── (public)/          # Public pages
+│   │   ├── page.tsx      # Homepage
+│   │   ├── products/     # Product listing & detail
+│   │   ├── cart/         # Shopping cart
+│   │   └── category/     # Category pages
+│   ├── (auth)/           # Auth pages
+│   │   ├── login/
+│   │   └── signup/
+│   ├── (admin)/          # Admin pages
+│   │   └── admin/
+│   │       ├── products/
+│   │       ├── categories/
+│   │       └── orders/
+│   └── layout.tsx        # Root layout
+├── components/
+│   ├── ui/               # Reusable UI components
+│   ├── public/           # Public-facing components
+│   └── admin/            # Admin components
+├── lib/
+│   ├── supabase/         # Supabase clients
+│   ├── store/            # Zustand stores
+│   ├── hooks/            # React hooks
+│   └── utils/            # Utility functions
+├── types/                # TypeScript types
+└── supabase/
+    └── migrations/       # Database migrations
+```
 
-## Learn More
+## Database Schema
 
-To learn more about Next.js, take a look at the following resources:
+- **categories** - Product categories
+- **products** - Product information
+- **product_images** - Product images (multiple per product)
+- **product_variants** - Product variants (size, color, SKU, etc.)
+- **orders** - Customer orders
+- **order_items** - Order line items
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key Features Explained
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Product Variants
+- Products can have multiple variants
+- Each variant can have: SKU, size, color, quantity, price override
+- Size can be in various formats: "1-2 yrs", "12,14,16", "12,14,16,18,20,22,24,26,28,30,32,34"
+- Only product name and image are mandatory
 
-## Deploy on Vercel
+### Cart System
+- Cart stored in localStorage (session-based)
+- On order submission, cart is cleared
+- Orders are saved to database for admin review
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admin Access
+- Admin routes protected by middleware
+- Only users with `role: 'admin'` can access admin panel
+- Admin can manage products, categories, and orders
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy
+
+### Supabase Storage
+- Ensure Storage bucket is public for product images
+- Update CORS settings if needed
+
+## Notes
+
+- Product images are uploaded to Supabase Storage
+- Cart persists in localStorage (cleared on order submission)
+- Orders don't require payment - just customer information
+- Admin can update order status (pending → confirmed → shipped)
+
+## License
+
+Private project for Mod Fancy Dress
+# modfancy-dress
