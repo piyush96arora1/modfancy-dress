@@ -75,3 +75,4 @@ All colors meet WCAG AA contrast requirements:
 - Indigo-600 on white: ✅ Good contrast
 - Teal-600 on white: ✅ Good contrast
 
+
