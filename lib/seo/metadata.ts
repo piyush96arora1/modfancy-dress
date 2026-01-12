@@ -22,6 +22,9 @@ export function generatePageMetadata({
   const url = `${siteUrl}${path}`
   const ogImage = image || `${siteUrl}/og-image.jpg`
 
+  // OpenGraph only supports 'website' or 'article', so map 'product' to 'website'
+  const ogType = type === 'product' ? 'website' : type
+
   return {
     title: fullTitle,
     description: fullDescription,
@@ -50,7 +53,7 @@ export function generatePageMetadata({
       canonical: url,
     },
     openGraph: {
-      type,
+      type: ogType,
       url,
       title: fullTitle,
       description: fullDescription,

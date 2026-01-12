@@ -76,7 +76,7 @@ export function Header() {
               )}
             </nav>
 
-          <div className="flex items-center gap-3 md:gap-5">
+            <div className="flex items-center gap-3 md:gap-5">
             <Link href="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
               <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
               {itemCount > 0 && (
@@ -106,6 +106,7 @@ export function Header() {
                 )}
               </>
             )}
+            </div>
           </div>
         </div>
         
