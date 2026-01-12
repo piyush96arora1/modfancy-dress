@@ -44,18 +44,37 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  const { data: products } = await supabase
+  // First, get product IDs from the junction table
+  const { data: productCategories } = await supabase
+    .from('product_categories')
+    .select('product_id')
+    .eq('category_id', category.id)
+
+  const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
+
+  // Build query - check both old category_id and new junction table
+  let query = supabase
     .from('products')
     .select(`
       *,
       category:categories(*),
+      categories:product_categories(category:categories(*)),
       images:product_images(*),
       variants:product_variants(*)
     `)
-    .eq('category_id', category.id)
     .eq('is_active', true)
     .is('deleted_at', null) // Only show products that are not deleted
-    .order('created_at', { ascending: false })
+
+  // Filter by products that have this category_id OR are in the junction table
+  if (productIdsFromJunction.length > 0) {
+    query = query.or(`category_id.eq.${category.id},id.in.(${productIdsFromJunction.join(',')})`)
+  } else {
+    query = query.eq('category_id', category.id)
+  }
+
+  query = query.order('created_at', { ascending: false })
+
+  const { data: products } = await query
 
   return (
     <div className="px-4 md:px-0 bg-white">
