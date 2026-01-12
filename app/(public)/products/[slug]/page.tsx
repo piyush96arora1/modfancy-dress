@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
+import { generatePageMetadata } from '@/lib/seo/metadata'
+import { ProductSchema, BreadcrumbSchema } from '@/lib/seo/structured-data'
 import type { ProductWithDetails } from '@/types/database'
 
 interface ProductPageProps {
@@ -15,7 +17,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const supabase = await createClient()
   const { data: product } = await supabase
     .from('products')
-    .select('name, description')
+    .select('name, description, images:product_images(image_url, is_primary)')
     .eq('slug', slug)
     .single()
 
@@ -25,10 +27,16 @@ export async function generateMetadata({ params }: ProductPageProps) {
     }
   }
 
-  return {
-    title: `${product.name} - Mod Fancy Dress`,
-    description: product.description || `Buy ${product.name} at Mod Fancy Dress`,
-  }
+  const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
+  const imageUrl = primaryImage?.image_url
+
+  return generatePageMetadata({
+    title: `${product.name} - Premium Fancy Dress Costume`,
+    description: product.description || `Buy ${product.name} - Premium fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`,
+    path: `/products/${slug}`,
+    image: imageUrl,
+    type: 'product',
+  })
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -83,8 +91,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const basePrice = productData.price
 
+  // Generate structured data
+  const productSchema = ProductSchema(productData)
+  const breadcrumbSchema = BreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Products', url: '/products' },
+    { name: productData.name, url: `/products/${slug}` },
+  ])
+
   return (
-    <div className="px-4 md:px-0 bg-white">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <div className="px-4 md:px-0 bg-white">
       {!productData.is_active && (
         <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-4">
           This product is currently inactive.
@@ -168,6 +193,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
       </div>
     </div>
+    </>
   )
 }
 

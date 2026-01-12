@@ -4,11 +4,14 @@ import { ProductGrid } from '@/components/public/ProductGrid'
 import { CategoryCard } from '@/components/public/CategoryCard'
 import { SearchBar } from '@/components/public/SearchBar'
 import { Button } from '@/components/ui/button'
+import { generatePageMetadata } from '@/lib/seo/metadata'
+import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 
-export const metadata = {
-  title: 'Mod Fancy Dress - Fancy Dress Costumes & Accessories',
-  description: 'Browse our collection of fancy dress costumes and accessories',
-}
+export const metadata = generatePageMetadata({
+  title: 'Premium Fancy Dress Costumes & Accessories in Delhi',
+  description: 'Shop premium fancy dress costumes and accessories in Delhi. 15+ years experience, 400+ successful school functions. Quality costumes for dance performances, school events, and celebrations.',
+  path: '/',
+})
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -33,8 +36,17 @@ export default async function HomePage() {
     .select('*')
     .order('name')
 
+  const breadcrumbSchema = BreadcrumbSchema([
+    { name: 'Home', url: '/' },
+  ])
+
   return (
-    <div className="px-4 md:px-0 bg-white">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <div className="px-4 md:px-0 bg-white">
       {/* Hero Section */}
       <section className="relative text-center py-16 md:py-24 mb-12 md:mb-16 overflow-hidden">
         {/* Background gradient */}
@@ -95,6 +107,7 @@ export default async function HomePage() {
         )}
       </section>
     </div>
+    </>
   )
 }
 

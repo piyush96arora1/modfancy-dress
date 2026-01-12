@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { SearchBar } from '@/components/public/SearchBar'
 import { CategoryFilter } from '@/components/public/CategoryFilter'
+import { generatePageMetadata } from '@/lib/seo/metadata'
+import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import type { ProductWithDetails } from '@/types/database'
 
 interface ProductsPageProps {
@@ -12,9 +14,25 @@ interface ProductsPageProps {
   }>
 }
 
-export const metadata = {
-  title: 'Products - Mod Fancy Dress',
-  description: 'Browse all our fancy dress products',
+export async function generateMetadata({ searchParams }: ProductsPageProps) {
+  const { search, category } = await searchParams
+  const title = search 
+    ? `Search Results for "${search}" - Fancy Dress Costumes`
+    : category
+    ? `${category.charAt(0).toUpperCase() + category.slice(1)} Fancy Dress Costumes`
+    : 'All Fancy Dress Costumes - Browse Collection'
+  
+  const description = search
+    ? `Find fancy dress costumes matching "${search}". Quality costumes for school functions, dance performances, and events.`
+    : category
+    ? `Browse our collection of ${category} fancy dress costumes. Premium quality, 15+ years experience.`
+    : 'Browse our complete collection of fancy dress costumes and accessories. 400+ successful school functions. Premium quality costumes in Delhi.'
+
+  return generatePageMetadata({
+    title,
+    description,
+    path: '/products',
+  })
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
@@ -140,6 +158,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         )}
       </div>
     </div>
+    </>
   )
 }
 

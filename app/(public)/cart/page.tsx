@@ -9,6 +9,16 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Shopping Cart - Mod Fancy Dress',
+  description: 'Review your cart and place your order for fancy dress costumes',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotal, clearCart } = useCart()

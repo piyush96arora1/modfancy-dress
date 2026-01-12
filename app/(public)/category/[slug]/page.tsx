@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
+import { generatePageMetadata } from '@/lib/seo/metadata'
+import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import type { ProductWithDetails } from '@/types/database'
 
 interface CategoryPageProps {
@@ -24,10 +26,11 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     }
   }
 
-  return {
-    title: `${category.name} - Mod Fancy Dress`,
-    description: category.description || `Browse ${category.name} products`,
-  }
+  return generatePageMetadata({
+    title: `${category.name} Fancy Dress Costumes - Premium Collection`,
+    description: category.description || `Browse our premium collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`,
+    path: `/category/${slug}`,
+  })
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -90,6 +93,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
       )}
     </div>
+    </>
   )
 }
 
