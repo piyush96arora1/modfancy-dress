@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import { DeleteProductButton } from './DeleteProductButton'
 import { RestoreProductButton } from './RestoreProductButton'
+import { EditProductButton } from './EditProductButton'
 import { revalidatePath } from 'next/cache'
 
 interface ProductListProps {
@@ -140,11 +141,7 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                         />
                       ) : (
                         <>
-                          <Link href={`/admin/products/${product.id}/edit`}>
-                            <Button variant="outline" size="sm">
-                              Edit
-                            </Button>
-                          </Link>
+                          <EditProductButton productId={product.id} />
                           <DeleteProductButton 
                             productId={product.id} 
                             productName={product.name}
@@ -220,11 +217,7 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                     />
                   ) : (
                     <>
-                      <Link href={`/admin/products/${product.id}/edit`}>
-                        <Button variant="outline" size="sm">
-                          Edit
-                        </Button>
-                      </Link>
+                      <EditProductButton productId={product.id} />
                       <DeleteProductButton 
                         productId={product.id} 
                         productName={product.name}

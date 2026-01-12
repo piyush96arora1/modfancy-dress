@@ -124,7 +124,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
       </div>
 
       <div className="flex gap-4">
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" loading={loading} disabled={loading}>
           {loading ? 'Saving...' : category ? 'Update Category' : 'Create Category'}
         </Button>
         <Button

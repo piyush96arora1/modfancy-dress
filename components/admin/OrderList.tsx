@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
+import { ViewOrderButton } from './ViewOrderButton'
 import { revalidatePath } from 'next/cache'
 
 interface OrderListProps {
@@ -113,11 +114,7 @@ export async function OrderList({ orders }: OrderListProps) {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
-                      <Link href={`/admin/orders/${order.id}`}>
-                        <Button variant="outline" size="sm">
-                          View
-                        </Button>
-                      </Link>
+                      <ViewOrderButton orderId={order.id} />
                       <form action={updateOrderStatus}>
                         <input type="hidden" name="orderId" value={order.id} />
                         <input type="hidden" name="currentStatus" value={order.status} />
@@ -187,11 +184,9 @@ export async function OrderList({ orders }: OrderListProps) {
               </div>
 
               <div className="flex gap-2 pt-2 border-t">
-                <Link href={`/admin/orders/${order.id}`} className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    View
-                  </Button>
-                </Link>
+                <div className="flex-1">
+                  <ViewOrderButton orderId={order.id} className="w-full" />
+                </div>
                 <form action={updateOrderStatus} className="flex-1">
                   <input type="hidden" name="orderId" value={order.id} />
                   <input type="hidden" name="currentStatus" value={order.status} />

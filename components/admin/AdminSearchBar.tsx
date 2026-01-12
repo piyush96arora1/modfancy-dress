@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
-export function SearchBar() {
+export function AdminSearchBar() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState('')
@@ -18,6 +18,8 @@ export function SearchBar() {
     const searchParam = searchParams.get('search')
     if (searchParam) {
       setQuery(decodeURIComponent(searchParam))
+    } else {
+      setQuery('')
     }
   }, [searchParams])
 
@@ -26,36 +28,30 @@ export function SearchBar() {
     const trimmedQuery = query.trim()
     if (trimmedQuery) {
       startTransition(() => {
-        // Preserve category and sort params if they exist
-        const category = searchParams.get('category')
-        const sort = searchParams.get('sort')
-        const params = new URLSearchParams()
-        params.set('search', trimmedQuery)
-        if (category) params.set('category', category)
-        if (sort) params.set('sort', sort)
-        router.push(`/products?${params.toString()}`)
+        router.push(`/admin/products?search=${encodeURIComponent(trimmedQuery)}`)
       })
     } else {
       // If query is empty, remove search param
-      const category = searchParams.get('category')
-      const sort = searchParams.get('sort')
-      const params = new URLSearchParams()
-      if (category) params.set('category', category)
-      if (sort) params.set('sort', sort)
-      const queryString = params.toString()
-      router.push(queryString ? `/products?${queryString}` : '/products')
+      router.push('/admin/products')
     }
   }
 
+  const handleClear = () => {
+    setQuery('')
+    startTransition(() => {
+      router.push('/admin/products')
+    })
+  }
+
   return (
-    <form onSubmit={handleSearch} className="flex gap-2 w-full">
+    <form onSubmit={handleSearch} className="flex gap-2 w-full max-w-md">
       <div className="relative flex-1">
         <Input
           type="text"
           placeholder="Search products..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full pr-10 text-gray-900 bg-white border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+          className="w-full pr-10 text-gray-900 bg-white border-gray-300 focus:border-gray-500 focus:ring-gray-500"
         />
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
       </div>
@@ -78,12 +74,18 @@ export function SearchBar() {
           </>
         )}
       </Button>
+      {query && (
+        <Button 
+          type="button"
+          variant="outline" 
+          onClick={handleClear}
+          disabled={isPending}
+          className="px-3"
+        >
+          Clear
+        </Button>
+      )}
     </form>
   )
 }
-
-
-
-
-
 

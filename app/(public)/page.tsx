@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
+import { CategoryCard } from '@/components/public/CategoryCard'
+import { SearchBar } from '@/components/public/SearchBar'
 import { Button } from '@/components/ui/button'
 
 export const metadata = {
@@ -35,12 +37,18 @@ export default async function HomePage() {
     <div className="px-4 md:px-0 bg-white">
       {/* Hero Section */}
       <section className="text-center py-12 md:py-16 mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-indigo-900">
           Welcome to Mod Fancy Dress
         </h1>
         <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">
           Discover amazing fancy dress costumes and accessories
         </p>
+        
+        {/* Search Bar */}
+        <div className="max-w-2xl mx-auto mb-6 md:mb-8">
+          <SearchBar />
+        </div>
+        
         <Link href="/products">
           <Button size="lg">Shop Now</Button>
         </Link>
@@ -49,16 +57,10 @@ export default async function HomePage() {
       {/* Categories Section */}
       {categories && categories.length > 0 && (
         <section className="mb-8 md:mb-12">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-900">Shop by Category</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-indigo-900">Shop by Category</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/category/${category.slug}`}
-                className="border rounded-lg p-6 text-center hover:shadow-lg transition-shadow bg-white"
-              >
-                <h3 className="font-semibold text-gray-900">{category.name}</h3>
-              </Link>
+              <CategoryCard key={category.id} category={category} />
             ))}
           </div>
         </section>
@@ -67,7 +69,7 @@ export default async function HomePage() {
       {/* Featured Products */}
       <section>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900">Featured Products</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-indigo-900">Featured Products</h2>
           <Link href="/products" className="w-full sm:w-auto">
             <Button variant="outline" className="w-full sm:w-auto">View All</Button>
           </Link>

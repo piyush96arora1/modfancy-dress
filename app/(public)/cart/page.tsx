@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation'
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotal, clearCart } = useCart()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [updatingItems, setUpdatingItems] = useState<Record<string, boolean>>({})
+  const [removingItems, setRemovingItems] = useState<Record<string, boolean>>({})
   const [formData, setFormData] = useState({
     customerName: '',
     customerEmail: '',
@@ -140,15 +142,27 @@ export default function CartPage() {
                       type="number"
                       min="1"
                       value={item.quantity}
-                      onChange={(e) =>
+                      onChange={async (e) => {
+                        const itemKey = `${item.productId}-${item.variantId || 'none'}`
+                        setUpdatingItems(prev => ({ ...prev, [itemKey]: true }))
+                        await new Promise(resolve => setTimeout(resolve, 200))
                         updateQuantity(item.productId, item.variantId, parseInt(e.target.value) || 1)
-                      }
+                        setUpdatingItems(prev => ({ ...prev, [itemKey]: false }))
+                      }}
+                      disabled={updatingItems[`${item.productId}-${item.variantId || 'none'}`]}
                       className="w-20"
                     />
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => removeItem(item.productId, item.variantId)}
+                      loading={removingItems[`${item.productId}-${item.variantId || 'none'}`]}
+                      onClick={async () => {
+                        const itemKey = `${item.productId}-${item.variantId || 'none'}`
+                        setRemovingItems(prev => ({ ...prev, [itemKey]: true }))
+                        await new Promise(resolve => setTimeout(resolve, 300))
+                        removeItem(item.productId, item.variantId)
+                        setRemovingItems(prev => ({ ...prev, [itemKey]: false }))
+                      }}
                     >
                       Remove
                     </Button>
@@ -259,7 +273,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" size="lg" className="w-full" loading={isSubmitting} disabled={isSubmitting}>
               {isSubmitting ? 'Placing Order...' : 'Place Order'}
             </Button>
           </form>

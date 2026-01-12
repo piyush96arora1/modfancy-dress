@@ -6,28 +6,28 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4">Mod Fancy Dress</h3>
+            <h3 className="font-bold text-lg mb-4 text-indigo-900">Mod Fancy Dress</h3>
             <p className="text-gray-600 text-sm">
               Your one-stop shop for fancy dress costumes and accessories.
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-bold text-lg mb-4 text-indigo-900">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/products" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/products" className="text-gray-600 hover:text-indigo-700 transition-colors">
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="text-gray-600 hover:text-gray-900 transition-colors">
+                <Link href="/cart" className="text-gray-600 hover:text-indigo-700 transition-colors">
                   Shopping Cart
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4">Contact</h3>
+            <h3 className="font-bold text-lg mb-4 text-indigo-900">Contact</h3>
             <p className="text-gray-600 text-sm">
               For inquiries, please contact us through the order form.
             </p>

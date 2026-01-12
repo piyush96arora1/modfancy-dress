@@ -67,7 +67,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full" loading={loading} disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
         </Button>
       </form>

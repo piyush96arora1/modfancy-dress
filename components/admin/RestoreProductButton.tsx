@@ -34,6 +34,7 @@ export function RestoreProductButton({ productId, productName, restoreAction }: 
       variant="outline"
       size="sm"
       onClick={handleRestore}
+      loading={restoring}
       disabled={restoring}
       className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300"
     >

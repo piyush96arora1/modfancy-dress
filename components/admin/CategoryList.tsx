@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
+import { EditCategoryButton } from './EditCategoryButton'
 import { revalidatePath } from 'next/cache'
 
 interface CategoryListProps {
@@ -67,11 +68,7 @@ export async function CategoryList({ categories }: CategoryListProps) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    <Link href={`/admin/categories/${category.id}/edit`}>
-                      <Button variant="outline" size="sm">
-                        Edit
-                      </Button>
-                    </Link>
+                    <EditCategoryButton categoryId={category.id} />
                     <form action={deleteCategory}>
                       <input type="hidden" name="categoryId" value={category.id} />
                       <Button variant="destructive" size="sm" type="submit">
@@ -98,11 +95,9 @@ export async function CategoryList({ categories }: CategoryListProps) {
               )}
             </div>
             <div className="flex gap-2 pt-2 border-t">
-              <Link href={`/admin/categories/${category.id}/edit`} className="flex-1">
-                <Button variant="outline" size="sm" className="w-full">
-                  Edit
-                </Button>
-              </Link>
+              <div className="flex-1">
+                <EditCategoryButton categoryId={category.id} className="w-full" />
+              </div>
               <form action={deleteCategory} className="flex-1">
                 <input type="hidden" name="categoryId" value={category.id} />
                 <Button variant="destructive" size="sm" type="submit" className="w-full">

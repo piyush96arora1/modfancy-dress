@@ -1,37 +1,69 @@
 'use client'
 
+import { useState, useTransition } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/store/cart'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { ShoppingCart, User, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export function Header() {
   const { getItemCount } = useCart()
   const { user, isAdmin, loading } = useAuth()
+  const [loggingOut, setLoggingOut] = useState(false)
+  const [isAdminPending, startAdminTransition] = useTransition()
+  const [isProductsPending, startProductsTransition] = useTransition()
+  const router = useRouter()
   const itemCount = getItemCount()
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    window.location.href = '/'
+    setLoggingOut(true)
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      window.location.href = '/'
+    } catch (error) {
+      setLoggingOut(false)
+    }
   }
 
   return (
     <header className="border-b bg-white sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold text-gray-900">
+          <Link href="/" className="text-xl md:text-2xl font-bold text-indigo-900 hover:text-indigo-700 transition-colors">
             Mod Fancy Dress
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/products" className="text-gray-900 hover:text-gray-600">
+            <Link 
+              href="/products" 
+              onClick={(e) => {
+                e.preventDefault()
+                startProductsTransition(() => {
+                  router.push('/products')
+                })
+              }}
+              className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isProductsPending ? 'opacity-50' : ''}`}
+            >
+              {isProductsPending && <LoadingSpinner size="sm" />}
               Products
             </Link>
             {isAdmin && (
-              <Link href="/admin/products" className="text-gray-900 hover:text-gray-600">
+              <Link 
+                href="/admin/products" 
+                onClick={(e) => {
+                  e.preventDefault()
+                  startAdminTransition(() => {
+                    router.push('/admin/products')
+                  })
+                }}
+                className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isAdminPending ? 'opacity-50' : ''}`}
+              >
+                {isAdminPending && <LoadingSpinner size="sm" />}
                 Admin
               </Link>
             )}
@@ -53,7 +85,7 @@ export function Header() {
                   <div className="hidden sm:flex items-center gap-2">
                     <User className="w-5 h-5" />
                     <span className="text-sm hidden lg:inline">{user.email}</span>
-                    <Button variant="ghost" size="sm" onClick={handleLogout}>
+                    <Button variant="ghost" size="sm" onClick={handleLogout} loading={loggingOut} disabled={loggingOut}>
                       <LogOut className="w-4 h-4" />
                     </Button>
                   </div>
@@ -72,11 +104,31 @@ export function Header() {
         
         {/* Mobile Navigation */}
         <nav className="md:hidden mt-3 pt-3 border-t flex items-center gap-4">
-          <Link href="/products" className="text-sm text-gray-900 hover:text-gray-600">
+          <Link 
+            href="/products" 
+            onClick={(e) => {
+              e.preventDefault()
+              startProductsTransition(() => {
+                router.push('/products')
+              })
+            }}
+            className={`text-sm text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isProductsPending ? 'opacity-50' : ''}`}
+          >
+            {isProductsPending && <LoadingSpinner size="sm" />}
             Products
           </Link>
           {isAdmin && (
-            <Link href="/admin/products" className="text-sm text-gray-900 hover:text-gray-600">
+            <Link 
+              href="/admin/products" 
+              onClick={(e) => {
+                e.preventDefault()
+                startAdminTransition(() => {
+                  router.push('/admin/products')
+                })
+              }}
+              className={`text-sm text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isAdminPending ? 'opacity-50' : ''}`}
+            >
+              {isAdminPending && <LoadingSpinner size="sm" />}
               Admin
             </Link>
           )}
@@ -84,7 +136,7 @@ export function Header() {
             <div className="flex items-center gap-2 ml-auto">
               <User className="w-4 h-4 text-gray-900" />
               <span className="text-xs text-gray-600 truncate max-w-[120px]">{user.email}</span>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
+              <Button variant="ghost" size="sm" onClick={handleLogout} loading={loggingOut} disabled={loggingOut}>
                 <LogOut className="w-4 h-4" />
               </Button>
             </div>

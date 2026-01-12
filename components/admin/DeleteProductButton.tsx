@@ -34,6 +34,7 @@ export function DeleteProductButton({ productId, productName, deleteAction }: De
       variant="destructive"
       size="sm"
       onClick={handleDelete}
+      loading={deleting}
       disabled={deleting}
     >
       {deleting ? 'Deleting...' : 'Delete'}

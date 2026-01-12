@@ -20,11 +20,30 @@ import { SIZE_OPTIONS } from '@/lib/constants/sizes'
 const optionalString = z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional()
 
 const variantSchema = z.object({
-  sku: z.string().optional(),
-  size: z.string().optional(),
-  color: z.string().optional(),
-  quantity: z.number().optional(),
-  price_override: z.number().optional(),
+  sku: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.string().optional()
+  ),
+  size: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.string().min(1, 'Size is required')
+  ),
+  color: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.string().optional()
+  ),
+  quantity: z.preprocess(
+    (val) => {
+      if (val === '' || val === null || val === undefined) return undefined
+      const num = Number(val)
+      return isNaN(num) ? undefined : num
+    },
+    z.number().optional()
+  ),
+  price_override: z.preprocess(
+    (val) => (val === '' || val === null || val === undefined ? undefined : Number(val)),
+    z.number().min(0, 'Price must be 0 or greater')
+  ),
 })
 
 const productSchema = z.object({
@@ -163,6 +182,29 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       return
     }
 
+    // Validate variants: check for duplicate sizes
+    if (data.variants && data.variants.length > 0) {
+      const validVariants = data.variants.filter((variant) => {
+        return variant.size || variant.price_override !== undefined
+      })
+      
+      // Check for duplicate sizes
+      const sizes = validVariants.map(v => v.size).filter(Boolean)
+      const duplicateSizes = sizes.filter((size, index) => sizes.indexOf(size) !== index)
+      
+      if (duplicateSizes.length > 0) {
+        alert(`Duplicate sizes found: ${[...new Set(duplicateSizes)].join(', ')}. Each variant must have a unique size.`)
+        return
+      }
+      
+      // Validate that each variant has both size and price_override
+      const invalidVariants = validVariants.filter(v => !v.size || v.price_override === undefined)
+      if (invalidVariants.length > 0) {
+        alert('Each variant must have both size and price. Please fill in all required fields.')
+        return
+      }
+    }
+
     setLoading(true)
     try {
       const productData = {
@@ -220,19 +262,19 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       }
 
       if (data.variants && data.variants.length > 0) {
-        // Filter out variants that have no data at all
+        // Filter out variants that don't have required fields (size and price_override)
         const validVariants = data.variants.filter((variant) => {
-          return variant.sku || variant.size || variant.color || variant.quantity || variant.price_override
+          return variant.size && variant.price_override !== undefined
         })
 
         if (validVariants.length > 0) {
           const variantData = validVariants.map((variant) => ({
             product_id: productId,
             sku: variant.sku || null,
-            size: variant.size || null,
+            size: variant.size, // Required, so always present
             color: variant.color || null,
             quantity: variant.quantity || null,
-            price_override: variant.price_override || null,
+            price_override: variant.price_override, // Required, so always present
           }))
 
           const { error: variantError } = await supabase
@@ -264,29 +306,76 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
   const onError = (errors: any) => {
     console.log('Form validation errors:', errors)
     // Extract first error message from React Hook Form error structure
-    const getErrorMessage = (error: any): string => {
+    const getErrorMessage = (error: any, path: string = ''): string => {
       if (!error) return 'Invalid field'
       if (typeof error === 'string') return error
-      if (error.message) return error.message
+      if (error.message) return String(error.message)
       if (error._errors && Array.isArray(error._errors) && error._errors.length > 0) {
-        return error._errors[0]
+        return String(error._errors[0])
       }
-      // For nested objects, try to find a message
-      const values = Object.values(error)
-      for (const val of values) {
-        if (typeof val === 'string') return val
-        if (val && typeof val === 'object' && 'message' in val && typeof val.message === 'string') {
-          return val.message
+      // For nested objects (like variants), recursively search
+      if (typeof error === 'object') {
+        // Check if it's an array (variants)
+        if (Array.isArray(error)) {
+          for (let i = 0; i < error.length; i++) {
+            if (error[i]) {
+              const nestedError = getErrorMessage(error[i], `${path}[${i}]`)
+              if (nestedError !== 'Invalid field' && nestedError !== 'Please check the form fields') {
+                return nestedError
+              }
+            }
+          }
+        } else {
+          // Check object properties
+          for (const [key, val] of Object.entries(error)) {
+            if (val) {
+              const nestedPath = path ? `${path}.${key}` : key
+              const nestedError = getErrorMessage(val, nestedPath)
+              if (nestedError !== 'Invalid field' && nestedError !== 'Please check the form fields') {
+                return nestedError
+              }
+            }
+          }
         }
       }
       return 'Please check the form fields'
     }
     
-    const firstErrorKey = Object.keys(errors)[0]
-    const firstError = errors[firstErrorKey]
-    const errorMessage = getErrorMessage(firstError)
+    // Try to find the first meaningful error
+    let errorMessage = 'Please check the form fields'
+    let errorPath = ''
     
-    alert(`Please fix the form error in "${firstErrorKey}": ${errorMessage}`)
+    const findFirstError = (obj: any, path: string = '') => {
+      if (!obj) return
+      
+      if (typeof obj === 'object') {
+        if (Array.isArray(obj)) {
+          obj.forEach((item, index) => {
+            if (item) findFirstError(item, `${path}[${index}]`)
+          })
+        } else {
+          Object.entries(obj).forEach(([key, value]) => {
+            const currentPath = path ? `${path}.${key}` : key
+            if (value && typeof value === 'object') {
+              if (value.message) {
+                errorMessage = String(value.message)
+                errorPath = currentPath
+                return
+              }
+              findFirstError(value, currentPath)
+            } else if (typeof value === 'string' && value) {
+              errorMessage = value
+              errorPath = currentPath
+              return
+            }
+          })
+        }
+      }
+    }
+    
+    findFirstError(errors)
+    
+    alert(`Please fix the form error${errorPath ? ` in "${errorPath}"` : ''}: ${errorMessage}`)
   }
 
   return (
@@ -357,6 +446,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
               <Button
                 type="button"
                 onClick={handleCreateCategory}
+                loading={creatingCategory}
                 disabled={creatingCategory || !newCategoryName.trim()}
                 size="sm"
               >
@@ -552,8 +642,9 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         )}
         {fields.length > 0 && (
           <p className="text-sm text-gray-500 mb-4">
-            <strong>Note:</strong> All variant fields are optional. You can leave any field empty. 
-            Empty variants (with no data) will be automatically removed when saving.
+            <strong>Note:</strong> Size and Price Override are <strong>required</strong> for each variant. 
+            SKU, Color, and Quantity are optional. Variants without size and price will be removed when saving.
+            Each variant must have a unique size.
           </p>
         )}
         {fields.map((field, index) => (
@@ -578,35 +669,41 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
                 />
               </div>
               <div>
-                <Label>Size <span className="text-gray-400 font-normal">(optional)</span></Label>
+                <Label>Size <span className="text-red-500">*</span></Label>
                 {!customSizes[index] ? (
                   <div className="space-y-2">
                     <Select
-                      {...register(`variants.${index}.size`)}
+                      {...register(`variants.${index}.size`, { required: 'Size is required' })}
                       value={watch(`variants.${index}.size`) || ''}
                       onChange={(e) => {
                         if (e.target.value === '__CUSTOM__') {
                           setCustomSizes({ ...customSizes, [index]: true })
-                          setValue(`variants.${index}.size`, undefined, { shouldValidate: true })
+                          setValue(`variants.${index}.size`, '', { shouldValidate: true })
                         } else {
-                          setValue(`variants.${index}.size`, e.target.value || undefined, { shouldValidate: true })
+                          setValue(`variants.${index}.size`, e.target.value || '', { shouldValidate: true })
                         }
                       }}
                     >
-                      <option value="">Select size or leave empty</option>
+                      <option value="">Select size (required)</option>
                       {SIZE_OPTIONS.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </Select>
+                    {errors.variants?.[index]?.size && (
+                      <p className="text-sm text-red-600 mt-1">{errors.variants[index]?.size?.message}</p>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-2">
                     <Input
-                      {...register(`variants.${index}.size`)}
+                      {...register(`variants.${index}.size`, { required: 'Size is required' })}
                       placeholder="Type custom size (e.g., 1-2 yrs, 12,14,16)"
                     />
+                    {errors.variants?.[index]?.size && (
+                      <p className="text-sm text-red-600 mt-1">{errors.variants[index]?.size?.message}</p>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
@@ -631,24 +728,36 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
                 <Label>Quantity <span className="text-gray-400 font-normal">(optional)</span></Label>
                 <Input
                   type="number"
+                  min="0"
                   {...register(`variants.${index}.quantity`, { 
-                    valueAsNumber: true,
-                    setValueAs: (value) => value === '' || isNaN(value) ? undefined : Number(value)
+                    setValueAs: (value) => {
+                      if (value === '' || value === null || value === undefined) return undefined
+                      const num = Number(value)
+                      return isNaN(num) ? undefined : num
+                    }
                   })}
                   placeholder="Leave empty if not needed"
                 />
+                {errors.variants?.[index]?.quantity && (
+                  <p className="text-sm text-red-600 mt-1">{String(errors.variants[index]?.quantity?.message || 'Invalid quantity')}</p>
+                )}
               </div>
               <div>
-                <Label>Price Override <span className="text-gray-400 font-normal">(optional)</span></Label>
+                <Label>Price Override <span className="text-red-500">*</span></Label>
                 <Input
                   type="number"
                   step="0.01"
+                  min="0"
                   {...register(`variants.${index}.price_override`, { 
                     valueAsNumber: true,
-                    setValueAs: (value) => value === '' || isNaN(value) ? undefined : Number(value)
+                    setValueAs: (value) => value === '' || isNaN(value) ? undefined : Number(value),
+                    required: 'Price is required'
                   })}
-                  placeholder="Leave empty to use base price"
+                  placeholder="Enter price (required)"
                 />
+                {errors.variants?.[index]?.price_override && (
+                  <p className="text-sm text-red-600 mt-1">{errors.variants[index]?.price_override?.message}</p>
+                )}
               </div>
             </div>
           </div>
@@ -658,6 +767,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       <div className="flex gap-4">
         <Button 
           type="submit" 
+          loading={loading}
           disabled={loading}
         >
           {loading ? 'Saving...' : product ? 'Update Product' : 'Create Product'}

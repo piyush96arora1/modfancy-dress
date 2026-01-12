@@ -89,7 +89,7 @@ export default function SignupPage() {
             Note: Admin access must be granted by the system administrator.
           </p>
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full" loading={loading} disabled={loading}>
           {loading ? 'Creating account...' : 'Sign Up'}
         </Button>
       </form>
