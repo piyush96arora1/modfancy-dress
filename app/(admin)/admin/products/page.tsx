@@ -24,6 +24,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
     .select(`
       *,
       category:categories(*),
+      categories:product_categories(category:categories(*)),
       images:product_images(*),
       variants:product_variants(*)
     `)

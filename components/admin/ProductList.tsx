@@ -109,7 +109,21 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900">{product.name}</td>
                   <td className="px-6 py-4 text-gray-600">
-                    {product.category?.name || '—'}
+                    {product.categories && product.categories.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {product.categories.map((pc: any, idx: number) => (
+                          <span key={idx} className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
+                            {pc.category?.name || '—'}
+                          </span>
+                        ))}
+                      </div>
+                    ) : product.category?.name ? (
+                      <span className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
+                        {product.category.name}
+                      </span>
+                    ) : (
+                      '—'
+                    )}
                   </td>
                   <td className="px-6 py-4 text-gray-900">
                     {product.price ? `₹${product.price.toFixed(2)}` : '—'}
@@ -182,8 +196,22 @@ export async function ProductList({ products, showDeleted = false }: ProductList
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-lg mb-1 text-gray-900">{product.name}</div>
-                  <div className="text-sm text-gray-600 mb-2">
-                    {product.category?.name || 'No category'}
+                  <div className="text-sm mb-2">
+                    {product.categories && product.categories.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {product.categories.map((pc: any, idx: number) => (
+                          <span key={idx} className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
+                            {pc.category?.name || '—'}
+                          </span>
+                        ))}
+                      </div>
+                    ) : product.category?.name ? (
+                      <span className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
+                        {product.category.name}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500">No category</span>
+                    )}
                   </div>
                   {product.price && (
                     <div className="font-bold text-lg text-gray-900">₹{product.price.toFixed(2)}</div>
