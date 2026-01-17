@@ -28,7 +28,7 @@ export default function RootLayout({
   const organizationSchema = OrganizationSchema()
 
   return (
-    <html lang="en" className="bg-white">
+    <html lang="en" className="bg-gray-50">
       <head>
         <script
           type="application/ld+json"
@@ -36,7 +36,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
       >
         {children}
       </body>

@@ -98,9 +98,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const resultsCount = products?.length || 0
 
   return (
-    <div className="px-4 md:px-0 bg-white">
+    <div className="px-2 md:px-4 lg:px-0 bg-white">
       {/* Compact Header Section */}
-      <div className="mb-4 md:mb-6">
+      <div className="mb-3 md:mb-4 lg:mb-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
           <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-xl md:text-2xl font-bold text-indigo-900">

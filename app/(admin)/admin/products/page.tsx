@@ -3,10 +3,12 @@ import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import { ProductList } from '@/components/admin/ProductList'
 import { AdminSearchBar } from '@/components/admin/AdminSearchBar'
+import { Pagination } from '@/components/admin/Pagination'
 
 interface AdminProductsPageProps {
   searchParams: Promise<{
     search?: string
+    page?: string
   }>
 }
 
@@ -16,31 +18,66 @@ export const metadata = {
 
 export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
   const supabase = await createClient()
-  const { search } = await searchParams
+  const { search, page: pageParam } = await searchParams
+  
+  // Pagination settings
+  const itemsPerPage = 50
+  const currentPage = pageParam ? parseInt(pageParam, 10) : 1
+  const offset = (currentPage - 1) * itemsPerPage
 
-  // Build query - fetch all products including deleted ones (for admin view)
-  let query = supabase
+  // Build count query for active products only (pagination applies to active products)
+  let activeCountQuery = supabase
+    .from('products')
+    .select('id', { count: 'exact', head: true })
+    .is('deleted_at', null) // Only count active products
+  
+  if (search) {
+    activeCountQuery = activeCountQuery.ilike('name', `%${search}%`)
+  }
+  
+  const { count: totalActiveItems } = await activeCountQuery
+  const totalPages = Math.ceil((totalActiveItems || 0) / itemsPerPage)
+
+  // Build query for active products with pagination
+  // Optimized: removed variants (not displayed in list)
+  let activeQuery = supabase
     .from('products')
     .select(`
       *,
       category:categories(*),
       categories:product_categories(category:categories(*)),
-      images:product_images(*),
-      variants:product_variants(*)
+      images:product_images(image_url, is_primary)
     `)
+    .is('deleted_at', null) // Only fetch active products
   
   // Apply search filter if provided
   if (search) {
-    query = query.ilike('name', `%${search}%`)
+    activeQuery = activeQuery.ilike('name', `%${search}%`)
   }
   
-  query = query.order('created_at', { ascending: false })
+  // Apply pagination to active products
+  const { data: activeProducts } = await activeQuery
+    .order('created_at', { ascending: false })
+    .range(offset, offset + itemsPerPage - 1)
   
-  const { data: products } = await query
+  // Fetch deleted products separately (limit to last 20, no pagination)
+  let deletedQuery = supabase
+    .from('products')
+    .select(`
+      *,
+      category:categories(*),
+      categories:product_categories(category:categories(*)),
+      images:product_images(image_url, is_primary)
+    `)
+    .not('deleted_at', 'is', null) // Only fetch deleted products
+    .order('deleted_at', { ascending: false })
+    .limit(20) // Limit deleted products to last 20
   
-  // Separate active and deleted products
-  const activeProducts = products?.filter(p => !p.deleted_at) || []
-  const deletedProducts = products?.filter(p => p.deleted_at) || []
+  if (search) {
+    deletedQuery = deletedQuery.ilike('name', `%${search}%`)
+  }
+  
+  const { data: deletedProducts } = await deletedQuery
 
   return (
     <div className="px-4 md:px-0 bg-white">
@@ -61,11 +98,19 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
       {/* Active Products */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4 text-gray-900">Active Products</h2>
-        <ProductList products={activeProducts} showDeleted={false} />
+        <ProductList products={activeProducts || []} showDeleted={false} />
+        {activeProducts && activeProducts.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalActiveItems || 0}
+            itemsPerPage={itemsPerPage}
+          />
+        )}
       </div>
       
       {/* Deleted Products */}
-      {deletedProducts.length > 0 && (
+      {deletedProducts && deletedProducts.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold mb-4 text-gray-900">Deleted Products</h2>
           <ProductList products={deletedProducts} showDeleted={true} />

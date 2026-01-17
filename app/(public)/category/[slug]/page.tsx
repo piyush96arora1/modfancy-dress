@@ -91,10 +91,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="px-4 md:px-0 bg-white">
-      <h1 className="text-2xl md:text-3xl font-bold mb-2 text-indigo-900">{category.name}</h1>
+      <div className="px-2 md:px-4 lg:px-0 bg-white">
+      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2 text-indigo-900">{category.name}</h1>
       {category.description && (
-        <p className="text-gray-600 mb-6 md:mb-8">{category.description}</p>
+        <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 lg:mb-8">{category.description}</p>
       )}
       {products && products.length > 0 ? (
         <ProductGrid products={products as ProductWithDetails[]} />

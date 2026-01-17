@@ -18,6 +18,7 @@ export default function AdminLayout({
   const [isProductsPending, startProductsTransition] = useTransition()
   const [isCategoriesPending, startCategoriesTransition] = useTransition()
   const [isOrdersPending, startOrdersPending] = useTransition()
+  const [isBannerPending, startBannerTransition] = useTransition()
   const router = useRouter()
 
   return (
@@ -80,6 +81,19 @@ export default function AdminLayout({
                 >
                   {isOrdersPending && <LoadingSpinner size="sm" />}
                   Orders
+                </Link>
+                <Link
+                  href="/admin/banner"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    startBannerTransition(() => {
+                      router.push('/admin/banner')
+                    })
+                  }}
+                  className={`text-gray-600 hover:text-gray-900 transition-opacity relative inline-flex items-center gap-2 ${isBannerPending ? 'opacity-50' : ''}`}
+                >
+                  {isBannerPending && <LoadingSpinner size="sm" />}
+                  Banner
                 </Link>
               </div>
             </div>
@@ -154,6 +168,20 @@ export default function AdminLayout({
               >
                 {isOrdersPending && <LoadingSpinner size="sm" />}
                 Orders
+              </Link>
+              <Link
+                href="/admin/banner"
+                className={`block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded transition-opacity relative flex items-center gap-2 ${isBannerPending ? 'opacity-50' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setMobileMenuOpen(false)
+                  startBannerTransition(() => {
+                    router.push('/admin/banner')
+                  })
+                }}
+              >
+                {isBannerPending && <LoadingSpinner size="sm" />}
+                Banner
               </Link>
             </div>
           )}

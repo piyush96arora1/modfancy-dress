@@ -31,7 +31,7 @@ export function Header() {
   }
 
   return (
-    <header className="border-b bg-white sticky top-0 z-50 shadow-sm">
+    <header className="bg-white sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 py-4 md:py-5">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
@@ -111,7 +111,7 @@ export function Header() {
         </div>
         
         {/* Mobile Navigation */}
-        <nav className="md:hidden mt-3 pt-3 border-t flex items-center gap-4">
+        <nav className="md:hidden mt-3 pt-3 flex items-center gap-4">
           <Link 
             href="/products" 
             onClick={(e) => {
