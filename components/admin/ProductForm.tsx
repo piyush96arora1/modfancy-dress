@@ -20,16 +20,21 @@ import { SIZE_OPTIONS } from '@/lib/constants/sizes'
 const optionalString = z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional()
 
 const variantSchema = z.object({
-  sku: z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional(),
+  sku: z.union([z.string(), z.literal(''), z.null()]).transform(val => (val === '' || val === null) ? undefined : val).optional(),
   size: z.string().min(1, 'Size is required'),
-  color: z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional(),
-  quantity: z.union([z.number(), z.string(), z.literal('')]).transform(val => {
+  color: z.union([z.string(), z.literal(''), z.null()]).transform(val => (val === '' || val === null) ? undefined : val).optional(),
+  quantity: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
     if (val === '' || val === null || val === undefined) return undefined
     if (typeof val === 'number') return val
     const num = Number(val)
     return isNaN(num) ? undefined : num
   }).optional(),
-  price_override: z.coerce.number().min(0, 'Price must be 0 or greater').default(0),
+  price_override: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
+    if (val === '' || val === null || val === undefined) return 0
+    if (typeof val === 'number') return val
+    const num = Number(val)
+    return isNaN(num) ? 0 : num
+  }).default(0),
 })
 
 const productSchema = z.object({
