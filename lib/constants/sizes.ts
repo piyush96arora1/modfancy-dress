@@ -12,6 +12,7 @@ export const SIZE_OPTIONS = [
   { label: '9-10 yrs', value: '9-10 yrs' },
   { label: '10-11 yrs', value: '10-11 yrs' },
   { label: '11-12 yrs', value: '11-12 yrs' },
+  { label: 'Adult', value: 'Adult' },
   
   // Individual numeric sizes (separate rows)
   { label: '12', value: '12' },
