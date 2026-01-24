@@ -1,8 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 
 interface EditProductButtonProps {
   productId: string
@@ -17,14 +15,8 @@ export function EditProductButton({
   size = 'sm',
   className 
 }: EditProductButtonProps) {
-  const [isPending, startTransition] = useTransition()
-  const router = useRouter()
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    startTransition(() => {
-      router.push(`/admin/products/${productId}/edit`)
-    })
+  const handleClick = () => {
+    window.open(`/admin/products/${productId}/edit`, '_blank')
   }
 
   return (
@@ -32,11 +24,9 @@ export function EditProductButton({
       variant={variant}
       size={size}
       onClick={handleClick}
-      loading={isPending}
-      disabled={isPending}
       className={className}
     >
-      {isPending ? 'Loading...' : 'Edit'}
+      Edit
     </Button>
   )
 }

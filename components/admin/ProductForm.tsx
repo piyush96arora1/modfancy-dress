@@ -292,8 +292,15 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         }
       }
 
-      router.push('/admin/products')
-      router.refresh()
+      // If opened in a new tab, refresh the parent window and close this tab
+      if (typeof window !== 'undefined' && window.opener) {
+        window.opener.location.reload()
+        window.close()
+      } else {
+        // Normal navigation if not opened in a new tab
+        router.push('/admin/products')
+        router.refresh()
+      }
     } catch (error: any) {
       let errorMessage = 'Unknown error occurred'
       if (error?.message) {
