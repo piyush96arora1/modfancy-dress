@@ -319,67 +319,58 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
   const onError = (errors: any) => {
     console.log('Form validation errors:', errors)
-    // Extract first error message from React Hook Form error structure
-    const getErrorMessage = (error: any, path: string = ''): string => {
-      if (!error) return 'Invalid field'
-      if (typeof error === 'string') return error
-      if (error.message) return String(error.message)
-      if (error._errors && Array.isArray(error._errors) && error._errors.length > 0) {
-        return String(error._errors[0])
+    
+    // Helper to safely convert any value to a string message
+    const safeString = (val: any): string => {
+      if (!val) return ''
+      if (typeof val === 'string') return val
+      if (typeof val === 'number' || typeof val === 'boolean') return String(val)
+      if (val.message && typeof val.message === 'string') return val.message
+      if (Array.isArray(val) && val.length > 0) return safeString(val[0])
+      try {
+        const str = JSON.stringify(val)
+        if (str && str !== '{}' && str !== '[]') return str
+      } catch {
+        // ignore
       }
-      // For nested objects (like variants), recursively search
-      if (typeof error === 'object') {
-        // Check if it's an array (variants)
-        if (Array.isArray(error)) {
-          for (let i = 0; i < error.length; i++) {
-            if (error[i]) {
-              const nestedError = getErrorMessage(error[i], `${path}[${i}]`)
-              if (nestedError !== 'Invalid field' && nestedError !== 'Please check the form fields') {
-                return nestedError
-              }
-            }
-          }
-        } else {
-          // Check object properties
-          for (const [key, val] of Object.entries(error)) {
-            if (val) {
-              const nestedPath = path ? `${path}.${key}` : key
-              const nestedError = getErrorMessage(val, nestedPath)
-              if (nestedError !== 'Invalid field' && nestedError !== 'Please check the form fields') {
-                return nestedError
-              }
-            }
-          }
-        }
-      }
-      return 'Please check the form fields'
+      return ''
     }
     
     // Try to find the first meaningful error
     let errorMessage = 'Please check the form fields'
     let errorPath = ''
+    let found = false
     
     const findFirstError = (obj: any, path: string = '') => {
-      if (!obj) return
+      if (!obj || found) return
       
       if (typeof obj === 'object') {
         if (Array.isArray(obj)) {
           obj.forEach((item, index) => {
-            if (item) findFirstError(item, `${path}[${index}]`)
+            if (item && !found) findFirstError(item, `${path}[${index}]`)
           })
         } else {
+          // Check if this object has a message property (direct error)
+          if ('message' in obj) {
+            const msg = safeString(obj.message)
+            if (msg && msg !== '[object Object]') {
+              errorMessage = msg
+              errorPath = path
+              found = true
+              return
+            }
+          }
+          
+          // Otherwise, recurse into properties
           Object.entries(obj).forEach(([key, value]) => {
+            if (found) return
             const currentPath = path ? `${path}.${key}` : key
             if (value && typeof value === 'object') {
-              if ('message' in value && typeof value.message === 'string') {
-                errorMessage = String(value.message)
-                errorPath = currentPath
-                return
-              }
               findFirstError(value, currentPath)
             } else if (typeof value === 'string' && value) {
               errorMessage = value
               errorPath = currentPath
+              found = true
               return
             }
           })
@@ -388,6 +379,11 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
     }
     
     findFirstError(errors)
+    
+    // Final safety check
+    if (errorMessage === '[object Object]' || !errorMessage) {
+      errorMessage = 'Please check all required fields are filled correctly'
+    }
     
     alert(`Please fix the form error${errorPath ? ` in "${errorPath}"` : ''}: ${errorMessage}`)
   }
