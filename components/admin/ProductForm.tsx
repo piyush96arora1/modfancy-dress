@@ -154,12 +154,12 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
       // Add to categories list
       setCategories([...categories, newCategory])
-      
+
       // Add new category to selected categories
       const currentIds = watch('category_ids') || []
       setValue('category_ids', [...currentIds, newCategory.id])
       setValue('category_id', newCategory.id) // Also set for backward compatibility
-      
+
       // Reset form
       setNewCategoryName('')
       setNewCategoryDescription('')
@@ -182,16 +182,16 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       const validVariants = data.variants.filter((variant) => {
         return variant.size || variant.price_override !== undefined
       })
-      
+
       // Check for duplicate sizes
       const sizes = validVariants.map(v => v.size).filter(Boolean)
       const duplicateSizes = sizes.filter((size, index) => sizes.indexOf(size) !== index)
-      
+
       if (duplicateSizes.length > 0) {
         alert(`Duplicate sizes found: ${[...new Set(duplicateSizes)].join(', ')}. Each variant must have a unique size.`)
         return
       }
-      
+
       // Validate that each variant has both size and price_override
       const invalidVariants = validVariants.filter(v => !v.size || v.price_override === undefined)
       if (invalidVariants.length > 0) {
@@ -226,7 +226,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
         // Delete existing images
         await supabase.from('product_images').delete().eq('product_id', productId)
-        
+
         // Delete existing product_categories
         await supabase.from('product_categories').delete().eq('product_id', productId)
       } else {
@@ -324,7 +324,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
   const onError = (errors: any) => {
     console.log('Form validation errors:', errors)
-    
+
     // Helper to safely convert any value to a string message
     const safeString = (val: any): string => {
       if (!val) return ''
@@ -340,15 +340,15 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       }
       return ''
     }
-    
+
     // Try to find the first meaningful error
     let errorMessage = 'Please check the form fields'
     let errorPath = ''
     let found = false
-    
+
     const findFirstError = (obj: any, path: string = '') => {
       if (!obj || found) return
-      
+
       if (typeof obj === 'object') {
         if (Array.isArray(obj)) {
           obj.forEach((item, index) => {
@@ -365,7 +365,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
               return
             }
           }
-          
+
           // Otherwise, recurse into properties
           Object.entries(obj).forEach(([key, value]) => {
             if (found) return
@@ -382,14 +382,14 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         }
       }
     }
-    
+
     findFirstError(errors)
-    
+
     // Final safety check
     if (errorMessage === '[object Object]' || !errorMessage) {
       errorMessage = 'Please check all required fields are filled correctly'
     }
-    
+
     alert(`Please fix the form error${errorPath ? ` in "${errorPath}"` : ''}: ${errorMessage}`)
   }
 
@@ -434,7 +434,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             {showCategoryForm ? 'Cancel' : 'New Category'}
           </Button>
         </div>
-        
+
         {showCategoryForm ? (
           <div className="border rounded-lg p-4 mb-4 bg-gray-50">
             <h4 className="font-medium mb-3">Create New Category</h4>
@@ -658,7 +658,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
           <div>
             <Label>Product Variants</Label>
             <p className="text-sm text-gray-500 mt-1">
-              Optional - Only add if your product has different sizes, colors, SKUs, or quantities. 
+              Optional - Only add if your product has different sizes, colors, SKUs, or quantities.
               You can skip this section entirely.
             </p>
           </div>
@@ -678,7 +678,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         )}
         {fields.length > 0 && (
           <p className="text-sm text-gray-500 mb-4">
-            <strong>Note:</strong> Size and Price Override are <strong>required</strong> for each variant. 
+            <strong>Note:</strong> Size and Price Override are <strong>required</strong> for each variant.
             SKU, Color, and Quantity are optional. Variants without size and price will be removed when saving.
             Each variant must have a unique size.
           </p>
@@ -765,7 +765,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
                 <Input
                   type="number"
                   min="0"
-                  {...register(`variants.${index}.quantity`, { 
+                  {...register(`variants.${index}.quantity`, {
                     setValueAs: (value) => {
                       if (value === '' || value === null || value === undefined) return undefined
                       const num = Number(value)
@@ -784,7 +784,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
                   type="number"
                   step="0.01"
                   min="0"
-                  {...register(`variants.${index}.price_override`, { 
+                  {...register(`variants.${index}.price_override`, {
                     valueAsNumber: true,
                     setValueAs: (value) => value === '' || isNaN(value) ? undefined : Number(value),
                     required: 'Price is required'
@@ -801,8 +801,8 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       </div>
 
       <div className="flex gap-4">
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           loading={loading}
           disabled={loading}
         >
