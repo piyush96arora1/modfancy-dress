@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { SearchBar } from '@/components/public/SearchBar'
@@ -116,7 +117,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
         {/* Search */}
         <div className="w-full mb-3">
-          <SearchBar />
+          <Suspense fallback={<div className="h-12 bg-[#F5F3F0] rounded-lg animate-pulse" />}>
+            <SearchBar />
+          </Suspense>
         </div>
 
         {/* Category Filter */}

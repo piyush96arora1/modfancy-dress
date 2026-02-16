@@ -102,7 +102,24 @@ export type CartItem = {
   color?: string
 }
 
+export type SearchProductResult = {
+  id: string
+  name: string
+  slug: string
+  price: number | null
+  image_url: string | null
+  category_name: string | null
+}
 
+export type SearchCategoryResult = {
+  id: string
+  name: string
+  slug: string
+  product_count: number
+}
 
-
+export type SearchResults = {
+  products: SearchProductResult[]
+  categories: SearchCategoryResult[]
+}
 

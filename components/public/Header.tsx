@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/store/cart'
@@ -9,6 +9,7 @@ import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { SearchBar } from '@/components/public/SearchBar'
 
 export function Header() {
   const { getItemCount } = useCart()
@@ -74,6 +75,13 @@ export function Header() {
               </Link>
             )}
           </nav>
+
+          {/* Desktop Search */}
+          <div className="hidden md:block flex-1 max-w-md mx-4">
+            <Suspense fallback={<div className="h-10 bg-[#F5F3F0] rounded-lg animate-pulse" />}>
+              <SearchBar variant="compact" />
+            </Suspense>
+          </div>
 
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4">
