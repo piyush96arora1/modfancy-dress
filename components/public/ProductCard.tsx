@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -29,56 +29,54 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/products/${product.slug}`} onClick={handleClick} className="group relative block">
       {isPending && (
-        <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded-2xl shadow-lg">
+        <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-10 rounded-xl" style={{ boxShadow: 'var(--shadow-md)' }}>
           <LoadingSpinner size="lg" />
         </div>
       )}
-      <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 group-hover:border-indigo-200 group-hover:-translate-y-0.5 h-full flex flex-col">
-        <div className="aspect-[4/3] relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-xl">
+      <div className="bg-white rounded-xl overflow-hidden border border-[#E8E5E0] group-hover:border-[#C8956C]/30 transition-all duration-300 group-hover:-translate-y-1 h-full flex flex-col" style={{ boxShadow: 'var(--shadow-card)' }}>
+        {/* Image */}
+        <div className="aspect-[3/4] relative bg-[#F5F3F0] overflow-hidden">
           {primaryImage ? (
             <Image
               src={primaryImage.image_url}
               alt={product.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400">
+            <div className="w-full h-full flex items-center justify-center text-[#9A9A9A]">
               <span className="text-xs">No Image</span>
             </div>
           )}
-          {/* Hover overlay effect */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        </div>
-        <div className="p-2 md:p-3 bg-white flex-1 flex flex-col">
-          <h3 className="font-semibold text-xs md:text-sm lg:text-base mb-1 md:mb-1.5 line-clamp-2 text-gray-900 group-hover:text-indigo-600 transition-colors leading-tight">
-            {product.name}
-          </h3>
-          {/* Show multiple categories if available, otherwise show single category */}
+          {/* Category badge */}
           {product.categories && product.categories.length > 0 ? (
-            <div className="flex flex-wrap gap-0.5 md:gap-1 mb-1 md:mb-2">
-              {product.categories.slice(0, 2).map((pc, idx) => (
-                <span key={idx} className="text-[9px] md:text-[10px] px-1 md:px-1.5 py-0.5 bg-indigo-50 text-indigo-700 rounded font-medium">
-                  {pc.category.name}
-                </span>
-              ))}
-              {product.categories.length > 2 && (
-                <span className="text-[9px] md:text-[10px] px-1 md:px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded font-medium">
-                  +{product.categories.length - 2}
-                </span>
-              )}
+            <div className="absolute top-2 left-2">
+              <span className="text-[10px] px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+                {product.categories[0].category.name}
+              </span>
             </div>
           ) : product.category && (
-            <p className="text-[10px] md:text-xs text-indigo-600 mb-1 md:mb-2 font-medium">{product.category.name}</p>
+            <div className="absolute top-2 left-2">
+              <span className="text-[10px] px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+                {product.category.name}
+              </span>
+            </div>
           )}
+        </div>
+
+        {/* Info */}
+        <div className="p-3 md:p-4 flex-1 flex flex-col">
+          <h3 className="font-[family-name:var(--font-outfit)] font-semibold text-sm md:text-base mb-1 line-clamp-2 text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-snug">
+            {product.name}
+          </h3>
           {displayPrice && (
-            <div className="mt-auto pt-0.5 md:pt-1">
-              <p className="text-base md:text-lg lg:text-xl font-bold text-gray-900">
-                ₹{displayPrice.toFixed(2)}
+            <div className="mt-auto pt-1.5">
+              <p className="text-base md:text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+                ₹{displayPrice.toFixed(0)}
               </p>
               {product.price && product.variants.length > 0 && product.variants[0].price_override && (
-                <p className="text-[10px] md:text-xs text-gray-500 line-through">₹{product.price.toFixed(2)}</p>
+                <p className="text-[10px] md:text-xs text-[#9A9A9A] line-through">₹{product.price.toFixed(0)}</p>
               )}
             </div>
           )}
@@ -87,8 +85,3 @@ export function ProductCard({ product }: ProductCardProps) {
     </Link>
   )
 }
-
-
-
-
-

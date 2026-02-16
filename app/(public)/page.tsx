@@ -5,9 +5,11 @@ import { CategoryCard } from '@/components/public/CategoryCard'
 import { SearchBar } from '@/components/public/SearchBar'
 import { EventBanner } from '@/components/public/EventBanner'
 import { TickerStrip } from '@/components/public/TickerStrip'
+import { AssetPreloader } from '@/components/public/AssetPreloader'
 import { Button } from '@/components/ui/button'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { Star, Award, Calendar } from 'lucide-react'
 import type { ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
@@ -49,7 +51,7 @@ export default async function HomePage() {
       variants:product_variants(*)
     `)
     .eq('is_active', true)
-    .is('deleted_at', null) // Only show products that are not deleted
+    .is('deleted_at', null)
     .order('created_at', { ascending: false })
     .limit(8)
 
@@ -69,100 +71,142 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div>
-      {/* Running Ticker Strip */}
-      {tickerEnabled && tickerText && (
-        <div className="-mt-8 -mx-4 md:mx-0">
-          <TickerStrip text={tickerText} />
-        </div>
+      {products && products.length > 0 && (
+        <AssetPreloader
+          products={products as ProductWithDetails[]}
+          bannerImages={{
+            desktop: desktopBannerUrl,
+            mobile: mobileBannerUrl
+          }}
+        />
       )}
+      <div>
+        {/* Running Ticker Strip */}
+        {tickerEnabled && tickerText && (
+          <div className="relative -mt-4 md:-mt-8 mb-2 md:mb-0" style={{
+            width: '100vw',
+            position: 'relative',
+            left: '50%',
+            right: '50%',
+            marginLeft: '-50vw',
+            marginRight: '-50vw'
+          }}>
+            <TickerStrip text={tickerText} />
+          </div>
+        )}
 
-      {/* Event Banner - Show prominently when available */}
-      {hasEventBanner && desktopBannerUrl && mobileBannerUrl && (
-        <section className={`-mx-4 md:mx-0 ${tickerEnabled && tickerText ? 'mt-3 md:mt-4' : ''}`}>
-          <div className="px-4 md:px-0">
-            <EventBanner
-              desktopImage={desktopBannerUrl}
-              mobileImage={mobileBannerUrl}
-              linkUrl={bannerLinkUrl || undefined}
-              alt={bannerAltText}
-            />
+        {/* Event Banner */}
+        {hasEventBanner && desktopBannerUrl && mobileBannerUrl && (
+          <section className={`-mx-4 md:mx-0 ${tickerEnabled && tickerText ? 'mt-3 md:mt-4' : ''}`}>
+            <div className="px-4 md:px-0">
+              <EventBanner
+                desktopImage={desktopBannerUrl}
+                mobileImage={mobileBannerUrl}
+                linkUrl={bannerLinkUrl || undefined}
+                alt={bannerAltText}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Hero Section */}
+        <section className={`relative text-center overflow-hidden -mx-4 md:mx-0 rounded-xl fade-in ${hasEventBanner
+            ? 'py-6 md:py-8 mb-6 md:mb-8 mt-2 md:mt-3'
+            : 'py-10 md:py-16 lg:py-20 mb-8 md:mb-12'
+          }`}>
+          {/* Warm gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#FAFAF8] via-[#F5F3F0] to-[#F0EDE8] rounded-xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(200,149,108,0.08),transparent_50%)] rounded-xl" />
+
+          <div className={`relative z-10 max-w-3xl mx-auto px-4 ${hasEventBanner ? 'max-w-2xl' : ''
+            }`}>
+            <h1 className={`font-[family-name:var(--font-outfit)] font-bold text-[#1B2A4A] leading-tight ${hasEventBanner
+                ? 'text-2xl md:text-3xl mb-3'
+                : 'text-3xl md:text-5xl lg:text-[3.5rem] mb-4 md:mb-5'
+              }`}>
+              Discover Stunning
+              <span className="block text-[#C8956C]">Fancy Dress Costumes</span>
+            </h1>
+            {!hasEventBanner && (
+              <p className="text-base md:text-lg text-[#6B6B6B] mb-6 md:mb-8 max-w-xl mx-auto leading-relaxed">
+                Premium costumes for school functions, dance performances, and celebrations. Trusted by 400+ schools across Delhi.
+              </p>
+            )}
+
+            {/* Search Bar */}
+            <div className={`mx-auto ${hasEventBanner ? 'max-w-xl' : 'max-w-2xl'}`}>
+              <SearchBar />
+            </div>
           </div>
         </section>
-      )}
 
-      {/* Hero Section - Reduced size when banner is active */}
-      <section className={`relative text-center overflow-hidden -mx-4 md:mx-0 rounded-lg md:rounded-xl shadow-lg ${
-        hasEventBanner 
-          ? 'py-6 md:py-8 mb-6 md:mb-8 mt-2 md:mt-3' 
-          : 'py-12 md:py-16 lg:py-24 mb-8 md:mb-12 lg:mb-16'
-      }`}>
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 opacity-50 rounded-lg md:rounded-xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.1),transparent_50%)] rounded-lg md:rounded-xl" />
-        
-        <div className={`relative z-10 max-w-4xl mx-auto px-4 md:px-4 ${
-          hasEventBanner ? 'max-w-3xl' : ''
-        }`}>
-          <h1 className={`font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight ${
-            hasEventBanner 
-              ? 'text-2xl md:text-3xl mb-3' 
-              : 'text-4xl md:text-5xl lg:text-6xl mb-6'
-          }`}>
-            Welcome to Mod Fancy Dress
-          </h1>
-          {!hasEventBanner && (
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 md:mb-10 font-medium">
-              Discover amazing fancy dress costumes and accessories
+        {/* Trust Bar */}
+        <section className="mb-8 md:mb-12 fade-in">
+          <div className="flex items-center justify-center gap-4 md:gap-8 py-4 px-4 rounded-xl bg-white border border-[#E8E5E0]" style={{ boxShadow: 'var(--shadow-xs)' }}>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
+                <Award className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+              </div>
+              <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">15+ Years</span>
+              <span className="text-[10px] md:text-xs text-[#9A9A9A]">Experience</span>
+            </div>
+            <div className="w-px h-10 bg-[#E8E5E0]" />
+            <div className="flex flex-col items-center text-center">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
+                <Calendar className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+              </div>
+              <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">400+</span>
+              <span className="text-[10px] md:text-xs text-[#9A9A9A]">School Events</span>
+            </div>
+            <div className="w-px h-10 bg-[#E8E5E0]" />
+            <div className="flex flex-col items-center text-center">
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
+                <Star className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+              </div>
+              <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">4.7★</span>
+              <span className="text-[10px] md:text-xs text-[#9A9A9A]">700+ Reviews</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Section */}
+        {categories && categories.length > 0 && (
+          <section className="mb-8 md:mb-14 fade-in">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Shop by Category</h2>
+            </div>
+            {/* Horizontal scroll on mobile, grid on desktop */}
+            <div className="flex md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible pb-2 md:pb-0">
+              {categories.map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Featured Products */}
+        <section className="mb-20 md:mb-16 fade-in">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 md:mb-8">
+            <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">New Arrivals</h2>
+            <Link
+              href="/products"
+              prefetch={true}
+              className="w-full sm:w-auto"
+            >
+              <Button variant="outline" className="w-full sm:w-auto text-sm">
+                View All Products →
+              </Button>
+            </Link>
+          </div>
+          {products && products.length > 0 ? (
+            <ProductGrid products={products as ProductWithDetails[]} />
+          ) : (
+            <p className="text-[#9A9A9A] text-center py-12">
+              No products available yet. Check back soon!
             </p>
           )}
-          
-          {/* Search Bar */}
-          <div className={`mx-auto ${hasEventBanner ? 'max-w-xl' : 'max-w-2xl'}`}>
-            <SearchBar />
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      {categories && categories.length > 0 && (
-        <section className="mb-12 md:mb-16 px-2 md:px-4 lg:px-0">
-          <div className="flex items-center justify-between mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Shop by Category</h2>
-          </div>
-          <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 md:gap-4">
-            {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </div>
         </section>
-      )}
-
-      {/* Featured Products */}
-      <section className="mb-12 md:mb-16 px-2 md:px-4 lg:px-0">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Featured Products</h2>
-          <Link href="/products" className="w-full sm:w-auto">
-            <Button variant="outline" className="w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
-              View All Products
-            </Button>
-          </Link>
-        </div>
-        {products && products.length > 0 ? (
-          <ProductGrid products={products as ProductWithDetails[]} />
-        ) : (
-          <p className="text-gray-500 text-center py-12">
-            No products available yet. Check back soon!
-          </p>
-        )}
-      </section>
-    </div>
+      </div>
     </>
   )
 }
-
-
-
-
-
-

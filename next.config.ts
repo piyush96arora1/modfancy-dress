@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {}, // Empty config to silence turbopack warning
   images: {
     remotePatterns: [
       {
@@ -8,7 +9,22 @@ const nextConfig: NextConfig = {
         hostname: '**.supabase.co',
       },
     ],
+    minimumCacheTTL: 60,
   },
 };
 
-export default nextConfig;
+let config = nextConfig;
+
+// Only enable PWA in production - keep dev simple
+if (process.env.NODE_ENV === 'production') {
+  const withPWA = require('next-pwa')({
+    dest: 'public',
+    register: true,
+    skipWaiting: true,
+    disable: false,
+  });
+  
+  config = withPWA(nextConfig);
+}
+
+export default config;

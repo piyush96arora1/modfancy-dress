@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/store/cart'
 import { useAuth } from '@/lib/hooks/useAuth'
-import { ShoppingCart, User, LogOut } from 'lucide-react'
+import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
@@ -15,7 +15,7 @@ export function Header() {
   const { user, isAdmin, loading } = useAuth()
   const [loggingOut, setLoggingOut] = useState(false)
   const [isAdminPending, startAdminTransition] = useTransition()
-  const [isProductsPending, startProductsTransition] = useTransition()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
   const itemCount = getItemCount()
 
@@ -31,74 +31,78 @@ export function Header() {
   }
 
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4 py-4 md:py-5">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all">
-            Mod Fancy Dress
+    <header className="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-[#E8E5E0] safe-area-inset-top" style={{ boxShadow: 'var(--shadow-sm)' }}>
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 md:h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="font-[family-name:var(--font-outfit)] text-xl md:text-2xl font-bold text-[#1B2A4A] tracking-tight">
+              <span className="md:hidden">MFD</span>
+              <span className="hidden md:inline">Mod Fancy Dress</span>
+            </span>
           </Link>
 
-          <div className="flex items-center gap-6 md:gap-8">
-            <nav className="hidden md:flex items-center gap-6">
-              <Link 
-                href="/products" 
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <Link
+              href="/products"
+              prefetch={true}
+              className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
+            >
+              Products
+            </Link>
+            <Link
+              href="/contact"
+              prefetch={true}
+              className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
+            >
+              Contact
+            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin/products"
                 onClick={(e) => {
                   e.preventDefault()
-                  startProductsTransition(() => {
-                    router.push('/products')
+                  startAdminTransition(() => {
+                    router.push('/admin/products')
                   })
                 }}
-                className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 font-medium ${isProductsPending ? 'opacity-50' : ''}`}
+                className={`text-[#2D2D2D] hover:text-[#1B2A4A] transition-opacity relative inline-flex items-center gap-2 font-medium text-sm ${isAdminPending ? 'opacity-50' : ''}`}
               >
-                {isProductsPending && <LoadingSpinner size="sm" />}
-                Products
+                {isAdminPending && <LoadingSpinner size="sm" />}
+                Admin
               </Link>
-              <Link 
-                href="/contact" 
-                className="text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center font-medium"
-              >
-                Contact
-              </Link>
-              {isAdmin && (
-                <Link 
-                  href="/admin/products" 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    startAdminTransition(() => {
-                      router.push('/admin/products')
-                    })
-                  }}
-                  className={`text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 font-medium ${isAdminPending ? 'opacity-50' : ''}`}
-                >
-                  {isAdminPending && <LoadingSpinner size="sm" />}
-                  Admin
-                </Link>
-              )}
-            </nav>
+            )}
+          </nav>
 
-            <div className="flex items-center gap-3 md:gap-5">
-            <Link href="/cart" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <ShoppingCart className="w-6 h-6 md:w-7 md:h-7 text-gray-700" />
+          {/* Right Actions */}
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Cart */}
+            <Link href="/cart" className="relative p-2 hover:bg-[#F5F3F0] rounded-lg transition-colors">
+              <ShoppingCart className="w-5 h-5 md:w-[22px] md:h-[22px] text-[#2D2D2D]" />
               {itemCount > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center shadow-lg animate-pulse">
+                <span className="absolute -top-0.5 -right-0.5 bg-[#C8956C] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center" style={{ boxShadow: 'var(--shadow-sm)' }}>
                   {itemCount > 99 ? '99+' : itemCount}
                 </span>
               )}
             </Link>
 
+            {/* Auth */}
             {!loading && (
               <>
                 {user ? (
                   <div className="hidden sm:flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    <span className="text-sm hidden lg:inline">{user.email}</span>
+                    <div className="w-7 h-7 rounded-full bg-[#1B2A4A] flex items-center justify-center">
+                      <span className="text-white text-xs font-medium">{user.email?.charAt(0).toUpperCase()}</span>
+                    </div>
+                    <span className="text-xs text-[#6B6B6B] hidden lg:inline max-w-[120px] truncate">{user.email}</span>
                     <Button variant="ghost" size="sm" onClick={handleLogout} loading={loggingOut} disabled={loggingOut}>
                       <LogOut className="w-4 h-4" />
                     </Button>
                   </div>
                 ) : (
                   <Link href="/login">
-                    <Button variant="outline" size="sm" className="text-xs md:text-sm px-2 md:px-4">
+                    <Button variant="outline" size="sm" className="text-xs px-3">
                       <span className="hidden sm:inline">Login</span>
                       <User className="w-4 h-4 sm:hidden" />
                     </Button>
@@ -106,63 +110,28 @@ export function Header() {
                 )}
               </>
             )}
-            </div>
           </div>
         </div>
-        
-        {/* Mobile Navigation */}
-        <nav className="md:hidden mt-3 pt-3 flex items-center gap-4">
-          <Link 
-            href="/products" 
-            onClick={(e) => {
-              e.preventDefault()
-              startProductsTransition(() => {
-                router.push('/products')
-              })
-            }}
-            className={`text-sm text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isProductsPending ? 'opacity-50' : ''}`}
-          >
-            {isProductsPending && <LoadingSpinner size="sm" />}
-            Products
-          </Link>
-          <Link 
-            href="/contact" 
-            className="text-sm text-indigo-700 hover:text-indigo-900 transition-colors inline-flex items-center"
-          >
-            Contact
-          </Link>
-          {isAdmin && (
-            <Link 
-              href="/admin/products" 
+
+        {/* Mobile Admin Link */}
+        {isAdmin && (
+          <nav className="md:hidden pb-2 pt-1 border-t border-[#F5F3F0]">
+            <Link
+              href="/admin/products"
               onClick={(e) => {
                 e.preventDefault()
                 startAdminTransition(() => {
                   router.push('/admin/products')
                 })
               }}
-              className={`text-sm text-indigo-700 hover:text-indigo-900 transition-opacity relative inline-flex items-center gap-2 ${isAdminPending ? 'opacity-50' : ''}`}
+              className={`text-xs text-[#1B2A4A] hover:text-[#C8956C] transition-opacity relative inline-flex items-center gap-2 font-medium ${isAdminPending ? 'opacity-50' : ''}`}
             >
               {isAdminPending && <LoadingSpinner size="sm" />}
-              Admin
+              Admin Panel
             </Link>
-          )}
-          {user && (
-            <div className="flex items-center gap-2 ml-auto">
-              <User className="w-4 h-4 text-gray-900" />
-              <span className="text-xs text-gray-600 truncate max-w-[120px]">{user.email}</span>
-              <Button variant="ghost" size="sm" onClick={handleLogout} loading={loggingOut} disabled={loggingOut}>
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </div>
-          )}
-        </nav>
+          </nav>
+        )}
       </div>
     </header>
   )
 }
-
-
-
-
-
-

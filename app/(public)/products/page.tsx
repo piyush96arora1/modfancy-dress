@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { ProductGrid } from '@/components/public/ProductGrid'
 import { SearchBar } from '@/components/public/SearchBar'
 import { CategoryFilter } from '@/components/public/CategoryFilter'
+import { ProductsClient } from '@/components/public/ProductsClient'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import type { ProductWithDetails } from '@/types/database'
+
+export const revalidate = 60
 
 interface ProductsPageProps {
   searchParams: Promise<{
@@ -16,17 +17,17 @@ interface ProductsPageProps {
 
 export async function generateMetadata({ searchParams }: ProductsPageProps) {
   const { search, category } = await searchParams
-  const title = search 
+  const title = search
     ? `Search Results for "${search}" - Fancy Dress Costumes`
     : category
-    ? `${category.charAt(0).toUpperCase() + category.slice(1)} Fancy Dress Costumes`
-    : 'All Fancy Dress Costumes - Browse Collection'
-  
+      ? `${category.charAt(0).toUpperCase() + category.slice(1)} Fancy Dress Costumes`
+      : 'All Fancy Dress Costumes - Browse Collection'
+
   const description = search
     ? `Find fancy dress costumes matching "${search}". Quality costumes for school functions, dance performances, and events.`
     : category
-    ? `Browse our collection of ${category} fancy dress costumes. Premium quality, 15+ years experience.`
-    : 'Browse our complete collection of fancy dress costumes and accessories. 400+ successful school functions. Premium quality costumes in Delhi.'
+      ? `Browse our collection of ${category} fancy dress costumes. Premium quality, 15+ years experience.`
+      : 'Browse our complete collection of fancy dress costumes and accessories. 400+ successful school functions. Premium quality costumes in Delhi.'
 
   return generatePageMetadata({
     title,
@@ -39,7 +40,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const supabase = await createClient()
   const { search, category } = await searchParams
 
-  // Build query - filter out deleted products
   let query = supabase
     .from('products')
     .select(`
@@ -50,14 +50,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       variants:product_variants(*)
     `)
     .eq('is_active', true)
-    .is('deleted_at', null) // Only show products that are not deleted
+    .is('deleted_at', null)
 
-  // Apply search filter - search in name and description
   if (search) {
     query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
   }
 
-  // Apply category filter - check both old category_id and new product_categories junction table
   if (category) {
     const { data: categoryData } = await supabase
       .from('categories')
@@ -66,15 +64,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       .single()
 
     if (categoryData) {
-      // First get product IDs from junction table
       const { data: productCategories } = await supabase
         .from('product_categories')
         .select('product_id')
         .eq('category_id', categoryData.id)
 
       const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
-      
-      // Filter by products that have this category_id OR are in the junction table
+
       if (productIdsFromJunction.length > 0) {
         query = query.or(`category_id.eq.${categoryData.id},id.in.(${productIdsFromJunction.join(',')})`)
       } else {
@@ -83,81 +79,61 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }
   }
 
-  // Order by created_at descending (newest first)
   query = query.order('created_at', { ascending: false })
-
   const { data: products } = await query
 
-  // Fetch categories for filter
   const { data: categories } = await supabase
     .from('categories')
     .select('*')
     .order('name')
 
-  const isSearching = Boolean(search)
   const resultsCount = products?.length || 0
 
   return (
-    <div className="px-2 md:px-4 lg:px-0 bg-white">
-      {/* Compact Header Section */}
-      <div className="mb-3 md:mb-4 lg:mb-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
+    <div className="fade-in">
+      {/* Page Header */}
+      <div className="mb-5 md:mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl md:text-2xl font-bold text-indigo-900">
-              {search ? `Search: "${search}"` : 'All Products'}
+            <h1 className="text-xl md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+              {search ? `Results for "${search}"` : 'All Products'}
             </h1>
             {search && (
-              <Link 
+              <Link
                 href={category ? `/products?category=${category}` : '/products'}
-                className="text-sm text-indigo-600 hover:text-indigo-800 underline font-medium"
+                className="text-xs text-[#C8956C] hover:text-[#A07048] font-medium transition-colors"
               >
                 Clear search
               </Link>
             )}
           </div>
           {resultsCount > 0 && (
-            <p className="text-sm text-gray-600 font-medium">
+            <p className="text-xs text-[#9A9A9A] font-medium">
               {resultsCount} {resultsCount === 1 ? 'product' : 'products'}
             </p>
           )}
         </div>
-        
-        {/* Search Bar */}
-        <div className="w-full">
+
+        {/* Search */}
+        <div className="w-full mb-3">
           <SearchBar />
         </div>
 
-        {/* Category Filter - Always shown but compact */}
-        <div className="mt-3">
-          <CategoryFilter 
-            categories={categories || []} 
-            currentCategory={category || null}
-            searchQuery={search || null}
-          />
-        </div>
+        {/* Category Filter */}
+        <CategoryFilter
+          categories={categories || []}
+          currentCategory={category || null}
+          searchQuery={search || null}
+        />
       </div>
 
-      {/* Products Grid - Full Width */}
-      <div className="w-full">
-        {products && products.length > 0 ? (
-          <ProductGrid products={products as ProductWithDetails[]} />
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 mb-2 text-lg">
-              {search ? `No products found for "${search}"` : 'No products found.'}
-            </p>
-            {search && (
-              <Link 
-                href="/products" 
-                className="text-sm text-indigo-600 hover:text-indigo-800 underline font-medium"
-              >
-                Browse all products
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Products Grid */}
+      <ProductsClient
+        initialProducts={products as ProductWithDetails[]}
+        initialCategories={categories || []}
+        search={search}
+        category={category}
+      />
     </div>
   )
 }
-

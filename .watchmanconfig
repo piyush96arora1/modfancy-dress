@@ -1,0 +1,12 @@
+{
+  "ignore_dirs": [
+    "node_modules",
+    ".git",
+    ".next",
+    "dist",
+    "build",
+    "public/sw.js",
+    "public/workbox-*.js"
+  ]
+}
+

@@ -1,65 +1,65 @@
 /**
  * Theme Colors for Mod Fancy Dress
- * Professional color scheme with primary and secondary colors
+ * Premium navy & gold color scheme
  */
 
 export const theme = {
-  // Primary Color - Indigo (Professional, Trustworthy)
+  // Primary Color - Deep Navy (Premium, Trustworthy)
   primary: {
-    50: '#EEF2FF',
-    100: '#E0E7FF',
-    200: '#C7D2FE',
-    300: '#A5B4FC',
-    400: '#818CF8',
-    500: '#6366F1', // Main primary
-    600: '#4F46E5',
-    700: '#4338CA',
-    800: '#3730A3',
-    900: '#312E81',
+    50: '#EEF1F7',
+    100: '#D5DBEA',
+    200: '#AAB7D5',
+    300: '#7F93C0',
+    400: '#546FAB',
+    500: '#2A4B96',
+    600: '#1B2A4A', // Main primary
+    700: '#162240',
+    800: '#111A36',
+    900: '#0C122C',
   },
-  
-  // Secondary Color - Teal (Fresh, Modern)
-  secondary: {
-    50: '#F0FDFA',
-    100: '#CCFBF1',
-    200: '#99F6E4',
-    300: '#5EEAD4',
-    400: '#2DD4BF',
-    500: '#14B8A6', // Main secondary
-    600: '#0D9488',
-    700: '#0F766E',
-    800: '#115E59',
-    900: '#134E4A',
-  },
-  
-  // Accent Color - Warm Orange (For CTAs and highlights)
+
+  // Accent Color - Warm Gold (Elegant, Premium)
   accent: {
-    50: '#FFF7ED',
-    100: '#FFEDD5',
-    200: '#FED7AA',
-    300: '#FDBA74',
-    400: '#FB923C',
-    500: '#F97316', // Main accent
-    600: '#EA580C',
-    700: '#C2410C',
-    800: '#9A3412',
-    900: '#7C2D12',
+    50: '#FBF5EF',
+    100: '#F5E8D8',
+    200: '#EBD1B1',
+    300: '#E1BA8A',
+    400: '#D4A47A',
+    500: '#C8956C', // Main accent
+    600: '#A07048',
+    700: '#7A5636',
+    800: '#543C24',
+    900: '#2E2112',
   },
-  
-  // Neutral colors
+
+  // Secondary - Soft Rose (Warmth)
+  secondary: {
+    50: '#FDF8F6',
+    100: '#F8EDE8',
+    200: '#F0DBD2',
+    300: '#E8C4B8',
+    400: '#D9A999',
+    500: '#CA8E7A',
+    600: '#B0705A',
+    700: '#8A5644',
+    800: '#643C2E',
+    900: '#3E2218',
+  },
+
+  // Neutral colors (warm tinted)
   gray: {
-    50: '#F9FAFB',
-    100: '#F3F4F6',
-    200: '#E5E7EB',
-    300: '#D1D5DB',
-    400: '#9CA3AF',
-    500: '#6B7280',
-    600: '#4B5563',
-    700: '#374151',
-    800: '#1F2937',
-    900: '#111827',
+    50: '#FAFAF8',
+    100: '#F5F3F0',
+    200: '#E8E5E0',
+    300: '#D5D0CA',
+    400: '#A8A29E',
+    500: '#6B6B6B',
+    600: '#525252',
+    700: '#3D3D3D',
+    800: '#2D2D2D',
+    900: '#1A1A1A',
   },
-  
+
   // Semantic colors
   success: '#10B981',
   warning: '#F59E0B',
@@ -70,32 +70,30 @@ export const theme = {
 // Tailwind CSS color classes mapping
 export const themeClasses = {
   // Primary
-  primary: 'text-indigo-600',
-  primaryBg: 'bg-indigo-600',
-  primaryHover: 'hover:bg-indigo-700',
-  primaryLight: 'bg-indigo-50',
-  primaryBorder: 'border-indigo-600',
-  
-  // Secondary
-  secondary: 'text-teal-600',
-  secondaryBg: 'bg-teal-600',
-  secondaryHover: 'hover:bg-teal-700',
-  secondaryLight: 'bg-teal-50',
-  secondaryBorder: 'border-teal-600',
-  
+  primary: 'text-[#1B2A4A]',
+  primaryBg: 'bg-[#1B2A4A]',
+  primaryHover: 'hover:bg-[#162240]',
+  primaryLight: 'bg-[#EEF1F7]',
+  primaryBorder: 'border-[#1B2A4A]',
+
+  // Accent
+  accent: 'text-[#C8956C]',
+  accentBg: 'bg-[#C8956C]',
+  accentHover: 'hover:bg-[#A07048]',
+  accentLight: 'bg-[#FBF5EF]',
+  accentBorder: 'border-[#C8956C]',
+
   // Headings
-  heading: 'text-indigo-900',
-  headingLight: 'text-indigo-700',
-  subheading: 'text-teal-700',
-  
+  heading: 'text-[#1B2A4A]',
+  headingLight: 'text-[#2A4B96]',
+  subheading: 'text-[#6B6B6B]',
+
   // Links
-  link: 'text-indigo-600 hover:text-indigo-700',
-  linkSecondary: 'text-teal-600 hover:text-teal-700',
-  
+  link: 'text-[#1B2A4A] hover:text-[#C8956C]',
+  linkSecondary: 'text-[#C8956C] hover:text-[#A07048]',
+
   // Buttons
-  buttonPrimary: 'bg-indigo-600 hover:bg-indigo-700 text-white',
-  buttonSecondary: 'bg-teal-600 hover:bg-teal-700 text-white',
-  buttonOutline: 'border-indigo-600 text-indigo-600 hover:bg-indigo-50',
+  buttonPrimary: 'bg-[#1B2A4A] hover:bg-[#162240] text-white',
+  buttonSecondary: 'bg-[#C8956C] hover:bg-[#A07048] text-white',
+  buttonOutline: 'border-[#1B2A4A] text-[#1B2A4A] hover:bg-[#EEF1F7]',
 }
-
-

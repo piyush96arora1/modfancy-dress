@@ -19,7 +19,6 @@ export function SearchBar() {
     if (searchParam) {
       setQuery(decodeURIComponent(searchParam))
     } else {
-      // Clear input when search param is removed
       setQuery('')
     }
   }, [searchParams])
@@ -29,7 +28,6 @@ export function SearchBar() {
     const trimmedQuery = query.trim()
     if (trimmedQuery) {
       startTransition(() => {
-        // Preserve category param if it exists
         const category = searchParams.get('category')
         const params = new URLSearchParams()
         params.set('search', trimmedQuery)
@@ -37,7 +35,6 @@ export function SearchBar() {
         router.push(`/products?${params.toString()}`)
       })
     } else {
-      // If query is empty, remove search param
       clearSearch()
     }
   }
@@ -56,48 +53,39 @@ export function SearchBar() {
   const hasSearchQuery = Boolean(query || searchParams.get('search'))
 
   return (
-    <form onSubmit={handleSearch} className="flex gap-3 w-full">
+    <form onSubmit={handleSearch} className="flex gap-2.5 w-full">
       <div className="relative flex-1">
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9A9A9A] pointer-events-none" />
         <Input
           type="text"
-          placeholder="Search for costumes, accessories..."
+          placeholder="Search costumes, accessories..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className={`w-full ${hasSearchQuery ? 'pr-12' : 'pr-12'} h-12 md:h-14 text-base text-gray-900 bg-white border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg shadow-sm hover:shadow-md transition-all`}
+          className="w-full pl-10 pr-10 h-11 md:h-12 text-sm bg-white border-[#E8E5E0] focus:border-[#1B2A4A] focus:ring-[#1B2A4A]/10 rounded-lg"
         />
-        {hasSearchQuery ? (
+        {hasSearchQuery && (
           <button
             type="button"
             onClick={clearSearch}
-            className="absolute right-14 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#9A9A9A] hover:text-[#2D2D2D] rounded-full transition-colors"
             aria-label="Clear search"
           >
             <X className="w-4 h-4" />
           </button>
-        ) : null}
-        <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+        )}
       </div>
-      <Button 
-        type="submit" 
-        variant="default" 
-        disabled={isPending} 
-        className="min-w-[120px] md:min-w-[140px] h-12 md:h-14 px-6 text-base font-semibold"
+      <Button
+        type="submit"
+        variant="default"
+        disabled={isPending}
+        className="min-w-[80px] md:min-w-[100px] h-11 md:h-12 px-4 text-sm font-medium rounded-lg"
       >
         {isPending ? (
-          <>
-            <LoadingSpinner size="sm" className="mr-2" />
-            <span>Searching...</span>
-          </>
+          <LoadingSpinner size="sm" />
         ) : (
-          <span>Shop Now</span>
+          <span>Search</span>
         )}
       </Button>
     </form>
   )
 }
-
-
-
-
-
-

@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { ChevronRight } from 'lucide-react'
 import type { ProductWithDetails } from '@/types/database'
 
 interface CategoryPageProps {
@@ -47,7 +49,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  // First, get product IDs from the junction table
   const { data: productCategories } = await supabase
     .from('product_categories')
     .select('product_id')
@@ -55,7 +56,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
 
-  // Build query - check both old category_id and new junction table
   let query = supabase
     .from('products')
     .select(`
@@ -66,9 +66,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       variants:product_variants(*)
     `)
     .eq('is_active', true)
-    .is('deleted_at', null) // Only show products that are not deleted
+    .is('deleted_at', null)
 
-  // Filter by products that have this category_id OR are in the junction table
   if (productIdsFromJunction.length > 0) {
     query = query.or(`category_id.eq.${category.id},id.in.(${productIdsFromJunction.join(',')})`)
   } else {
@@ -76,7 +75,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   query = query.order('created_at', { ascending: false })
-
   const { data: products } = await query
 
   const breadcrumbSchema = BreadcrumbSchema([
@@ -91,25 +89,36 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="px-2 md:px-4 lg:px-0 bg-white">
-      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2 text-indigo-900">{category.name}</h1>
-      {category.description && (
-        <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 lg:mb-8">{category.description}</p>
-      )}
-      {products && products.length > 0 ? (
-        <ProductGrid products={products as ProductWithDetails[]} />
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-gray-500">No products found in this category.</p>
+      <div className="fade-in">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+          <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
+          <ChevronRight className="w-3 h-3 flex-shrink-0" />
+          <Link href="/products" className="hover:text-[#1B2A4A] transition-colors">Products</Link>
+          <ChevronRight className="w-3 h-3 flex-shrink-0" />
+          <span className="text-[#2D2D2D]">{category.name}</span>
+        </nav>
+
+        {/* Category Header */}
+        <div className="mb-6 md:mb-8 p-5 md:p-6 rounded-xl bg-[#F5F3F0]">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-1">{category.name}</h1>
+          {category.description && (
+            <p className="text-sm text-[#6B6B6B] leading-relaxed">{category.description}</p>
+          )}
+          {products && (
+            <p className="text-xs text-[#9A9A9A] mt-2">{products.length} {products.length === 1 ? 'product' : 'products'}</p>
+          )}
         </div>
-      )}
-    </div>
+
+        {/* Products Grid */}
+        {products && products.length > 0 ? (
+          <ProductGrid products={products as ProductWithDetails[]} />
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-[#9A9A9A] text-sm">No products found in this category.</p>
+          </div>
+        )}
+      </div>
     </>
   )
 }
-
-
-
-
-
-

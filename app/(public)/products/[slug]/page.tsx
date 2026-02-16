@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { ProductSchema, BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { ChevronRight } from 'lucide-react'
 import type { ProductWithDetails } from '@/types/database'
 
 interface ProductPageProps {
@@ -43,8 +45,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
   const supabase = await createClient()
 
-  // Find product by slug (show active products, but also check for inactive ones)
-  // Never show deleted products to public
   let { data: product } = await supabase
     .from('products')
     .select(`
@@ -55,10 +55,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     `)
     .eq('slug', slug)
     .eq('is_active', true)
-    .is('deleted_at', null) // Never show deleted products
+    .is('deleted_at', null)
     .single()
 
-  // If not found as active, check if it exists as inactive (but not deleted)
   if (!product) {
     const { data: inactiveProduct } = await supabase
       .from('products')
@@ -69,14 +68,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
         variants:product_variants(*)
       `)
       .eq('slug', slug)
-      .is('deleted_at', null) // Never show deleted products
+      .is('deleted_at', null)
       .single()
-    
+
     if (inactiveProduct) {
-      // Product exists but is inactive - use it anyway
       product = inactiveProduct
     } else {
-      // Product doesn't exist or is deleted
       notFound()
     }
   }
@@ -84,14 +81,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productData = product as ProductWithDetails
   const primaryImage = productData.images?.find((img) => img.is_primary) || productData.images?.[0]
   const otherImages = productData.images?.filter((img) => !img.is_primary) || []
+  const allImages = primaryImage ? [primaryImage, ...otherImages] : otherImages
 
-  // Get unique sizes and colors from variants (filter out null values)
   const sizes = [...new Set(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])]
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
-  const basePrice = productData.price
-
-  // Generate structured data
   const productSchema = ProductSchema(productData)
   const breadcrumbSchema = BreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -109,95 +103,111 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="px-4 md:px-0 bg-white">
-      {!productData.is_active && (
-        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-4">
-          This product is currently inactive.
-        </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-      {/* Images */}
-      <div>
-        {primaryImage && (
-          <div className="aspect-square relative bg-gray-100 rounded-lg overflow-hidden mb-4">
-            <Image
-              src={primaryImage.image_url}
-              alt={productData.name}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+      <div className="fade-in">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6 overflow-x-auto">
+          <Link href="/" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Home</Link>
+          <ChevronRight className="w-3 h-3 flex-shrink-0" />
+          <Link href="/products" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Products</Link>
+          {productData.category && (
+            <>
+              <ChevronRight className="w-3 h-3 flex-shrink-0" />
+              <Link href={`/category/${productData.category.slug}`} className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">{productData.category.name}</Link>
+            </>
+          )}
+          <ChevronRight className="w-3 h-3 flex-shrink-0" />
+          <span className="text-[#2D2D2D] truncate">{productData.name}</span>
+        </nav>
+
+        {!productData.is_active && (
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg mb-4 text-sm">
+            This product is currently inactive.
           </div>
         )}
-        {otherImages.length > 0 && (
-          <div className="grid grid-cols-4 gap-2">
-            {otherImages.map((img) => (
-              <div key={img.id} className="aspect-square relative bg-gray-100 rounded overflow-hidden">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+          {/* Images */}
+          <div>
+            {primaryImage && (
+              <div className="aspect-square relative bg-[#F5F3F0] rounded-xl overflow-hidden mb-3" style={{ boxShadow: 'var(--shadow-md)' }}>
                 <Image
-                  src={img.image_url}
-                  alt={`${productData.name} - Image ${img.order}`}
+                  src={primaryImage.image_url}
+                  alt={productData.name}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 25vw, 12.5vw"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
-            ))}
+            )}
+            {otherImages.length > 0 && (
+              <div className="grid grid-cols-4 gap-2">
+                {otherImages.map((img) => (
+                  <div key={img.id} className="aspect-square relative bg-[#F5F3F0] rounded-lg overflow-hidden border border-[#E8E5E0] hover:border-[#C8956C]/50 transition-colors cursor-pointer">
+                    <Image
+                      src={img.image_url}
+                      alt={`${productData.name} - Image ${img.order}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 25vw, 12.5vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* Product Info */}
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-indigo-900">{productData.name}</h1>
-        {productData.category && (
-          <p className="text-teal-600 mb-4 font-medium">{productData.category.name}</p>
-        )}
-        {/* Price will be shown dynamically by AddToCartButton based on selected variant */}
+          {/* Product Info */}
+          <div>
+            {/* Category pill */}
+            {productData.category && (
+              <Link href={`/category/${productData.category.slug}`} className="inline-block mb-2">
+                <span className="text-xs px-2.5 py-1 bg-[#F5F3F0] text-[#6B6B6B] rounded-full font-medium hover:bg-[#FBF5EF] hover:text-[#C8956C] transition-colors">
+                  {productData.category.name}
+                </span>
+              </Link>
+            )}
 
-        {productData.description && (
-          <div className="mb-6">
-            <h2 className="font-semibold mb-2 text-indigo-900">Description</h2>
-            <p className="text-gray-700 whitespace-pre-line">{productData.description}</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-4 leading-tight">{productData.name}</h1>
+
+            {productData.description && (
+              <div className="mb-6 p-4 bg-[#F5F3F0] rounded-lg">
+                <h2 className="font-semibold text-sm text-[#1B2A4A] mb-1.5 font-[family-name:var(--font-outfit)]">Description</h2>
+                <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed">{productData.description}</p>
+              </div>
+            )}
+
+            {/* Add to Cart */}
+            <div className="mb-6">
+              <AddToCartButton
+                product={productData}
+                sizes={sizes}
+                colors={colors}
+                variants={productData.variants}
+              />
+            </div>
+
+            {/* Available Options */}
+            {productData.variants.length > 0 && (
+              <div className="border-t border-[#E8E5E0] pt-5">
+                <h3 className="font-semibold text-sm mb-2 text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Available Options</h3>
+                <ul className="space-y-1 text-sm text-[#6B6B6B]">
+                  {sizes.length > 0 && (
+                    <li>
+                      <strong className="text-[#2D2D2D]">Sizes:</strong> {sizes.join(', ')}
+                    </li>
+                  )}
+                  {colors.length > 0 && (
+                    <li>
+                      <strong className="text-[#2D2D2D]">Colors:</strong> {colors.join(', ')}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Variants */}
-        <div className="mb-6">
-          <AddToCartButton
-            product={productData}
-            sizes={sizes}
-            colors={colors}
-            variants={productData.variants}
-          />
         </div>
-
-        {/* Product Details */}
-        {productData.variants.length > 0 && (
-          <div className="border-t pt-6">
-            <h3 className="font-semibold mb-2 text-indigo-900">Available Options</h3>
-            <ul className="space-y-1 text-sm text-gray-600">
-              {sizes.length > 0 && (
-                <li>
-                  <strong>Sizes:</strong> {sizes.join(', ')}
-                </li>
-              )}
-              {colors.length > 0 && (
-                <li>
-                  <strong>Colors:</strong> {colors.join(', ')}
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
       </div>
-      </div>
-    </div>
     </>
   )
 }
-
-
-
-
-
