@@ -1,8 +1,6 @@
-import { CategoryForm } from '@/components/admin/CategoryForm'
+'use client'
 
-export const metadata = {
-  title: 'New Category - Admin Panel',
-}
+import { CategoryForm } from '@/components/admin/CategoryForm'
 
 export default function NewCategoryPage() {
   return (
@@ -12,9 +10,3 @@ export default function NewCategoryPage() {
     </div>
   )
 }
-
-
-
-
-
-

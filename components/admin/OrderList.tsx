@@ -1,40 +1,39 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { ViewOrderButton } from './ViewOrderButton'
-import { revalidatePath } from 'next/cache'
 
 interface OrderListProps {
   orders: any[]
 }
 
-async function updateOrderStatus(formData: FormData) {
-  'use server'
-  const orderId = formData.get('orderId') as string
-  const currentStatus = formData.get('currentStatus') as string
-  
-  // Calculate new status
-  const newStatus = currentStatus === 'pending' 
-    ? 'confirmed' 
-    : currentStatus === 'confirmed' 
-    ? 'shipped' 
-    : 'pending'
-  
-  const supabase = await createClient()
-  
-  const { error } = await supabase
-    .from('orders')
-    .update({ status: newStatus })
-    .eq('id', orderId)
-  
-  if (error) {
-    throw new Error(`Failed to update order status: ${error.message}`)
-  }
-  
-  revalidatePath('/admin/orders')
-}
+export function OrderList({ orders }: OrderListProps) {
+  const router = useRouter()
+  const [updating, setUpdating] = useState<string | null>(null)
 
-export async function OrderList({ orders }: OrderListProps) {
+  const handleStatusUpdate = async (orderId: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'pending'
+      ? 'confirmed'
+      : currentStatus === 'confirmed'
+        ? 'shipped'
+        : 'pending'
+
+    setUpdating(orderId)
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('orders')
+      .update({ status: newStatus })
+      .eq('id', orderId)
+
+    if (error) {
+      alert(`Failed to update order status: ${error.message}`)
+    }
+    setUpdating(null)
+    router.refresh()
+  }
 
   if (orders.length === 0) {
     return (
@@ -51,34 +50,19 @@ export async function OrderList({ orders }: OrderListProps) {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Order #
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Customer
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Items
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Total
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Date
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order #</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {orders.map((order) => {
               const itemCount = order.items?.reduce(
-                (sum: number, item: any) => sum + item.quantity,
-                0
+                (sum: number, item: any) => sum + item.quantity, 0
               ) || 0
 
               return (
@@ -91,21 +75,13 @@ export async function OrderList({ orders }: OrderListProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-900">{itemCount} item(s)</td>
-                  <td className="px-6 py-4 font-medium text-gray-900">
-                    ₹{order.total_amount.toFixed(2)}
-                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900">₹{order.total_amount.toFixed(2)}</td>
                   <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 text-xs rounded ${
-                        order.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : order.status === 'confirmed'
-                          ? 'bg-blue-100 text-blue-800'
-                          : order.status === 'shipped'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
+                    <span className={`px-2 py-1 text-xs rounded ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
+                        : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
+                          : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                      }`}>
                       {order.status}
                     </span>
                   </td>
@@ -115,17 +91,18 @@ export async function OrderList({ orders }: OrderListProps) {
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
                       <ViewOrderButton orderId={order.id} />
-                      <form action={updateOrderStatus}>
-                        <input type="hidden" name="orderId" value={order.id} />
-                        <input type="hidden" name="currentStatus" value={order.status} />
-                        <Button variant="outline" size="sm" type="submit">
-                          {order.status === 'pending'
-                            ? 'Confirm'
-                            : order.status === 'confirmed'
-                            ? 'Ship'
-                            : 'Reset'}
-                        </Button>
-                      </form>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={updating === order.id}
+                        onClick={() => handleStatusUpdate(order.id, order.status)}
+                      >
+                        {updating === order.id ? '...' : (
+                          order.status === 'pending' ? 'Confirm'
+                            : order.status === 'confirmed' ? 'Ship'
+                              : 'Reset'
+                        )}
+                      </Button>
                     </div>
                   </td>
                 </tr>
@@ -139,8 +116,7 @@ export async function OrderList({ orders }: OrderListProps) {
       <div className="md:hidden space-y-4">
         {orders.map((order) => {
           const itemCount = order.items?.reduce(
-            (sum: number, item: any) => sum + item.quantity,
-            0
+            (sum: number, item: any) => sum + item.quantity, 0
           ) || 0
 
           return (
@@ -152,17 +128,11 @@ export async function OrderList({ orders }: OrderListProps) {
                     {new Date(order.created_at).toLocaleDateString()}
                   </div>
                 </div>
-                <span
-                  className={`px-2 py-1 text-xs rounded whitespace-nowrap ${
-                    order.status === 'pending'
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : order.status === 'confirmed'
-                      ? 'bg-blue-100 text-blue-800'
-                      : order.status === 'shipped'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
+                <span className={`px-2 py-1 text-xs rounded whitespace-nowrap ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
+                    : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
+                      : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                        : 'bg-gray-100 text-gray-800'
+                  }`}>
                   {order.status}
                 </span>
               </div>
@@ -187,17 +157,21 @@ export async function OrderList({ orders }: OrderListProps) {
                 <div className="flex-1">
                   <ViewOrderButton orderId={order.id} className="w-full" />
                 </div>
-                <form action={updateOrderStatus} className="flex-1">
-                  <input type="hidden" name="orderId" value={order.id} />
-                  <input type="hidden" name="currentStatus" value={order.status} />
-                  <Button variant="outline" size="sm" type="submit" className="w-full">
-                    {order.status === 'pending'
-                      ? 'Confirm'
-                      : order.status === 'confirmed'
-                      ? 'Ship'
-                      : 'Reset'}
+                <div className="flex-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    disabled={updating === order.id}
+                    onClick={() => handleStatusUpdate(order.id, order.status)}
+                  >
+                    {updating === order.id ? '...' : (
+                      order.status === 'pending' ? 'Confirm'
+                        : order.status === 'confirmed' ? 'Ship'
+                          : 'Reset'
+                    )}
                   </Button>
-                </form>
+                </div>
               </div>
             </div>
           )
@@ -206,8 +180,3 @@ export async function OrderList({ orders }: OrderListProps) {
     </>
   )
 }
-
-
-
-
-

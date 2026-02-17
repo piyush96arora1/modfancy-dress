@@ -1,19 +1,33 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { CategoryList } from '@/components/admin/CategoryList'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
-export const metadata = {
-  title: 'Categories - Admin Panel',
-}
+export default function AdminCategoriesPage() {
+  const [categories, setCategories] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-export default async function AdminCategoriesPage() {
-  const supabase = await createClient()
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const supabase = createClient()
+      const { data } = await supabase.from('categories').select('*').order('name')
+      setCategories(data || [])
+      setLoading(false)
+    }
+    fetchCategories()
+  }, [])
 
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name')
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
+  }
 
   return (
     <div className="px-4 md:px-0 bg-white">
@@ -23,13 +37,7 @@ export default async function AdminCategoriesPage() {
           <Button className="w-full sm:w-auto">Add New Category</Button>
         </Link>
       </div>
-      <CategoryList categories={categories || []} />
+      <CategoryList categories={categories} />
     </div>
   )
 }
-
-
-
-
-
-

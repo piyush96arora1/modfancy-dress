@@ -187,6 +187,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
             </div>
 
+            {/* Cross-link to wholesale */}
+            <div className="mb-4 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200">
+              <Link
+                href={`/wholesale/${slug}`}
+                className="text-sm text-emerald-700 hover:text-emerald-900 font-medium transition-colors"
+              >
+                🏷️ Planning to buy in bulk? View wholesale prices →
+              </Link>
+            </div>
+
             {/* Available Options */}
             {productData.variants.length > 0 && (
               <div className="border-t border-[#E8E5E0] pt-5">

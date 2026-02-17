@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { SearchBar } from '@/components/public/SearchBar'
 import { CategoryFilter } from '@/components/public/CategoryFilter'
 import { ProductsClient } from '@/components/public/ProductsClient'
+import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import type { ProductWithDetails } from '@/types/database'
 
@@ -86,6 +87,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const { data: categories } = await supabase
     .from('categories')
     .select('*')
+    .eq('is_active', true)
     .order('name')
 
   const resultsCount = products?.length || 0
@@ -108,11 +110,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </Link>
             )}
           </div>
-          {resultsCount > 0 && (
-            <p className="text-xs text-[#9A9A9A] font-medium">
-              {resultsCount} {resultsCount === 1 ? 'product' : 'products'}
-            </p>
-          )}
+          <div className="flex items-center gap-3">
+            {resultsCount > 0 && (
+              <p className="text-xs text-[#9A9A9A] font-medium">
+                {resultsCount} {resultsCount === 1 ? 'product' : 'products'}
+              </p>
+            )}
+            <PricingModeToggle currentMode="retail" />
+          </div>
         </div>
 
         {/* Search */}

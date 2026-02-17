@@ -4,30 +4,45 @@ import { useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import type { ProductWithDetails } from '@/types/database'
+import type { ProductWithDetails, PricingMode } from '@/types/database'
+import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
+import { usePricingMode } from '@/lib/context/PricingModeContext'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface ProductCardProps {
   product: ProductWithDetails
+  pricingMode?: PricingMode
+  wholesaleDiscountPct?: number
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30 }: ProductCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const { mode: globalMode } = usePricingMode()
+
+  // Use prop if explicitly passed, otherwise fall back to global mode
+  const pricingMode = propMode ?? globalMode
+
   const primaryImage = product.images.find((img) => img.is_primary) || product.images[0]
-  const displayPrice = product.variants.length > 0 && product.variants[0].price_override
+
+  const retailPrice = product.variants.length > 0 && product.variants[0].price_override
     ? product.variants[0].price_override
-    : product.price
+    : product.price || 0
+
+  const wholesalePrice = getProductPrice(product, 'wholesale', wholesaleDiscountPct)
+  const displayPrice = pricingMode === 'wholesale' ? wholesalePrice : retailPrice
+
+  const basePath = pricingMode === 'wholesale' ? '/wholesale' : '/products'
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     startTransition(() => {
-      router.push(`/products/${product.slug}`)
+      router.push(`${basePath}/${product.slug}`)
     })
   }
 
   return (
-    <Link href={`/products/${product.slug}`} onClick={handleClick} className="group relative block">
+    <Link href={`${basePath}/${product.slug}`} onClick={handleClick} className="group relative block">
       {isPending && (
         <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-10 rounded-xl" style={{ boxShadow: 'var(--shadow-md)' }}>
           <LoadingSpinner size="lg" />
@@ -70,12 +85,15 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="font-[family-name:var(--font-outfit)] font-semibold text-sm md:text-base mb-1 line-clamp-2 text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-snug">
             {product.name}
           </h3>
-          {displayPrice && (
+          {displayPrice > 0 && (
             <div className="mt-auto pt-1.5">
               <p className="text-base md:text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
-                ₹{displayPrice.toFixed(0)}
+                {formatPrice(displayPrice)}
+                {pricingMode === 'wholesale' && (
+                  <span className="text-[10px] font-normal text-[#9A9A9A] ml-1">/piece</span>
+                )}
               </p>
-              {product.price && product.variants.length > 0 && product.variants[0].price_override && (
+              {pricingMode === 'retail' && product.variants.length > 0 && product.variants[0].price_override && product.price && (
                 <p className="text-[10px] md:text-xs text-[#9A9A9A] line-through">₹{product.price.toFixed(0)}</p>
               )}
             </div>

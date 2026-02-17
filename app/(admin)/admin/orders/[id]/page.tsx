@@ -1,41 +1,50 @@
-import { notFound } from 'next/navigation'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
-import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft } from 'lucide-react'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
-interface OrderDetailPageProps {
-  params: Promise<{
-    id: string
-  }>
-}
+export default function OrderDetailPage() {
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
+  const [order, setOrder] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
-  const { id } = await params
-  const supabase = await createClient()
+  useEffect(() => {
+    const fetchOrder = async () => {
+      const supabase = createClient()
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`*, items:order_items(*)`)
+        .eq('id', id)
+        .single()
 
-  const { data: order, error } = await supabase
-    .from('orders')
-    .select(`
-      *,
-      items:order_items(*)
-    `)
-    .eq('id', id)
-    .single()
+      if (error || !data) {
+        router.replace('/admin/orders')
+        return
+      }
 
-  if (error) {
-    console.error('Error fetching order:', error)
-    notFound()
-  }
+      setOrder(data)
+      setLoading(false)
+    }
+    fetchOrder()
+  }, [id, router])
 
-  if (!order) {
-    notFound()
+  if (loading || !order) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
 
   return (
     <div className="max-w-4xl px-4 md:px-0">
-      <Link 
-        href="/admin/orders" 
+      <Link
+        href="/admin/orders"
         className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -104,30 +113,18 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
 
         <div>
           <h2 className="font-semibold mb-2">Order Items</h2>
-          
+
           {/* Desktop Table View */}
           <div className="hidden md:block border rounded-lg overflow-hidden">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Product
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Size
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Color
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Quantity
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Price
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                    Subtotal
-                  </th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Product</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Size</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Color</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Quantity</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Price</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Subtotal</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -188,8 +185,3 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
     </div>
   )
 }
-
-
-
-
-

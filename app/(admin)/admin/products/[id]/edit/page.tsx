@@ -1,57 +1,65 @@
-import { notFound } from 'next/navigation'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { ProductForm } from '@/components/admin/ProductForm'
-import { createClient } from '@/lib/supabase/server'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
-interface EditProductPageProps {
-  params: Promise<{
-    id: string
-  }>
-}
+export default function EditProductPage() {
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
+  const [product, setProduct] = useState<any>(null)
+  const [categories, setCategories] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-export default async function EditProductPage({ params }: EditProductPageProps) {
-  const { id } = await params
-  const supabase = await createClient()
+  useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient()
 
-  const { data: product } = await supabase
-    .from('products')
-    .select(`
-      *,
-      images:product_images(*),
-      variants:product_variants(*),
-      product_categories:product_categories(category_id)
-    `)
-    .eq('id', id)
-    .single()
+      const [productRes, categoriesRes] = await Promise.all([
+        supabase
+          .from('products')
+          .select(`
+            *,
+            images:product_images(*),
+            variants:product_variants(*),
+            product_categories:product_categories(category_id)
+          `)
+          .eq('id', id)
+          .single(),
+        supabase.from('categories').select('*').order('name'),
+      ])
 
-  if (!product) {
-    notFound()
-  }
+      if (!productRes.data) {
+        router.replace('/admin/products')
+        return
+      }
 
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name')
+      const productCategoryIds = productRes.data.product_categories?.map((pc: any) => pc.category_id) || []
+      setProduct({
+        ...productRes.data,
+        category_ids: productCategoryIds,
+        category_id: productCategoryIds.length > 0 ? productCategoryIds[0] : productRes.data.category_id,
+      })
+      setCategories(categoriesRes.data || [])
+      setLoading(false)
+    }
+    fetchData()
+  }, [id, router])
 
-  // Extract category IDs from product_categories junction table
-  const productCategoryIds = product.product_categories?.map((pc: any) => pc.category_id) || []
-  
-  // Add category_ids to product object for form
-  const productWithCategories = {
-    ...product,
-    category_ids: productCategoryIds,
-    // Keep category_id for backward compatibility (use first category if exists)
-    category_id: productCategoryIds.length > 0 ? productCategoryIds[0] : product.category_id
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
 
   return (
     <div className="px-4 md:px-0">
       <h1 className="text-2xl font-bold mb-6">Edit Product</h1>
-      <ProductForm product={productWithCategories} categories={categories || []} />
+      <ProductForm product={product} categories={categories} />
     </div>
   )
 }
-
-
-
-
-

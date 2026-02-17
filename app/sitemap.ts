@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .from('categories')
     .select('slug, updated_at')
 
+  // Retail product URLs
   const productUrls =
     products?.map((product) => ({
       url: `${baseUrl}/products/${product.slug}`,
@@ -25,12 +26,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })) || []
 
+  // Wholesale product URLs
+  const wholesaleProductUrls =
+    products?.map((product) => ({
+      url: `${baseUrl}/wholesale/${product.slug}`,
+      lastModified: new Date(product.updated_at),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    })) || []
+
+  // Retail category URLs
   const categoryUrls =
     categories?.map((category) => ({
       url: `${baseUrl}/category/${category.slug}`,
       lastModified: new Date(category.updated_at),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
+    })) || []
+
+  // Wholesale category URLs
+  const wholesaleCategoryUrls =
+    categories?.map((category) => ({
+      url: `${baseUrl}/wholesale/category/${category.slug}`,
+      lastModified: new Date(category.updated_at),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
     })) || []
 
   return [
@@ -46,13 +66,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/wholesale`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.85,
+    },
     ...productUrls,
+    ...wholesaleProductUrls,
     ...categoryUrls,
+    ...wholesaleCategoryUrls,
   ]
 }
-
-
-
-
-
-

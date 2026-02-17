@@ -1,25 +1,39 @@
-import { notFound } from 'next/navigation'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { CategoryForm } from '@/components/admin/CategoryForm'
-import { createClient } from '@/lib/supabase/server'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
-interface EditCategoryPageProps {
-  params: Promise<{
-    id: string
-  }>
-}
+export default function EditCategoryPage() {
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
+  const [category, setCategory] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-export default async function EditCategoryPage({ params }: EditCategoryPageProps) {
-  const { id } = await params
-  const supabase = await createClient()
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const supabase = createClient()
+      const { data } = await supabase.from('categories').select('*').eq('id', id).single()
 
-  const { data: category } = await supabase
-    .from('categories')
-    .select('*')
-    .eq('id', id)
-    .single()
+      if (!data) {
+        router.replace('/admin/categories')
+        return
+      }
 
-  if (!category) {
-    notFound()
+      setCategory(data)
+      setLoading(false)
+    }
+    fetchCategory()
+  }, [id, router])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
 
   return (
@@ -29,8 +43,3 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
     </div>
   )
 }
-
-
-
-
-

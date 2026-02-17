@@ -1,31 +1,36 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/server'
+import { Switch } from '@/components/ui/switch'
+import { createClient } from '@/lib/supabase/client'
 import { EditCategoryButton } from './EditCategoryButton'
-import { revalidatePath } from 'next/cache'
 
 interface CategoryListProps {
   categories: any[]
 }
 
-async function deleteCategory(formData: FormData) {
-  'use server'
-  const categoryId = formData.get('categoryId') as string
-  const supabase = await createClient()
-  
-  const { error } = await supabase
-    .from('categories')
-    .delete()
-    .eq('id', categoryId)
-  
-  if (error) {
-    throw new Error(`Failed to delete category: ${error.message}`)
-  }
-  
-  revalidatePath('/admin/categories')
-}
+export function CategoryList({ categories }: CategoryListProps) {
+  const router = useRouter()
+  const [toggling, setToggling] = useState<string | null>(null)
 
-export async function CategoryList({ categories }: CategoryListProps) {
+  const handleToggleActive = async (categoryId: string, currentStatus: boolean) => {
+    setToggling(categoryId)
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('categories')
+      .update({ is_active: !currentStatus })
+      .eq('id', categoryId)
+
+    if (error) {
+      alert(`Failed to update category status: ${error.message}`)
+    }
+    setToggling(null)
+    router.refresh()
+  }
+
   if (categories.length === 0) {
     return (
       <div className="text-center py-12">
@@ -44,18 +49,11 @@ export async function CategoryList({ categories }: CategoryListProps) {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Slug
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -63,18 +61,22 @@ export async function CategoryList({ categories }: CategoryListProps) {
               <tr key={category.id}>
                 <td className="px-6 py-4 font-medium text-gray-900">{category.name}</td>
                 <td className="px-6 py-4 text-gray-600">{category.slug}</td>
-                <td className="px-6 py-4 text-gray-600">
-                  {category.description || '—'}
+                <td className="px-6 py-4 text-gray-600">{category.description || '—'}</td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={category.is_active !== false} // Default to true if null
+                      onCheckedChange={() => handleToggleActive(category.id, category.is_active !== false)}
+                      disabled={toggling === category.id}
+                    />
+                    <span className="text-sm text-gray-600">
+                      {category.is_active !== false ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     <EditCategoryButton categoryId={category.id} />
-                    <form action={deleteCategory}>
-                      <input type="hidden" name="categoryId" value={category.id} />
-                      <Button variant="destructive" size="sm" type="submit">
-                        Delete
-                      </Button>
-                    </form>
                   </div>
                 </td>
               </tr>
@@ -90,6 +92,21 @@ export async function CategoryList({ categories }: CategoryListProps) {
             <div>
               <div className="font-semibold text-lg mb-1 text-gray-900">{category.name}</div>
               <div className="text-sm text-gray-500 mb-2">/{category.slug}</div>
+
+              <div className="flex items-center gap-3 mb-2 bg-gray-50 p-2 rounded-md w-fit">
+                <span className="text-sm font-medium text-gray-700">Status:</span>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={category.is_active !== false}
+                    onCheckedChange={() => handleToggleActive(category.id, category.is_active !== false)}
+                    disabled={toggling === category.id}
+                  />
+                  <span className={`text-sm font-medium ${category.is_active !== false ? 'text-green-600' : 'text-gray-500'}`}>
+                    {category.is_active !== false ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+              </div>
+
               {category.description && (
                 <div className="text-sm text-gray-600">{category.description}</div>
               )}
@@ -98,12 +115,6 @@ export async function CategoryList({ categories }: CategoryListProps) {
               <div className="flex-1">
                 <EditCategoryButton categoryId={category.id} className="w-full" />
               </div>
-              <form action={deleteCategory} className="flex-1">
-                <input type="hidden" name="categoryId" value={category.id} />
-                <Button variant="destructive" size="sm" type="submit" className="w-full">
-                  Delete
-                </Button>
-              </form>
             </div>
           </div>
         ))}
@@ -111,9 +122,3 @@ export async function CategoryList({ categories }: CategoryListProps) {
     </>
   )
 }
-
-
-
-
-
-

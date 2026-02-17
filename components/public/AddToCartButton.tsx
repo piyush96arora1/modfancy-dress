@@ -5,19 +5,22 @@ import { useCart } from '@/lib/store/cart'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Check } from 'lucide-react'
-import type { ProductWithDetails, ProductVariant } from '@/types/database'
+import type { ProductWithDetails, ProductVariant, PricingMode } from '@/types/database'
+import { getProductPrice, getVariantPrice, getSavingsPercent, formatPrice } from '@/lib/utils/pricing'
 
 interface AddToCartButtonProps {
   product: ProductWithDetails
   sizes: string[]
   colors: string[]
   variants: ProductVariant[]
+  pricingMode?: PricingMode
+  wholesaleDiscountPct?: number
 }
 
-export function AddToCartButton({ product, sizes, colors, variants }: AddToCartButtonProps) {
+export function AddToCartButton({ product, sizes, colors, variants, pricingMode = 'retail', wholesaleDiscountPct = 30 }: AddToCartButtonProps) {
   const [selectedSize, setSelectedSize] = useState<string>('')
   const [selectedColor, setSelectedColor] = useState<string>('')
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(pricingMode === 'wholesale' ? 10 : 1)
   const [adding, setAdding] = useState(false)
   const [justAdded, setJustAdded] = useState(false)
   const { addItem } = useCart()
@@ -31,7 +34,21 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
           (!selectedSize || v.size === selectedSize) &&
           (!selectedColor || v.color === selectedColor)
       )
-      if (variant?.price_override !== undefined && variant.price_override !== null) {
+      if (variant) {
+        return getVariantPrice(product, variant, pricingMode, wholesaleDiscountPct)
+      }
+    }
+    return getProductPrice(product, pricingMode, wholesaleDiscountPct)
+  }
+
+  const getRetailPrice = () => {
+    if (selectedSize || selectedColor) {
+      const variant = variants.find(
+        (v) =>
+          (!selectedSize || v.size === selectedSize) &&
+          (!selectedColor || v.color === selectedColor)
+      )
+      if (variant?.price_override != null) {
         return variant.price_override
       }
     }
@@ -39,6 +56,8 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
   }
 
   const currentPrice = getCurrentPrice()
+  const retailPrice = getRetailPrice()
+  const savingsPercent = pricingMode === 'wholesale' ? getSavingsPercent(retailPrice, currentPrice) : 0
 
   const handleAddToCart = async () => {
     setAdding(true)
@@ -55,14 +74,12 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
         )
       }
 
-      const price = variant?.price_override || product.price || 0
-
       addItem({
         productId: product.id,
         variantId: variant?.id,
         name: product.name,
         image: primaryImage?.image_url || '',
-        price,
+        price: currentPrice,
         quantity,
         size: selectedSize || undefined,
         color: selectedColor || undefined,
@@ -70,7 +87,7 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
 
       setSelectedSize('')
       setSelectedColor('')
-      setQuantity(1)
+      setQuantity(pricingMode === 'wholesale' ? 10 : 1)
 
       // Show inline success instead of alert
       setJustAdded(true)
@@ -84,7 +101,20 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
     <div className="space-y-5">
       {/* Price */}
       <div>
-        <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">₹{currentPrice.toFixed(0)}</p>
+        <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+          {formatPrice(currentPrice)}
+          {pricingMode === 'wholesale' && (
+            <span className="text-sm font-normal text-[#9A9A9A] ml-1">/piece</span>
+          )}
+        </p>
+        {pricingMode === 'wholesale' && retailPrice > currentPrice && (
+          <div className="flex items-center gap-2 mt-1">
+            <p className="text-sm text-[#9A9A9A] line-through">{formatPrice(retailPrice)}</p>
+            <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-semibold">
+              Save {savingsPercent}%
+            </span>
+          </div>
+        )}
         {selectedSize && (
           <p className="text-xs text-[#9A9A9A] mt-1">Price for size: {selectedSize}</p>
         )}
@@ -100,8 +130,8 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
                 key={size}
                 onClick={() => setSelectedSize(selectedSize === size ? '' : size)}
                 className={`px-4 py-2 text-sm rounded-lg border transition-all duration-200 font-medium ${selectedSize === size
-                    ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
-                    : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
+                  ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
+                  : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
                   }`}
               >
                 {size}
@@ -121,8 +151,8 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
                 key={color}
                 onClick={() => setSelectedColor(selectedColor === color ? '' : color)}
                 className={`px-4 py-2 text-sm rounded-lg border transition-all duration-200 font-medium ${selectedColor === color
-                    ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
-                    : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
+                  ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
+                  : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
                   }`}
               >
                 {color}
@@ -156,6 +186,11 @@ export function AddToCartButton({ product, sizes, colors, variants }: AddToCartB
             +
           </button>
         </div>
+        {pricingMode === 'wholesale' && (
+          <p className="text-xs text-[#6B6B6B] mt-1.5">
+            Total: <strong className="text-[#1B2A4A]">{formatPrice(currentPrice * quantity)}</strong> for {quantity} pieces
+          </p>
+        )}
       </div>
 
       {/* Add to Cart Button */}

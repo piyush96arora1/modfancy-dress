@@ -7,6 +7,7 @@ import { EventBanner } from '@/components/public/EventBanner'
 import { TickerStrip } from '@/components/public/TickerStrip'
 import { AssetPreloader } from '@/components/public/AssetPreloader'
 import { Button } from '@/components/ui/button'
+import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
@@ -59,6 +60,7 @@ export default async function HomePage() {
   const { data: categories } = await supabase
     .from('categories')
     .select('*')
+    .eq('is_active', true)
     .order('name')
 
   const breadcrumbSchema = BreadcrumbSchema([
@@ -110,9 +112,9 @@ export default async function HomePage() {
         )}
 
         {/* Hero Section */}
-        <section className={`relative text-center overflow-hidden -mx-4 md:mx-0 rounded-xl fade-in ${hasEventBanner
-            ? 'py-6 md:py-8 mb-6 md:mb-8 mt-2 md:mt-3'
-            : 'py-10 md:py-16 lg:py-20 mb-8 md:mb-12'
+        <section className={`relative text-center -mx-4 md:mx-0 rounded-xl fade-in ${hasEventBanner
+          ? 'py-6 md:py-8 mb-6 md:mb-8 mt-2 md:mt-3'
+          : 'py-10 md:py-16 lg:py-20 mb-8 md:mb-12'
           }`}>
           {/* Warm gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#FAFAF8] via-[#F5F3F0] to-[#F0EDE8] rounded-xl" />
@@ -121,8 +123,8 @@ export default async function HomePage() {
           <div className={`relative z-10 max-w-3xl mx-auto px-4 ${hasEventBanner ? 'max-w-2xl' : ''
             }`}>
             <h1 className={`font-[family-name:var(--font-outfit)] font-bold text-[#1B2A4A] leading-tight ${hasEventBanner
-                ? 'text-2xl md:text-3xl mb-3'
-                : 'text-3xl md:text-5xl lg:text-[3.5rem] mb-4 md:mb-5'
+              ? 'text-2xl md:text-3xl mb-3'
+              : 'text-3xl md:text-5xl lg:text-[3.5rem] mb-4 md:mb-5'
               }`}>
               Discover Stunning
               <span className="block text-[#C8956C]">Fancy Dress Costumes</span>
@@ -187,7 +189,10 @@ export default async function HomePage() {
         {/* Featured Products */}
         <section className="mb-20 md:mb-16 fade-in">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 md:mb-8">
-            <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">New Arrivals</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">New Arrivals</h2>
+              <PricingModeToggle currentMode="retail" />
+            </div>
             <Link
               href="/products"
               prefetch={true}

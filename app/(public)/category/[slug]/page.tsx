@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
+import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
@@ -18,8 +19,9 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const supabase = await createClient()
   const { data: category } = await supabase
     .from('categories')
-    .select('name, description')
+    .select('id, name, description')
     .eq('slug', slug)
+    .eq('is_active', true)
     .single()
 
   if (!category) {
@@ -43,6 +45,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     .from('categories')
     .select('*')
     .eq('slug', slug)
+    .eq('is_active', true)
     .single()
 
   if (!category) {
@@ -101,13 +104,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
         {/* Category Header */}
         <div className="mb-6 md:mb-8 p-5 md:p-6 rounded-xl bg-[#F5F3F0]">
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-1">{category.name}</h1>
-          {category.description && (
-            <p className="text-sm text-[#6B6B6B] leading-relaxed">{category.description}</p>
-          )}
-          {products && (
-            <p className="text-xs text-[#9A9A9A] mt-2">{products.length} {products.length === 1 ? 'product' : 'products'}</p>
-          )}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-1">{category.name}</h1>
+              {category.description && (
+                <p className="text-sm text-[#6B6B6B] leading-relaxed">{category.description}</p>
+              )}
+              {products && (
+                <p className="text-xs text-[#9A9A9A] mt-2">{products.length} {products.length === 1 ? 'product' : 'products'}</p>
+              )}
+            </div>
+            <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
+          </div>
         </div>
 
         {/* Products Grid */}

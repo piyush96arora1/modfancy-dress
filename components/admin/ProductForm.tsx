@@ -44,6 +44,12 @@ const productSchema = z.object({
   category_id: z.string().optional().nullable(), // Keep for backward compatibility
   category_ids: z.array(z.string()).optional(), // New: multiple categories
   price: z.number().optional().nullable(),
+  wholesale_price: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
+    if (val === '' || val === null || val === undefined) return null
+    if (typeof val === 'number') return val
+    const num = Number(val)
+    return isNaN(num) ? null : num
+  }).optional().nullable(),
   quantity: z.number().optional().nullable(),
   size: z.string().optional().nullable(),
   is_active: z.boolean(),
@@ -93,6 +99,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       category_id: product?.category_id || null,
       category_ids: product?.category_ids || [],
       price: product?.price || null,
+      wholesale_price: product?.wholesale_price || null,
       quantity: product?.quantity || null,
       size: product?.size || null,
       is_active: product?.is_active ?? true,
@@ -208,6 +215,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         description: data.description || null,
         category_id: data.category_ids && data.category_ids.length > 0 ? data.category_ids[0] : null, // Keep first category for backward compatibility
         price: data.price || null,
+        wholesale_price: data.wholesale_price || null,
         quantity: data.quantity || null,
         size: data.size || null,
         is_active: data.is_active,
@@ -517,7 +525,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="price">Price <span className="text-gray-400 font-normal">(optional)</span></Label>
+          <Label htmlFor="price">Retail Price <span className="text-gray-400 font-normal">(optional)</span></Label>
           <Input
             id="price"
             type="number"
@@ -526,6 +534,23 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             placeholder="0.00"
           />
         </div>
+        <div>
+          <Label htmlFor="wholesale_price">
+            Wholesale Price <span className="text-gray-400 font-normal">(optional)</span>
+          </Label>
+          <Input
+            id="wholesale_price"
+            type="number"
+            step="0.01"
+            {...register('wholesale_price', { setValueAs: (v) => v === '' ? null : Number(v) })}
+            placeholder={watch('price') ? `Auto: ₹${Math.round((watch('price') || 0) * 0.7)} (30% off)` : 'Enter wholesale price'}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Leave empty to auto-calculate (30% off retail). Enter a value to override.
+          </p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="quantity">Default Quantity <span className="text-gray-400 font-normal">(optional)</span></Label>
           <Input

@@ -14,6 +14,7 @@ export type Product = {
   description: string | null
   category_id: string | null
   price: number | null
+  wholesale_price: number | null
   quantity: number | null
   size: string | null
   is_active: boolean
@@ -39,9 +40,12 @@ export type ProductVariant = {
   color: string | null
   quantity: number | null
   price_override: number | null
+  wholesale_price_override: number | null
   created_at: string
   updated_at: string
 }
+
+export type PricingMode = 'retail' | 'wholesale'
 
 export type Order = {
   id: string
