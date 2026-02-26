@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ChevronDown, ChevronUp, X } from 'lucide-react'
+import { usePricingMode } from '@/lib/context/PricingModeContext'
 
 interface CategoryFilterProps {
   categories: Array<{ id: string; name: string; slug: string }>
@@ -14,6 +15,9 @@ interface CategoryFilterProps {
 export function CategoryFilter({ categories, currentCategory, searchQuery }: CategoryFilterProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const searchParams = useSearchParams()
+  const { mode } = usePricingMode()
+
+  const basePath = mode === 'wholesale' ? '/wholesale' : '/products'
 
   // Close expanded section whenever URL params change (i.e., a category was clicked)
   useEffect(() => {
@@ -25,14 +29,14 @@ export function CategoryFilter({ categories, currentCategory, searchQuery }: Cat
     if (searchQuery) params.set('search', searchQuery)
     if (catSlug) params.set('category', catSlug)
     const queryString = params.toString()
-    return queryString ? `/products?${queryString}` : '/products'
+    return queryString ? `${basePath}?${queryString}` : basePath
   }
 
   const clearCategory = () => {
     const params = new URLSearchParams()
     if (searchQuery) params.set('search', searchQuery)
     const queryString = params.toString()
-    return queryString ? `/products?${queryString}` : '/products'
+    return queryString ? `${basePath}?${queryString}` : basePath
   }
 
   // Show first 6 categories, rest expandable

@@ -4,6 +4,7 @@ import { useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { usePricingMode } from '@/lib/context/PricingModeContext'
 
 // Auto-map category names to emojis
 function getCategoryEmoji(name: string): string {
@@ -43,11 +44,14 @@ interface CategoryCardProps {
 export function CategoryCard({ category }: CategoryCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const { mode } = usePricingMode()
+
+  const basePath = mode === 'wholesale' ? '/wholesale/category' : '/category'
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     startTransition(() => {
-      router.push(`/category/${category.slug}`)
+      router.push(`${basePath}/${category.slug}`)
     })
   }
 
@@ -55,7 +59,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
 
   return (
     <Link
-      href={`/category/${category.slug}`}
+      href={`${basePath}/${category.slug}`}
       onClick={handleClick}
       className="flex-shrink-0 w-24 md:w-auto flex flex-col items-center gap-2 p-3 md:p-4 rounded-xl bg-white border border-[#E8E5E0] hover:border-[#C8956C]/40 transition-all duration-300 hover:-translate-y-0.5 relative group"
       style={{ boxShadow: 'var(--shadow-xs)' }}
