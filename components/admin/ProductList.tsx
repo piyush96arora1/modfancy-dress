@@ -142,57 +142,54 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
         </table>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
+      {/* Mobile Card View (2 column grid) */}
+      <div className="md:hidden grid grid-cols-2 gap-3 pb-4">
         {products.map((product) => {
           const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
           return (
-            <div key={product.id} className="bg-white rounded-lg border p-4 space-y-3">
-              <div className="flex gap-4">
+            <div key={product.id} className="bg-white border rounded-xl overflow-hidden flex flex-col shadow-sm">
+              {/* Image Top */}
+              <div className="relative aspect-square w-full bg-gray-100 flex-shrink-0 border-b">
                 {primaryImage ? (
-                  <div className="relative w-20 h-20 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                    <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="80px" />
-                  </div>
+                  <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="50vw" />
                 ) : (
-                  <div className="w-20 h-20 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400 flex-shrink-0">No Image</div>
+                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-lg mb-1 text-gray-900">{product.name}</div>
-                  <div className="text-sm mb-2">
-                    {product.categories && product.categories.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {product.categories.map((pc: any, idx: number) => (
-                          <span key={idx} className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
-                            {pc.category?.name || '—'}
-                          </span>
-                        ))}
-                      </div>
-                    ) : product.category?.name ? (
-                      <span className="text-xs px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">{product.category.name}</span>
-                    ) : (
-                      <span className="text-gray-500">No category</span>
-                    )}
-                  </div>
-                  {product.price && (
-                    <div className="font-bold text-lg text-gray-900">₹{product.price.toFixed(2)}</div>
-                  )}
-                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t">
-                {showDeleted ? (
-                  <span className="px-2 py-1 text-xs rounded bg-red-100 text-red-800">Deleted</span>
-                ) : (
-                  <span className={`px-2 py-1 text-xs rounded ${product.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                    {product.is_active ? 'Active' : 'Inactive'}
-                  </span>
+              {/* Content Middle */}
+              <div className="p-3 flex-1 flex flex-col min-w-0">
+                <div className="font-semibold text-sm mb-1 text-gray-900 line-clamp-2 leading-tight">{product.name}</div>
+                <div className="mb-2">
+                  {product.categories && product.categories.length > 0 ? (
+                    <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full">
+                      {product.categories[0].category?.name || '—'}
+                    </span>
+                  ) : product.category?.name ? (
+                    <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full">{product.category.name}</span>
+                  ) : null}
+                </div>
+                {product.price && (
+                  <div className="font-bold text-sm text-gray-900 mt-auto pt-1">₹{product.price.toFixed(0)}</div>
                 )}
+              </div>
 
-                <div className="flex gap-2">
+              {/* Actions Bottom */}
+              <div className="px-3 py-2 bg-gray-50 border-t flex flex-col gap-2">
+                <div className="flex justify-between items-center w-full">
+                  {showDeleted ? (
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-red-100 text-red-800">Deleted</span>
+                  ) : (
+                    <span className={`px-1.5 py-0.5 text-[10px] rounded ${product.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-800'}`}>
+                      {product.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-1">
                   {showDeleted ? (
                     <Button
                       variant="outline"
-                      size="sm"
+                      className="h-8 text-[10px] px-0 w-full col-span-2"
                       disabled={acting === product.id}
                       onClick={() => handleRestore(product.id, product.name)}
                     >
@@ -200,10 +197,12 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
                     </Button>
                   ) : (
                     <>
-                      <EditProductButton productId={product.id} />
+                      <div className="w-full">
+                        <EditProductButton productId={product.id} />
+                      </div>
                       <Button
                         variant="destructive"
-                        size="sm"
+                        className="h-8 text-[10px] px-0 w-full"
                         disabled={acting === product.id}
                         onClick={() => handleDelete(product.id, product.name)}
                       >

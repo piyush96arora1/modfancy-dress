@@ -47,9 +47,10 @@ export default async function HomePage() {
     .from('products')
     .select(`
       *,
-      category:categories(*),
-      images:product_images(*),
-      variants:product_variants(*)
+      category:categories(name),
+      categories:product_categories(category:categories(name)),
+      images:product_images(image_url, is_primary),
+      variants:product_variants(price_override)
     `)
     .eq('is_active', true)
     .is('deleted_at', null)

@@ -14,8 +14,8 @@ interface PricingModeToggleProps {
 export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeToggleProps) {
     const { setMode } = usePricingMode()
 
-    const retailHref = basePath ? `/products${basePath}` : '/products'
-    const wholesaleHref = basePath ? `/wholesale${basePath}` : '/wholesale'
+    const retailHref = basePath?.startsWith('/category') ? basePath : (basePath ? `/products${basePath}` : '/products')
+    const wholesaleHref = basePath?.startsWith('/category') ? `/wholesale${basePath}` : (basePath ? `/wholesale${basePath}` : '/wholesale')
 
     return (
         <div className="inline-flex items-center rounded-xl border border-[#E8E5E0] p-1 bg-white" style={{ boxShadow: 'var(--shadow-xs)' }}>

@@ -12,7 +12,7 @@ export function FloatingEnquiryBadge() {
     return (
         <Link
             href="/wholesale/enquiry"
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#1B2A4A] text-white pl-4 pr-5 py-3 rounded-full font-medium text-sm hover:bg-[#2a3d63] transition-all duration-300 hover:scale-105"
+            className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 flex items-center gap-2 bg-[#1B2A4A] text-white pl-4 pr-5 py-3 rounded-full font-medium text-sm hover:bg-[#2a3d63] transition-all duration-300 hover:scale-105"
             style={{ boxShadow: '0 8px 32px rgba(27, 42, 74, 0.35)' }}
         >
             <Package className="w-4 h-4" />
