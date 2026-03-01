@@ -84,6 +84,11 @@ export function EventBanner({ banners }: EventBannerProps) {
         </div>
       </div>
 
+      {/* Subtle bottom gradient to ensure dots are always visible over light images */}
+      {banners.length > 1 && (
+        <div className="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-0" />
+      )}
+
       {/* Dots Indicator (Only show if > 1 banner) */}
       {banners.length > 1 && (
         <div className="absolute bottom-2 md:bottom-3 left-0 right-0 flex justify-center gap-0 z-10 px-4">
@@ -92,14 +97,14 @@ export function EventBanner({ banners }: EventBannerProps) {
               key={index}
               onClick={() => emblaApi?.scrollTo(index)}
               // Outer button serves as the large transparent touch target
-              className="p-1.5 outline-none flex items-center justify-center cursor-pointer"
+              className="p-1.5 outline-none flex items-center justify-center cursor-pointer drop-shadow-md"
               aria-label={`Go to slide ${index + 1}`}
             >
               {/* Inner div is the strictly small visual dot */}
               <div
                 className={`rounded-full transition-all duration-300 ${index === selectedIndex
-                  ? 'h-[4px] w-[16px] md:h-[8px] md:w-[24px] bg-white'
-                  : 'h-[4px] w-[4px] md:h-[8px] md:w-[8px] bg-white/50 hover:bg-white/75'
+                  ? 'h-[5px] w-[18px] md:h-[8px] md:w-[24px] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.5)]'
+                  : 'h-[5px] w-[5px] md:h-[8px] md:w-[8px] bg-white/70 hover:bg-white shadow-[0_1px_3px_rgba(0,0,0,0.3)]'
                   }`}
               />
             </button>
