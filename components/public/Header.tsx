@@ -36,10 +36,9 @@ export function Header() {
       <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-[family-name:var(--font-outfit)] text-xl md:text-2xl font-bold text-[#1B2A4A] tracking-tight">
-              <span className="md:hidden">MFD</span>
-              <span className="hidden md:inline">Mod Fancy Dress</span>
+          <Link href="/" className="flex items-center gap-2 group truncate pr-2">
+            <span className="font-[family-name:var(--font-outfit)] text-[1.1rem] sm:text-lg md:text-2xl font-bold text-[#1B2A4A] tracking-tight truncate">
+              Mod Fancy Dress
             </span>
           </Link>
 

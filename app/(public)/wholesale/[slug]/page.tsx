@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
+import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
@@ -143,33 +143,8 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                     {/* Images */}
                     <div>
-                        {primaryImage && (
-                            <div className="aspect-square relative bg-[#F5F3F0] rounded-xl overflow-hidden mb-3" style={{ boxShadow: 'var(--shadow-md)' }}>
-                                <Image
-                                    src={primaryImage.image_url}
-                                    alt={productData.name}
-                                    fill
-                                    className="object-cover"
-                                    priority
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                            </div>
-                        )}
-                        {otherImages.length > 0 && (
-                            <div className="grid grid-cols-4 gap-2">
-                                {otherImages.map((img) => (
-                                    <div key={img.id} className="aspect-square relative bg-[#F5F3F0] rounded-lg overflow-hidden border border-[#E8E5E0] hover:border-[#C8956C]/50 transition-colors cursor-pointer">
-                                        <Image
-                                            src={img.image_url}
-                                            alt={`${productData.name} - Image ${img.order}`}
-                                            fill
-                                            className="object-cover"
-                                            sizes="(max-width: 768px) 25vw, 12.5vw"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        {/* We don't guarantee primaryImage, but productData.images should have images. Passing all available images. */}
+                        <ProductGallery images={productData.images || []} productName={productData.name} />
                     </div>
 
                     {/* Product Info */}

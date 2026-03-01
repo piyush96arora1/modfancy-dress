@@ -23,6 +23,18 @@ export type Product = {
   updated_at: string
 }
 
+export type Banner = {
+  id: string
+  desktop_image_url: string
+  mobile_image_url: string
+  link_url: string | null
+  alt_text: string | null
+  sort_order: number
+  is_enabled: boolean
+  created_at: string
+  updated_at: string
+}
+
 export type ProductImage = {
   id: string
   product_id: string

@@ -22,7 +22,7 @@ export const metadata = generatePageMetadata({
 export default async function HomePage() {
   const supabase = await createClient()
 
-  // Fetch banner settings from database
+  // Fetch global settings (for Ticker)
   const { data: bannerSettings } = await supabase
     .from('banner_settings')
     .select('*')
@@ -30,17 +30,18 @@ export default async function HomePage() {
     .limit(1)
     .single()
 
-  const hasEventBanner =
-    bannerSettings?.is_enabled &&
-    bannerSettings?.desktop_image_url &&
-    bannerSettings?.mobile_image_url
+  // Fetch active carousel banners
+  const { data: banners } = await supabase
+    .from('banners')
+    .select('*')
+    .eq('is_enabled', true)
+    .order('sort_order', { ascending: true })
 
-  const desktopBannerUrl = bannerSettings?.desktop_image_url || null
-  const mobileBannerUrl = bannerSettings?.mobile_image_url || null
-  const bannerLinkUrl = bannerSettings?.link_url || null
-  const bannerAltText = bannerSettings?.alt_text || 'Upcoming Event'
   const tickerText = bannerSettings?.ticker_text || null
   const tickerEnabled = bannerSettings?.ticker_enabled || false
+
+  // Determine if we should show the carousel (at least one enabled banner exists)
+  const hasEventBanner = banners && banners.length > 0
 
   // Fetch featured products (active products with images, not deleted)
   const { data: products } = await supabase
@@ -78,8 +79,8 @@ export default async function HomePage() {
         <AssetPreloader
           products={products as ProductWithDetails[]}
           bannerImages={{
-            desktop: desktopBannerUrl,
-            mobile: mobileBannerUrl
+            desktop: banners?.[0]?.desktop_image_url || null,
+            mobile: banners?.[0]?.mobile_image_url || null
           }}
         />
       )}
@@ -99,15 +100,10 @@ export default async function HomePage() {
         )}
 
         {/* Event Banner */}
-        {hasEventBanner && desktopBannerUrl && mobileBannerUrl && (
+        {hasEventBanner && (
           <section className={`-mx-4 md:mx-0 ${tickerEnabled && tickerText ? 'mt-3 md:mt-4' : ''}`}>
             <div className="px-4 md:px-0">
-              <EventBanner
-                desktopImage={desktopBannerUrl}
-                mobileImage={mobileBannerUrl}
-                linkUrl={bannerLinkUrl || undefined}
-                alt={bannerAltText}
-              />
+              <EventBanner banners={banners} />
             </div>
           </section>
         )}

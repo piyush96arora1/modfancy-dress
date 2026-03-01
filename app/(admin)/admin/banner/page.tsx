@@ -7,21 +7,32 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export default function AdminBannerPage() {
   const [bannerSettings, setBannerSettings] = useState<any>(null)
+  const [banners, setBanners] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchBanner = async () => {
+    const fetchBanners = async () => {
       const supabase = createClient()
-      const { data } = await supabase
+
+      // Fetch singleton settings (for Ticker)
+      const { data: settingsData } = await supabase
         .from('banner_settings')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(1)
         .single()
-      setBannerSettings(data || null)
+
+      // Fetch multiple banners (for Carousel)
+      const { data: bannersData } = await supabase
+        .from('banners')
+        .select('*')
+        .order('sort_order', { ascending: true })
+
+      setBannerSettings(settingsData || null)
+      setBanners(bannersData || [])
       setLoading(false)
     }
-    fetchBanner()
+    fetchBanners()
   }, [])
 
   if (loading) {
@@ -37,7 +48,7 @@ export default function AdminBannerPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Banner Management</h1>
       </div>
-      <BannerManagement initialSettings={bannerSettings} />
+      <BannerManagement initialSettings={bannerSettings} initialBanners={banners} />
     </div>
   )
 }

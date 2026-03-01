@@ -1,40 +1,44 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Upload, X, Save, Power } from 'lucide-react'
+import { Upload, X, Save, Plus, ArrowUp, ArrowDown, Settings2 } from 'lucide-react'
 import Image from 'next/image'
+import type { Banner } from '@/types/database'
 
 interface BannerSettings {
   id?: string
-  is_enabled: boolean
-  desktop_image_url: string | null
-  mobile_image_url: string | null
-  link_url: string | null
-  alt_text: string | null
   ticker_text: string | null
   ticker_enabled: boolean
 }
 
 interface BannerManagementProps {
   initialSettings: BannerSettings | null
+  initialBanners: Banner[]
 }
 
-export function BannerManagement({ initialSettings }: BannerManagementProps) {
-  const [settings, setSettings] = useState<BannerSettings>({
-    is_enabled: initialSettings?.is_enabled || false,
-    desktop_image_url: initialSettings?.desktop_image_url || null,
-    mobile_image_url: initialSettings?.mobile_image_url || null,
-    link_url: initialSettings?.link_url || null,
-    alt_text: initialSettings?.alt_text || 'Upcoming Event',
+export function BannerManagement({ initialSettings, initialBanners }: BannerManagementProps) {
+  const [tickerSettings, setTickerSettings] = useState<BannerSettings>({
+    id: initialSettings?.id,
     ticker_text: initialSettings?.ticker_text || null,
     ticker_enabled: initialSettings?.ticker_enabled || false,
   })
 
-  const [uploadingDesktop, setUploadingDesktop] = useState(false)
-  const [uploadingMobile, setUploadingMobile] = useState(false)
-  const [saving, setSaving] = useState(false)
+  // State for multiple banners
+  const [banners, setBanners] = useState<Banner[]>(
+    initialBanners.length > 0
+      ? initialBanners
+      : [] // Start empty if none exist
+  )
+
+  const [savingTicker, setSavingTicker] = useState(false)
+  const [savingBanners, setSavingBanners] = useState(false)
+  const [uploadingState, setUploadingState] = useState<{ id: string | 'new', type: 'desktop' | 'mobile' } | null>(null)
+
+  // State for a "new" draft banner before saving to DB
+  const [newBannerDraft, setNewBannerDraft] = useState<Partial<Banner> | null>(null)
+
   const desktopInputRef = useRef<HTMLInputElement>(null)
   const mobileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
@@ -42,10 +46,10 @@ export function BannerManagement({ initialSettings }: BannerManagementProps) {
   const handleUpload = async (
     file: File,
     type: 'desktop' | 'mobile',
-    setUploading: (value: boolean) => void
+    bannerId: string | 'new'
   ) => {
     try {
-      setUploading(true)
+      setUploadingState({ id: bannerId, type })
 
       const fileExt = file.name.split('.').pop()
       const fileName = `banner-${type}-${Date.now()}.${fileExt}`
@@ -63,273 +67,383 @@ export function BannerManagement({ initialSettings }: BannerManagementProps) {
         data: { publicUrl },
       } = supabase.storage.from('product-images').getPublicUrl(filePath)
 
-      if (type === 'desktop') {
-        setSettings((prev) => ({ ...prev, desktop_image_url: publicUrl }))
+      if (bannerId === 'new') {
+        setNewBannerDraft((prev) => ({
+          ...prev,
+          ...(type === 'desktop' ? { desktop_image_url: publicUrl } : { mobile_image_url: publicUrl })
+        }))
       } else {
-        setSettings((prev) => ({ ...prev, mobile_image_url: publicUrl }))
+        setBanners(prev => prev.map(b =>
+          b.id === bannerId
+            ? { ...b, [type === 'desktop' ? 'desktop_image_url' : 'mobile_image_url']: publicUrl }
+            : b
+        ))
       }
     } catch (error: any) {
       alert(`Error uploading ${type} image: ${error.message}`)
     } finally {
-      setUploading(false)
+      setUploadingState(null)
     }
   }
 
-  const handleDesktopUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return
-    await handleUpload(e.target.files[0], 'desktop', setUploadingDesktop)
-    if (desktopInputRef.current) {
-      desktopInputRef.current.value = ''
-    }
-  }
-
-  const handleMobileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return
-    await handleUpload(e.target.files[0], 'mobile', setUploadingMobile)
-    if (mobileInputRef.current) {
-      mobileInputRef.current.value = ''
-    }
-  }
-
-  const handleSave = async () => {
+  const handleSaveTicker = async () => {
     try {
-      setSaving(true)
-
+      setSavingTicker(true)
       const updateData = {
-        is_enabled: settings.is_enabled,
-        desktop_image_url: settings.desktop_image_url,
-        mobile_image_url: settings.mobile_image_url,
-        link_url: settings.link_url || null,
-        alt_text: settings.alt_text || 'Upcoming Event',
-        ticker_text: settings.ticker_text || null,
-        ticker_enabled: settings.ticker_enabled,
+        ticker_text: tickerSettings.ticker_text || null,
+        ticker_enabled: tickerSettings.ticker_enabled,
         updated_at: new Date().toISOString(),
       }
 
-      if (initialSettings?.id) {
+      if (tickerSettings.id) {
         const { error } = await supabase
           .from('banner_settings')
           .update(updateData)
-          .eq('id', initialSettings.id)
-
+          .eq('id', tickerSettings.id)
         if (error) throw error
       } else {
         const { error } = await supabase.from('banner_settings').insert(updateData)
+        if (error) throw error
+      }
+      alert('Global ticker settings saved successfully!')
+    } catch (error: any) {
+      alert('Error saving ticker: ' + error.message)
+    } finally {
+      setSavingTicker(false)
+    }
+  }
 
+  const handleSaveBanners = async () => {
+    try {
+      setSavingBanners(true)
+
+      // Update existing banners
+      if (banners.length > 0) {
+        const { error } = await supabase
+          .from('banners')
+          .upsert(
+            banners.map((b, index) => ({
+              ...b,
+              sort_order: index, // Enforce current visual order
+              updated_at: new Date().toISOString()
+            }))
+          )
         if (error) throw error
       }
 
-      alert('Banner settings saved successfully!')
+      // Add new banner if draft exists and is complete
+      if (newBannerDraft && newBannerDraft.desktop_image_url && newBannerDraft.mobile_image_url) {
+        const { error } = await supabase.from('banners').insert({
+          desktop_image_url: newBannerDraft.desktop_image_url,
+          mobile_image_url: newBannerDraft.mobile_image_url,
+          link_url: newBannerDraft.link_url || null,
+          alt_text: newBannerDraft.alt_text || 'Promotional Banner',
+          sort_order: banners.length,
+          is_enabled: newBannerDraft.is_enabled ?? true
+        })
+        if (error) throw error
+        setNewBannerDraft(null)
+      } else if (newBannerDraft) {
+        alert("Please upload both Desktop and Mobile images for the new banner before saving.")
+        setSavingBanners(false)
+        return
+      }
+
+      alert('Banners saved successfully!')
       window.location.reload()
     } catch (error: any) {
-      alert('Error saving banner settings: ' + error.message)
+      alert('Error saving banners: ' + error.message)
     } finally {
-      setSaving(false)
+      setSavingBanners(false)
     }
   }
 
-  const removeImage = (type: 'desktop' | 'mobile') => {
-    if (type === 'desktop') {
-      setSettings((prev) => ({ ...prev, desktop_image_url: null }))
-    } else {
-      setSettings((prev) => ({ ...prev, mobile_image_url: null }))
+  const handleDeleteBanner = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this banner?")) return
+    try {
+      const { error } = await supabase.from('banners').delete().eq('id', id)
+      if (error) throw error
+      setBanners(prev => prev.filter(b => b.id !== id))
+    } catch (error: any) {
+      alert("Error deleting banner: " + error.message)
     }
+  }
+
+  const moveBanner = (index: number, direction: 'up' | 'down') => {
+    const newBanners = [...banners]
+    if (direction === 'up' && index > 0) {
+      const temp = newBanners[index]
+      newBanners[index] = newBanners[index - 1]
+      newBanners[index - 1] = temp
+    } else if (direction === 'down' && index < newBanners.length - 1) {
+      const temp = newBanners[index]
+      newBanners[index] = newBanners[index + 1]
+      newBanners[index + 1] = temp
+    }
+    setBanners(newBanners)
+  }
+
+  const updateBannerField = (id: string, field: keyof Banner, value: any) => {
+    setBanners(prev => prev.map(b => b.id === id ? { ...b, [field]: value } : b))
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
-      {/* Ticker Strip Section */}
-      <div className="space-y-4 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-        <div className="flex items-center justify-between">
+    <div className="space-y-8">
+      {/* GLOBAL SETTINGS (TICKER) */}
+      <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+        <div className="flex items-center gap-2 mb-4 pb-4 border-b">
+          <Settings2 className="w-5 h-5 text-gray-500" />
+          <h2 className="text-xl font-bold text-gray-900">Global Settings</h2>
+        </div>
+
+        <div className="space-y-4 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-900">Running Ticker Strip</h3>
+              <p className="text-sm text-gray-600">
+                Display scrolling text across the very top of the homepage
+              </p>
+            </div>
+            <button
+              onClick={() => setTickerSettings((prev) => ({ ...prev, ticker_enabled: !prev.ticker_enabled }))}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${tickerSettings.ticker_enabled ? 'bg-indigo-600' : 'bg-gray-300'
+                }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${tickerSettings.ticker_enabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+              />
+            </button>
+          </div>
           <div>
-            <h3 className="font-semibold text-gray-900">Running Ticker Strip</h3>
-            <p className="text-sm text-gray-600">
-              Display scrolling text above the banner/gradient section
+            <input
+              type="text"
+              value={tickerSettings.ticker_text || ''}
+              onChange={(e) => setTickerSettings((prev) => ({ ...prev, ticker_text: e.target.value }))}
+              placeholder="Book Your costumes now. Happy Republic Day"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+          <div className="flex justify-end pt-2">
+            <Button onClick={handleSaveTicker} disabled={savingTicker} size="sm">
+              <Save className="w-4 h-4 mr-2" />
+              {savingTicker ? 'Saving...' : 'Save Ticker'}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* CAROUSEL BANNERS MANAGEMENT */}
+      <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+        <div className="flex items-center justify-between mb-4 pb-4 border-b">
+          <h2 className="text-xl font-bold text-gray-900">Carousel Banners</h2>
+          <Button onClick={handleSaveBanners} disabled={savingBanners}>
+            <Save className="w-4 h-4 mr-2" />
+            {savingBanners ? 'Saving Changes...' : 'Save All Banners'}
+          </Button>
+        </div>
+
+        {/* Existing Banners */}
+        <div className="space-y-6">
+          {banners.map((banner, index) => (
+            <div key={banner.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50 relative">
+
+              {/* Controls */}
+              <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+                <span className="text-sm font-medium mr-2 text-gray-500">Slide {index + 1}</span>
+                <button onClick={() => moveBanner(index, 'up')} disabled={index === 0} className="p-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50">
+                  <ArrowUp className="w-4 h-4 text-gray-600" />
+                </button>
+                <button onClick={() => moveBanner(index, 'down')} disabled={index === banners.length - 1} className="p-1.5 bg-white border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50">
+                  <ArrowDown className="w-4 h-4 text-gray-600" />
+                </button>
+                <button onClick={() => handleDeleteBanner(banner.id)} className="p-1.5 bg-red-50 border border-red-200 rounded hover:bg-red-100 ml-2">
+                  <X className="w-4 h-4 text-red-600" />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <button
+                  onClick={() => updateBannerField(banner.id, 'is_enabled', !banner.is_enabled)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${banner.is_enabled ? 'bg-green-500' : 'bg-gray-300'
+                    }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${banner.is_enabled ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+                <span className="text-sm font-medium text-gray-700">
+                  {banner.is_enabled ? 'Active' : 'Hidden'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Desktop Preview/Upload */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Desktop Image (1920x600)</label>
+                  <input
+                    id={`desktop-${banner.id}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'desktop', banner.id)}
+                    disabled={uploadingState?.id === banner.id}
+                    className="hidden"
+                  />
+                  {banner.desktop_image_url ? (
+                    <div className="relative w-full aspect-[16/5] rounded bg-gray-200 overflow-hidden border">
+                      <Image src={banner.desktop_image_url} alt="Desktop preview" fill className="object-cover" />
+                      <button onClick={() => document.getElementById(`desktop-${banner.id}`)?.click()} className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center text-white text-sm font-medium transition cursor-pointer">
+                        {uploadingState?.id === banner.id && uploadingState?.type === 'desktop' ? 'Uploading...' : 'Change Image'}
+                      </button>
+                    </div>
+                  ) : (
+                    <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById(`desktop-${banner.id}`)?.click()}>
+                      <Upload className="w-4 h-4 mr-2" /> Upload Desktop
+                    </Button>
+                  )}
+                </div>
+
+                {/* Mobile Preview/Upload */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Mobile Image (1080x500)</label>
+                  <input
+                    id={`mobile-${banner.id}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'mobile', banner.id)}
+                    disabled={uploadingState?.id === banner.id}
+                    className="hidden"
+                  />
+                  {banner.mobile_image_url ? (
+                    <div className="relative w-1/2 mx-auto aspect-[2.16/1] rounded bg-gray-200 overflow-hidden border">
+                      <Image src={banner.mobile_image_url} alt="Mobile preview" fill className="object-cover" />
+                      <button onClick={() => document.getElementById(`mobile-${banner.id}`)?.click()} className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center text-white text-xs font-medium transition cursor-pointer">
+                        {uploadingState?.id === banner.id && uploadingState?.type === 'mobile' ? 'Uploading...' : 'Change'}
+                      </button>
+                    </div>
+                  ) : (
+                    <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById(`mobile-${banner.id}`)?.click()}>
+                      <Upload className="w-4 h-4 mr-2" /> Upload Mobile
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Link URL</label>
+                  <input
+                    type="text"
+                    value={banner.link_url || ''}
+                    onChange={(e) => updateBannerField(banner.id, 'link_url', e.target.value)}
+                    placeholder="/products or https://example.com"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Alt Text (SEO)</label>
+                  <input
+                    type="text"
+                    value={banner.alt_text || ''}
+                    onChange={(e) => updateBannerField(banner.id, 'alt_text', e.target.value)}
+                    placeholder="Promotional Banner"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-indigo-500"
+                  />
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+        {/* New Banner Form */}
+        {!newBannerDraft ? (
+          <Button variant="outline" className="w-full py-8 border-dashed" onClick={() => setNewBannerDraft({ is_enabled: true })}>
+            <Plus className="w-5 h-5 mr-2" /> Add New Banner Slide
+          </Button>
+        ) : (
+          <div className="p-4 border-2 border-dashed border-indigo-300 rounded-lg bg-indigo-50/30">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-medium text-indigo-900">New Banner Draft</h3>
+              <button onClick={() => setNewBannerDraft(null)} className="text-gray-500 hover:text-gray-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Desktop Draft */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Desktop Image (Required)</label>
+                <input
+                  id="desktop-new"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'desktop', 'new')}
+                  className="hidden"
+                />
+                {newBannerDraft.desktop_image_url ? (
+                  <div className="relative w-full aspect-[16/5] rounded bg-gray-200 overflow-hidden border">
+                    <Image src={newBannerDraft.desktop_image_url} alt="Desktop preview" fill className="object-cover" />
+                  </div>
+                ) : (
+                  <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById('desktop-new')?.click()}>
+                    {uploadingState?.id === 'new' && uploadingState?.type === 'desktop' ? 'Uploading...' : 'Upload Desktop'}
+                  </Button>
+                )}
+              </div>
+
+              {/* Mobile Draft */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Mobile Image (Required)</label>
+                <input
+                  id="mobile-new"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'mobile', 'new')}
+                  className="hidden"
+                />
+                {newBannerDraft.mobile_image_url ? (
+                  <div className="relative w-1/2 mx-auto aspect-[2.16/1] rounded bg-gray-200 overflow-hidden border">
+                    <Image src={newBannerDraft.mobile_image_url} alt="Mobile preview" fill className="object-cover" />
+                  </div>
+                ) : (
+                  <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById('mobile-new')?.click()}>
+                    {uploadingState?.id === 'new' && uploadingState?.type === 'mobile' ? 'Uploading...' : 'Upload Mobile'}
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Link URL</label>
+                <input
+                  type="text"
+                  value={newBannerDraft.link_url || ''}
+                  onChange={(e) => setNewBannerDraft(prev => ({ ...prev!, link_url: e.target.value }))}
+                  placeholder="/products"
+                  className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-indigo-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Alt Text</label>
+                <input
+                  type="text"
+                  value={newBannerDraft.alt_text || ''}
+                  onChange={(e) => setNewBannerDraft(prev => ({ ...prev!, alt_text: e.target.value }))}
+                  placeholder="Promotional Banner"
+                  className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+
+            <p className="text-xs text-indigo-600 mt-4 text-right">
+              Click "Save All Banners" at the top to publish this new banner to the site.
             </p>
           </div>
-          <button
-            onClick={() => setSettings((prev) => ({ ...prev, ticker_enabled: !prev.ticker_enabled }))}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              settings.ticker_enabled ? 'bg-indigo-600' : 'bg-gray-300'
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                settings.ticker_enabled ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
-        </div>
-        <div>
-          <label htmlFor="ticker_text" className="block text-sm font-medium text-gray-700 mb-2">
-            Ticker Text
-          </label>
-          <input
-            id="ticker_text"
-            type="text"
-            value={settings.ticker_text || ''}
-            onChange={(e) => setSettings((prev) => ({ ...prev, ticker_text: e.target.value }))}
-            placeholder="Book Your costumes now. Happy Republic Day"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            This text will scroll continuously across the top of the homepage
-          </p>
-        </div>
-      </div>
+        )}
 
-      {/* Toggle Banner */}
-      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-        <div>
-          <h3 className="font-semibold text-gray-900">Banner Status</h3>
-          <p className="text-sm text-gray-600">
-            {settings.is_enabled ? 'Banner is currently visible on homepage' : 'Banner is hidden'}
-          </p>
-        </div>
-        <button
-          onClick={() => setSettings((prev) => ({ ...prev, is_enabled: !prev.is_enabled }))}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-            settings.is_enabled ? 'bg-indigo-600' : 'bg-gray-300'
-          }`}
-        >
-          <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              settings.is_enabled ? 'translate-x-6' : 'translate-x-1'
-            }`}
-          />
-        </button>
-      </div>
-
-      {/* Desktop Banner */}
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Desktop Banner Image
-          </label>
-          <p className="text-xs text-gray-500 mb-3">
-            Recommended size: 1920x600px (16:5 aspect ratio)
-          </p>
-          <input
-            ref={desktopInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleDesktopUpload}
-            disabled={uploadingDesktop}
-            className="hidden"
-          />
-          {settings.desktop_image_url ? (
-            <div className="relative group">
-              <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden border-2 border-gray-200">
-                <Image
-                  src={settings.desktop_image_url}
-                  alt="Desktop banner preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <button
-                onClick={() => removeImage('desktop')}
-                className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              disabled={uploadingDesktop}
-              onClick={() => desktopInputRef.current?.click()}
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              {uploadingDesktop ? 'Uploading...' : 'Upload Desktop Banner'}
-            </Button>
-          )}
-        </div>
-
-        {/* Mobile Banner */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Mobile Banner Image
-          </label>
-          <p className="text-xs text-gray-500 mb-3">
-            Recommended size: 1080x500px (2.16:1 aspect ratio)
-          </p>
-          <input
-            ref={mobileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleMobileUpload}
-            disabled={uploadingMobile}
-            className="hidden"
-          />
-          {settings.mobile_image_url ? (
-            <div className="relative group">
-              <div className="relative w-full h-48 rounded-lg overflow-hidden border-2 border-gray-200">
-                <Image
-                  src={settings.mobile_image_url}
-                  alt="Mobile banner preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <button
-                onClick={() => removeImage('mobile')}
-                className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <Button
-              type="button"
-              variant="outline"
-              disabled={uploadingMobile}
-              onClick={() => mobileInputRef.current?.click()}
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              {uploadingMobile ? 'Uploading...' : 'Upload Mobile Banner'}
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Link URL */}
-      <div>
-        <label htmlFor="link_url" className="block text-sm font-medium text-gray-700 mb-2">
-          Link URL (Optional)
-        </label>
-        <input
-          id="link_url"
-          type="text"
-          value={settings.link_url || ''}
-          onChange={(e) => setSettings((prev) => ({ ...prev, link_url: e.target.value }))}
-          placeholder="/products or https://example.com"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-
-      {/* Alt Text */}
-      <div>
-        <label htmlFor="alt_text" className="block text-sm font-medium text-gray-700 mb-2">
-          Alt Text
-        </label>
-        <input
-          id="alt_text"
-          type="text"
-          value={settings.alt_text || ''}
-          onChange={(e) => setSettings((prev) => ({ ...prev, alt_text: e.target.value }))}
-          placeholder="Upcoming Event"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-
-      {/* Save Button */}
-      <div className="flex justify-end pt-4 border-t">
-        <Button onClick={handleSave} disabled={saving} className="min-w-[120px]">
-          <Save className="w-4 h-4 mr-2" />
-          {saving ? 'Saving...' : 'Save Settings'}
-        </Button>
       </div>
     </div>
   )
