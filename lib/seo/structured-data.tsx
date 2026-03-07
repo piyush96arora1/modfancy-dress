@@ -9,7 +9,7 @@ export function OrganizationSchema() {
     '@type': 'LocalBusiness',
     '@id': `${siteUrl}#organization`,
     name: 'Mod Fancy Dress',
-    description: 'Premium fancy dress costumes and accessories. 15+ years of experience serving schools and events in Delhi.',
+    description: 'Fancy dress costumes and accessories. 15+ years of experience serving schools and events in Delhi.',
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
     image: `${siteUrl}/og-image.jpg`,
@@ -81,7 +81,7 @@ export function ProductSchema(product: ProductWithDetails) {
     '@type': 'Product',
     '@id': `${siteUrl}/products/${product.slug}#product`,
     name: product.name,
-    description: product.description || `${product.name} - Premium fancy dress costume available at Mod Fancy Dress`,
+    description: product.description || `${product.name} - Fancy dress costume available at Mod Fancy Dress`,
     image: primaryImage ? [primaryImage.image_url] : [],
     brand: {
       '@type': 'Brand',
@@ -91,19 +91,19 @@ export function ProductSchema(product: ProductWithDetails) {
     sku: product.variants?.[0]?.sku || product.slug,
     offers: product.variants && product.variants.length > 0
       ? product.variants.map((variant) => ({
-          '@type': 'Offer',
-          url: `${siteUrl}/products/${product.slug}`,
-          priceCurrency: 'INR',
-          price: (variant.price_override || product.price || 0).toString(),
-          availability: product.is_active
-            ? 'https://schema.org/InStock'
-            : 'https://schema.org/OutOfStock',
-          itemCondition: 'https://schema.org/NewCondition',
-          seller: {
-            '@type': 'LocalBusiness',
-            name: 'Mod Fancy Dress',
-          },
-        }))
+        '@type': 'Offer',
+        url: `${siteUrl}/products/${product.slug}`,
+        priceCurrency: 'INR',
+        price: (variant.price_override || product.price || 0).toString(),
+        availability: product.is_active
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+        itemCondition: 'https://schema.org/NewCondition',
+        seller: {
+          '@type': 'LocalBusiness',
+          name: 'Mod Fancy Dress',
+        },
+      }))
       : offers,
     aggregateRating: {
       '@type': 'AggregateRating',

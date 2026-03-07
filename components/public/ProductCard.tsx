@@ -93,9 +93,6 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
                   <span className="text-[10px] font-normal text-[#9A9A9A] ml-1">/piece</span>
                 )}
               </p>
-              {pricingMode === 'retail' && product.variants.length > 0 && product.variants[0].price_override && product.price && (
-                <p className="text-[10px] md:text-xs text-[#9A9A9A] line-through">₹{product.price.toFixed(0)}</p>
-              )}
             </div>
           )}
         </div>

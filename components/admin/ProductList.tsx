@@ -147,32 +147,34 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
         {products.map((product) => {
           const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
           return (
-            <div key={product.id} className="bg-white border rounded-xl overflow-hidden flex flex-col shadow-sm">
-              {/* Image Top */}
-              <div className="relative aspect-square w-full bg-gray-100 flex-shrink-0 border-b">
-                {primaryImage ? (
-                  <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="50vw" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
-                )}
-              </div>
-
-              {/* Content Middle */}
-              <div className="p-3 flex-1 flex flex-col min-w-0">
-                <div className="font-semibold text-sm mb-1 text-gray-900 line-clamp-2 leading-tight">{product.name}</div>
-                <div className="mb-2">
-                  {product.categories && product.categories.length > 0 ? (
-                    <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full">
-                      {product.categories[0].category?.name || '—'}
-                    </span>
-                  ) : product.category?.name ? (
-                    <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full">{product.category.name}</span>
-                  ) : null}
+            <div key={product.id} className="bg-white border rounded-xl overflow-hidden flex flex-col shadow-sm transition-shadow hover:shadow-md relative">
+              <Link href={`/admin/products/${product.id}`} className="flex-1 flex flex-col group relative z-0">
+                {/* Image Top */}
+                <div className="relative aspect-square w-full bg-gray-100 flex-shrink-0 border-b group-hover:opacity-90 transition-opacity">
+                  {primaryImage ? (
+                    <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="50vw" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
+                  )}
                 </div>
-                {product.price && (
-                  <div className="font-bold text-sm text-gray-900 mt-auto pt-1">₹{product.price.toFixed(0)}</div>
-                )}
-              </div>
+
+                {/* Content Middle */}
+                <div className="p-3 flex-1 flex flex-col min-w-0 bg-white group-hover:bg-gray-50/50 transition-colors">
+                  <div className="font-semibold text-sm mb-1 text-gray-900 group-hover:text-indigo-700 transition-colors line-clamp-2 leading-tight">{product.name}</div>
+                  <div className="mb-2">
+                    {product.categories && product.categories.length > 0 ? (
+                      <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full relative z-10">
+                        {product.categories[0].category?.name || '—'}
+                      </span>
+                    ) : product.category?.name ? (
+                      <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded truncate block w-fit max-w-full relative z-10">{product.category.name}</span>
+                    ) : null}
+                  </div>
+                  {product.price && (
+                    <div className="font-bold text-sm text-gray-900 mt-auto pt-1">₹{product.price.toFixed(0)}</div>
+                  )}
+                </div>
+              </Link>
 
               {/* Actions Bottom */}
               <div className="px-3 py-2 bg-gray-50 border-t flex flex-col gap-2">

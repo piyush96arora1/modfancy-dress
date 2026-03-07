@@ -1,7 +1,7 @@
 {
-  "name": "Mod Fancy Dress - Premium Fancy Dress Costumes & Accessories",
+  "name": "Mod Fancy Dress - Fancy Dress Costumes & Accessories",
   "short_name": "Mod Fancy Dress",
-  "description": "Premium fancy dress costumes and accessories in Delhi. 15+ years of experience, 400+ successful school functions.",
+  "description": "Fancy dress costumes and accessories in Delhi. 15+ years of experience, 400+ successful school functions.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f9fafb",
@@ -21,7 +21,11 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["shopping", "fashion", "entertainment"],
+  "categories": [
+    "shopping",
+    "fashion",
+    "entertainment"
+  ],
   "screenshots": [],
   "shortcuts": [
     {
@@ -29,15 +33,24 @@
       "short_name": "Products",
       "description": "Browse all products",
       "url": "/products",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Contact",
       "short_name": "Contact",
       "description": "Contact us",
       "url": "/contact",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
-

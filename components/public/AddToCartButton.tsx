@@ -18,8 +18,8 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ product, sizes, colors, variants, pricingMode = 'retail', wholesaleDiscountPct = 30 }: AddToCartButtonProps) {
-  const [selectedSize, setSelectedSize] = useState<string>('')
-  const [selectedColor, setSelectedColor] = useState<string>('')
+  const [selectedSize, setSelectedSize] = useState<string>(sizes.length > 0 ? sizes[0] : '')
+  const [selectedColor, setSelectedColor] = useState<string>(colors.length > 0 ? colors[0] : '')
   const [quantity, setQuantity] = useState(pricingMode === 'wholesale' ? 10 : 1)
   const [adding, setAdding] = useState(false)
   const [justAdded, setJustAdded] = useState(false)

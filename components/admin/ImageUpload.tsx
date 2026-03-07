@@ -7,9 +7,17 @@ import { Upload } from 'lucide-react'
 
 interface ImageUploadProps {
   onUpload: (url: string) => void
+  bucket?: string
+  pathPrefix?: string
+  label?: string
 }
 
-export function ImageUpload({ onUpload }: ImageUploadProps) {
+export function ImageUpload({
+  onUpload,
+  bucket = 'product-images',
+  pathPrefix = 'products/',
+  label = 'Upload Image'
+}: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
@@ -24,21 +32,21 @@ export function ImageUpload({ onUpload }: ImageUploadProps) {
 
       const file = e.target.files[0]
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `products/${fileName}`
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
+      const filePath = `${pathPrefix}${fileName}`
 
       const { error: uploadError } = await supabase.storage
-        .from('product-images')
+        .from(bucket)
         .upload(filePath, file)
 
       if (uploadError) throw uploadError
 
       const {
         data: { publicUrl },
-      } = supabase.storage.from('product-images').getPublicUrl(filePath)
+      } = supabase.storage.from(bucket).getPublicUrl(filePath)
 
       onUpload(publicUrl)
-      
+
       // Reset file input so same file can be uploaded again if needed
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
@@ -71,7 +79,7 @@ export function ImageUpload({ onUpload }: ImageUploadProps) {
         onClick={handleButtonClick}
       >
         <Upload className="w-4 h-4 mr-2" />
-        {uploading ? 'Uploading...' : 'Upload Image'}
+        {uploading ? 'Uploading...' : label}
       </Button>
     </div>
   )

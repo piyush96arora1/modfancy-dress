@@ -99,13 +99,17 @@ export default function OrderDetailPage() {
           <h2 className="font-semibold mb-2">Shipping Address</h2>
           <div className="text-sm">
             {typeof order.shipping_address === 'object' && (
-              <div>
-                <div>{order.shipping_address.street}</div>
+              <div className="text-[#6B6B6B] mt-2 text-sm leading-relaxed">
+                <div>{(order.shipping_address as any).address || (order.shipping_address as any).street}</div>
                 <div>
-                  {order.shipping_address.city}, {order.shipping_address.state}{' '}
-                  {order.shipping_address.zip}
+                  {order.shipping_address.city}
+                  {(order.shipping_address as any).state ? `, ${(order.shipping_address as any).state}` : ''}
+                  {' - '}
+                  {(order.shipping_address as any).pincode || (order.shipping_address as any).zip}
                 </div>
-                <div>{order.shipping_address.country}</div>
+                {(order.shipping_address as any).country && (
+                  <div>{(order.shipping_address as any).country}</div>
+                )}
               </div>
             )}
           </div>

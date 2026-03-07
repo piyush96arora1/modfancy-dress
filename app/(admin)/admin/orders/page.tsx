@@ -15,6 +15,7 @@ export default function AdminOrdersPage() {
       const { data } = await supabase
         .from('orders')
         .select(`*, items:order_items(*)`)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false })
       setOrders(data || [])
       setLoading(false)

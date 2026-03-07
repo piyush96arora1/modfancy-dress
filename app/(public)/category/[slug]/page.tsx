@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   }
 
   return generatePageMetadata({
-    title: `${category.name} Fancy Dress Costumes - Premium Collection`,
-    description: category.description || `Browse our premium collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`,
+    title: `${category.name} Fancy Dress Costumes`,
+    description: category.description || `Browse our collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`,
     path: `/category/${slug}`,
   })
 }
@@ -43,7 +43,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const { data: category } = await supabase
     .from('categories')
-    .select('*')
+    .select('id, name, slug, description, image_url')
     .eq('slug', slug)
     .eq('is_active', true)
     .single()

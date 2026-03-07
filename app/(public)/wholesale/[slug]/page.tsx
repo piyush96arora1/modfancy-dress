@@ -74,7 +74,10 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
     const primaryImage = productData.images?.find((img) => img.is_primary) || productData.images?.[0]
     const otherImages = productData.images?.filter((img) => !img.is_primary) || []
 
-    const sizes = [...new Set(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])]
+    const sizes = [...new Set([
+        ...(productData.size ? [productData.size] : []),
+        ...(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])
+    ])]
 
     const wholesalePrice = getProductPrice(productData, 'wholesale', wholesaleDiscountPct)
 

@@ -28,8 +28,8 @@ export async function generateMetadata({ searchParams }: ProductsPageProps) {
   const description = search
     ? `Find fancy dress costumes matching "${search}". Quality costumes for school functions, dance performances, and events.`
     : category
-      ? `Browse our collection of ${category} fancy dress costumes. Premium quality, 15+ years experience.`
-      : 'Browse our complete collection of fancy dress costumes and accessories. 400+ successful school functions. Premium quality costumes in Delhi.'
+      ? `Browse our collection of ${category} fancy dress costumes. 15+ years experience.`
+      : 'Browse our complete collection of fancy dress costumes and accessories. 400+ successful school functions. Quality costumes in Delhi.'
 
   return generatePageMetadata({
     title,
@@ -86,7 +86,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   const { data: categories } = await supabase
     .from('categories')
-    .select('*')
+    .select('id, name, slug, image_url')
     .eq('is_active', true)
     .order('name')
 

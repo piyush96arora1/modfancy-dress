@@ -96,7 +96,8 @@ export default async function WholesalePage({ searchParams }: WholesalePageProps
 
     const { data: categories } = await supabase
         .from('categories')
-        .select('*')
+        .select('id, name, slug, image_url')
+        .eq('is_active', true)
         .order('name')
 
     const resultsCount = products?.length || 0

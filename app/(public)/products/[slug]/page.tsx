@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const imageUrl = primaryImage?.image_url
 
   return generatePageMetadata({
-    title: `${product.name} - Premium Fancy Dress Costume`,
-    description: product.description || `Buy ${product.name} - Premium fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`,
+    title: `${product.name} - Fancy Dress Costume`,
+    description: product.description || `Buy ${product.name} - fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`,
     path: `/products/${slug}`,
     image: imageUrl,
     type: 'product',
@@ -83,7 +83,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const otherImages = productData.images?.filter((img) => !img.is_primary) || []
   const allImages = primaryImage ? [primaryImage, ...otherImages] : otherImages
 
-  const sizes = [...new Set(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])]
+  const sizes = [...new Set([
+    ...(productData.size ? [productData.size] : []),
+    ...(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])
+  ])]
+
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
   const productSchema = ProductSchema(productData)

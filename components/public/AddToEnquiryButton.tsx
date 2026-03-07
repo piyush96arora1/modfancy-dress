@@ -15,7 +15,7 @@ interface AddToEnquiryButtonProps {
 export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }: AddToEnquiryButtonProps) {
     const { addItem, removeItem, isInBasket } = useEnquiryBasket()
     const [quantity, setQuantity] = useState(10)
-    const [selectedSize, setSelectedSize] = useState('')
+    const [selectedSize, setSelectedSize] = useState<string>(sizes.length > 0 ? sizes[0] : '')
     const [justAdded, setJustAdded] = useState(false)
 
     const inBasket = isInBasket(product.id)
@@ -100,8 +100,8 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                                     type="button"
                                     onClick={() => setSelectedSize(selectedSize === size ? '' : size)}
                                     className={`px-3 py-1.5 text-xs rounded-lg border transition-all duration-200 font-medium ${selectedSize === size
-                                            ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
-                                            : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
+                                        ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]'
+                                        : 'bg-white text-[#2D2D2D] border-[#E8E5E0] hover:border-[#1B2A4A]'
                                         }`}
                                 >
                                     {size}
@@ -141,8 +141,8 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                     type="button"
                     onClick={handleAdd}
                     className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${justAdded
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-[#1B2A4A] text-white hover:bg-[#2a3d63]'
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-[#1B2A4A] text-white hover:bg-[#2a3d63]'
                         }`}
                 >
                     {justAdded ? (

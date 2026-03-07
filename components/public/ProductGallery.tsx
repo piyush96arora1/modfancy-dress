@@ -108,10 +108,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     src={selectedImage.image_url}
                     alt={`${productName} Main Image`}
                     fill
-                    className={cn(
-                        "object-cover transition-opacity duration-200",
-                        showMobileZoom ? "opacity-0" : "opacity-100"
-                    )}
+                    className="object-cover"
                     priority
                     sizes="(max-width: 768px) 100vw, 50vw"
                 />

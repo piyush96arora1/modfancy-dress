@@ -41,6 +41,7 @@ export function EnquiryList({ enquiries: initialEnquiries }: EnquiryListProps) {
     const [enquiries, setEnquiries] = useState(initialEnquiries)
     const [expandedId, setExpandedId] = useState<string | null>(null)
     const [updatingId, setUpdatingId] = useState<string | null>(null)
+    const [deletingId, setDeletingId] = useState<string | null>(null)
     const supabase = createClient()
 
     const updateStatus = async (id: string, newStatus: string) => {
@@ -60,6 +61,28 @@ export function EnquiryList({ enquiries: initialEnquiries }: EnquiryListProps) {
             console.error('Error updating status:', err)
         } finally {
             setUpdatingId(null)
+        }
+    }
+
+    const deleteEnquiry = async (id: string, name: string) => {
+        if (!confirm(`Are you sure you want to delete the enquiry from ${name}?`)) return
+
+        setDeletingId(id)
+        try {
+            const { error } = await supabase
+                .from('wholesale_enquiries')
+                .update({ deleted_at: new Date().toISOString() })
+                .eq('id', id)
+
+            if (!error) {
+                setEnquiries(enquiries.filter(e => e.id !== id))
+            } else {
+                alert(`Failed to delete enquiry: ${error.message}`)
+            }
+        } catch (err) {
+            console.error('Error deleting enquiry:', err)
+        } finally {
+            setDeletingId(null)
         }
     }
 
@@ -196,6 +219,15 @@ export function EnquiryList({ enquiries: initialEnquiries }: EnquiryListProps) {
                                         ✉️ Email
                                     </a>
                                 )}
+                                <div className="ml-auto">
+                                    <button
+                                        onClick={() => deleteEnquiry(enquiry.id, enquiry.customer_name)}
+                                        disabled={deletingId === enquiry.id}
+                                        className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded hover:bg-red-100 transition-colors font-medium border border-red-100"
+                                    >
+                                        {deletingId === enquiry.id ? 'Deleting...' : '🗑️ Delete'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

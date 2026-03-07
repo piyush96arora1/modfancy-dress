@@ -11,7 +11,6 @@ DROP POLICY IF EXISTS "Anyone can create orders" ON orders;
 -- This is more permissive and should work for anonymous users
 CREATE POLICY "Anyone can create orders" ON orders
   FOR INSERT 
-  USING (true)
   WITH CHECK (true);
 
 -- Verify it was created

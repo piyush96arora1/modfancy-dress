@@ -11,11 +11,15 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { ImageUpload } from './ImageUpload'
+import { X } from 'lucide-react'
+import Image from 'next/image'
 
 const categorySchema = z.object({
   name: z.string().min(1, 'Name is required'),
   slug: z.string().min(1, 'Slug is required'),
   description: z.string().optional(),
+  image_url: z.string().optional().nullable(),
 })
 
 type CategoryFormData = z.infer<typeof categorySchema>
@@ -26,12 +30,14 @@ interface CategoryFormProps {
     name: string
     slug: string
     description: string | null
+    image_url: string | null
   }
 }
 
 export function CategoryForm({ category }: CategoryFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState<string | null>(category?.image_url || null)
   const supabase = createClient()
 
   const {
@@ -46,10 +52,12 @@ export function CategoryForm({ category }: CategoryFormProps) {
       name: category.name,
       slug: category.slug,
       description: category.description || undefined,
+      image_url: category.image_url || null,
     } : {
       name: '',
       slug: '',
       description: undefined,
+      image_url: null,
     },
   })
 
@@ -65,15 +73,20 @@ export function CategoryForm({ category }: CategoryFormProps) {
   const onSubmit = async (data: CategoryFormData) => {
     setLoading(true)
     try {
+      const payload = {
+        ...data,
+        image_url: imageUrl
+      }
+
       if (category) {
         const { error } = await supabase
           .from('categories')
-          .update(data)
+          .update(payload)
           .eq('id', category.id)
 
         if (error) throw error
       } else {
-        const { error } = await supabase.from('categories').insert(data)
+        const { error } = await supabase.from('categories').insert(payload)
 
         if (error) throw error
       }
@@ -87,30 +100,40 @@ export function CategoryForm({ category }: CategoryFormProps) {
     }
   }
 
+  const handleImageUpload = (url: string) => {
+    setImageUrl(url)
+  }
+
+  const handleRemoveImage = () => {
+    setImageUrl(null)
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl space-y-4">
-      <div>
-        <Label htmlFor="name">Name *</Label>
-        <Input
-          id="name"
-          {...register('name')}
-          placeholder="Category Name"
-        />
-        {errors.name && (
-          <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
-        )}
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-1">
+          <Label htmlFor="name">Name *</Label>
+          <Input
+            id="name"
+            {...register('name')}
+            placeholder="Category Name"
+          />
+          {errors.name && (
+            <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+          )}
+        </div>
 
-      <div>
-        <Label htmlFor="slug">Slug *</Label>
-        <Input
-          id="slug"
-          {...register('slug')}
-          placeholder="category-slug"
-        />
-        {errors.slug && (
-          <p className="text-sm text-red-600 mt-1">{errors.slug.message}</p>
-        )}
+        <div className="md:col-span-1">
+          <Label htmlFor="slug">Slug *</Label>
+          <Input
+            id="slug"
+            {...register('slug')}
+            placeholder="category-slug"
+          />
+          {errors.slug && (
+            <p className="text-sm text-red-600 mt-1">{errors.slug.message}</p>
+          )}
+        </div>
       </div>
 
       <div>
@@ -119,11 +142,49 @@ export function CategoryForm({ category }: CategoryFormProps) {
           id="description"
           {...register('description')}
           placeholder="Category description (optional)"
-          rows={4}
+          rows={3}
         />
       </div>
 
-      <div className="flex gap-4">
+      <div>
+        <Label className="mb-2 block">Category Image</Label>
+        {imageUrl ? (
+          <div className="relative w-40 h-40 group">
+            <div className="relative w-full h-full rounded-lg overflow-hidden border">
+              <Image
+                src={imageUrl}
+                alt="Category preview"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute -top-2 -right-2 bg-red-100 text-red-600 p-1.5 rounded-full shadow-sm hover:bg-red-200 transition-colors"
+              title="Remove image"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 rounded-lg bg-gray-50 border flex items-center justify-center text-2xl" role="img" aria-label="Fallback">
+              📸
+            </div>
+            <ImageUpload
+              onUpload={handleImageUpload}
+              pathPrefix="categories/"
+              label="Select Image"
+            />
+          </div>
+        )}
+        <p className="text-xs text-gray-500 mt-2">
+          Choose a representative image for this category. Recommended size: 200x200 or larger (square).
+        </p>
+      </div>
+
+      <div className="flex gap-4 pt-2">
         <Button type="submit" loading={loading} disabled={loading}>
           {loading ? 'Saving...' : category ? 'Update Category' : 'Create Category'}
         </Button>

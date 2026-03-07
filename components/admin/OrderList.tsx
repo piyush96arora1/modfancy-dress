@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
@@ -12,7 +12,13 @@ interface OrderListProps {
 
 export function OrderList({ orders }: OrderListProps) {
   const router = useRouter()
+  const [localOrders, setLocalOrders] = useState(orders)
   const [updating, setUpdating] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState<string | null>(null)
+
+  useEffect(() => {
+    setLocalOrders(orders)
+  }, [orders])
 
   const handleStatusUpdate = async (orderId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'pending'
@@ -21,6 +27,7 @@ export function OrderList({ orders }: OrderListProps) {
         ? 'shipped'
         : 'pending'
 
+    setLocalOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
     setUpdating(orderId)
     const supabase = createClient()
     const { error } = await supabase
@@ -30,12 +37,33 @@ export function OrderList({ orders }: OrderListProps) {
 
     if (error) {
       alert(`Failed to update order status: ${error.message}`)
+      setLocalOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: currentStatus } : o))
     }
     setUpdating(null)
     router.refresh()
   }
 
-  if (orders.length === 0) {
+  const handleDelete = async (orderId: string, orderNumber: string) => {
+    if (!confirm(`Are you sure you want to delete order ${orderNumber}?`)) return
+
+    setLocalOrders(prev => prev.filter(o => o.id !== orderId))
+    setDeleting(orderId)
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('orders')
+      .update({ deleted_at: new Date().toISOString() })
+      .eq('id', orderId)
+
+    if (error) {
+      alert(`Failed to delete order: ${error.message}`)
+      router.refresh()
+    } else {
+      router.refresh()
+    }
+    setDeleting(null)
+  }
+
+  if (localOrders.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">No orders found.</p>
@@ -60,7 +88,7 @@ export function OrderList({ orders }: OrderListProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {orders.map((order) => {
+            {localOrders.map((order) => {
               const itemCount = order.items?.reduce(
                 (sum: number, item: any) => sum + item.quantity, 0
               ) || 0
@@ -78,9 +106,9 @@ export function OrderList({ orders }: OrderListProps) {
                   <td className="px-6 py-4 font-medium text-gray-900">₹{order.total_amount.toFixed(2)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-xs rounded ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
-                        : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
-                          : order.status === 'shipped' ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
+                      : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
+                        : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
                       }`}>
                       {order.status}
                     </span>
@@ -103,6 +131,14 @@ export function OrderList({ orders }: OrderListProps) {
                               : 'Reset'
                         )}
                       </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        disabled={deleting === order.id}
+                        onClick={() => handleDelete(order.id, order.order_number)}
+                      >
+                        {deleting === order.id ? '...' : 'Delete'}
+                      </Button>
                     </div>
                   </td>
                 </tr>
@@ -114,7 +150,7 @@ export function OrderList({ orders }: OrderListProps) {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {orders.map((order) => {
+        {localOrders.map((order) => {
           const itemCount = order.items?.reduce(
             (sum: number, item: any) => sum + item.quantity, 0
           ) || 0
@@ -129,9 +165,9 @@ export function OrderList({ orders }: OrderListProps) {
                   </div>
                 </div>
                 <span className={`px-2 py-1 text-xs rounded whitespace-nowrap ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
-                    : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
-                      : order.status === 'shipped' ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
+                  : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
+                    : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
                   }`}>
                   {order.status}
                 </span>
@@ -170,6 +206,17 @@ export function OrderList({ orders }: OrderListProps) {
                         : order.status === 'confirmed' ? 'Ship'
                           : 'Reset'
                     )}
+                  </Button>
+                </div>
+                <div className="flex-1">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="w-full"
+                    disabled={deleting === order.id}
+                    onClick={() => handleDelete(order.id, order.order_number)}
+                  >
+                    {deleting === order.id ? '...' : 'Delete'}
                   </Button>
                 </div>
               </div>

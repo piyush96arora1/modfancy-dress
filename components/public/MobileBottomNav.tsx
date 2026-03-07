@@ -65,7 +65,7 @@ export function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-t border-[#E8E5E0]/60 safe-area-inset-bottom md:hidden" style={{ boxShadow: '0 -4px 20px rgba(27, 42, 74, 0.06)' }}>
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around h-14 px-2">
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = item.active
@@ -90,20 +90,20 @@ export function MobileBottomNav() {
               <div className="relative z-[1]">
                 <Icon
                   className={`
-                    w-5 h-5 transition-all duration-200
+                    w-[18px] h-[18px] transition-all duration-200
                     ${isActive ? 'scale-110' : 'scale-100'}
                   `}
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />
                 {item.badge && (
-                  <span className="absolute -top-1.5 -right-2 bg-[#C8956C] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1.5 bg-[#C8956C] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                     {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
               </div>
               <span
                 className={`
-                  relative z-[1] text-[10px] mt-1 font-medium transition-all duration-200
+                  relative z-[1] text-[9px] mt-1 font-medium transition-all duration-200
                   ${isActive ? 'text-[#1B2A4A]' : 'text-[#9A9A9A]'}
                 `}
               >

@@ -636,39 +636,41 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       <div>
         <Label>Product Images *</Label>
         <ImageUpload onUpload={handleImageUpload} />
-        <div className="grid grid-cols-4 gap-4 mt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
           {images.map((img, index) => (
-            <div key={index} className="relative group">
-              <div className="aspect-square relative bg-gray-100 rounded overflow-hidden">
+            <div key={index} className="relative group border rounded-lg bg-gray-50 p-2 flex flex-col shadow-sm">
+              <div className="aspect-square relative bg-white border rounded overflow-hidden mb-2">
                 <img
                   src={img.url}
                   alt={`Product image ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute top-2 right-2 flex gap-1">
-                {img.isPrimary && (
-                  <span className="bg-green-500 text-white text-xs px-2 py-1 rounded">
-                    Primary
-                  </span>
-                )}
+              <div className="absolute top-0 right-0 p-1 flex items-start gap-1 justify-end w-full">
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(index)}
-                  className="bg-red-500 text-white p-1 rounded"
+                  className="bg-white hover:bg-red-50 text-red-600 border border-gray-200 p-1.5 rounded-full shadow-sm"
+                  title="Remove Image"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              {!img.isPrimary && (
-                <button
-                  type="button"
-                  onClick={() => handleSetPrimary(index)}
-                  className="mt-2 w-full text-sm bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded"
-                >
-                  Set Primary
-                </button>
-              )}
+              <div className="mt-auto">
+                {img.isPrimary ? (
+                  <div className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1.5 rounded text-center block w-full">
+                    Primary Image
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleSetPrimary(index)}
+                    className="w-full text-xs bg-white border border-gray-200 hover:bg-gray-100 px-2 py-1.5 rounded font-medium transition-colors"
+                  >
+                    Set as Primary
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -678,10 +680,10 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       </div>
 
       {/* Variants */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
+      <div className="mt-8 border-t pt-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 gap-4">
           <div>
-            <Label>Product Variants</Label>
+            <Label className="text-base font-semibold">Product Variants</Label>
             <p className="text-sm text-gray-500 mt-1">
               Optional - Only add if your product has different sizes, colors, SKUs, or quantities.
               You can skip this section entirely.
@@ -692,7 +694,9 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             variant="outline"
             size="sm"
             onClick={() => append({ size: '', price_override: 0 } as any)}
+            className="w-full sm:w-auto shrink-0"
           >
+            <Plus className="w-4 h-4 mr-2" />
             Add Variant
           </Button>
         </div>

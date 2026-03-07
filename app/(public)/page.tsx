@@ -8,14 +8,15 @@ import { TickerStrip } from '@/components/public/TickerStrip'
 import { AssetPreloader } from '@/components/public/AssetPreloader'
 import { Button } from '@/components/ui/button'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
+import { MobileStickyActionBarDynamic } from '@/components/public/MobileStickyActionBarDynamic'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
 import type { ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
-  title: 'Premium Fancy Dress Costumes & Accessories in Delhi',
-  description: 'Shop premium fancy dress costumes and accessories in Delhi. 15+ years experience, 400+ successful school functions. Quality costumes for dance performances, school events, and celebrations.',
+  title: 'Fancy Dress Costumes & Accessories in Delhi',
+  description: 'Shop fancy dress costumes and accessories in Delhi. 15+ years experience, 400+ successful school functions. Quality costumes for dance performances, school events, and celebrations.',
   path: '/',
 })
 
@@ -61,7 +62,7 @@ export default async function HomePage() {
   // Fetch categories
   const { data: categories } = await supabase
     .from('categories')
-    .select('*')
+    .select('id, name, slug, image_url')
     .eq('is_active', true)
     .order('name')
 
@@ -84,7 +85,7 @@ export default async function HomePage() {
           }}
         />
       )}
-      <div>
+      <div className="pb-24 md:pb-0">
         {/* Running Ticker Strip */}
         {tickerEnabled && tickerText && (
           <div className="relative -mt-4 md:-mt-8 mb-2 md:mb-0" style={{
@@ -128,7 +129,7 @@ export default async function HomePage() {
             </h1>
             {!hasEventBanner && (
               <p className="text-base md:text-lg text-[#6B6B6B] mb-6 md:mb-8 max-w-xl mx-auto leading-relaxed">
-                Premium costumes for school functions, dance performances, and celebrations. Trusted by 400+ schools across Delhi.
+                Costumes for school functions, dance performances, and celebrations. Trusted by 400+ schools across Delhi.
               </p>
             )}
 
@@ -201,13 +202,15 @@ export default async function HomePage() {
             </Link>
           </div>
           {products && products.length > 0 ? (
-            <ProductGrid products={products as ProductWithDetails[]} />
+            <ProductGrid products={products as ProductWithDetails[]} showViewAllCard={true} />
           ) : (
             <p className="text-[#9A9A9A] text-center py-12">
               No products available yet. Check back soon!
             </p>
           )}
         </section>
+
+        <MobileStickyActionBarDynamic />
       </div>
     </>
   )

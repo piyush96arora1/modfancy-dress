@@ -21,11 +21,9 @@ export default function CartPage() {
     customerName: '',
     customerEmail: '',
     customerPhone: '',
-    shippingStreet: '',
+    shippingAddress: '',
     shippingCity: '',
-    shippingState: '',
-    shippingZip: '',
-    shippingCountry: '',
+    shippingPincode: '',
   })
   const router = useRouter()
 
@@ -46,11 +44,9 @@ export default function CartPage() {
           customer_email: formData.customerEmail,
           customer_phone: formData.customerPhone,
           shipping_address: {
-            street: formData.shippingStreet,
+            address: formData.shippingAddress,
             city: formData.shippingCity,
-            state: formData.shippingState,
-            zip: formData.shippingZip,
-            country: formData.shippingCountry,
+            pincode: formData.shippingPincode,
           },
           total_amount: totalAmount,
           status: 'pending',
@@ -237,12 +233,12 @@ export default function CartPage() {
               </div>
 
               <div>
-                <Label htmlFor="shippingStreet" className="text-xs">Street Address *</Label>
+                <Label htmlFor="shippingAddress" className="text-xs">Address *</Label>
                 <Input
-                  id="shippingStreet"
+                  id="shippingAddress"
                   required
-                  value={formData.shippingStreet}
-                  onChange={(e) => setFormData({ ...formData, shippingStreet: e.target.value })}
+                  value={formData.shippingAddress}
+                  onChange={(e) => setFormData({ ...formData, shippingAddress: e.target.value })}
                   className="h-9 text-sm"
                 />
               </div>
@@ -259,35 +255,12 @@ export default function CartPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="shippingState" className="text-xs">State *</Label>
+                  <Label htmlFor="shippingPincode" className="text-xs">Pincode *</Label>
                   <Input
-                    id="shippingState"
+                    id="shippingPincode"
                     required
-                    value={formData.shippingState}
-                    onChange={(e) => setFormData({ ...formData, shippingState: e.target.value })}
-                    className="h-9 text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label htmlFor="shippingZip" className="text-xs">ZIP Code *</Label>
-                  <Input
-                    id="shippingZip"
-                    required
-                    value={formData.shippingZip}
-                    onChange={(e) => setFormData({ ...formData, shippingZip: e.target.value })}
-                    className="h-9 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="shippingCountry" className="text-xs">Country *</Label>
-                  <Input
-                    id="shippingCountry"
-                    required
-                    value={formData.shippingCountry}
-                    onChange={(e) => setFormData({ ...formData, shippingCountry: e.target.value })}
+                    value={formData.shippingPincode}
+                    onChange={(e) => setFormData({ ...formData, shippingPincode: e.target.value })}
                     className="h-9 text-sm"
                   />
                 </div>

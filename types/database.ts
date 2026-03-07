@@ -3,6 +3,7 @@ export type Category = {
   name: string
   slug: string
   description: string | null
+  image_url: string | null
   created_at: string
   updated_at: string
 }
@@ -66,13 +67,7 @@ export type Order = {
   customer_name: string
   customer_email: string
   customer_phone: string
-  shipping_address: {
-    street: string
-    city: string
-    state: string
-    zip: string
-    country: string
-  }
+  shipping_address: Record<string, any>
   status: 'pending' | 'confirmed' | 'shipped' | 'cancelled'
   total_amount: number
   created_at: string

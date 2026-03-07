@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfacnydress.com'
 const siteName = 'Mod Fancy Dress'
-const defaultDescription = 'Premium fancy dress costumes and accessories. 15+ years of experience, 400+ successful school functions. Shop quality costumes in Delhi, India.'
+const defaultDescription = 'Fancy dress costumes and accessories. 15+ years of experience, 400+ successful school functions. Shop quality costumes in Delhi, India.'
 
 export function generatePageMetadata({
   title,

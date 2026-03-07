@@ -15,6 +15,7 @@ export default function AdminEnquiriesPage() {
             const { data } = await supabase
                 .from('wholesale_enquiries')
                 .select('*')
+                .is('deleted_at', null)
                 .order('created_at', { ascending: false })
             setEnquiries(data || [])
             setLoading(false)

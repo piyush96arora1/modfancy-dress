@@ -3,6 +3,7 @@
 import { useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
 
@@ -38,6 +39,7 @@ interface CategoryCardProps {
     id: string
     name: string
     slug: string
+    image_url?: string | null
   }
 }
 
@@ -69,11 +71,25 @@ export function CategoryCard({ category }: CategoryCardProps) {
           <LoadingSpinner size="sm" />
         </div>
       )}
-      {/* Emoji Circle */}
-      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#F5F3F0] group-hover:bg-[#FBF5EF] flex items-center justify-center transition-colors duration-300">
-        <span className="text-xl md:text-2xl" role="img" aria-label={category.name}>{emoji}</span>
+      {/* Image or Emoji Circle */}
+      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#F5F3F0] group-hover:bg-[#FBF5EF] flex items-center justify-center transition-all duration-500 overflow-hidden border-2 border-transparent group-hover:border-[#C8956C]/20 shadow-sm group-hover:shadow-md">
+        {category.image_url ? (
+          <div className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110">
+            <Image
+              src={category.image_url}
+              alt={category.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 48px, 64px"
+            />
+          </div>
+        ) : (
+          <span className="text-xl md:text-2xl transform transition-transform duration-500 group-hover:scale-110" role="img" aria-label={category.name}>
+            {emoji}
+          </span>
+        )}
       </div>
-      <h3 className={`text-center font-medium text-xs md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-tight ${isPending ? 'opacity-50' : ''}`}>
+      <h3 className={`text-center font-medium text-[10px] md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-tight ${isPending ? 'opacity-50' : ''}`}>
         {category.name}
       </h3>
     </Link>

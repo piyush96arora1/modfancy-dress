@@ -51,7 +51,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
 
     const { data: category } = await supabase
         .from('categories')
-        .select('*')
+        .select('id, name, slug, description, image_url')
         .eq('slug', slug)
         .eq('is_active', true)
         .single()
