@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   turbopack: {}, // Empty config to silence turbopack warning
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
