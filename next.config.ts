@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'udnidqllpmyoothwznbv.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
         hostname: '**.supabase.co',
       },
     ],
@@ -23,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
     skipWaiting: true,
     disable: false,
   });
-  
+
   config = withPWA(nextConfig);
 }
 
