@@ -27,6 +27,22 @@ if (process.env.NODE_ENV === 'production') {
     register: true,
     skipWaiting: true,
     disable: false,
+    runtimeCaching: [
+      {
+        urlPattern: /^https:\/\/udnidqllpmyoothwznbv\.supabase\.co\/storage\/v1\/object\/public\/product-images\/.*/i,
+        handler: 'CacheFirst',
+        options: {
+          cacheName: 'supabase-images',
+          expiration: {
+            maxEntries: 500,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+          },
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
+      },
+    ],
   });
 
   config = withPWA(nextConfig);
