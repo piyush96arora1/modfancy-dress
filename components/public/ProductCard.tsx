@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import type { ProductWithDetails, PricingMode } from '@/types/database'
+import { getImageUrl } from '@/lib/imageUrl'
+
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
@@ -53,7 +55,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
         <div className="aspect-[3/4] relative bg-[#F5F3F0] overflow-hidden">
           {primaryImage ? (
             <Image
-              src={primaryImage.image_url}
+              src={getImageUrl(primaryImage.image_url)}
               alt={product.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"

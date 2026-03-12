@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ImageUpload } from './ImageUpload'
+import { getImageUrl } from '@/lib/imageUrl'
 import { X } from 'lucide-react'
 import Image from 'next/image'
 
@@ -152,7 +153,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
           <div className="relative w-40 h-40 group">
             <div className="relative w-full h-full rounded-lg overflow-hidden border">
               <Image
-                src={imageUrl}
+                src={getImageUrl(imageUrl)}
                 alt="Category preview"
                 fill
                 className="object-cover"
@@ -174,7 +175,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
             </div>
             <ImageUpload
               onUpload={handleImageUpload}
-              pathPrefix="categories/"
+              pathPrefix="categories-webp/"
               label="Select Image"
             />
           </div>

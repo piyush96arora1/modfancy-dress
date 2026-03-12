@@ -3,6 +3,7 @@
 import React, { useState, useRef, MouseEvent, TouchEvent } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductImage } from '@/types/database'
 
 interface ProductGalleryProps {
@@ -105,7 +106,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             >
                 {/* The Base Image */}
                 <Image
-                    src={selectedImage.image_url}
+                    src={getImageUrl(selectedImage.image_url)}
                     alt={`${productName} Main Image`}
                     fill
                     className="object-cover"
@@ -133,7 +134,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         showMobileZoom ? "opacity-100" : "opacity-0"
                     )}
                     style={{
-                        backgroundImage: `url(${selectedImage.image_url})`,
+                        backgroundImage: `url(${getImageUrl(selectedImage.image_url)})`,
                         backgroundPosition: `${mobileBgPos.x}% ${mobileBgPos.y}%`,
                         backgroundSize: `${ZOOM_LEVEL * 100}% ${ZOOM_LEVEL * 100}%`,
                         backgroundRepeat: 'no-repeat'
@@ -151,7 +152,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         width: '500px', // Large zoom pane
                         height: '500px',
                         boxShadow: 'var(--shadow-2xl)', /* large elevated drop shadow */
-                        backgroundImage: `url(${selectedImage.image_url})`,
+                        backgroundImage: `url(${getImageUrl(selectedImage.image_url)})`,
                         backgroundPosition: `${bgPos.x}% ${bgPos.y}%`,
                         backgroundSize: `${ZOOM_LEVEL * 100}% ${ZOOM_LEVEL * 100}%`,
                         backgroundRepeat: 'no-repeat'
@@ -177,7 +178,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 aria-label={`Select image ${img.order}`}
                             >
                                 <Image
-                                    src={img.image_url}
+                                    src={getImageUrl(img.image_url)}
                                     alt={`${productName} Thumbnail`}
                                     fill
                                     className="object-cover"

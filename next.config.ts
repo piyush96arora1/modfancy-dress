@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {}, // Empty config to silence turbopack warning
+  turbopack: {},
   images: {
-    unoptimized: true,
+    unoptimized: true, // keeping this since Vercel optimization limit reached
     remotePatterns: [
       {
         protocol: 'https',
@@ -14,13 +14,12 @@ const nextConfig: NextConfig = {
         hostname: '**.supabase.co',
       },
     ],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 86400, // 24 hours (was 60 seconds — this alone helps)
   },
 };
 
 let config = nextConfig;
 
-// Only enable PWA in production - keep dev simple
 if (process.env.NODE_ENV === 'production') {
   const withPWA = require('next-pwa')({
     dest: 'public',
@@ -30,12 +29,12 @@ if (process.env.NODE_ENV === 'production') {
     runtimeCaching: [
       {
         urlPattern: /^https:\/\/udnidqllpmyoothwznbv\.supabase\.co\/storage\/v1\/object\/public\/product-images\/.*/i,
-        handler: 'CacheFirst',
+        handler: 'StaleWhileRevalidate', // was CacheFirst
         options: {
           cacheName: 'supabase-images',
           expiration: {
-            maxEntries: 500,
-            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+            maxEntries: 30,            // was 500 — this was the killer
+            maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
           },
           cacheableResponse: {
             statuses: [0, 200],

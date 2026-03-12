@@ -6,6 +6,7 @@ import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
 
 interface WholesaleCategoryPageProps {
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
     const supabase = await createClient()
     const { data: category } = await supabase
         .from('categories')
-        .select('name, description')
+        .select('name, description, image_url')
         .eq('slug', slug)
         .single()
 
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
             ? `Buy ${category.name} fancy dress costumes at wholesale bulk prices. ${category.description}`
             : `Buy ${category.name} fancy dress costumes at wholesale prices. Bulk discounts for schools, events, and cultural programs. Save up to 30%.`,
         path: `/wholesale/category/${slug}`,
+        image: getImageUrl(category.image_url),
     })
 }
 

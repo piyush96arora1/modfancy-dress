@@ -6,6 +6,8 @@ import Link from 'next/link'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import type { Banner } from '@/types/database'
+import { getImageUrl } from '@/lib/imageUrl'
+
 
 interface EventBannerProps {
   banners: Banner[]
@@ -46,7 +48,7 @@ export function EventBanner({ banners }: EventBannerProps) {
                 {/* Desktop Banner */}
                 <div className="hidden md:block relative w-full aspect-[16/5] overflow-hidden">
                   <Image
-                    src={banner.desktop_image_url}
+                    src={getImageUrl(banner.desktop_image_url)}
                     alt={banner.alt_text || 'Promotional Banner'}
                     fill
                     className="object-cover"
@@ -58,7 +60,7 @@ export function EventBanner({ banners }: EventBannerProps) {
                 {/* Mobile Banner */}
                 <div className="block md:hidden relative w-full aspect-[2.16/1] overflow-hidden">
                   <Image
-                    src={banner.mobile_image_url}
+                    src={getImageUrl(banner.mobile_image_url)}
                     alt={banner.alt_text || 'Promotional Banner'}
                     fill
                     className="object-cover"

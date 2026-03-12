@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useTransition } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import { getImageUrl } from '@/lib/imageUrl'
 import { Search, X, FolderOpen, ArrowRight, Loader2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -268,8 +269,8 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                     key={cat.id}
                     onClick={() => navigateTo(`/products?category=${cat.slug}`)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${activeIndex === flatIdx
-                        ? 'bg-[#1B2A4A]/5'
-                        : 'hover:bg-[#F5F3F0]'
+                      ? 'bg-[#1B2A4A]/5'
+                      : 'hover:bg-[#F5F3F0]'
                       }`}
                   >
                     <div className="w-8 h-8 rounded-lg bg-[#1B2A4A]/5 flex items-center justify-center flex-shrink-0">
@@ -308,15 +309,15 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                     key={product.id}
                     onClick={() => navigateTo(`/products/${product.slug}`)}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${activeIndex === flatIdx
-                        ? 'bg-[#1B2A4A]/5'
-                        : 'hover:bg-[#F5F3F0]'
+                      ? 'bg-[#1B2A4A]/5'
+                      : 'hover:bg-[#F5F3F0]'
                       }`}
                   >
                     {/* Thumbnail */}
                     <div className="w-10 h-10 rounded-lg bg-[#F5F3F0] overflow-hidden flex-shrink-0 relative">
                       {product.image_url ? (
                         <Image
-                          src={product.image_url}
+                          src={getImageUrl(product.image_url)}
                           alt={product.name}
                           fill
                           sizes="40px"

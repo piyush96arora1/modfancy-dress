@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { uploadCompressedImage, type UploadFolder } from '@/lib/utils/upload'
 import { Button } from '@/components/ui/button'
 import { Upload } from 'lucide-react'
 
@@ -15,12 +15,11 @@ interface ImageUploadProps {
 export function ImageUpload({
   onUpload,
   bucket = 'product-images',
-  pathPrefix = 'products/',
+  pathPrefix = 'products-webp/',
   label = 'Upload Image'
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const supabase = createClient()
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -31,19 +30,11 @@ export function ImageUpload({
       }
 
       const file = e.target.files[0]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
-      const filePath = `${pathPrefix}${fileName}`
 
-      const { error: uploadError } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, file)
+      // Map pathPrefix to UploadFolder type
+      const folder = pathPrefix.replace('/', '') as UploadFolder
 
-      if (uploadError) throw uploadError
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(bucket).getPublicUrl(filePath)
+      const publicUrl = await uploadCompressedImage(file, folder)
 
       onUpload(publicUrl)
 

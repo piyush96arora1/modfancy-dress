@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 import type { ProductWithDetails } from '@/types/database'
+import { getImageUrl } from '@/lib/imageUrl'
+
 
 interface AssetPreloaderProps {
   products: ProductWithDetails[]
@@ -23,16 +25,17 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
       products.slice(0, 8).forEach((product) => {
         const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
         if (primaryImage?.image_url) {
-          imageUrls.push(primaryImage.image_url)
+          imageUrls.push(getImageUrl(primaryImage.image_url))
         }
       })
 
-      // Preload banner images if available
-      if (bannerImages?.desktop) {
-        imageUrls.push(bannerImages.desktop)
-      }
-      if (bannerImages?.mobile) {
-        imageUrls.push(bannerImages.mobile)
+      // Preload banner images if available - only preload the one that fits the current viewport
+      const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+
+      if (isMobile && bannerImages?.mobile) {
+        imageUrls.push(getImageUrl(bannerImages.mobile))
+      } else if (!isMobile && bannerImages?.desktop) {
+        imageUrls.push(getImageUrl(bannerImages.desktop))
       }
 
       // Preload images with link preload
@@ -76,7 +79,7 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
         link.href = route
         document.head.appendChild(link)
       })
-      
+
       // Prefetch products API endpoint for instant navigation
       const apiLink = document.createElement('link')
       apiLink.rel = 'prefetch'
@@ -97,7 +100,7 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
             const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
             if (primaryImage?.image_url) {
               const img = new Image()
-              img.src = primaryImage.image_url
+              img.src = getImageUrl(primaryImage.image_url)
             }
           })
         }
@@ -110,7 +113,7 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
             const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
             if (primaryImage?.image_url) {
               const img = new Image()
-              img.src = primaryImage.image_url
+              img.src = getImageUrl(primaryImage.image_url)
             }
           })
         }

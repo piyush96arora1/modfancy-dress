@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImageUrl } from '@/lib/imageUrl'
 
 export interface ImageBannerProps {
   imagePath: string
@@ -28,7 +29,7 @@ export function ImageBanner({
   const bannerContent = (
     <div className={`relative w-full overflow-hidden rounded-2xl shadow-lg ${heightClasses[height]}`}>
       <Image
-        src={imagePath}
+        src={getImageUrl(imagePath)}
         alt={imageAlt}
         fill
         className="object-cover"

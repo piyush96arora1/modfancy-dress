@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 import { EditCategoryButton } from './EditCategoryButton'
 import Image from 'next/image'
 import { Image as ImageIcon } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 
 interface CategoryListProps {
   categories: any[]
@@ -66,7 +67,7 @@ export function CategoryList({ categories }: CategoryListProps) {
                   <div className="w-10 h-10 rounded bg-gray-50 border overflow-hidden flex items-center justify-center flex-shrink-0">
                     {category.image_url ? (
                       <Image
-                        src={category.image_url}
+                        src={getImageUrl(category.image_url)}
                         alt={category.name}
                         width={40}
                         height={40}
@@ -111,7 +112,7 @@ export function CategoryList({ categories }: CategoryListProps) {
               <div className="w-16 h-16 rounded bg-gray-50 border overflow-hidden flex items-center justify-center flex-shrink-0">
                 {category.image_url ? (
                   <Image
-                    src={category.image_url}
+                    src={getImageUrl(category.image_url)}
                     alt={category.name}
                     width={64}
                     height={64}

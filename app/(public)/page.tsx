@@ -12,6 +12,7 @@ import { MobileStickyActionBarDynamic } from '@/components/public/MobileStickyAc
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
@@ -80,8 +81,8 @@ export default async function HomePage() {
         <AssetPreloader
           products={products as ProductWithDetails[]}
           bannerImages={{
-            desktop: banners?.[0]?.desktop_image_url || null,
-            mobile: banners?.[0]?.mobile_image_url || null
+            desktop: getImageUrl(banners?.[0]?.desktop_image_url) || null,
+            mobile: getImageUrl(banners?.[0]?.mobile_image_url) || null
           }}
         />
       )}

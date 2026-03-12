@@ -6,6 +6,7 @@ import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { ProductSchema, BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
 
 interface ProductPageProps {
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
     title: `${product.name} - Fancy Dress Costume`,
     description: product.description || `Buy ${product.name} - fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`,
     path: `/products/${slug}`,
-    image: imageUrl,
+    image: getImageUrl(imageUrl),
     type: 'product',
   })
 }

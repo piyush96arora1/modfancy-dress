@@ -6,6 +6,7 @@ import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import type { ProductWithDetails } from '@/types/database'
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
         title: `${product.name} - Wholesale Bulk Price`,
         description: `Buy ${product.name} at wholesale price ₹${wholesalePrice}/piece. Bulk orders for schools, events, and resellers. Send enquiry for best prices.`,
         path: `/wholesale/${slug}`,
-        image: primaryImage?.image_url,
+        image: getImageUrl(primaryImage?.image_url),
         type: 'product',
     })
 }
@@ -90,7 +91,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
         '@id': `${siteUrl}/wholesale/${slug}#product`,
         name: `${productData.name} - Wholesale`,
         description: productData.description || `${productData.name} available at wholesale bulk prices at Mod Fancy Dress`,
-        image: primaryImage ? [primaryImage.image_url] : [],
+        image: primaryImage ? [getImageUrl(primaryImage.image_url)] : [],
         brand: { '@type': 'Brand', name: 'Mod Fancy Dress' },
         category: productData.category?.name || 'Fancy Dress Costume',
         sku: productData.variants?.[0]?.sku || productData.slug,

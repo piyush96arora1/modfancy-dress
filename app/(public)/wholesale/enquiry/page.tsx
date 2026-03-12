@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getImageUrl } from '@/lib/imageUrl'
 import { useRouter } from 'next/navigation'
 import { useEnquiryBasket } from '@/lib/context/EnquiryBasketContext'
 import { formatPrice } from '@/lib/utils/pricing'
@@ -156,7 +157,7 @@ export default function WholesaleEnquiryPage() {
                                 <div className="w-16 h-16 md:w-20 md:h-20 relative bg-[#F5F3F0] rounded-lg overflow-hidden">
                                     {item.image_url ? (
                                         <Image
-                                            src={item.image_url}
+                                            src={getImageUrl(item.image_url)}
                                             alt={item.product_name}
                                             fill
                                             className="object-cover"

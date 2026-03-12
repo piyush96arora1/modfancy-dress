@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { ImageUpload } from './ImageUpload'
 import { X, Plus } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import { SIZE_OPTIONS } from '@/lib/constants/sizes'
 
 // Helper to make string fields optional (empty string becomes undefined)
@@ -641,7 +642,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             <div key={index} className="relative group border rounded-lg bg-gray-50 p-2 flex flex-col shadow-sm">
               <div className="aspect-square relative bg-white border rounded overflow-hidden mb-2">
                 <img
-                  src={img.url}
+                  src={getImageUrl(img.url)}
                   alt={`Product image ${index + 1}`}
                   className="w-full h-full object-cover"
                 />

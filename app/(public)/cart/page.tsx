@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImageUrl } from '@/lib/imageUrl'
 import { useCart } from '@/lib/store/cart'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -133,7 +134,7 @@ export default function CartPage() {
                 <div className="relative w-full sm:w-24 h-32 sm:h-24 bg-[#F5F3F0] rounded-lg overflow-hidden flex-shrink-0">
                   {item.image && (
                     <Image
-                      src={item.image}
+                      src={getImageUrl(item.image)}
                       alt={item.name}
                       fill
                       className="object-cover"

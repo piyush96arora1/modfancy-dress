@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { uploadCompressedImage } from '@/lib/utils/upload'
+import { getImageUrl } from '@/lib/imageUrl'
 import { Button } from '@/components/ui/button'
 import { Upload, X, Save, Plus, ArrowUp, ArrowDown, Settings2 } from 'lucide-react'
 import Image from 'next/image'
@@ -39,8 +41,6 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
   // State for a "new" draft banner before saving to DB
   const [newBannerDraft, setNewBannerDraft] = useState<Partial<Banner> | null>(null)
 
-  const desktopInputRef = useRef<HTMLInputElement>(null)
-  const mobileInputRef = useRef<HTMLInputElement>(null)
   const supabase = createClient()
 
   const handleUpload = async (
@@ -51,21 +51,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
     try {
       setUploadingState({ id: bannerId, type })
 
-      const fileExt = file.name.split('.').pop()
-      const fileName = `banner-${type}-${Date.now()}.${fileExt}`
-      const filePath = `banners/${fileName}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(filePath, file, {
-          upsert: true,
-        })
-
-      if (uploadError) throw uploadError
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('product-images').getPublicUrl(filePath)
+      const publicUrl = await uploadCompressedImage(file, 'banners-webp')
 
       if (bannerId === 'new') {
         setNewBannerDraft((prev) => ({
@@ -292,7 +278,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
                   />
                   {banner.desktop_image_url ? (
                     <div className="relative w-full aspect-[16/5] rounded bg-gray-200 overflow-hidden border">
-                      <Image src={banner.desktop_image_url} alt="Desktop preview" fill className="object-cover" />
+                      <Image src={getImageUrl(banner.desktop_image_url)} alt="Desktop preview" fill className="object-cover" />
                       <button onClick={() => document.getElementById(`desktop-${banner.id}`)?.click()} className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center text-white text-sm font-medium transition cursor-pointer">
                         {uploadingState?.id === banner.id && uploadingState?.type === 'desktop' ? 'Uploading...' : 'Change Image'}
                       </button>
@@ -317,7 +303,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
                   />
                   {banner.mobile_image_url ? (
                     <div className="relative w-1/2 mx-auto aspect-[2.16/1] rounded bg-gray-200 overflow-hidden border">
-                      <Image src={banner.mobile_image_url} alt="Mobile preview" fill className="object-cover" />
+                      <Image src={getImageUrl(banner.mobile_image_url)} alt="Mobile preview" fill className="object-cover" />
                       <button onClick={() => document.getElementById(`mobile-${banner.id}`)?.click()} className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center text-white text-xs font-medium transition cursor-pointer">
                         {uploadingState?.id === banner.id && uploadingState?.type === 'mobile' ? 'Uploading...' : 'Change'}
                       </button>
@@ -384,7 +370,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
                 />
                 {newBannerDraft.desktop_image_url ? (
                   <div className="relative w-full aspect-[16/5] rounded bg-gray-200 overflow-hidden border">
-                    <Image src={newBannerDraft.desktop_image_url} alt="Desktop preview" fill className="object-cover" />
+                    <Image src={getImageUrl(newBannerDraft.desktop_image_url)} alt="Desktop preview" fill className="object-cover" />
                   </div>
                 ) : (
                   <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById('desktop-new')?.click()}>
@@ -405,7 +391,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
                 />
                 {newBannerDraft.mobile_image_url ? (
                   <div className="relative w-1/2 mx-auto aspect-[2.16/1] rounded bg-gray-200 overflow-hidden border">
-                    <Image src={newBannerDraft.mobile_image_url} alt="Mobile preview" fill className="object-cover" />
+                    <Image src={getImageUrl(newBannerDraft.mobile_image_url)} alt="Mobile preview" fill className="object-cover" />
                   </div>
                 ) : (
                   <Button type="button" variant="outline" className="w-full h-24" onClick={() => document.getElementById('mobile-new')?.click()}>

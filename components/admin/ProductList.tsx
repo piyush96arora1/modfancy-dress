@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { EditProductButton } from './EditProductButton'
+import { getImageUrl } from '@/lib/imageUrl'
 
 interface ProductListProps {
   products: any[]
@@ -77,7 +78,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
                   <td className="px-6 py-4">
                     {primaryImage ? (
                       <div className="relative w-16 h-16 bg-gray-100 rounded overflow-hidden">
-                        <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="64px" />
+                        <Image src={getImageUrl(primaryImage.image_url)} alt={product.name} fill className="object-cover" sizes="64px" />
                       </div>
                     ) : (
                       <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Image</div>
@@ -152,7 +153,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
                 {/* Image Top */}
                 <div className="relative aspect-square w-full bg-gray-100 flex-shrink-0 border-b group-hover:opacity-90 transition-opacity">
                   {primaryImage ? (
-                    <Image src={primaryImage.image_url} alt={product.name} fill className="object-cover" sizes="50vw" />
+                    <Image src={getImageUrl(primaryImage.image_url)} alt={product.name} fill className="object-cover" sizes="50vw" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
                   )}

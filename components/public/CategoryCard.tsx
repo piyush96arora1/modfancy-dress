@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
+import { getImageUrl } from '@/lib/imageUrl'
+
 
 // Auto-map category names to emojis
 function getCategoryEmoji(name: string): string {
@@ -76,7 +78,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
         {category.image_url ? (
           <div className="relative w-full h-full transform transition-transform duration-500 group-hover:scale-110">
             <Image
-              src={category.image_url}
+              src={getImageUrl(category.image_url)}
               alt={category.name}
               fill
               className="object-cover"

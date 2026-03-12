@@ -6,6 +6,7 @@ import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
+import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
 
 interface CategoryPageProps {
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const supabase = await createClient()
   const { data: category } = await supabase
     .from('categories')
-    .select('id, name, description')
+    .select('id, name, description, image_url')
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     title: `${category.name} Fancy Dress Costumes`,
     description: category.description || `Browse our collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`,
     path: `/category/${slug}`,
+    image: getImageUrl(category.image_url),
   })
 }
 
