@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient()
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfancydress.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.com'
 
   // Get all products (not deleted)
   const { data: products } = await supabase

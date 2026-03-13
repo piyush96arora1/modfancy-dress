@@ -1,6 +1,6 @@
 import { ProductWithDetails } from '@/types/database'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfancydress.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.com'
 
 // Organization Schema
 export function OrganizationSchema() {
