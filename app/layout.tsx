@@ -22,6 +22,9 @@ export const metadata: Metadata = generatePageMetadata({
   title: "Mod Fancy Dress - Fancy Dress Costumes & Accessories",
   description: "fancy dress costumes and accessories in Delhi. 15+ years of experience, 400+ successful school functions. Shop quality costumes for all occasions.",
   path: "/",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 });
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfacnydress.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfancydress.com'
 const siteName = 'Mod Fancy Dress'
 const defaultDescription = 'Fancy dress costumes and accessories. 15+ years of experience, 400+ successful school functions. Shop quality costumes in Delhi, India.'
 
@@ -10,12 +10,16 @@ export function generatePageMetadata({
   path = '',
   image,
   type = 'website',
+  verification,
 }: {
   title: string
   description?: string
   path?: string
   image?: string
   type?: 'website' | 'product' | 'article'
+  verification?: {
+    google?: string
+  }
 }): Metadata {
   const fullTitle = `${title} | ${siteName}`
   const fullDescription = description || defaultDescription
@@ -28,6 +32,7 @@ export function generatePageMetadata({
   return {
     title: fullTitle,
     description: fullDescription,
+    verification,
     keywords: [
       'fancy dress',
       'fancy dress costumes',
