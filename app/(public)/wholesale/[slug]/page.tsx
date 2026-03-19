@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { BreadcrumbSchema, toAbsoluteUrl } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
     const supabase = await createClient()
     const { data: product } = await supabase
         .from('products')
-        .select('name, description, price, wholesale_price, images:product_images(image_url, is_primary)')
+        .select('name, description, seo_title, meta_description, price, wholesale_price, images:product_images(image_url, is_primary)')
         .eq('slug', slug)
         .single()
 
@@ -31,10 +31,16 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
 
     const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
     const wholesalePrice = product.wholesale_price ?? Math.round((product.price || 0) * 0.7)
+    const defaultDescription = `Buy ${product.name} at wholesale price ₹${wholesalePrice}/piece. Bulk orders for schools, events, and resellers. Send enquiry for best prices.`
+    const description =
+        product.meta_description ??
+        (product.description?.trim()
+            ? product.description.trim().slice(0, 155) + (product.description.length > 155 ? '…' : '')
+            : defaultDescription)
 
     return generatePageMetadata({
-        title: `${product.name} - Wholesale Bulk Price`,
-        description: `Buy ${product.name} at wholesale price ₹${wholesalePrice}/piece. Bulk orders for schools, events, and resellers. Send enquiry for best prices.`,
+        title: product.seo_title || product.name,
+        description,
         path: `/wholesale/${slug}`,
         image: getImageUrl(primaryImage?.image_url),
         type: 'product',
@@ -82,16 +88,23 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
 
     const wholesalePrice = getProductPrice(productData, 'wholesale', wholesaleDiscountPct)
 
+    const { data: reviews } = await supabase
+        .from('product_reviews')
+        .select('rating')
+        .eq('product_id', productData.id)
+    const reviewCount = reviews?.length ?? 0
+    const ratingValue = reviewCount > 0 ? reviews!.reduce((s, r) => s + r.rating, 0) / reviewCount : null
+
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfacnydress.com'
 
     // Wholesale structured data with UnitPriceSpecification
-    const productSchema = {
+    const productSchema: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': 'Product',
         '@id': `${siteUrl}/wholesale/${slug}#product`,
         name: `${productData.name} - Wholesale`,
         description: productData.description || `${productData.name} available at wholesale bulk prices at Mod Fancy Dress`,
-        image: primaryImage ? [getImageUrl(primaryImage.image_url)] : [],
+        image: primaryImage ? [toAbsoluteUrl(getImageUrl(primaryImage.image_url))] : [],
         brand: { '@type': 'Brand', name: 'Mod Fancy Dress' },
         category: productData.category?.name || 'Fancy Dress Costume',
         sku: productData.variants?.[0]?.sku || productData.slug,
@@ -110,6 +123,15 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
             },
             seller: { '@type': 'LocalBusiness', name: 'Mod Fancy Dress' },
         },
+    }
+    if (reviewCount >= 1 && ratingValue != null) {
+        productSchema.aggregateRating = {
+            '@type': 'AggregateRating',
+            ratingValue: Math.round(ratingValue * 10) / 10,
+            reviewCount: reviewCount.toString(),
+            bestRating: '5',
+            worstRating: '1',
+        }
     }
 
     const breadcrumbSchema = BreadcrumbSchema([
@@ -164,13 +186,6 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
 
                         <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-4 leading-tight">{productData.name}</h1>
 
-                        {productData.description && (
-                            <div className="mb-6 p-4 bg-[#F5F3F0] rounded-lg">
-                                <h2 className="font-semibold text-sm text-[#1B2A4A] mb-1.5 font-[family-name:var(--font-outfit)]">Description</h2>
-                                <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed">{productData.description}</p>
-                            </div>
-                        )}
-
                         {/* Wholesale Enquiry — Add to Enquiry List */}
                         <div className="mb-6">
                             <AddToEnquiryButton
@@ -207,6 +222,14 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                         )}
                     </div>
                 </div>
+
+                {/* Description below main block — keeps first fold focused on image + CTA */}
+                {productData.description && (
+                    <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-label="Product description">
+                        <h2 className="font-semibold text-sm text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Description</h2>
+                        <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed max-w-3xl">{productData.description}</p>
+                    </section>
+                )}
             </div>
         </>
     )

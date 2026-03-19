@@ -107,7 +107,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 {/* The Base Image */}
                 <Image
                     src={getImageUrl(selectedImage.image_url)}
-                    alt={`${productName} Main Image`}
+                    alt={selectedImage.alt_text || `${productName} Main Image`}
                     fill
                     className="object-cover"
                     priority
@@ -179,7 +179,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                             >
                                 <Image
                                     src={getImageUrl(img.image_url)}
-                                    alt={`${productName} Thumbnail`}
+                                    alt={img.alt_text || `${productName} Thumbnail`}
                                     fill
                                     className="object-cover"
                                     sizes="96px"

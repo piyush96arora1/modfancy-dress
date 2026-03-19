@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const supabase = await createClient()
   const { data: category } = await supabase
     .from('categories')
-    .select('id, name, description, image_url')
+    .select('id, name, description, seo_title, meta_description, image_url')
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
@@ -31,9 +31,15 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     }
   }
 
+  const description =
+    category.meta_description ??
+    (category.description && category.description.trim()
+      ? category.description.trim().slice(0, 155) + (category.description.length > 155 ? '…' : '')
+      : `Browse our collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`)
+
   return generatePageMetadata({
-    title: `${category.name} Fancy Dress Costumes`,
-    description: category.description || `Browse our collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`,
+    title: category.seo_title || `${category.name} Costumes | Buy Online`,
+    description,
     path: `/category/${slug}`,
     image: getImageUrl(category.image_url),
   })
@@ -104,20 +110,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <span className="text-[#2D2D2D]">{category.name}</span>
         </nav>
 
-        {/* Category Header */}
-        <div className="mb-6 md:mb-8 p-5 md:p-6 rounded-xl bg-[#F5F3F0]">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div>
-              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-1">{category.name}</h1>
-              {category.description && (
-                <p className="text-sm text-[#6B6B6B] leading-relaxed">{category.description}</p>
-              )}
-              {products && (
-                <p className="text-xs text-[#9A9A9A] mt-2">{products.length} {products.length === 1 ? 'product' : 'products'}</p>
-              )}
-            </div>
-            <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
-          </div>
+        {/* Category Header — compact so products are above the fold */}
+        <div className="mb-4 md:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <h1 className="text-xl md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+            {category.name}
+            {products && (
+              <span className="text-sm font-normal text-[#9A9A9A] ml-2">({products.length} {products.length === 1 ? 'product' : 'products'})</span>
+            )}
+          </h1>
+          <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
         </div>
 
         {/* Products Grid */}
@@ -128,6 +129,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <p className="text-[#9A9A9A] text-sm">No products found in this category.</p>
           </div>
         )}
+
+        {/* Category description below products — keeps first fold focused on listing */}
+        {category.description && (
+          <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-label="About this category">
+            <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl">{category.description}</p>
+          </section>
+        )}
+
+        {/* Link to blog for ideas and guides */}
+        <section className="mt-8 pt-6 border-t border-[#E8E5E0]">
+          <Link href="/blog" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+            Fancy dress ideas & costume guides on our blog →
+          </Link>
+        </section>
       </div>
     </>
   )

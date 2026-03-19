@@ -4,6 +4,17 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.c
 const siteName = 'Mod Fancy Dress'
 const defaultDescription = 'Fancy dress costumes and accessories. 15+ years of experience, 400+ successful school functions. Shop quality costumes in Delhi, India.'
 
+/** Truncate to ~155 chars for meta description (Google typically shows ~155–160). */
+export function truncateMetaDescription(text: string | null | undefined, max = 155): string | undefined {
+  if (!text || typeof text !== 'string') return undefined
+  const t = text.trim()
+  if (t.length <= max) return t
+  const cut = t.slice(0, max - 1).trim()
+  const last = cut.lastIndexOf(' ')
+  const out = last > max * 0.7 ? cut.slice(0, last) : cut
+  return out + (out.length < t.length ? '…' : '')
+}
+
 export function generatePageMetadata({
   title,
   description,
@@ -22,7 +33,8 @@ export function generatePageMetadata({
   }
 }): Metadata {
   const fullTitle = `${title} | ${siteName}`
-  const fullDescription = description || defaultDescription
+  const rawDescription = description || defaultDescription
+  const fullDescription = rawDescription.length > 155 ? truncateMetaDescription(rawDescription, 155) || rawDescription.slice(0, 152) + '…' : rawDescription
   const url = `${siteUrl}${path}`
   const ogImage = image || `${siteUrl}/og-image.jpg`
 

@@ -4,6 +4,8 @@ export type Category = {
   slug: string
   description: string | null
   image_url: string | null
+  seo_title: string | null
+  meta_description: string | null
   created_at: string
   updated_at: string
 }
@@ -20,6 +22,8 @@ export type Product = {
   size: string | null
   is_active: boolean
   deleted_at: string | null // Timestamp when product was soft deleted
+  seo_title: string | null
+  meta_description: string | null
   created_at: string
   updated_at: string
 }
@@ -40,6 +44,7 @@ export type ProductImage = {
   id: string
   product_id: string
   image_url: string
+  alt_text: string | null
   is_primary: boolean
   order: number
   created_at: string
@@ -132,5 +137,26 @@ export type SearchCategoryResult = {
 export type SearchResults = {
   products: SearchProductResult[]
   categories: SearchCategoryResult[]
+}
+
+export type BlogPost = {
+  id: string
+  slug: string
+  title: string
+  language: 'en' | 'hi'
+  content: string
+  excerpt: string | null
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type ProductReview = {
+  id: string
+  product_id: string
+  rating: number
+  review_text: string | null
+  author_name: string | null
+  created_at: string
 }
 

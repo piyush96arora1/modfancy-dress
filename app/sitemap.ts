@@ -12,10 +12,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('is_active', true)
     .is('deleted_at', null) // Only include products that are not deleted
 
-  // Get all categories
+  // Get all active categories
   const { data: categories } = await supabase
     .from('categories')
     .select('slug, updated_at')
+    .eq('is_active', true)
 
   // Retail product URLs
   const productUrls =
@@ -53,6 +54,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     })) || []
 
+  // Blog posts (published only)
+  const { data: blogPosts } = await supabase
+    .from('blog_posts')
+    .select('slug, updated_at')
+    .not('published_at', 'is', null)
+  const blogUrls =
+    blogPosts?.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.updated_at),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })) || []
+
   return [
     {
       url: baseUrl,
@@ -72,9 +86,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.85,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
     ...productUrls,
     ...wholesaleProductUrls,
     ...categoryUrls,
     ...wholesaleCategoryUrls,
+    ...blogUrls,
   ]
 }

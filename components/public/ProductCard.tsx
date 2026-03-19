@@ -56,7 +56,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
           {primaryImage ? (
             <Image
               src={getImageUrl(primaryImage.image_url)}
-              alt={product.name}
+              alt={primaryImage.alt_text || product.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"

@@ -2,6 +2,12 @@ import { ProductWithDetails } from '@/types/database'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.com'
 
+/** Makes a URL absolute for JSON-LD (Google requires absolute URLs). */
+export function toAbsoluteUrl(url: string): string {
+  if (!url) return url
+  return url.startsWith('http') ? url : `${siteUrl}${url.startsWith('/') ? '' : '/'}${url}`
+}
+
 // Organization Schema
 export function OrganizationSchema() {
   return {
@@ -55,8 +61,17 @@ export function OrganizationSchema() {
   }
 }
 
-// Product Schema
-export function ProductSchema(product: ProductWithDetails) {
+/** Optional review stats for Product schema (from product_reviews). Include only when reviewCount >= 1. */
+export type ProductAggregateRating = {
+  ratingValue: number
+  reviewCount: number
+}
+
+// Product Schema — pass aggregateRating from real reviews for star ratings in search results
+export function ProductSchema(
+  product: ProductWithDetails,
+  options?: { aggregateRating?: ProductAggregateRating | null }
+) {
   const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
   const displayPrice = product.variants?.length > 0 && product.variants[0].price_override
     ? product.variants[0].price_override
@@ -70,6 +85,7 @@ export function ProductSchema(product: ProductWithDetails) {
     availability: product.is_active
       ? 'https://schema.org/InStock'
       : 'https://schema.org/OutOfStock',
+    itemCondition: 'https://schema.org/NewCondition',
     seller: {
       '@type': 'LocalBusiness',
       name: 'Mod Fancy Dress',
@@ -82,7 +98,7 @@ export function ProductSchema(product: ProductWithDetails) {
     '@id': `${siteUrl}/products/${product.slug}#product`,
     name: product.name,
     description: product.description || `${product.name} - Fancy dress costume available at Mod Fancy Dress`,
-    image: primaryImage ? [primaryImage.image_url] : [],
+    image: primaryImage ? [toAbsoluteUrl(primaryImage.image_url)] : [],
     brand: {
       '@type': 'Brand',
       name: 'Mod Fancy Dress',
@@ -105,17 +121,21 @@ export function ProductSchema(product: ProductWithDetails) {
         },
       }))
       : offers,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.7',
-      reviewCount: '25',
-      bestRating: '5',
-      worstRating: '1',
-    },
+    ...(options?.aggregateRating && options.aggregateRating.reviewCount >= 1
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Math.round(options.aggregateRating.ratingValue * 10) / 10,
+            reviewCount: options.aggregateRating.reviewCount.toString(),
+            bestRating: '5',
+            worstRating: '1',
+          },
+        }
+      : {}),
   }
 }
 
-// Breadcrumb Schema
+// Breadcrumb Schema — use absolute URLs so Google can show breadcrumbs in search results
 export function BreadcrumbSchema(items: Array<{ name: string; url: string }>) {
   return {
     '@context': 'https://schema.org',
@@ -124,7 +144,7 @@ export function BreadcrumbSchema(items: Array<{ name: string; url: string }>) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: item.url,
+      item: toAbsoluteUrl(item.url),
     })),
   }
 }

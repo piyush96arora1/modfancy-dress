@@ -5,9 +5,9 @@ import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { ProductSchema, BreadcrumbSchema } from '@/lib/seo/structured-data'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Star, MessageCircle } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
-import type { ProductWithDetails } from '@/types/database'
+import type { ProductWithDetails, ProductReview } from '@/types/database'
 
 interface ProductPageProps {
   params: Promise<{
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const supabase = await createClient()
   const { data: product } = await supabase
     .from('products')
-    .select('name, description, images:product_images(image_url, is_primary)')
+    .select('name, description, seo_title, meta_description, images:product_images(image_url, is_primary)')
     .eq('slug', slug)
     .single()
 
@@ -33,9 +33,15 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
   const imageUrl = primaryImage?.image_url
 
+  const description =
+    product.meta_description ??
+    (product.description && product.description.trim()
+      ? product.description.trim().slice(0, 155) + (product.description.length > 155 ? '…' : '')
+      : `Buy ${product.name} - fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`)
+
   return generatePageMetadata({
-    title: `${product.name} - Fancy Dress Costume`,
-    description: product.description || `Buy ${product.name} - fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`,
+    title: product.seo_title || product.name,
+    description,
     path: `/products/${slug}`,
     image: getImageUrl(imageUrl),
     type: 'product',
@@ -91,7 +97,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
-  const productSchema = ProductSchema(productData)
+  const { data: reviews } = await supabase
+    .from('product_reviews')
+    .select('id, rating, review_text, author_name, created_at')
+    .eq('product_id', productData.id)
+    .order('created_at', { ascending: false })
+  const reviewCount = reviews?.length ?? 0
+  const aggregateRating =
+    reviewCount > 0
+      ? {
+          ratingValue: reviews!.reduce((s, r) => s + r.rating, 0) / reviewCount,
+          reviewCount,
+        }
+      : null
+
+  const productSchema = ProductSchema(productData, { aggregateRating })
   const breadcrumbSchema = BreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Products', url: '/products' },
@@ -149,13 +169,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-4 leading-tight">{productData.name}</h1>
 
-            {productData.description && (
-              <div className="mb-6 p-4 bg-[#F5F3F0] rounded-lg">
-                <h2 className="font-semibold text-sm text-[#1B2A4A] mb-1.5 font-[family-name:var(--font-outfit)]">Description</h2>
-                <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed">{productData.description}</p>
-              </div>
-            )}
-
             {/* Add to Cart */}
             <div className="mb-6">
               <AddToCartButton
@@ -169,11 +182,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             </div>
 
-            {/* Cross-link to wholesale */}
-            <div className="mb-4 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200">
+            {/* Connect on WhatsApp — mobile-friendly tap target, clear spacing from wholesale */}
+            <a
+              href={`https://wa.me/919211077110?text=${encodeURIComponent(`Hi, I'm interested in "${productData.name}". Can you help with size/availability?`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full min-h-[48px] py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white font-semibold text-sm transition-colors touch-manipulation mb-5"
+              aria-label="Connect on WhatsApp to ask about this product"
+            >
+              <MessageCircle className="w-5 h-5 shrink-0" aria-hidden />
+              <span>Connect on WhatsApp</span>
+            </a>
+
+            {/* Cross-link to wholesale — site accent, not WhatsApp green */}
+            <div className="mb-4 px-4 py-3 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0]">
               <Link
                 href={`/wholesale/${slug}`}
-                className="text-sm text-emerald-700 hover:text-emerald-900 font-medium transition-colors"
+                className="text-sm text-[#1B2A4A] hover:text-[#C8956C] font-medium transition-colors"
               >
                 🏷️ Planning to buy in bulk? View wholesale prices →
               </Link>
@@ -199,6 +224,57 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
         </div>
+
+        {/* Description below main block — keeps first fold focused on image + CTA */}
+        {productData.description && (
+          <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-label="Product description">
+            <h2 className="font-semibold text-sm text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Description</h2>
+            <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed max-w-3xl">{productData.description}</p>
+          </section>
+        )}
+
+        {/* Reviews */}
+        {reviews && reviews.length > 0 && (
+          <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-label="Customer reviews">
+            <h2 className="font-semibold text-sm text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]">
+              Reviews
+              {aggregateRating && (
+                <span className="ml-2 font-normal text-[#6B6B6B]">
+                  — {Math.round(aggregateRating.ratingValue * 10) / 10} ★ ({aggregateRating.reviewCount} {aggregateRating.reviewCount === 1 ? 'review' : 'reviews'})
+                </span>
+              )}
+            </h2>
+            <ul className="space-y-4">
+              {(reviews as ProductReview[]).map((review) => (
+                <li key={review.id} className="p-4 rounded-lg bg-[#F5F3F0]/60 border border-[#E8E5E0]">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="flex gap-0.5" aria-label={`${review.rating} out of 5 stars`}>
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${i <= review.rating ? 'text-[#C8956C] fill-[#C8956C]' : 'text-[#E8E5E0]'}`}
+                        />
+                      ))}
+                    </span>
+                    {review.author_name && (
+                      <span className="text-sm font-medium text-[#2D2D2D]">{review.author_name}</span>
+                    )}
+                    <span className="text-xs text-[#9A9A9A]">
+                      {new Date(review.created_at).toLocaleDateString('en-IN', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  {review.review_text && (
+                    <p className="text-sm text-[#6B6B6B] leading-relaxed mt-1">{review.review_text}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </>
   )

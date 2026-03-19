@@ -78,7 +78,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
                   <td className="px-6 py-4">
                     {primaryImage ? (
                       <div className="relative w-16 h-16 bg-gray-100 rounded overflow-hidden">
-                        <Image src={getImageUrl(primaryImage.image_url)} alt={product.name} fill className="object-cover" sizes="64px" />
+                        <Image src={getImageUrl(primaryImage.image_url)} alt={primaryImage.alt_text || product.name} fill className="object-cover" sizes="64px" />
                       </div>
                     ) : (
                       <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Image</div>
