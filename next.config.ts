@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import redirectsData from "./redirects.json";
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  async redirects() {
+    return redirectsData as any;
+  },
   images: {
     unoptimized: true, // keeping this since Vercel optimization limit reached
     remotePatterns: [
