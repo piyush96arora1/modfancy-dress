@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobHai — Hiring Intelligence</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;height:100vh;overflow:hidden;display:flex}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sidebar-top{padding:14px 16px 10px}
+.logo-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.logo-box{display:flex;align-items:center;gap:4px}
+.logo-job{font-size:20px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px;line-height:1}
+.logo-check{width:18px;height:18px;background:#4ade80;border-radius:3px;display:flex;align-items:center;justify-content:center}
+.logo-check svg{width:11px;height:11px}
+.logo-hai{font-size:20px;font-weight:800;color:#1a1a1a;letter-spacing:-0.5px}
+.logo-recruiter{font-size:10px;color:#9ca3af;font-weight:400;margin-left:2px;align-self:flex-end;margin-bottom:2px}
+.hamburger{margin-left:auto;cursor:pointer;color:#6b7280}
+.hamburger svg{width:18px;height:18px}
+.user-row{display:flex;align-items:center;gap:8px;padding:8px 0 4px}
+.user-avatar{width:34px;height:34px;background:#3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;flex-shrink:0}
+.user-name{font-size:13px;font-weight:500;color:#111}
+.user-phone{font-size:11px;color:#9ca3af}
+.user-more{margin-left:auto;color:#9ca3af;cursor:pointer}
+
+.nav{padding:8px 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;color:#6b7280;cursor:pointer;transition:background 0.1s;position:relative}
+.nav-item:hover{background:#f9fafb}
+.nav-item.active{color:#1a1a1a;font-weight:500}
+.nav-item.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:#3b82f6;border-radius:0 3px 3px 0}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:500;padding:1px 6px;border-radius:10px}
+.nav-plus{margin-left:auto;font-size:16px;color:#9ca3af}
+.nav-dots{margin-left:auto;font-size:12px;color:#9ca3af;letter-spacing:1px}
+
+.sidebar-promo{margin:8px 12px 10px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px;position:relative;overflow:hidden}
+.promo-title{font-size:12px;font-weight:600;color:#0c4a6e;margin-bottom:3px}
+.promo-text{font-size:11px;color:#0369a1;line-height:1.4}
+.promo-wa{position:absolute;bottom:10px;right:10px;width:28px;height:28px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.promo-wa svg{width:16px;height:16px;fill:#fff}
+
+.sidebar-client{padding:8px 12px 12px}
+.client-card{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;cursor:pointer}
+.client-avatar{width:30px;height:30px;background:#1e40af;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.client-name{font-size:12px;font-weight:500;color:#111}
+.client-jobs{font-size:11px;color:#9ca3af}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;background:#f3f4f6;padding:0}
+
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar-title{font-size:16px;font-weight:600;color:#111}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.credits-badge{display:flex;align-items:center;gap:5px;background:#fffbeb;border:1px solid #fcd34d;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:500;color:#92400e}
+.credits-badge svg{width:13px;height:13px;fill:#f59e0b}
+.notif-btn{width:32px;height:32px;border:1px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280}
+
+.content{padding:20px 24px 80px}
+
+.tabs-row{display:flex;align-items:center;gap:0;margin-bottom:20px;border-bottom:2px solid #e5e7eb}
+.tab{padding:8px 18px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.tab.active{color:#2563eb;border-bottom-color:#2563eb}
+.tab:hover:not(.active){color:#374151}
+
+.filters-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.filters-left{display:flex;gap:8px}
+.filter-btn{display:flex;align-items:center;gap:6px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:7px 12px;font-size:12px;color:#374151;cursor:pointer;font-weight:500}
+.filter-btn:hover{border-color:#d1d5db;background:#f9fafb}
+.filter-btn svg{width:14px;height:14px;color:#9ca3af}
+.showing-text{font-size:12px;color:#9ca3af}
+.post-btn{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.15s}
+.post-btn:hover{background:#1d4ed8}
+
+/* ── JOB CARD ── */
+.job-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:14px;overflow:visible;position:relative;transition:box-shadow 0.2s}
+.job-card:hover{box-shadow:0 2px 16px rgba(0,0,0,0.07)}
+
+.card-header{padding:16px 16px 0;display:flex;align-items:flex-start;justify-content:space-between}
+.card-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;display:inline-flex;align-items:center;gap:3px}
+.b-live{background:#dcfce7;color:#166534}
+.b-live::before{content:'';width:6px;height:6px;background:#16a34a;border-radius:50%;display:inline-block}
+.b-premium{background:#ede9fe;color:#5b21b6;border:1px solid #ddd6fe}
+.b-premium::before{content:'◆';margin-right:2px;font-size:9px}
+.b-warn{background:#fef9c3;color:#713f12}
+.b-drop{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.b-urgent{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+.card-menu{color:#9ca3af;cursor:pointer;font-size:18px;padding:2px 6px;border-radius:4px}
+.card-menu:hover{background:#f3f4f6}
+
+.card-body{padding:0 16px 12px}
+.job-title{font-size:15px;font-weight:600;color:#111;margin-bottom:7px;letter-spacing:-0.2px}
+.job-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:#6b7280}
+.job-meta span{display:flex;align-items:center;gap:4px}
+.job-meta svg{width:13px;height:13px;flex-shrink:0;opacity:0.7}
+
+.upsell-bar{margin:10px 16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.upsell-bar-purple{background:#faf5ff;border-color:#e9d5ff}
+.upsell-text p{font-size:12px;font-weight:500;color:#0c4a6e}
+.upsell-text-purple p{color:#4c1d95}
+.upsell-text small{font-size:11px;color:#0369a1;display:block;margin-top:1px}
+.upsell-text-purple small{color:#6d28d9}
+.boost-btn{background:#fff;border:1px solid #bae6fd;color:#0369a1;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.boost-btn:hover{background:#e0f2fe}
+.upgrade-btn{background:#fff;border:1px solid #e9d5ff;color:#6d28d9;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.upgrade-btn:hover{background:#f5f3ff}
+
+.card-footer{padding:12px 16px;border-top:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;padding-bottom:56px}
+.stats-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stat-block{display:flex;align-items:center;gap:6px;background:#f9fafb;border:1px solid #f3f4f6;border-radius:8px;padding:6px 12px}
+.stat-icon{width:26px;height:26px;border:1px solid #e5e7eb;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.stat-icon svg{width:14px;height:14px;color:#6b7280}
+.stat-num{font-size:14px;font-weight:600;color:#111}
+.stat-new{background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:8px;margin-left:2px;vertical-align:top;line-height:16px;display:inline-block}
+.stat-label{font-size:11px;color:#6b7280}
+.candidates-btn{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.candidates-btn:hover{background:#1d4ed8}
+.candidates-btn svg{width:14px;height:14px}
+
+/* ── GEMINI AI BUTTON ── */
+@keyframes geminiRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes geminiPulse{0%,100%{opacity:0.6;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes aiGlow{0%,100%{box-shadow:0 0 8px rgba(99,102,241,0.4),0 2px 12px rgba(139,92,246,0.3)}50%{box-shadow:0 0 16px rgba(99,102,241,0.7),0 2px 20px rgba(139,92,246,0.5)}}
+
+.ai-fab{position:absolute;bottom:14px;right:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);color:#fff;border:none;border-radius:22px;padding:7px 14px 7px 10px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;z-index:5;letter-spacing:0.1px;animation:aiGlow 2.5s ease-in-out infinite;transition:transform 0.15s}
+.ai-fab:hover{transform:scale(1.06)}
+.ai-fab:active{transform:scale(0.97)}
+
+.gemini-icon{width:22px;height:22px;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gemini-icon svg{width:22px;height:22px}
+
+/* Shimmer text */
+.ai-fab-label{background:linear-gradient(90deg,#fff 0%,#e0d7ff 40%,#fff 60%,#e0d7ff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 2.5s linear infinite}
+
+/* ── POPOVER ── */
+@keyframes popIn{from{opacity:0;transform:translateY(8px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.popover{position:absolute;bottom:58px;right:14px;width:290px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;z-index:40;box-shadow:0 12px 40px rgba(0,0,0,0.13);display:none}
+.popover.show{display:block;animation:popIn 0.2s ease}
+
+.pop-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.pop-gem{width:20px;height:20px;flex-shrink:0}
+.pop-title{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;background:linear-gradient(90deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.pop-q{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid #f3f4f6;border-radius:10px;margin-bottom:7px;cursor:pointer;transition:all 0.15s}
+.pop-q:hover{background:#fafafe;border-color:#e0e7ff;transform:translateY(-1px);box-shadow:0 2px 8px rgba(99,102,241,0.1)}
+.pop-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.pop-text{font-size:12px;color:#374151;line-height:1.5;padding-top:2px}
+
+.pop-divider{display:flex;align-items:center;gap:8px;margin:10px 0;font-size:11px;color:#d1d5db}
+.pop-divider::before,.pop-divider::after{content:'';flex:1;height:1px;background:#f3f4f6}
+
+.pop-open-btn{width:100%;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1px solid #ddd6fe;border-radius:10px;padding:10px 13px;font-size:12px;color:#5b21b6;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;font-weight:500;transition:all 0.12s}
+.pop-open-btn:hover{background:linear-gradient(135deg,#ede9fe,#ddd6fe);box-shadow:0 2px 8px rgba(99,102,241,0.15)}
+.pop-open-btn span:last-child{font-size:16px;color:#7c3aed}
+
+.pop-arrow{position:absolute;bottom:-7px;right:28px;width:12px;height:12px;background:#fff;border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;transform:rotate(45deg)}
+
+/* ── OVERLAY ── */
+.overlay{position:fixed;inset:0;background:rgba(17,24,39,0.25);z-index:99;display:none;backdrop-filter:blur(2px)}
+.overlay.show{display:block}
+
+/* ── DRAWER ── */
+@keyframes drawerIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.drawer{position:fixed;top:0;right:0;width:420px;height:100vh;background:#fff;border-left:1px solid #e5e7eb;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);z-index:100;box-shadow:-8px 0 40px rgba(0,0,0,0.1)}
+.drawer.open{transform:translateX(0)}
+
+/* drawer header with AI gradient bar */
+.drawer-head{padding:0;border-bottom:1px solid #f3f4f6;flex-shrink:0;background:#fff;overflow:hidden}
+.drawer-gradient-bar{height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899,#f59e0b,#6366f1);background-size:300% auto;animation:shimmer 3s linear infinite}
+.drawer-head-inner{padding:13px 16px;display:flex;align-items:center;gap:10px}
+.drawer-ai-avatar{width:34px;height:34px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:aiGlow 2.5s ease-in-out infinite}
+.drawer-head-info{flex:1;min-width:0}
+.drawer-head-title{font-size:14px;font-weight:600;color:#111;display:flex;align-items:center;gap:6px}
+.live-dot{width:7px;height:7px;background:#10b981;border-radius:50%;animation:geminiPulse 2s ease-in-out infinite}
+.drawer-head-sub{font-size:11px;color:#9ca3af;margin-top:1px}
+.drawer-close{background:none;border:none;font-size:20px;color:#d1d5db;cursor:pointer;padding:4px 6px;border-radius:6px;line-height:1;transition:all 0.1s}
+.drawer-close:hover{background:#f3f4f6;color:#6b7280}
+
+.drawer-ctx{padding:10px 16px;background:#faf9ff;border-bottom:1px solid #f3f4f6;font-size:12px;color:#6b7280;flex-shrink:0}
+.drawer-ctx strong{color:#111;font-weight:600;font-size:13px;display:block;margin-bottom:2px}
+
+.drawer-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+
+/* messages */
+.msg-user{align-self:flex-end;background:linear-gradient(135deg,#eef2ff,#ede9fe);color:#3730a3;padding:10px 14px;border-radius:14px 14px 3px 14px;font-size:13px;max-width:80%;line-height:1.55;word-break:break-word;border:1px solid #e0e7ff}
+.msg-ai{align-self:flex-start;max-width:96%;width:100%}
+.msg-bubble{background:#f9fafb;border:1px solid #f3f4f6;padding:12px 14px;border-radius:3px 14px 14px 14px;font-size:13px;line-height:1.65;color:#1f2937;word-break:break-word}
+.msg-bubble .hl{background:#fff7ed;color:#c2410c;padding:1px 6px;border-radius:5px;font-weight:600;font-size:12px;border:1px solid #fed7aa}
+.msg-bubble .ok{background:#f0fdf4;color:#166534;padding:1px 6px;border-radius:5px;font-weight:600;font-size:12px;border:1px solid #bbf7d0}
+.msg-bubble b{font-weight:600;color:#111;font-size:13px}
+.msg-bubble ul{padding-left:16px;margin-top:8px;display:flex;flex-direction:column;gap:7px}
+.msg-bubble li{font-size:13px;line-height:1.6;color:#374151}
+
+/* action card — boost (premium jobs) */
+.action-card{border-radius:12px;padding:14px;margin-top:4px;overflow:hidden;position:relative}
+.action-card-boost{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd}
+.action-card-upgrade{background:linear-gradient(135deg,#faf5ff,#ede9fe);border:1px solid #c4b5fd}
+.action-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.action-card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.action-card-icon-boost{background:#2563eb}
+.action-card-icon-upgrade{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.action-card-title{font-size:13px;font-weight:700;color:#1e3a8a}
+.action-card-title-upgrade{color:#4c1d95}
+.action-card-sub{font-size:11px;color:#3b82f6;margin-top:1px}
+.action-card-sub-upgrade{color:#7c3aed}
+.action-card p{font-size:12px;color:#1e40af;line-height:1.6;margin-bottom:10px}
+.action-card p.upgrade-p{color:#5b21b6}
+.action-card-perks{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.action-card-perk{display:flex;align-items:center;gap:6px;font-size:12px;color:#1d4ed8}
+.action-card-perk.upgrade-perk{color:#6d28d9}
+.action-card-perk::before{content:'✓';font-weight:700;font-size:11px;color:#2563eb;flex-shrink:0}
+.action-card-perk.upgrade-perk::before{color:#7c3aed}
+.action-card-btn{border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
+.action-card-btn-boost{background:#2563eb;color:#fff}
+.action-card-btn-boost:hover{background:#1d4ed8;box-shadow:0 2px 10px rgba(37,99,235,0.4)}
+.action-card-btn-upgrade{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff}
+.action-card-btn-upgrade:hover{box-shadow:0 2px 10px rgba(124,58,237,0.4)}
+
+/* typing */
+.typing-wrap{display:flex;gap:5px;align-items:center;padding:5px 0}
+.typing-wrap span{width:7px;height:7px;background:#a5b4fc;border-radius:50%;animation:ty 1.2s infinite}
+.typing-wrap span:nth-child(2){animation-delay:.2s}
+.typing-wrap span:nth-child(3){animation-delay:.4s}
+@keyframes ty{0%,60%,100%{transform:translateY(0);opacity:0.5}30%{transform:translateY(-5px);opacity:1}}
+
+.stream-cursor{display:inline-block;width:2px;height:14px;background:#6366f1;animation:cur .65s infinite;vertical-align:middle;margin-left:2px}
+@keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+
+/* chips */
+.chips-area{padding:4px 16px 10px;display:flex;flex-wrap:wrap;gap:7px;flex-shrink:0;min-height:10px}
+.chip{font-size:12px;padding:6px 12px;border-radius:20px;border:1px solid #e0e7ff;background:linear-gradient(135deg,#f5f3ff,#eef2ff);color:#4f46e5;cursor:pointer;white-space:nowrap;transition:all 0.15s;font-weight:500}
+.chip:hover{background:linear-gradient(135deg,#ede9fe,#e0e7ff);border-color:#c7d2fe;transform:translateY(-1px);box-shadow:0 2px 8px rgba(99,102,241,0.2)}
+
+/* input */
+.drawer-input{padding:12px 14px;border-top:1px solid #f3f4f6;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;background:#fff}
+.drawer-input textarea{flex:1;border:1px solid #e5e7eb;border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;resize:none;height:40px;color:#111;background:#f9fafb;outline:none;transition:all 0.15s}
+.drawer-input textarea:focus{border-color:#6366f1;background:#fff;box-shadow:0 0 0 3px rgba(99,102,241,0.1)}
+.send-btn{width:38px;height:38px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.send-btn:hover{background:linear-gradient(135deg,#4f46e5,#7c3aed);box-shadow:0 2px 12px rgba(99,102,241,0.4)}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<div class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo-row">
+      <div class="logo-box">
+        <span class="logo-job">JOB</span>
+        <div class="logo-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="logo-hai">hai</span>
+        <span class="logo-recruiter">Recruiter</span>
+      </div>
+      <div class="hamburger"><svg viewBox="0 0 18 18" fill="none"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="user-row">
+      <div class="user-avatar">P</div>
+      <div>
+        <div class="user-name">Parth</div>
+        <div class="user-phone">9811284298</div>
+      </div>
+      <div class="user-more">···</div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 6L8 1l6 5v8a1 1 0 01-1 1H3a1 1 0 01-1-1V6z" stroke="currentColor" stroke-width="1.3"/><path d="M6 14V9h4v5" stroke="currentColor" stroke-width="1.3"/></svg>
+      Home
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 7h14" stroke="currentColor" stroke-width="1.3"/></svg>
+      Jobs
+      <span class="nav-plus">+</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 14c0-3 2.5-4.5 5.5-4.5s5.5 1.5 5.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Database
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11" r=".8" fill="currentColor"/></svg>
+      More
+      <span class="nav-dots">···</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Credits
+      <span class="nav-plus">+</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 6v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Fynd DB
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 14l1-4L10 3l3 3-7 7-4 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      WA Quick Recruit
+    </div>
+  </div>
+  <div class="sidebar-promo">
+    <div class="promo-title">Hire faster with Premium Jobs</div>
+    <div class="promo-text">Contact us to get a better pricing just for you</div>
+    <div class="promo-wa"><svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.1c-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4C7 8 6.4 8.7 6.4 10.1s1 2.8 1.1 2.9c.2.2 1.9 2.9 4.6 4.1.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.2.1-1.3-.1-.1-.3-.1-.6-.2z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.8-1.5C8.3 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.8 0-3.5-.5-4.9-1.3l-.4-.2-3.5 1.1 1-3.4-.2-.4C3.5 14.5 3 13.3 3 12 3 7 7 3 12 3s9 4 9 9-4 9-9 9z"/></svg></div>
+  </div>
+  <div class="sidebar-client">
+    <div class="client-card">
+      <div class="client-avatar">MJ</div>
+      <div>
+        <div class="client-name">MANUAL JD AUTO LIVE</div>
+        <div class="client-jobs">4 Jobs</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main" id="mainArea">
+  <div class="topbar">
+    <div class="topbar-title">Jobs</div>
+    <div class="topbar-right">
+      <div class="credits-badge">
+        <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/></svg>
+        360 +
+      </div>
+      <div class="notif-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a5 5 0 00-5 5v3l-1 1.5h12L13 10V7a5 5 0 00-5-5z" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 13.5a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.3"/></svg></div>
+      <button class="post-btn">+ Post a Job</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="tabs-row">
+      <div class="tab active">Live (4)</div>
+      <div class="tab">Under Review</div>
+      <div class="tab">Drafts (1)</div>
+      <div class="tab">Closed (28)</div>
+    </div>
+    <div class="filters-row">
+      <div class="filters-left">
+        <button class="filter-btn"><svg viewBox="0 0 14 14" fill="none"><path d="M1 3h12M3 7h8M5 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Category</button>
+        <button class="filter-btn"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M7 13c0-3 4-5 4-7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Location</button>
+        <button class="filter-btn"><svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1 5h12" stroke="currentColor" stroke-width="1.3"/></svg> Job type</button>
+      </div>
+      <div class="showing-text">Showing <b>4 results</b></div>
+    </div>
+
+    <!-- ── CARD 1 ── -->
+    <div class="job-card" id="card1">
+      <div class="card-header">
+        <div>
+          <div class="card-badges">
+            <span class="badge b-live">Live</span>
+            <span class="badge b-premium">Premium</span>
+          </div>
+        </div>
+        <div class="card-menu">⋮</div>
+      </div>
+      <div class="card-body">
+        <div class="job-title">2-wheeler mechanic</div>
+        <div class="job-meta">
+          <span><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="6" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 13c-2.5-3-4.5-5-4.5-7a4.5 4.5 0 019 0c0 2-2 4-4.5 7z" stroke="currentColor" stroke-width="1.2"/></svg>Balapur, Adilabad</span>
+          <span><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>1 opening</span>
+          <span><svg viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h12" stroke="currentColor" stroke-width="1.2"/></svg>₹ 10,000 – 12,000</span>
+          <span>🕐 Expires on 4 Apr, 26</span>
+          <span>🔄 Upgraded 8 days ago</span>
+        </div>
+      </div>
+      <div class="upsell-bar">
+        <div class="upsell-text">
+          <p>Need more candidates?</p>
+          <small>Boost your job for 24 hours &amp; reach even more candidates</small>
+        </div>
+        <button class="boost-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 3.6H11L8 6.8l1.2 3.6L6 8.2 2.8 10.4 4 6.8 1 4.6h3.8L6 1z" fill="#0369a1"/></svg>Boost</button>
+      </div>
+      <div class="card-footer">
+        <div class="stats-row">
+          <div class="stat-block">
+            <div class="stat-icon"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 12c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="stat-num">139 <span class="stat-new">134</span></div><div class="stat-label">To Review</div></div>
+          </div>
+        </div>
+        <button class="candidates-btn"><svg viewBox="0 0 14 14" fill="none"><circle cx="5.5" cy="5" r="2" stroke="white" stroke-width="1.2"/><path d="M1.5 12c0-2.2 1.8-3.5 4-3.5s4 1.3 4 3.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/><circle cx="9.5" cy="5" r="2" stroke="white" stroke-width="1.2"/><path d="M12.5 12c0-2.2-1.8-3.5-4-3.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>All Candidates · 199</button>
+      </div>
+      <!-- POPOVER 1 -->
+      <div class="popover" id="pop1">
+        <div class="pop-head">
+          <svg class="pop-gem" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2L13 8.5L19 10L13 11.5L10 18L7 11.5L1 10L7 8.5L10 2Z" fill="url(#g1)"/>
+            <defs><linearGradient id="g1" x1="1" y1="2" x2="19" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6366f1"/><stop offset="50%" stop-color="#a855f7"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>
+          </svg>
+          <div class="pop-title">AI Diagnosis ready</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('drop','2-wheeler mechanic · Balapur, Adilabad · ₹10,000–12,000',true)">
+          <div class="pop-icon" style="background:#fff7ed">📉</div>
+          <div class="pop-text">Applications dropping — what's happening and how do I fix it?</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('salary','2-wheeler mechanic · Balapur, Adilabad · ₹10,000–12,000',true)">
+          <div class="pop-icon" style="background:#fef2f2">💰</div>
+          <div class="pop-text">Is ₹10,000–12,000 competitive for Adilabad right now?</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('jd','2-wheeler mechanic · Balapur, Adilabad · ₹10,000–12,000',true)">
+          <div class="pop-icon" style="background:#eef2ff">✏️</div>
+          <div class="pop-text">Review my JD — is something in it hurting performance?</div>
+        </div>
+        <div class="pop-divider">or ask anything</div>
+        <button class="pop-open-btn" onclick="openScenario('open','2-wheeler mechanic · Balapur, Adilabad · ₹10,000–12,000',true)">
+          <span>Open full AI assistant for this job</span><span>→</span>
+        </button>
+        <div class="pop-arrow"></div>
+      </div>
+      <button class="ai-fab" id="fab1" onclick="togglePop('pop1')">
+        <div class="gemini-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L15.5 10.5L23 12L15.5 13.5L12 21L8.5 13.5L1 12L8.5 10.5L12 3Z" fill="url(#gem1)"/>
+            <defs><linearGradient id="gem1" x1="1" y1="3" x2="23" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c7d2fe"/><stop offset="40%" stop-color="#e9d5ff"/><stop offset="100%" stop-color="#fbcfe8"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="ai-fab-label">Ask AI</span>
+      </button>
+    </div>
+
+    <!-- ── CARD 2 ── -->
+    <div class="job-card" id="card2">
+      <div class="card-header">
+        <div><div class="card-badges"><span class="badge b-live">Live</span></div></div>
+        <div class="card-menu">⋮</div>
+      </div>
+      <div class="card-body">
+        <div class="job-title">2-wheeler mechanic</div>
+        <div class="job-meta">
+          <span><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="6" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 13c-2.5-3-4.5-5-4.5-7a4.5 4.5 0 019 0c0 2-2 4-4.5 7z" stroke="currentColor" stroke-width="1.2"/></svg>Janakpuri, Delhi</span>
+          <span>👤 2 openings</span>
+          <span>💰 ₹ 10,000 – 20,000</span>
+          <span>🕐 Made active 23 days ago</span>
+        </div>
+      </div>
+      <div class="upsell-bar upsell-bar-purple">
+        <div class="upsell-text upsell-text-purple">
+          <p>Upgrade to Premium job</p>
+          <small>Get more applies, higher visibility and database matches</small>
+        </div>
+        <button class="upgrade-btn">◆ Upgrade to Premium</button>
+      </div>
+      <div class="card-footer">
+        <div class="stats-row">
+          <div class="stat-block">
+            <div class="stat-icon"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 12c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="stat-num">155 <span class="stat-new">144</span></div><div class="stat-label">To Review</div></div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-icon"><svg viewBox="0 0 14 14" fill="none"><ellipse cx="7" cy="4" rx="5" ry="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 4v6c0 1.1 2.2 2 5 2s5-.9 5-2V4" stroke="currentColor" stroke-width="1.2"/></svg></div>
+            <div><div class="stat-num">436</div><div class="stat-label">Database</div></div>
+          </div>
+        </div>
+        <button class="candidates-btn">All Candidates · 162</button>
+      </div>
+      <div class="popover" id="pop2">
+        <div class="pop-head">
+          <svg class="pop-gem" viewBox="0 0 20 20" fill="none"><path d="M10 2L13 8.5L19 10L13 11.5L10 18L7 11.5L1 10L7 8.5L10 2Z" fill="url(#g2)"/><defs><linearGradient id="g2" x1="1" y1="2" x2="19" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6366f1"/><stop offset="50%" stop-color="#a855f7"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs></svg>
+          <div class="pop-title">AI Diagnosis ready</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('old','2-wheeler mechanic · Janakpuri, Delhi · ₹10,000–20,000',false)">
+          <div class="pop-icon" style="background:#fefce8">⏰</div>
+          <div class="pop-text">Post is 23 days old — refresh or repost?</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('quality','2-wheeler mechanic · Janakpuri, Delhi · ₹10,000–20,000',false)">
+          <div class="pop-icon" style="background:#f0fdf4">🔍</div>
+          <div class="pop-text">Candidates aren't matching well — what's the issue?</div>
+        </div>
+        <div class="pop-divider">or ask anything</div>
+        <button class="pop-open-btn" onclick="openScenario('open2','2-wheeler mechanic · Janakpuri, Delhi · ₹10,000–20,000',false)"><span>Open full AI assistant</span><span>→</span></button>
+        <div class="pop-arrow"></div>
+      </div>
+      <button class="ai-fab" id="fab2" onclick="togglePop('pop2')">
+        <div class="gemini-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L15.5 10.5L23 12L15.5 13.5L12 21L8.5 13.5L1 12L8.5 10.5L12 3Z" fill="url(#gem2)"/><defs><linearGradient id="gem2" x1="1" y1="3" x2="23" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c7d2fe"/><stop offset="40%" stop-color="#e9d5ff"/><stop offset="100%" stop-color="#fbcfe8"/></linearGradient></defs></svg></div>
+        <span class="ai-fab-label">Ask AI</span>
+      </button>
+    </div>
+
+    <!-- ── CARD 3 ── -->
+    <div class="job-card" id="card3">
+      <div class="card-header">
+        <div><div class="card-badges"><span class="badge b-live">Live</span><span class="badge b-urgent">🚨 0 applications in 6 days</span></div></div>
+        <div class="card-menu">⋮</div>
+      </div>
+      <div class="card-body">
+        <div class="job-title">Telecaller</div>
+        <div class="job-meta">
+          <span>📍 Jaipur</span>
+          <span>👤 3 openings</span>
+          <span>💰 ₹ 12,000 – 15,000</span>
+          <span>👩 Female only · 3+ yrs exp</span>
+        </div>
+      </div>
+      <div class="card-footer" style="padding-bottom:56px">
+        <div class="stats-row">
+          <div class="stat-block"><div><div class="stat-num">120</div><div class="stat-label">Views</div></div></div>
+          <div class="stat-block" style="border-color:#fecaca;background:#fef2f2"><div><div class="stat-num" style="color:#dc2626">0</div><div class="stat-label" style="color:#dc2626">Applications</div></div></div>
+        </div>
+        <button class="candidates-btn" style="background:#ef4444">⚡ Boost Now</button>
+      </div>
+      <div class="popover" id="pop3">
+        <div class="pop-head">
+          <svg class="pop-gem" viewBox="0 0 20 20" fill="none"><path d="M10 2L13 8.5L19 10L13 11.5L10 18L7 11.5L1 10L7 8.5L10 2Z" fill="url(#g3)"/><defs><linearGradient id="g3" x1="1" y1="2" x2="19" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ef4444"/><stop offset="50%" stop-color="#f97316"/><stop offset="100%" stop-color="#eab308"/></linearGradient></defs></svg>
+          <div class="pop-title" style="background:linear-gradient(90deg,#ef4444,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Urgent issue detected</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('telecaller','Telecaller · Jaipur · ₹12,000–15,000 · Female only, 3+ yrs',false)">
+          <div class="pop-icon" style="background:#fef2f2">🚨</div>
+          <div class="pop-text">120 views, 0 applications — why is no one applying?</div>
+        </div>
+        <div class="pop-q" onclick="openScenario('filter','Telecaller · Jaipur · ₹12,000–15,000',false)">
+          <div class="pop-icon" style="background:#eef2ff">⚙️</div>
+          <div class="pop-text">Are my filters (gender + experience) too restrictive for Jaipur?</div>
+        </div>
+        <div class="pop-divider">or ask anything</div>
+        <button class="pop-open-btn" onclick="openScenario('open3','Telecaller · Jaipur · ₹12,000–15,000',false)"><span>Open full AI assistant</span><span>→</span></button>
+        <div class="pop-arrow"></div>
+      </div>
+      <button class="ai-fab" id="fab3" onclick="togglePop('pop3')" style="background:linear-gradient(135deg,#ef4444,#f97316);animation:none;box-shadow:0 0 12px rgba(239,68,68,0.5)">
+        <div class="gemini-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L15.5 10.5L23 12L15.5 13.5L12 21L8.5 13.5L1 12L8.5 10.5L12 3Z" fill="url(#gem3)"/><defs><linearGradient id="gem3" x1="1" y1="3" x2="23" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fca5a5"/><stop offset="50%" stop-color="#fed7aa"/><stop offset="100%" stop-color="#fde68a"/></linearGradient></defs></svg></div>
+        <span class="ai-fab-label">Ask AI · Urgent</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- overlay -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- ── DRAWER ── -->
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-gradient-bar"></div>
+    <div class="drawer-head-inner">
+      <div class="drawer-ai-avatar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3L15.5 10.5L23 12L15.5 13.5L12 21L8.5 13.5L1 12L8.5 10.5L12 3Z" fill="white"/></svg>
+      </div>
+      <div class="drawer-head-info">
+        <div class="drawer-head-title">Hiring Intelligence <div class="live-dot"></div></div>
+        <div class="drawer-head-sub">AI assistant · Live market data</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+  </div>
+  <div class="drawer-ctx" id="drawerCtx">Loading...</div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="chips-area" id="chipsArea"></div>
+  <div class="drawer-input">
+    <textarea id="inputTA" placeholder="Ask anything about this job..." onkeydown="handleKey(event)"></textarea>
+    <button class="send-btn" onclick="sendMsg()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 7 2 2v3.5L9 7l-7 1.5V12z" fill="white"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+var scenarios = {
+  drop:{q:"Why are applications dropping on this job?",steps:[
+    {t:"text",c:"Checking live market data for Adilabad — scanning active competitor posts..."},
+    {t:"html",c:"<b>3 reasons applications dropped this week:</b><ul><li><span class='hl'>12 new mechanic jobs</span> posted in Adilabad — 8 offer ₹13,500+, your ₹10,000–12,000 is now below median</li><li>Post is <span class='hl'>8 days old</span> — feed visibility drops ~40% after 7 days</li><li>No work timings or brand mentioned — top posts include these, get 35% more applies</li></ul>"},
+    {t:"text",c:"Fastest fix: raise salary to ₹13,000 and refresh the post today. Should reverse the drop within 48 hrs."},
+    {t:"action"},
+    {t:"chips",c:["Raise salary to ₹13,000","Refresh this post","Review my JD"]}
+  ]},
+  salary:{q:"Is ₹10,000–12,000 competitive for Adilabad?",steps:[
+    {t:"text",c:"Pulling salary benchmarks for 2-wheeler mechanics in Adilabad this week..."},
+    {t:"html",c:"<b>Salary positioning:</b><ul><li>Your offer: <span class='hl'>₹10,000–12,000</span></li><li>Area median: <span class='ok'>₹13,200</span></li><li>Top 25% of jobs: ₹15,000+</li><li>You're currently in the <span class='hl'>bottom 28%</span></li></ul>"},
+    {t:"text",c:"Raising your minimum to ₹13,000 puts you at median and should improve application rate within 48 hours."},
+    {t:"action"},
+    {t:"chips",c:["Update salary now","Review my JD","What else to change?"]}
+  ]},
+  jd:{q:"Review my JD — is something hurting performance?",steps:[
+    {t:"text",c:"Scanning your JD against top-performing mechanic posts in Tier 2 cities..."},
+    {t:"html",c:"<b>3 issues found:</b><ul><li>Title <span class='hl'>'2-wheeler mechanic'</span> — candidates search <span class='ok'>'bike mechanic'</span> or <span class='ok'>'motorcycle technician'</span> more. Renaming boosts impressions ~20%</li><li>Missing: work timings and weekly off — top posts include this, boosts apply rate ~35%</li><li>No brand mentioned (Hero, Bajaj, TVS) — brand-specific roles get 2× more qualified applicants</li></ul>"},
+    {t:"text",c:"Want me to rewrite the full JD using the top-performing template for your category?"},
+    {t:"action"},
+    {t:"chips",c:["Yes, rewrite my JD","Just fix the title","I'll edit it myself"]}
+  ]},
+  old:{q:"Post is 23 days old — refresh or repost?",steps:[
+    {t:"text",c:"Posts older than 14 days see 50–60% fewer feed impressions. At 23 days, yours has dropped significantly."},
+    {t:"html",c:"<b>Your options:</b><ul><li><span class='ok'>Refresh (free)</span> — resets feed position to top. Best if JD and salary are already strong</li><li>Repost — only if you want to change location, title, or salary entirely</li></ul>"},
+    {t:"action"},
+    {t:"chips",c:["Refresh this post now","Why aren't candidates matching?"]}
+  ]},
+  quality:{q:"Candidates aren't matching well — what's the issue?",steps:[
+    {t:"text",c:"Comparing your requirement filters against active candidate pool in Janakpuri, Delhi..."},
+    {t:"html",c:"<b>Match gap found:</b><ul><li>You require <span class='hl'>3+ years experience</span> — only 21% of active mechanic candidates in Janakpuri meet this</li><li>No walk-in option — 60% of blue-collar hires happen via call or walk-in, not portal apply</li><li>Wide salary gap ₹10k–₹20k creates uncertainty — top candidates skip unclear posts</li></ul>"},
+    {t:"text",c:"Reducing to 1+ year experience and enabling walk-ins doubles your qualified match pool."},
+    {t:"action"},
+    {t:"chips",c:["Relax to 1+ year exp","Enable walk-in option","Raise minimum salary"]}
+  ]},
+  telecaller:{q:"120 views, 0 applications — why is no one applying?",steps:[
+    {t:"text",c:"120 views, zero applications in 6 days — this is a filter problem, not a reach problem. Diagnosing now..."},
+    {t:"html",c:"<b>Root cause found:</b><ul><li>Requiring <span class='hl'>female candidates only</span> + <span class='hl'>3+ years experience</span> together eliminates <span class='hl'>94%</span> of active telecaller candidates in Jaipur</li><li>Only ~180 candidates in the city match both — and most are already placed</li><li>Removing either filter opens your pool to <span class='ok'>2,400+ candidates</span> immediately</li></ul>"},
+    {t:"text",c:"Removing the gender filter is the fastest fix. Were you flexible on that with your client?"},
+    {t:"action"},
+    {t:"chips",c:["Remove gender filter","Reduce to 1+ year exp","Apply both changes"]}
+  ]},
+  filter:{q:"Are my filters too restrictive for Jaipur?",steps:[
+    {t:"text",c:"Running filter analysis against the Jaipur telecaller talent pool..."},
+    {t:"html",c:"<b>Filter impact breakdown:</b><ul><li>Female only → eliminates <span class='hl'>58%</span> of candidates</li><li>3+ years exp → eliminates <span class='hl'>74%</span> of remainder</li><li>Combined: only <span class='hl'>6% of Jaipur candidates</span> match your post</li></ul>"},
+    {t:"text",c:"Top performing telecaller posts in Jaipur require 0–1 year experience, are gender-neutral, and offer ₹14,000–16,000. That's your benchmark."},
+    {t:"action"},
+    {t:"chips",c:["Relax to 1 year exp","Remove gender filter","Show top performing JDs"]}
+  ]},
+  open:{q:null,steps:[
+    {t:"text",c:"I can see this job's live performance data. Applications are dropping — I've already identified 3 causes."},
+    {t:"text",c:"Where do you want to start?"},
+    {t:"chips",c:["Why dropping applications?","Is salary competitive?","Review my JD","What to do this week?"]}
+  ]},
+  open2:{q:null,steps:[
+    {t:"text",c:"This post is 23 days old — feed visibility has likely dropped by more than half. That's the main issue."},
+    {t:"action"},
+    {t:"chips",c:["Refresh or repost?","Why aren't candidates matching?","What to do this week?"]}
+  ]},
+  open3:{q:null,steps:[
+    {t:"text",c:"120 views and zero applications. That's a severe filter mismatch — I already know what's blocking candidates."},
+    {t:"action"},
+    {t:"chips",c:["What's blocking applications?","Are filters too tight?","How to fix fast?"]}
+  ]}
+};
+
+var followups = {
+  "Raise salary to ₹13,000":[{t:"text",c:"Updating to ₹13,000–14,500 puts you in the <span class='ok'>top 30%</span> of similar jobs in Adilabad. Change goes live immediately."},{t:"chips",c:["Confirm update","Also refresh the post","What else to fix?"]}],
+  "Refresh this post now":[{t:"text",c:"Post refreshed ✓ — feed position reset to top. Free action. Applications should pick up in 24–48 hours."},{t:"chips",c:["Also raise salary","Check other jobs"]}],
+  "Yes, rewrite my JD":[{t:"html",c:"<b>Rewritten JD (top-performing template):</b><ul><li>New title: <span class='ok'>Bike Mechanic / 2-Wheeler Technician</span></li><li>Added: 9am–6pm, Sunday weekly off</li><li>Added: Hero / Bajaj / TVS brand preference</li><li>Added: Walk-in welcome, immediate joining</li></ul>"},{t:"text",c:"Applying this should improve apply rate within 48 hours."},{t:"chips",c:["Apply this JD","Edit before applying"]}],
+  "Remove gender filter":[{t:"text",c:"Done ✓ — gender filter removed. Match pool expanded from <span class='hl'>~180</span> to <span class='ok'>~2,400</span> active telecaller candidates in Jaipur."},{t:"text",c:"Expect 5–10 new applications in the next 48 hours. Refresh the post too."},{t:"chips",c:["Refresh the post","Also reduce exp to 1yr","View matched candidates"]}],
+  "Apply both changes":[{t:"text",c:"Both changes applied ✓ — gender filter removed and experience reduced to 1 year. Match pool is now <span class='ok'>~3,800 candidates</span> in Jaipur."},{t:"text",c:"You should start getting calls today."},{t:"chips",c:["Refresh the post","Done for now"]}],
+  "Relax to 1+ year exp":[{t:"text",c:"Updated ✓ — experience reduced to 1+ year. Match pool: <span class='hl'>~180</span> → <span class='ok'>~1,100 candidates</span>."},{t:"chips",c:["Also remove gender filter","Refresh the post"]}],
+  "Relax to 1 year exp":[{t:"text",c:"Updated ✓ — experience changed to 1 year. Match pool went from 6% to <span class='ok'>38%</span> of available Jaipur candidates."},{t:"chips",c:["Also remove gender filter","Refresh the post"]}],
+  "What to do this week?":[{t:"html",c:"<b>This week's action plan (8 mins total):</b><ul><li><span class='hl'>Adilabad job</span> — raise salary to ₹13k + refresh post <i>(today)</i></li><li><span class='ok'>Delhi job</span> — refresh + enable walk-in option</li><li><span class='hl'>Jaipur Telecaller</span> — remove gender filter + reduce exp to 1yr <i>(urgent)</i></li></ul>"},{t:"text",c:"Want me to walk through each one?"},{t:"chips",c:["Start with Adilabad","Start with Telecaller","Do all three"]}]
+};
+
+var currentIsPremium = false;
+
+function togglePop(popId) {
+  var pop = document.getElementById(popId);
+  var isShown = pop.classList.contains('show');
+  document.querySelectorAll('.popover').forEach(function(p){ p.classList.remove('show'); });
+  if (!isShown) pop.classList.add('show');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.popover') && !e.target.closest('.ai-fab')) {
+    document.querySelectorAll('.popover').forEach(function(p){ p.classList.remove('show'); });
+  }
+});
+
+function openScenario(key, ctx, isPremium) {
+  document.querySelectorAll('.popover').forEach(function(p){ p.classList.remove('show'); });
+  var s = scenarios[key]; if (!s) return;
+  currentIsPremium = !!isPremium;
+  document.getElementById('drawerCtx').innerHTML = '<strong>' + ctx + '</strong>' +
+    (isPremium ? '<span style="display:inline-block;margin-left:8px;background:#ede9fe;color:#5b21b6;font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;border:1px solid #ddd6fe">◆ Premium</span>' :
+                 '<span style="display:inline-block;margin-left:8px;background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;border:1px solid #e5e7eb">Standard</span>');
+  var body = document.getElementById('drawerBody');
+  var chips = document.getElementById('chipsArea');
+  body.innerHTML = ''; chips.innerHTML = '';
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  if (s.q) { addUserMsg(s.q); setTimeout(function(){ runSteps(s.steps,0); }, 600); }
+  else { setTimeout(function(){ runSteps(s.steps,0); }, 300); }
+}
+
+function addUserMsg(text) {
+  var body = document.getElementById('drawerBody');
+  var el = document.createElement('div'); el.className = 'msg-user'; el.textContent = text;
+  body.appendChild(el); body.scrollTop = body.scrollHeight;
+}
+
+function renderActionCard(isPremium) {
+  var el = document.createElement('div');
+  el.className = 'msg-ai';
+  if (isPremium) {
+    el.innerHTML = '<div class="action-card action-card-boost">' +
+      '<div class="action-card-header">' +
+        '<div class="action-card-icon action-card-icon-boost">⚡</div>' +
+        '<div><div class="action-card-title">Boost this job</div>' +
+        '<div class="action-card-sub">Recommended for Premium jobs</div></div>' +
+      '</div>' +
+      '<p>Your job is already Premium — the next lever is <b>Boost</b>. It pins your post to the top of candidate feeds for 24 hours, guaranteeing maximum visibility right now.</p>' +
+      '<div class="action-card-perks">' +
+        '<div class="action-card-perk">3–5× more views in 24 hours</div>' +
+        '<div class="action-card-perk">Shown above all non-boosted jobs in the city</div>' +
+        '<div class="action-card-perk">Best ROI when paired with a competitive salary</div>' +
+      '</div>' +
+      '<button class="action-card-btn action-card-btn-boost" onclick="handleChip(\'Boost this job\')">⚡ Boost for ₹299 · 24 hrs</button>' +
+    '</div>';
+  } else {
+    el.innerHTML = '<div class="action-card action-card-upgrade">' +
+      '<div class="action-card-header">' +
+        '<div class="action-card-icon action-card-icon-upgrade">◆</div>' +
+        '<div><div class="action-card-title action-card-title-upgrade">Upgrade to Premium</div>' +
+        '<div class="action-card-sub action-card-sub-upgrade">Recommended for this job</div></div>' +
+      '</div>' +
+      '<p class="upgrade-p">Premium jobs get <b>3× more visibility</b> and surface to matched candidates in the database — not just active job seekers. For this job, upgrading is a higher-ROI move than Boost alone.</p>' +
+      '<div class="action-card-perks">' +
+        '<div class="action-card-perk upgrade-perk">Featured placement in candidate feeds</div>' +
+        '<div class="action-card-perk upgrade-perk">Access to 436 matched database candidates</div>' +
+        '<div class="action-card-perk upgrade-perk">Priority support + hiring manager tag</div>' +
+      '</div>' +
+      '<button class="action-card-btn action-card-btn-upgrade" onclick="handleChip(\'Upgrade to Premium\')">◆ Upgrade to Premium</button>' +
+    '</div>';
+  }
+  return el;
+}
+
+function runSteps(steps, idx) {
+  if (idx >= steps.length) return;
+  var step = steps[idx];
+
+  if (step.t === 'chips') {
+    var chips = document.getElementById('chipsArea'); chips.innerHTML = '';
+    step.c.forEach(function(label){
+      var ch = document.createElement('button'); ch.className = 'chip'; ch.textContent = label;
+      ch.onclick = function(){ handleChip(label); }; chips.appendChild(ch);
+    });
+    return;
+  }
+
+  if (step.t === 'action') {
+    var body = document.getElementById('drawerBody');
+    var card = renderActionCard(currentIsPremium);
+    body.appendChild(card);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(function(){ runSteps(steps, idx+1); }, 350);
+    return;
+  }
+
+  var body = document.getElementById('drawerBody');
+  var typingEl = document.createElement('div'); typingEl.className = 'msg-ai';
+  typingEl.innerHTML = '<div class="msg-bubble"><div class="typing-wrap"><span></span><span></span><span></span></div></div>';
+  body.appendChild(typingEl); body.scrollTop = body.scrollHeight;
+  setTimeout(function(){
+    typingEl.remove();
+    var el = document.createElement('div'); el.className = 'msg-ai';
+    var bubble = document.createElement('div'); bubble.className = 'msg-bubble';
+    el.appendChild(bubble); body.appendChild(el);
+    if (step.t === 'html') {
+      bubble.innerHTML = step.c; body.scrollTop = body.scrollHeight;
+      setTimeout(function(){ runSteps(steps, idx+1); }, 350);
+    } else {
+      streamText(bubble, step.c, function(){ setTimeout(function(){ runSteps(steps, idx+1); }, 280); });
+    }
+  }, 750 + idx*80);
+}
+
+function streamText(el, html, done) {
+  var plain = html.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  var words = plain.split(' ');
+  var cur = document.createElement('span'); cur.className = 'stream-cursor'; el.appendChild(cur);
+  var i = 0;
+  var iv = setInterval(function(){
+    if (i >= words.length) {
+      clearInterval(iv); el.innerHTML = html;
+      document.getElementById('drawerBody').scrollTop = 99999;
+      if (done) done(); return;
+    }
+    cur.remove();
+    var sp = document.createElement('span'); sp.textContent = words[i]+' ';
+    el.appendChild(sp); el.appendChild(cur); i++;
+    document.getElementById('drawerBody').scrollTop = 99999;
+  }, 38);
+}
+
+function handleChip(label) {
+  document.getElementById('chipsArea').innerHTML = '';
+  addUserMsg(label);
+  var boostSteps = [{t:"text",c:"Boosting now — your job will be pinned to the top of candidate feeds for the next 24 hours. ⚡"},{t:"text",c:"Tip: pair this with the salary update for best results. You should see a significant spike in views within the next 2–3 hours."},{t:"chips",c:["Also raise salary","Track performance","Done for now"]}];
+  var upgradeSteps = [{t:"text",c:"Upgrading to Premium — your job will now surface to matched candidates in the database, not just active job seekers. ◆"},{t:"html",c:"<b>What just changed:</b><ul><li>Your post is now featured in candidate feeds</li><li>436 matched database candidates will be notified</li><li>You can also Boost on top of Premium for maximum reach</li></ul>"},{t:"chips",c:["Also Boost this job","Fix my filters too","Done for now"]}];
+  var steps = label === 'Boost this job' ? boostSteps : label === 'Upgrade to Premium' ? upgradeSteps : followups[label];
+  if (!steps) steps = [{t:"text",c:"Analysing that against your job data and live benchmarks..."},{t:"chips",c:["Tell me more","What else to fix?","Check other jobs"]}];
+  setTimeout(function(){ runSteps(steps, 0); }, 450);
+}
+
+function sendMsg() {
+  var ta = document.getElementById('inputTA'); var val = ta.value.trim(); if (!val) return;
+  ta.value = ''; document.getElementById('chipsArea').innerHTML = ''; addUserMsg(val);
+  setTimeout(function(){ runSteps([{t:"text",c:"Checking that against your job data and live market benchmarks..."},{t:"text",c:"I'll give you a specific diagnosis — not generic advice."},{t:"action"},{t:"chips",c:["Tell me more","Top priority fix?","Check my other jobs"]}], 0); }, 450);
+}
+
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } }
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>

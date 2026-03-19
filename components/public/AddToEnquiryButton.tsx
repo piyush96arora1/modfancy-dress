@@ -61,16 +61,16 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                         <div className="flex items-center gap-1">
                             <button
                                 type="button"
-                                onClick={() => setQuantity(Math.max(1, quantity - 5))}
+                                onClick={() => setQuantity(Math.max(5, quantity - 5))}
                                 className="w-8 h-8 rounded-lg bg-white border border-[#E8E5E0] text-[#2D2D2D] font-bold hover:bg-[#F5F3F0] transition-colors text-sm"
                             >
                                 −
                             </button>
                             <input
                                 type="number"
-                                min="1"
+                                min="5"
                                 value={quantity}
-                                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                onChange={(e) => setQuantity(Math.max(5, parseInt(e.target.value) || 5))}
                                 className="w-16 text-center border border-[#E8E5E0] rounded-lg py-1.5 text-sm bg-white font-medium"
                             />
                             <button

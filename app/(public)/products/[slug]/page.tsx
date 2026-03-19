@@ -164,6 +164,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 colors={colors}
                 variants={productData.variants}
               />
+              <p className="text-xs text-[#9A9A9A] mt-3 italic text-center md:text-left">
+                * Shipping charges are extra according to location.
+              </p>
             </div>
 
             {/* Cross-link to wholesale */}

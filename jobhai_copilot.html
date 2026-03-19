@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Hai – Recruiter Copilot</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --blue-mid: #dbeafe;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --red: #dc2626;
+    --yellow: #d97706;
+    --yellow-light: #fffbeb;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --copilot-bg: #0f172a;
+    --copilot-surface: #1e293b;
+    --copilot-border: #334155;
+    --copilot-text: #e2e8f0;
+    --copilot-muted: #94a3b8;
+    --copilot-accent: #38bdf8;
+    --copilot-accent-glow: rgba(56,189,248,0.15);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-800);
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 24px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--gray-600); font-size: 13px; cursor: pointer;
+    padding: 4px 8px; border-radius: 6px;
+    border: none; background: none;
+  }
+  .back-btn:hover { background: var(--gray-100); }
+  .topbar-title { font-weight: 600; font-size: 14px; color: var(--gray-800); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .coin-badge {
+    background: var(--yellow-light); color: var(--yellow);
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid #fde68a;
+  }
+
+  /* STEPS */
+  .steps {
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    padding: 0 24px;
+  }
+  .step {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px 14px 0;
+    font-size: 12px;
+    color: var(--gray-400);
+    position: relative;
+    cursor: default;
+  }
+  .step.active { color: var(--blue); }
+  .step.active::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 20px;
+    height: 2px; background: var(--blue);
+  }
+  .step-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .step.active .step-icon { background: var(--blue-light); }
+  .step-label { font-size: 11px; color: var(--gray-400); }
+  .step.active .step-label { color: var(--blue); font-weight: 600; }
+  .step-name { font-size: 12px; font-weight: 500; }
+
+  /* LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    height: calc(100vh - 48px - 57px);
+  }
+
+  /* FORM PANEL */
+  .form-panel {
+    padding: 28px 36px;
+    overflow-y: auto;
+    background: #fff;
+    border-right: 1px solid var(--gray-200);
+  }
+
+  .field-group {
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .field-label {
+    font-size: 13px; font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .field-highlight .field-label::after {
+    content: '← Fill this next';
+    font-size: 11px; font-weight: 500;
+    color: var(--blue);
+    background: var(--blue-light);
+    padding: 2px 8px; border-radius: 20px;
+    animation: pulse-label 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-label {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .field-highlight .form-input,
+  .field-highlight .form-select {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  .form-input, .form-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--gray-800);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  .form-input::placeholder { color: var(--gray-400); }
+
+  .quick-chips {
+    display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+  }
+  .chip {
+    padding: 5px 12px; border-radius: 20px;
+    border: 1.5px solid var(--gray-200);
+    font-size: 12px; cursor: pointer;
+    background: #fff; color: var(--gray-600);
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .chip.selected { border-color: var(--blue); color: var(--blue); background: var(--blue-light); font-weight: 600; }
+
+  .vacancy-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .vacancy-input-wrap {
+    flex: 1; display: flex; align-items: center;
+    border: 1.5px solid var(--gray-200); border-radius: 8px;
+    overflow: hidden;
+  }
+  .vacancy-input-wrap input {
+    flex: 1; border: none; outline: none;
+    padding: 10px 14px; font-size: 13px; font-family: inherit;
+    color: var(--gray-800);
+  }
+  .vac-btn {
+    width: 36px; height: 36px; border: none;
+    background: var(--gray-100); cursor: pointer;
+    font-size: 16px; color: var(--gray-600);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vac-btn:hover { background: var(--gray-200); }
+
+  .checkbox-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px; color: var(--gray-700);
+  }
+  .checkbox-row input[type="checkbox"] { margin-top: 2px; accent-color: var(--blue); }
+  .edit-link { color: var(--blue); cursor: pointer; text-decoration: underline; margin-left: 4px; }
+
+  .field-success {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--green);
+    margin-top: 5px;
+  }
+
+  .warning-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--yellow);
+    background: var(--yellow-light);
+    border: 1px solid #fde68a;
+    padding: 6px 10px; border-radius: 6px;
+    margin-top: 6px;
+  }
+
+  /* BOTTOM BAR */
+  .bottom-bar {
+    background: #fff;
+    border-top: 1px solid var(--gray-200);
+    padding: 14px 36px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; bottom: 0;
+  }
+  .btn-back {
+    padding: 9px 20px; border-radius: 8px;
+    border: 1.5px solid var(--gray-200);
+    background: #fff; font-size: 13px; font-weight: 500;
+    color: var(--gray-700); cursor: pointer;
+  }
+  .save-note { font-size: 12px; color: var(--gray-400); }
+  .btn-primary {
+    padding: 9px 22px; border-radius: 8px;
+    background: var(--blue); color: #fff;
+    font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+
+  /* ====== COPILOT PANEL ====== */
+  .copilot-panel {
+    background: var(--copilot-bg);
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .copilot-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--copilot-border);
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .copilot-avatar {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    box-shadow: 0 0 12px rgba(14,165,233,0.4);
+    flex-shrink: 0;
+  }
+
+  .copilot-name {
+    font-size: 13px; font-weight: 600;
+    color: var(--copilot-text);
+  }
+  .copilot-status {
+    font-size: 11px; color: var(--copilot-accent);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--copilot-accent);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .messages {
+    flex: 1; overflow-y: auto;
+    padding: 16px 14px;
+    display: flex; flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+
+  /* scrollbar */
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-track { background: transparent; }
+  .messages::-webkit-scrollbar-thumb { background: var(--copilot-border); border-radius: 4px; }
+
+  .msg {
+    display: flex; gap: 8px; align-items: flex-start;
+    animation: msg-in 0.25s ease-out;
+  }
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; flex-shrink: 0;
+  }
+  .msg.user .msg-avatar {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  }
+
+  .msg-bubble {
+    max-width: 260px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  .msg.bot .msg-bubble {
+    background: var(--copilot-surface);
+    color: var(--copilot-text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--copilot-border);
+  }
+
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, rgba(14,165,233,0.2), rgba(139,92,246,0.2));
+    color: var(--copilot-text);
+    border: 1px solid rgba(14,165,233,0.3);
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg-bubble .highlight { color: var(--copilot-accent); font-weight: 600; }
+  .msg-bubble .warn { color: #fb923c; font-weight: 600; }
+  .msg-bubble .good { color: #4ade80; font-weight: 600; }
+
+  /* action buttons inside chat */
+  .msg-actions {
+    display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;
+  }
+  .action-btn {
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 600;
+    cursor: pointer; border: none;
+    transition: all 0.15s;
+  }
+  .action-btn.primary {
+    background: var(--copilot-accent);
+    color: #0f172a;
+  }
+  .action-btn.primary:hover { background: #7dd3fc; }
+  .action-btn.secondary {
+    background: transparent;
+    color: var(--copilot-muted);
+    border: 1px solid var(--copilot-border);
+  }
+  .action-btn.secondary:hover { color: var(--copilot-text); border-color: var(--copilot-text); }
+
+  /* typing indicator */
+  .typing-indicator {
+    display: flex; gap: 8px; align-items: center;
+    padding: 2px 0;
+  }
+  .typing-dots {
+    display: flex; gap: 4px; align-items: center;
+    background: var(--copilot-surface);
+    border: 1px solid var(--copilot-border);
+    padding: 10px 14px; border-radius: 12px;
+    border-bottom-left-radius: 4px;
+  }
+  .typing-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--copilot-muted);
+    animation: dot-bounce 1.4s ease-in-out infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot-bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* progress bar in copilot */
+  .copilot-progress {
+    padding: 10px 14px;
+    border-top: 1px solid var(--copilot-border);
+    flex-shrink: 0;
+  }
+  .progress-label {
+    font-size: 11px; color: var(--copilot-muted);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+  .progress-bar {
+    height: 4px; background: var(--copilot-surface);
+    border-radius: 4px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  /* INPUT AREA */
+  .copilot-input-area {
+    padding: 10px 12px;
+    border-top: 1px solid var(--copilot-border);
+    display: flex; gap: 8px; align-items: center;
+    flex-shrink: 0;
+    background: var(--copilot-surface);
+  }
+  .copilot-input {
+    flex: 1; background: var(--copilot-bg);
+    border: 1px solid var(--copilot-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--copilot-text);
+    font-size: 12.5px; font-family: inherit;
+    outline: none; resize: none;
+    height: 36px;
+    line-height: 1.4;
+  }
+  .copilot-input:focus { border-color: var(--copilot-accent); }
+  .copilot-input::placeholder { color: var(--copilot-muted); }
+  .send-btn {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--copilot-accent); border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #0f172a; font-size: 14px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: #7dd3fc; }
+
+  /* idle nudge */
+  .idle-nudge {
+    background: rgba(56,189,248,0.08);
+    border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--copilot-muted);
+    display: flex; align-items: center; gap: 8px;
+    animation: msg-in 0.3s ease-out;
+  }
+  .idle-nudge .nudge-icon { font-size: 16px; }
+
+  /* scenario selector (demo controls) */
+  .demo-controls {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15,23,42,0.95);
+    border: 1px solid var(--copilot-border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: none;
+    align-items: center; gap: 10px;
+    z-index: 999;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .demo-controls.visible {
+    display: flex;
+  }
+  .demo-label {
+    font-size: 11px; font-weight: 600;
+    color: var(--copilot-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .demo-btn {
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--copilot-border);
+    background: transparent; color: var(--copilot-text);
+    transition: all 0.15s;
+  }
+  .demo-btn:hover, .demo-btn.active {
+    background: var(--copilot-accent); color: #0f172a;
+    border-color: var(--copilot-accent);
+  }
+  .demo-sep { color: var(--copilot-border); font-size: 16px; }
+
+  .filled-value {
+    color: var(--gray-800);
+    font-weight: 500;
+  }
+
+  .section-divider {
+    font-size: 11px; font-weight: 600;
+    color: var(--gray-400);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .salary-row { display: flex; gap: 10px; }
+  .salary-row .form-input { flex: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="back-btn">← Back</button>
+    <span class="topbar-title">Job Posting</span>
+  </div>
+  <div class="topbar-right">
+    <span class="coin-badge" onclick="toggleDemo()" style="cursor:pointer;" title="Toggle demo scenarios">🪙 360 +</span>
+    <span style="font-size:18px; cursor:pointer;">🎧</span>
+  </div>
+</div>
+
+<!-- STEPS -->
+<div class="steps">
+  <div class="step active">
+    <div class="step-icon">📄</div>
+    <div>
+      <div class="step-label">Step 1</div>
+      <div class="step-name" style="color:var(--blue);">Basic Info</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon">📋</div>
+    <div>
+      <div class="step-label">Step 2</div>
+      <div class="step-name">Job Details</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon">👤</div>
+    <div>
+      <div class="step-label">Step 3</div>
+      <div class="step-name">Candidate Info</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon">📝</div>
+    <div>
+      <div class="step-label">Step 4</div>
+      <div class="step-name">Job Description</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon">✅</div>
+    <div>
+      <div class="step-label">Step 5</div>
+      <div class="step-name">Confirmation</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- FORM PANEL -->
+  <div class="form-panel" id="formPanel">
+    <div class="section-divider">Basic Job Information</div>
+
+    <!-- Job Title -->
+    <div class="field-group" id="fg-title">
+      <div class="field-label">Job Title</div>
+      <input class="form-input" id="jobTitle" placeholder="Select or type your job title..." 
+             oninput="onTitleInput(this.value)" onfocus="resetIdle()">
+      <div class="quick-chips" id="titleChips">
+        <span class="chip" onclick="selectTitle('2-wheeler mechanic')">2-wheeler mechanic</span>
+        <span class="chip" onclick="selectTitle('2D Animator')">2D Animator</span>
+        <span class="chip" onclick="selectTitle('Animator')">Animator</span>
+        <span class="chip" onclick="selectTitle('Telecaller')">Telecaller</span>
+      </div>
+      <div class="field-success" id="title-ok" style="display:none;">✅ Great title!</div>
+    </div>
+
+    <!-- Job Category -->
+    <div class="field-group" id="fg-category">
+      <div class="field-label">Job Category</div>
+      <input class="form-input" id="jobCategory" placeholder="Select or type your job category..." 
+             onfocus="resetIdle()">
+      <div class="quick-chips" id="catChips" style="display:none; margin-top:8px;">
+        <span class="chip" onclick="selectCategory('Delivery')">🛵 Delivery</span>
+        <span class="chip" onclick="selectCategory('Driver')">🚗 Driver</span>
+        <span class="chip" onclick="selectCategory('Field Sales')">📦 Field Sales</span>
+      </div>
+      <div class="field-success" id="cat-ok" style="display:none;">✅ Category set!</div>
+    </div>
+
+    <!-- Vacancy -->
+    <div class="field-group" id="fg-vacancy">
+      <div class="field-label">Vacancy</div>
+      <div class="vacancy-row">
+        <div class="vacancy-input-wrap">
+          <button class="vac-btn" onclick="changeVacancy(-1)">−</button>
+          <input type="number" id="vacancyInput" value="" placeholder="Try 8 vacancies"
+                 oninput="resetIdle()" style="text-align:center;">
+          <button class="vac-btn" onclick="changeVacancy(1)">+</button>
+        </div>
+      </div>
+      <div class="quick-chips" style="margin-top:8px;">
+        <span class="chip" onclick="setVacancy(1)">01</span>
+        <span class="chip" onclick="setVacancy(2)">02</span>
+        <span class="chip" onclick="setVacancy(5)">05</span>
+        <span class="chip" onclick="setVacancy(10)">10</span>
+        <span class="chip" onclick="setVacancy(25)">25</span>
+        <span class="chip" onclick="setVacancy(50)">50</span>
+      </div>
+    </div>
+
+    <!-- Salary -->
+    <div class="field-group" id="fg-salary">
+      <div class="field-label">Salary per Month (₹)</div>
+      <div class="salary-row">
+        <input class="form-input" id="salaryMin" placeholder="Min (e.g. 8000)" 
+               oninput="onSalaryInput()" onfocus="resetIdle()">
+        <input class="form-input" id="salaryMax" placeholder="Max (e.g. 12000)"
+               oninput="onSalaryInput()" onfocus="resetIdle()">
+      </div>
+      <div id="salary-warn" style="display:none;" class="warning-badge">
+        ⚠️ <span id="salary-warn-text"></span>
+      </div>
+      <div class="field-success" id="salary-ok" style="display:none;">✅ Competitive salary set!</div>
+    </div>
+
+    <!-- City -->
+    <div class="field-group" id="fg-city">
+      <div class="field-label">Choose City</div>
+      <input class="form-input" id="jobCity" placeholder="Select or type your city..."
+             oninput="onCityInput(this.value)" onfocus="resetIdle()">
+    </div>
+
+    <!-- Locality -->
+    <div class="field-group" id="fg-locality">
+      <div class="field-label">Choose Locality</div>
+      <input class="form-input" placeholder="Try Sector 132, etc." onfocus="resetIdle()">
+    </div>
+
+    <!-- Communication -->
+    <div class="field-group" id="fg-comm">
+      <div class="field-label">Communication Preferences</div>
+      <div class="checkbox-row">
+        <input type="checkbox" checked>
+        <span>Allow candidates to call between 10:00 am – 07:00 pm on 9811284298. <span class="edit-link">Edit</span></span>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox">
+        <span>Receive updates on WhatsApp from Job Hai</span>
+      </div>
+    </div>
+  </div><!-- /form-panel -->
+
+  <!-- COPILOT PANEL -->
+  <div class="copilot-panel">
+    <div class="copilot-header">
+      <div class="copilot-avatar">✦</div>
+      <div>
+        <div class="copilot-name">Hai Copilot</div>
+        <div class="copilot-status"><span class="status-dot"></span> Active · watching your form</div>
+      </div>
+    </div>
+
+    <div class="messages" id="messages">
+      <!-- messages injected here -->
+    </div>
+
+    <div class="copilot-progress">
+      <div class="progress-label">
+        <span>Form Progress</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="copilot-input-area">
+      <input class="copilot-input" id="copilotInput" placeholder="Ask me anything…" 
+             onkeydown="handleInputKey(event)">
+      <button class="send-btn" onclick="sendUserMsg()">➤</button>
+    </div>
+  </div>
+
+</div><!-- /layout -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="btn-back">Back</button>
+  <span class="save-note">Draft saved just now</span>
+  <button class="btn-primary">Save & Continue →</button>
+</div>
+
+<!-- DEMO CONTROLS -->
+<div class="demo-controls">
+  <span class="demo-label">▶ Demo</span>
+  <button class="demo-btn active" id="btn-scenario-1" onclick="runScenario(1)">1 · Delivery Boy</button>
+  <span class="demo-sep">|</span>
+  <button class="demo-btn" id="btn-scenario-2" onclick="runScenario(2)">2 · Salary Warning</button>
+  <span class="demo-sep">|</span>
+  <button class="demo-btn" id="btn-scenario-3" onclick="runScenario(3)">3 · Idle Nudge</button>
+  <span class="demo-sep">|</span>
+  <button class="demo-btn" id="btn-scenario-4" onclick="runScenario(4)">4 · Form Watching</button>
+  <span class="demo-sep">|</span>
+  <button class="demo-btn" id="btn-reset" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<script>
+function toggleDemo() {
+  document.querySelector('.demo-controls').classList.toggle('visible');
+}
+
+// ===== STATE =====
+let idleTimer = null;
+let idleFired = false;
+let currentScenario = 0;
+let scenarioStep = 0;
+let streamInterval = null;
+let progress = 0;
+
+const MARKET_DATA = {
+  'delivery boy': { min: 8500, max: 10000, city: 'Patna', calls: '6–10', category: 'Delivery' },
+  'telecaller': { min: 12000, max: 18000, city: 'Delhi', calls: '8–14', category: 'Telecaller' },
+  'driver': { min: 15000, max: 22000, city: 'Mumbai', calls: '5–9', category: 'Driver' },
+};
+
+// ===== HELPERS =====
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function scrollBottom() {
+  const m = document.getElementById('messages');
+  m.scrollTop = m.scrollHeight;
+}
+
+function addTypingIndicator() {
+  const msgs = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.className = 'msg bot';
+  el.id = 'typing-indicator';
+  el.innerHTML = `
+    <div class="msg-avatar">✦</div>
+    <div class="typing-dots">
+      <span></span><span></span><span></span>
+    </div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+async function streamBotMessage(text, actionsHtml = '', delay = 30) {
+  removeTypingIndicator();
+  const msgs = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.className = 'msg bot';
+  el.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble"><span class="stream-text"></span></div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+
+  const span = el.querySelector('.stream-text');
+
+  // Split into tokens: HTML tags stay intact, plain text splits into chars
+  const tokens = [];
+  const tokenRegex = /(<[^>]+>|&[a-z]+;|.)/gs;
+  let match;
+  while ((match = tokenRegex.exec(text)) !== null) {
+    tokens.push(match[0]);
+  }
+
+  let accumulated = '';
+  let i = 0;
+  await new Promise(resolve => {
+    const iv = setInterval(() => {
+      if (i < tokens.length) {
+        accumulated += tokens[i];
+        span.innerHTML = accumulated;
+        i++;
+        scrollBottom();
+      } else {
+        clearInterval(iv);
+        resolve();
+      }
+    }, delay);
+  });
+
+  if (actionsHtml) {
+    const actDiv = document.createElement('div');
+    actDiv.className = 'msg-actions';
+    actDiv.innerHTML = actionsHtml;
+    el.querySelector('.msg-bubble').appendChild(actDiv);
+    scrollBottom();
+  }
+}
+
+function addUserMessage(text) {
+  const msgs = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.className = 'msg user';
+  el.innerHTML = `<div class="msg-avatar">R</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+function addIdleNudge(text) {
+  removeTypingIndicator();
+  const msgs = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.id = 'idle-nudge';
+  el.innerHTML = `
+    <div class="msg bot">
+      <div class="msg-avatar">✦</div>
+      <div class="msg-bubble" style="background: rgba(56,189,248,0.08); border-color: rgba(56,189,248,0.25);">
+        <span>💬 ${text}</span>
+      </div>
+    </div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+function highlightField(fieldId) {
+  document.querySelectorAll('.field-group').forEach(g => g.classList.remove('field-highlight'));
+  if (fieldId) {
+    const el = document.getElementById(fieldId);
+    if (el) {
+      el.classList.add('field-highlight');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+}
+
+function updateProgress(pct) {
+  progress = pct;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// ===== IDLE DETECTION =====
+function resetIdle() {
+  idleFired = false;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(fireIdle, 30000);
+}
+
+function fireIdle() {
+  if (idleFired) return;
+  idleFired = true;
+  // find which field is empty and nudge
+  const title = document.getElementById('jobTitle').value;
+  const cat = document.getElementById('jobCategory').value;
+  const salary = document.getElementById('salaryMin').value;
+
+  let nudgeMsg = "Stuck anywhere? I can help you fill in the details — just ask! 😊";
+  let hField = null;
+
+  if (!title) {
+    nudgeMsg = "No rush! For a start, try typing your job role in the <strong class='highlight'>Job Title</strong> field — like \"Delivery Boy\" or \"Telecaller\".";
+    hField = 'fg-title';
+  } else if (!cat) {
+    nudgeMsg = "The <strong class='highlight'>Job Category</strong> field helps candidates find you. Want me to suggest one based on your title?";
+    hField = 'fg-category';
+  } else if (!salary) {
+    nudgeMsg = "Adding a <strong class='highlight'>salary range</strong> gets you 3× more applicants. What budget did you have in mind?";
+    hField = 'fg-salary';
+  }
+
+  addTypingIndicator();
+  setTimeout(() => {
+    removeTypingIndicator();
+    addIdleNudge(nudgeMsg);
+    if (hField) highlightField(hField);
+  }, 1200);
+}
+
+// ===== FORM INTERACTIONS =====
+let titleTimeout = null;
+function onTitleInput(val) {
+  resetIdle();
+  clearTimeout(titleTimeout);
+  document.getElementById('title-ok').style.display = 'none';
+  if (!val) return;
+
+  titleTimeout = setTimeout(() => {
+    const lower = val.toLowerCase();
+    // check market data
+    const match = Object.keys(MARKET_DATA).find(k => lower.includes(k));
+    if (match && currentScenario === 0) {
+      // auto trigger suggestion in freeform mode
+      triggerTitleSuggestion(val, match);
+    }
+    if (val.length > 2) {
+      document.getElementById('title-ok').style.display = 'flex';
+      updateProgress(Math.min(progress + 10, 100));
+    }
+  }, 800);
+}
+
+function triggerTitleSuggestion(val, match) {
+  const data = MARKET_DATA[match];
+  addTypingIndicator();
+  setTimeout(async () => {
+    await streamBotMessage(
+      `Great! For a <span class="highlight">${val}</span> role, I'd suggest the <span class="highlight">"${data.category}"</span> category — it's the most searched in your area. Want me to select it?`,
+      `<button class="action-btn primary" onclick="selectCategory('${data.category}'); this.parentElement.remove();">✓ Yes, select it</button>
+       <button class="action-btn secondary" onclick="this.parentElement.remove();">I'll choose</button>`,
+      18
+    );
+    highlightField('fg-category');
+  }, 900);
+}
+
+function selectTitle(title) {
+  document.getElementById('jobTitle').value = title;
+  document.getElementById('title-ok').style.display = 'flex';
+  document.querySelectorAll('#titleChips .chip').forEach(c => c.classList.remove('selected'));
+  event.target.classList.add('selected');
+  updateProgress(15);
+  resetIdle();
+}
+
+function selectCategory(cat) {
+  document.getElementById('jobCategory').value = cat;
+  document.getElementById('catChips').style.display = 'none';
+  document.getElementById('cat-ok').style.display = 'flex';
+  updateProgress(Math.min(progress + 15, 100));
+  highlightField('fg-vacancy');
+  resetIdle();
+}
+
+function showCategoryChips() {
+  document.getElementById('catChips').style.display = 'flex';
+}
+
+function changeVacancy(delta) {
+  const inp = document.getElementById('vacancyInput');
+  let val = parseInt(inp.value) || 0;
+  val = Math.max(1, val + delta);
+  inp.value = val;
+  updateProgress(Math.min(progress + 5, 100));
+  resetIdle();
+}
+
+function setVacancy(n) {
+  document.getElementById('vacancyInput').value = n;
+  updateProgress(Math.min(progress + 5, 100));
+  resetIdle();
+}
+
+let salaryTimeout = null;
+function onSalaryInput() {
+  resetIdle();
+  clearTimeout(salaryTimeout);
+  salaryTimeout = setTimeout(checkSalary, 1000);
+}
+
+function checkSalary() {
+  const minVal = parseInt(document.getElementById('salaryMin').value) || 0;
+  const title = document.getElementById('jobTitle').value.toLowerCase();
+  const city = document.getElementById('jobCity').value || 'your city';
+  const warnEl = document.getElementById('salary-warn');
+  const okEl = document.getElementById('salary-ok');
+  const warnText = document.getElementById('salary-warn-text');
+
+  let market = null;
+  for (const [k, v] of Object.entries(MARKET_DATA)) {
+    if (title.includes(k)) { market = v; break; }
+  }
+
+  if (market && minVal > 0 && minVal < market.min) {
+    warnEl.style.display = 'flex';
+    okEl.style.display = 'none';
+    warnText.textContent = `${title || 'This role'} in ${city} typically earns ₹${market.min.toLocaleString()}–${market.max.toLocaleString()}. At ₹${minVal.toLocaleString()} you may see fewer applicants.`;
+    // trigger copilot message
+    triggerSalaryWarning(minVal, market, city);
+  } else if (minVal >= (market?.min || 1)) {
+    warnEl.style.display = 'none';
+    okEl.style.display = 'flex';
+    updateProgress(Math.min(progress + 15, 100));
+  }
+}
+
+let salaryMsgFired = false;
+function triggerSalaryWarning(entered, market, city) {
+  if (salaryMsgFired) return;
+  salaryMsgFired = true;
+  addTypingIndicator();
+  setTimeout(async () => {
+    await streamBotMessage(
+      `Heads up! <span class="warn">₹${entered.toLocaleString()}/month</span> is below market rate. Similar roles in ${city} are offering <span class="highlight">₹${market.min.toLocaleString()}–₹${market.max.toLocaleString()}</span>. You might get fewer calls at this rate. Want to update it?`,
+      `<button class="action-btn primary" onclick="setSuggestedSalary(${market.min}, ${market.max}); salaryMsgFired=false;">✓ Update to ₹${market.min.toLocaleString()}</button>
+       <button class="action-btn secondary" onclick="salaryMsgFired=false;">Keep mine</button>`,
+      16
+    );
+  }, 800);
+}
+
+function setSuggestedSalary(min, max) {
+  document.getElementById('salaryMin').value = min;
+  document.getElementById('salaryMax').value = max;
+  document.getElementById('salary-warn').style.display = 'none';
+  document.getElementById('salary-ok').style.display = 'flex';
+  updateProgress(Math.min(progress + 15, 100));
+  highlightField('fg-city');
+  addTypingIndicator();
+  setTimeout(async () => {
+    if (currentScenario === 4) {
+      await streamBotMessage(
+        `<span class="good">Perfect!</span> ₹${min.toLocaleString()}–₹${max.toLocaleString()} is competitive — you'll get more applicants. Last step: which city are you hiring in?`,
+        `<button class="action-btn primary" onclick="s4SetCity('Patna')">📍 Patna</button>
+         <button class="action-btn secondary" onclick="document.getElementById('jobCity').focus(); document.querySelectorAll('.msg-actions').forEach(e=>e.style.display='none');">Other city</button>`,
+        20
+      );
+    } else {
+      await streamBotMessage(
+        `<span class="good">Perfect!</span> ₹${min.toLocaleString()}–₹${max.toLocaleString()} is competitive and will get you more applicants. Now let's add your city so candidates nearby can find you. 📍`,
+        '', 20
+      );
+    }
+  }, 700);
+}
+
+function onCityInput(val) {
+  resetIdle();
+  if (val.length > 2) {
+    updateProgress(Math.min(progress + 10, 100));
+  }
+}
+
+// ===== USER INPUT =====
+function handleInputKey(e) {
+  if (e.key === 'Enter') sendUserMsg();
+}
+
+async function sendUserMsg() {
+  const inp = document.getElementById('copilotInput');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  addUserMessage(text);
+  resetIdle();
+
+  await sleep(400);
+  addTypingIndicator();
+  await sleep(900);
+
+  const lower = text.toLowerCase();
+
+  if (lower.includes('delivery') || lower.includes('deliveri')) {
+    await streamBotMessage(
+      `For a <span class="highlight">Delivery Boy</span> role, I'd recommend selecting the <span class="highlight">"Delivery"</span> category — it gets the highest traffic in most Tier-2 cities. Want me to select it?`,
+      `<button class="action-btn primary" onclick="selectCategory('Delivery'); this.parentElement.remove(); document.getElementById('jobTitle').value='Delivery Boy'; document.getElementById('title-ok').style.display='flex';">✓ Yes, select Delivery</button>
+       <button class="action-btn secondary" onclick="this.parentElement.remove();">I'll pick</button>`,
+      18
+    );
+    document.getElementById('jobTitle').value = 'Delivery Boy';
+    document.getElementById('title-ok').style.display = 'flex';
+    updateProgress(20);
+    highlightField('fg-category');
+
+  } else if (lower.includes('salary') || lower.includes('pay') || lower.includes('₹')) {
+    await streamBotMessage(
+      `For most roles, adding a <span class="highlight">competitive salary</span> increases applications by 3×. I can check market rates for your title once you've filled it in. What role are you hiring for?`, '', 18
+    );
+
+  } else if (lower.includes('category') || lower.includes('which')) {
+    showCategoryChips();
+    await streamBotMessage(
+      `Here are some popular categories. Which best fits your role? I've shown the options directly in the form too — pick whichever feels right.`, '', 20
+    );
+
+  } else if (lower.includes('help') || lower.includes('how') || lower.includes('what')) {
+    await streamBotMessage(
+      `No worries! Here's the flow: fill your <span class="highlight">Job Title</span> → <span class="highlight">Category</span> → <span class="highlight">Salary</span> → <span class="highlight">City</span>. I'll guide you at each step. What are you hiring for?`, '', 16
+    );
+
+  } else {
+    await streamBotMessage(
+      `Got it! I'm here to help you post your job quickly. Try typing your job title in the form and I'll take it from there. 👆`, '', 20
+    );
+  }
+}
+
+// ===== SCENARIOS =====
+async function runScenario(n) {
+  resetAll();
+  currentScenario = n;
+  document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-scenario-${n}`)?.classList.add('active');
+
+  if (n === 1) await scenario1();
+  else if (n === 2) await scenario2();
+  else if (n === 3) await scenario3();
+  else if (n === 4) await scenario4();
+}
+
+async function scenario1() {
+  // Initial greeting
+  addTypingIndicator();
+  await sleep(800);
+  await streamBotMessage(
+    `👋 Hi <span class="highlight">Ramesh</span>! I'm your Job Hai Copilot. I'll guide you through posting your first job — it only takes a few minutes. Let's get started! What role are you hiring for?`,
+    '', 14
+  );
+  updateProgress(5);
+  highlightField('fg-title');
+
+  await sleep(2000);
+
+  // Simulate user typing
+  addUserMessage('delivery boy');
+  await sleep(300);
+  document.getElementById('jobTitle').value = 'Delivery Boy';
+  document.getElementById('title-ok').style.display = 'flex';
+  updateProgress(15);
+
+  await sleep(500);
+  addTypingIndicator();
+  await sleep(900);
+  await streamBotMessage(
+    `Nice! For a <span class="highlight">Delivery Boy</span> role, the <span class="highlight">"Delivery"</span> category is the most searched in Patna. Want me to select it for you?`,
+    `<button class="action-btn primary" onclick="autoSelectDelivery()">✓ Yes, select it</button>
+     <button class="action-btn secondary" onclick="showCategoryChips()">I'll choose</button>`,
+    16
+  );
+  highlightField('fg-category');
+}
+
+function autoSelectDelivery() {
+  selectCategory('Delivery');
+  document.querySelectorAll('.msg-actions').forEach(el => el.style.display='none');
+  continueScenario1Part2();
+}
+
+async function continueScenario1Part2() {
+  await sleep(400);
+  addTypingIndicator();
+  await sleep(800);
+  await streamBotMessage(`<span class="good">Done!</span> Category set to Delivery. Now let's add how many people you need and a salary. What's your monthly pay for this role?`, '', 18);
+  highlightField('fg-salary');
+  updateProgress(35);
+}
+
+async function scenario2() {
+  // Pre-fill title + category, then show salary warning
+  document.getElementById('jobTitle').value = 'Delivery Boy';
+  document.getElementById('title-ok').style.display = 'flex';
+  document.getElementById('jobCategory').value = 'Delivery';
+  document.getElementById('cat-ok').style.display = 'flex';
+  document.getElementById('vacancyInput').value = '2';
+  updateProgress(45);
+
+  addTypingIndicator();
+  await sleep(700);
+  await streamBotMessage(
+    `Looking good so far! You've filled the title, category, and vacancy. Now the important bit — <span class="highlight">salary</span>. This affects how many candidates apply. What's your budget per month?`,
+    '', 16
+  );
+  highlightField('fg-salary');
+
+  await sleep(2500);
+  addUserMessage('₹7000 per month');
+  document.getElementById('salaryMin').value = 7000;
+  document.getElementById('salaryMax').value = 8000;
+
+  await sleep(400);
+  document.getElementById('salary-warn').style.display = 'flex';
+  document.getElementById('salary-warn-text').textContent = 'Delivery roles in Patna typically earn ₹8,500–10,000. At ₹7,000 you may see fewer applicants.';
+
+  addTypingIndicator();
+  await sleep(900);
+  salaryMsgFired = false;
+  await streamBotMessage(
+    `Heads up! <span class="warn">₹7,000/month</span> is below market rate. Delivery roles in Patna are getting <span class="highlight">₹8,500–₹10,000</span> right now. At this rate you may get fewer calls. Want to adjust?`,
+    `<button class="action-btn primary" onclick="setSuggestedSalary(8500,10000)">✓ Update to ₹8,500</button>
+     <button class="action-btn secondary">Keep ₹7,000</button>`,
+    16
+  );
+}
+
+async function scenario3() {
+  // Idle scenario
+  addTypingIndicator();
+  await sleep(700);
+  await streamBotMessage(
+    `👋 Hi! Let's post your job — it'll take less than 3 minutes. Start with your <span class="highlight">Job Title</span>. What role are you hiring for?`,
+    '', 16
+  );
+  updateProgress(5);
+  highlightField('fg-title');
+
+  // Simulate idle after 3s (demo speed)
+  await sleep(3500);
+  addTypingIndicator();
+  await sleep(1200);
+  removeTypingIndicator();
+  addIdleNudge(`No rush! Try typing your job role in the <strong style="color:var(--copilot-accent)">Job Title</strong> field above — like "Delivery Boy" or "Telecaller". I'll take it from there 🙂`);
+  highlightField('fg-title');
+
+  await sleep(3000);
+  addTypingIndicator();
+  await sleep(900);
+  await streamBotMessage(
+    `I noticed you haven't started yet — that's okay! Sometimes it helps to know: the whole form takes about <span class="highlight">2–3 minutes</span> once you know what to fill. Ready to begin?`,
+    `<button class="action-btn primary" onclick="document.getElementById('jobTitle').focus(); this.parentElement.remove();">Yes, let's go!</button>`,
+    18
+  );
+}
+
+async function scenario4() {
+  // Just greet — then wait and watch the user type
+  addTypingIndicator();
+  await sleep(700);
+  await streamBotMessage(
+    `👋 Hi! I'm here to help you post your first job. Go ahead and start filling the form — I'll guide you as you go! 😊`,
+    '', 14
+  );
+  highlightField('fg-title');
+  updateProgress(5);
+
+  // Now attach a watcher to the title field
+  s4WatchTitle();
+}
+
+let s4TitleWatcher = null;
+let s4TitleReacted = false;
+
+function s4WatchTitle() {
+  s4TitleReacted = false;
+  const input = document.getElementById('jobTitle');
+
+  // watch for user stopping typing (debounce 1.2s)
+  input.addEventListener('input', s4OnTitleChange);
+}
+
+function s4OnTitleChange() {
+  if (s4TitleReacted) return;
+  clearTimeout(s4TitleWatcher);
+  const val = document.getElementById('jobTitle').value.trim();
+  if (!val) return;
+
+  s4TitleWatcher = setTimeout(async () => {
+    if (s4TitleReacted) return;
+    s4TitleReacted = true;
+    document.getElementById('jobTitle').removeEventListener('input', s4OnTitleChange);
+    document.getElementById('title-ok').style.display = 'flex';
+    updateProgress(15);
+
+    await sleep(300);
+    addTypingIndicator();
+    await sleep(1000);
+
+    const lower = val.toLowerCase();
+    const isDelivery = lower.includes('delivery') || lower.includes('deliver');
+    const category = isDelivery ? 'Delivery' : 'the right';
+
+    await streamBotMessage(
+      `Nice title! <span class="highlight">${val}</span> is a popular role on Job Hai. 🎯<br><br>For best results, I'd suggest setting the category to <span class="highlight">"${isDelivery ? 'Delivery' : 'a matching category'}"</span> — it's the most searched for this role in your area. Want me to select it?`,
+      `<button class="action-btn primary" onclick="s4SelectCategory('${isDelivery ? 'Delivery' : 'Field Sales'}')">✓ Yes, select it</button>
+       <button class="action-btn secondary" onclick="showCategoryChips(); this.parentElement.remove();">Let me choose</button>`,
+      15
+    );
+    highlightField('fg-category');
+  }, 1200);
+}
+
+async function s4SelectCategory(cat) {
+  document.querySelectorAll('.msg-actions').forEach(el => el.style.display = 'none');
+  selectCategory(cat || 'Delivery');
+
+  await sleep(400);
+  addTypingIndicator();
+  await sleep(900);
+  await streamBotMessage(
+    `<span class="good">✓ Done!</span> Category set to <span class="highlight">Delivery</span>.`,
+    '', 20
+  );
+
+  // brief pause then next step: vacancy
+  await sleep(800);
+  addTypingIndicator();
+  await sleep(700);
+  await streamBotMessage(
+    `Next — how many people do you need? Most first-time hirers start with <span class="highlight">1 or 2</span>. You can always post again later.`,
+    `<button class="action-btn primary" onclick="s4SetVacancy(2)">Set 2 vacancies</button>
+     <button class="action-btn secondary" onclick="s4SetVacancy(1)">Just 1</button>`,
+    18
+  );
+  highlightField('fg-vacancy');
+}
+
+async function s4SetVacancy(n) {
+  document.querySelectorAll('.msg-actions').forEach(el => el.style.display = 'none');
+  setVacancy(n);
+  updateProgress(50);
+
+  await sleep(300);
+  addTypingIndicator();
+  await sleep(800);
+  await streamBotMessage(
+    `<span class="good">✓ ${n} vacanc${n > 1 ? 'ies' : 'y'} set.</span> Now the most important field — <span class="highlight">salary</span>. This is what candidates see first and directly affects how many apply. Go ahead and enter your budget!`,
+    '', 18
+  );
+  highlightField('fg-salary');
+  salaryMsgFired = false;
+}
+
+async function s4SetSalary() {
+  document.querySelectorAll('.msg-actions').forEach(el => el.style.display = 'none');
+  setSuggestedSalary(8500, 10000);
+  updateProgress(70);
+
+  await sleep(500);
+  addTypingIndicator();
+  await sleep(800);
+  await streamBotMessage(
+    `<span class="good">Perfect!</span> Last step — add your <span class="highlight">city</span> so candidates near you can find this job. Which city are you hiring in?`,
+    `<button class="action-btn primary" onclick="s4SetCity('Patna')">📍 Patna</button>
+     <button class="action-btn secondary" onclick="document.getElementById('jobCity').focus(); document.querySelectorAll('.msg-actions').forEach(e=>e.style.display='none');">Other city</button>`,
+    18
+  );
+  highlightField('fg-city');
+}
+
+async function s4SetCity(city) {
+  document.querySelectorAll('.msg-actions').forEach(el => el.style.display = 'none');
+  document.getElementById('jobCity').value = city;
+  updateProgress(90);
+  highlightField(null);
+
+  await sleep(400);
+  addTypingIndicator();
+  await sleep(900);
+  await streamBotMessage(
+    `<span class="good">🎉 You're all set!</span> Your job for <span class="highlight">Delivery Boy in Patna</span> is ready to post.<br><br>Based on similar jobs, expect <span class="highlight">6–10 candidate calls</span> within 48 hours. Hit <strong>Save & Continue</strong> to go live!`,
+    `<button class="action-btn primary" onclick="this.parentElement.remove(); updateProgress(100);">🚀 Post my job!</button>`,
+    14
+  );
+}
+
+// Helper: simulate typing into a field character by character
+async function typeIntoField(fieldId, text, charDelay = 90) {
+  const input = document.getElementById(fieldId);
+  input.value = '';
+  input.focus();
+  for (let i = 0; i < text.length; i++) {
+    input.value = text.slice(0, i + 1);
+    await sleep(charDelay + Math.random() * 40);
+  }
+}
+
+function resetAll() {
+  currentScenario = 0;
+  salaryMsgFired = false;
+  s4TitleReacted = false;
+  clearTimeout(s4TitleWatcher);
+  document.getElementById('jobTitle').removeEventListener('input', s4OnTitleChange);
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('jobTitle').value = '';
+  document.getElementById('jobCategory').value = '';
+  document.getElementById('jobCity').value = '';
+  document.getElementById('salaryMin').value = '';
+  document.getElementById('salaryMax').value = '';
+  document.getElementById('vacancyInput').value = '';
+  document.getElementById('title-ok').style.display = 'none';
+  document.getElementById('cat-ok').style.display = 'none';
+  document.getElementById('salary-ok').style.display = 'none';
+  document.getElementById('salary-warn').style.display = 'none';
+  document.getElementById('catChips').style.display = 'none';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.field-group').forEach(g => g.classList.remove('field-highlight'));
+  updateProgress(0);
+  clearTimeout(idleTimer);
+  idleFired = false;
+  document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-reset').classList.remove('active');
+}
+
+// Auto-start scenario 1 on load
+window.onload = () => {
+  setTimeout(() => runScenario(1), 500);
+};
+</script>
+</body>
+</html>

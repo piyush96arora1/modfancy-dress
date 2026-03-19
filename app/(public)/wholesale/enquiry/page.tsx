@@ -183,16 +183,16 @@ export default function WholesaleEnquiryPage() {
                                 <div className="flex items-center gap-2 mt-2">
                                     <button
                                         type="button"
-                                        onClick={() => updateItem(item.product_id, { quantity: Math.max(1, item.quantity - 5) })}
+                                        onClick={() => updateItem(item.product_id, { quantity: Math.max(5, item.quantity - 5) })}
                                         className="w-6 h-6 rounded bg-[#F5F3F0] text-[#2D2D2D] text-xs font-bold hover:bg-[#E8E5E0] transition-colors"
                                     >
                                         −
                                     </button>
                                     <input
                                         type="number"
-                                        min="1"
+                                        min="5"
                                         value={item.quantity}
-                                        onChange={(e) => updateItem(item.product_id, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
+                                        onChange={(e) => updateItem(item.product_id, { quantity: Math.max(5, parseInt(e.target.value) || 5) })}
                                         className="w-14 text-center border border-[#E8E5E0] rounded py-1 text-xs bg-white font-medium"
                                     />
                                     <button
@@ -231,7 +231,7 @@ export default function WholesaleEnquiryPage() {
                         </span>
                     </div>
                     <p className="text-[10px] text-[#9A9A9A]">
-                        * Final pricing may vary based on quantities and availability. Our team will confirm exact pricing.
+                        * Shipping charges are extra according to location. Final pricing may vary based on quantities and availability. Our team will confirm details.
                     </p>
                 </div>
 

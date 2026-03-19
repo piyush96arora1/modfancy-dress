@@ -167,16 +167,16 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
         <label className="block text-sm font-medium mb-2 text-[#2D2D2D]">Quantity</label>
         <div className="flex items-center gap-1">
           <button
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            onClick={() => setQuantity(Math.max(pricingMode === 'wholesale' ? 5 : 1, quantity - 1))}
             className="w-10 h-10 rounded-lg border border-[#E8E5E0] flex items-center justify-center text-[#2D2D2D] hover:border-[#1B2A4A] transition-colors text-lg font-medium"
           >
             −
           </button>
           <Input
             type="number"
-            min="1"
+            min={pricingMode === 'wholesale' ? "5" : "1"}
             value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+            onChange={(e) => setQuantity(Math.max(pricingMode === 'wholesale' ? 5 : 1, parseInt(e.target.value) || (pricingMode === 'wholesale' ? 5 : 1)))}
             className="w-16 text-center h-10 rounded-lg"
           />
           <button

@@ -195,6 +195,9 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>₹{getTotal().toFixed(0)}</span>
               </div>
+              <p className="text-[10px] text-[#9A9A9A] mt-1 text-right italic">
+                * Shipping charges are extra according to location.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">

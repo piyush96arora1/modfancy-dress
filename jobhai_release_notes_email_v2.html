@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Hai Chatbot — Release Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F0F2F7;
+    color: #1a1a2e;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .wrapper {
+    max-width: 720px;
+    margin: 28px auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0F3460 0%, #1A1A2E 100%);
+    padding: 32px 36px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(233,69,96,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: #7A8FC4;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: #7A8FC4;
+  }
+
+  /* BODY */
+  .body { padding: 28px 36px; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7A8FC4;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #E8EBF4;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  /* KPI STRIP */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .kpi {
+    background: #F4F6FC;
+    border-radius: 8px;
+    padding: 14px 12px 12px;
+    border: 1px solid #E4E8F4;
+    text-align: center;
+  }
+  .kpi-val {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .kpi-label {
+    font-size: 10.5px;
+    color: #6B7280;
+    line-height: 1.3;
+  }
+  .kpi-sub {
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 3px;
+  }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-bottom: 4px;
+  }
+  thead th {
+    background: #0F3460;
+    color: #fff;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 9px 12px;
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  thead th:first-child { border-radius: 6px 0 0 0; }
+  thead th:last-child  { border-radius: 0 6px 0 0; }
+  tbody tr:nth-child(even) td { background: #F8F9FD; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #EEF0F8;
+    vertical-align: top;
+    color: #2a2a4a;
+  }
+  .tfoot td {
+    background: #EEF2FC !important;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .num { text-align: center; }
+  .green  { color: #16A34A; font-weight: 700; }
+  .orange { color: #D97706; font-weight: 700; }
+  .red    { color: #DC2626; font-weight: 700; }
+  .blue   { color: #0F3460; font-weight: 700; }
+  .gray   { color: #9CA3AF; }
+
+  /* RELEASE BLOCKS */
+  .release {
+    border: 1px solid #E4E8F4;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .release-header {
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .release-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .release-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1a1a2e;
+    flex: 1;
+  }
+  .release-date {
+    font-size: 11px;
+    color: #9CA3AF;
+    white-space: nowrap;
+  }
+  .release-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #E4E8F4;
+  }
+  .release-col {
+    padding: 14px 16px;
+  }
+  .release-col:first-child {
+    border-right: 1px solid #E4E8F4;
+  }
+  .release-col-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .release-col ul {
+    list-style: none;
+    padding: 0;
+  }
+  .release-col ul li {
+    font-size: 12px;
+    color: #374151;
+    padding: 3px 0 3px 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .release-col ul li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: #9CA3AF;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .release-col.impact ul li { color: #166534; }
+  .release-col.impact ul li::before { color: #22C55E; }
+  .release-col.impact { background: #F0FDF4; }
+
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #E4E8F4;
+  }
+  .ba-col {
+    padding: 10px 16px;
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .ba-col:first-child { background: #FFF5F5; border-right: 1px solid #E4E8F4; }
+  .ba-col:last-child  { background: #F0FDF4; }
+  .ba-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .ba-col:first-child .ba-label { color: #DC2626; }
+  .ba-col:last-child  .ba-label { color: #16A34A; }
+  .ba-col p { color: #555; font-style: italic; }
+
+  /* OPEN ISSUES */
+  .open-table thead th { background: #4B5563; }
+
+  /* FOOTER */
+  .footer {
+    padding: 16px 36px;
+    background: #F4F6FC;
+    border-top: 1px solid #E4E8F4;
+    text-align: center;
+    font-size: 11px;
+    color: #9CA3AF;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Job Hai Recruiter Chatbot</div>
+    <h1>Release Notes &amp; Impact Report</h1>
+    <div class="header-meta">Feb 19 – Mar 14, 2026</div>
+  </div>
+
+  <div class="body">
+
+    <!-- KPIs -->
+    <div class="section-title">Overall Impact</div>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val" style="color:#DC2626">14.5%</div>
+        <div class="kpi-label">Deflection<br>Pre-release</div>
+        <div class="kpi-sub" style="color:#9CA3AF">Feb 19 – Mar 7</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:#16A34A">6.6%</div>
+        <div class="kpi-label">Deflection<br>Post-release</div>
+        <div class="kpi-sub" style="color:#16A34A">↓ 54% reduction</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:#D97706">39.35%</div>
+        <div class="kpi-label">Positive Feedback<br>Before</div>
+        <div class="kpi-sub" style="color:#9CA3AF">of users who rated</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" style="color:#16A34A">51.22%</div>
+        <div class="kpi-label">Positive Feedback<br>After</div>
+        <div class="kpi-sub" style="color:#16A34A">↑ +11.87 pp</div>
+      </div>
+    </div>
+
+    <!-- DEFLECTION TABLE -->
+    <div class="section-title">Impact Report</div>
+    <table>
+      <thead><tr>
+        <th>Period</th><th class="num">Messages</th><th class="num">Deflected</th>
+        <th class="num">Rate</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Feb 19 – Mar 7 &nbsp;(Pre-release)</strong></td>
+          <td class="num">1,321</td><td class="num">192</td>
+          <td class="num red">14.5%</td>
+        </tr>
+        <tr>
+          <td><strong>Mar 8 – Mar 14 &nbsp;(Post-release)</strong></td>
+          <td class="num">774</td><td class="num">51</td>
+          <td class="num green">6.6%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- FEEDBACK TABLE -->
+    <div class="section-title">User Feedback</div>
+    <table>
+      <thead><tr>
+        <th>Period</th><th class="num">Users Submitted</th>
+        <th class="num">Positive Users</th><th class="num">Positive %</th><th class="num">Negative %</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Before Release (&lt; Mar 8)</strong></td>
+          <td class="num">310</td><td class="num">122</td>
+          <td class="num orange">39.35%</td><td class="num red">72.58%</td>
+        </tr>
+        <tr>
+          <td><strong>After Release (≥ Mar 8)</strong></td>
+          <td class="num">123</td><td class="num">63</td>
+          <td class="num green">51.22%</td><td class="num orange">60.98%</td>
+        </tr>
+        <tr class="tfoot">
+          <td>Change</td><td class="num gray">−187 users</td><td class="num">—</td>
+          <td class="num green">↑ +11.87 pp</td><td class="num green">↓ −11.60 pp</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:#9CA3AF;margin-top:6px">* Positive % and Negative % are non-exclusive — a user may submit both. Calculated as share of users who submitted any feedback.</p>
+
+    <!-- USAGE TABLE -->
+    <div class="section-title">Chatbot Usage &amp; Engagement</div>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Total users who sent a message</strong></td>
+          <td class="num blue">720</td>
+          <td>All recruiters who interacted with the chatbot</td>
+        </tr>
+        <tr>
+          <td>Started via suggestion chip</td>
+          <td class="num"><strong>381</strong></td>
+          <td>Majority initiated via UI chips, not free-text</td>
+        </tr>
+        <tr>
+          <td>Used in-chat redirect actions</td>
+          <td class="num"><strong>24</strong></td>
+          <td>Upload Document, Explore Database, Buy Credits</td>
+        </tr>
+        <tr>
+          <td>Clicked Relax Job Requirements CTA</td>
+          <td class="num green"><strong>2</strong></td>
+          <td>Bot surfaces this when recruiter asks about low candidate response</td>
+        </tr>
+        <tr>
+          <td>Clicked Boost Job CTA</td>
+          <td class="num green"><strong>3</strong></td>
+          <td>Bot surfaces this when recruiter asks about low candidate response</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:#9CA3AF;margin-top:6px">* Relax Job Requirements and Boost Job CTAs released Mar 8. In-chat redirect actions take the user to the relevant platform flow.</p>
+
+    <!-- SALES PLAN ENQUIRIES -->
+    <div class="section-title">Sales Plan Enquiries</div>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Recruiters asking about plans / pricing</strong></td>
+          <td class="num blue">30</td>
+          <td>Unique recruiters who asked about sales plans or pricing related queries in chatbot conversations</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="section-title">Release Details</div>
+
+    <!-- R1 -->
+    <div class="release">
+      <div class="release-header" style="background:#EFF6FF">
+        <span class="release-tag" style="background:#1565C0">RELEASE 1</span>
+        <span class="release-title">Candidate Quality Responses + In-Chat Job CTAs</span>
+        <span class="release-date">8 Mar 2026</span>
+      </div>
+      <div class="release-body">
+        <div class="release-col">
+          <div class="release-col-label" style="color:#1565C0">What Changed</div>
+          <ul>
+            <li>Structured responses for candidate quality complaints — branches by sub-issue (no applicants, wrong profiles, no response, can't see applicants)</li>
+            <li>Bot acknowledges frustration before giving resolution steps</li>
+            <li>Relax Job Requirements CTA — inline action to edit job criteria from chat</li>
+            <li>Boost Job CTA — surfaces contextually for low-response jobs</li>
+            <li>Bot references real account data: application counts, unlock usage</li>
+            <li>Removed helpline deflection for candidate quality queries</li>
+          </ul>
+        </div>
+        <div class="release-col impact">
+          <div class="release-col-label" style="color:#16A34A">Measured Impact</div>
+          <ul>
+            <li>Deflection: 23.4% → 8.3% &nbsp;(↓ 65%)</li>
+            <li>Key driver of overall deflection drop 14.5% → 6.6%</li>
+            <li>5 recruiters clicked job improvement CTAs (2 Relax, 3 Boost)</li>
+            <li>First personalised account-aware bot responses</li>
+          </ul>
+        </div>
+      </div>
+      <div class="before-after">
+        <div class="ba-col"><div class="ba-label">Before</div><p>"I understand you're not getting candidates. Please contact our customer support team."</p></div>
+        <div class="ba-col"><div class="ba-label">After</div><p>"I can see your job has 12 applications. Since candidates aren't responding — [Relax Job Requirements] [Boost Job] or use your 60 free unlocks to reach out directly."</p></div>
+      </div>
+    </div>
+
+    <!-- R2 -->
+    <div class="release">
+      <div class="release-header" style="background:#FFFBEB">
+        <span class="release-tag" style="background:#D97706">RELEASE 2</span>
+        <span class="release-title">Credit Query Handling</span>
+        <span class="release-date">8 Mar 2026</span>
+      </div>
+      <div class="release-body">
+        <div class="release-col">
+          <div class="release-col-label" style="color:#D97706">What Changed</div>
+          <ul>
+            <li>Bot reads live credit balance, transaction history, and expiry data from platform API</li>
+            <li>Per-order expiry breakdown shown inline (e.g. '210 credits expiring Jul 03, 2026')</li>
+            <li>Buy Credits in-chat redirect action added</li>
+            <li>'Why are my credits 0' queries resolved by fetching actual transaction history</li>
+          </ul>
+        </div>
+        <div class="release-col impact">
+          <div class="release-col-label" style="color:#16A34A">Measured Impact</div>
+          <ul>
+            <li>Deflection: 10.1% → 6.7%</li>
+            <li>First live data integration — real credit status, not generic guidance</li>
+            <li>Credit expiry table UI deployed inline in chat</li>
+            <li>Eliminates 'credits are 0' frustrated return visits</li>
+          </ul>
+        </div>
+      </div>
+      <div class="before-after">
+        <div class="ba-col"><div class="ba-label">Before</div><p>"Credits may have expired. Please contact support to check your balance."</p></div>
+        <div class="ba-col"><div class="ba-label">After</div><p>"Your balance is 0. No transactions in the last 30 days. [Per-order expiry table] [Buy Credits]"</p></div>
+      </div>
+    </div>
+
+    <!-- R3 -->
+    <div class="release">
+      <div class="release-header" style="background:#FFF1F2">
+        <span class="release-tag" style="background:#E94560">RELEASE 3</span>
+        <span class="release-title">Invoice &amp; Billing Self-Serve</span>
+        <span class="release-date">13 Mar 2026</span>
+      </div>
+      <div class="release-body">
+        <div class="release-col">
+          <div class="release-col-label" style="color:#E94560">What Changed</div>
+          <ul>
+            <li>Bot handles invoice queries end-to-end — no longer deflects to billing team</li>
+            <li>Explains invoice is sent to registered email</li>
+            <li>Step-by-step guide: Profile → Transaction History → Request Invoice</li>
+            <li>GST invoice queries handled inline</li>
+          </ul>
+        </div>
+        <div class="release-col impact">
+          <div class="release-col-label" style="color:#16A34A">Measured Impact</div>
+          <ul>
+            <li>Deflection: 100% (every query, Feb 19–Mar 11) → 0% (Mar 13+)</li>
+            <li>Longest-standing gap since chatbot launch — now closed</li>
+            <li>Full category removed from human support queue</li>
+          </ul>
+        </div>
+      </div>
+      <div class="before-after">
+        <div class="ba-col"><div class="ba-label">Before</div><p>"For invoice requests, please contact the billing team directly." (100% of the time)</p></div>
+        <div class="ba-col"><div class="ba-label">After</div><p>"Invoice sent to your email. To request manually: Profile → Transaction History → Request Invoice."</p></div>
+      </div>
+    </div>
+
+    <!-- R4 -->
+    <div class="release">
+      <div class="release-header" style="background:#F0FDF4">
+        <span class="release-tag" style="background:#16A34A">RELEASE 4</span>
+        <span class="release-title">General Platform Query Handling</span>
+        <span class="release-date">13 Mar 2026</span>
+      </div>
+      <div class="release-body">
+        <div class="release-col">
+          <div class="release-col-label" style="color:#16A34A">What Changed</div>
+          <ul>
+            <li>Improved coverage of how-to queries: job posting, boost, plans, dashboard navigation</li>
+            <li>Direct links to relevant platform pages in responses</li>
+            <li>Explore Database in-chat redirect action added</li>
+            <li>Platform change queries handled (new URL, updated UI)</li>
+          </ul>
+        </div>
+        <div class="release-col impact">
+          <div class="release-col-label" style="color:#16A34A">Measured Impact</div>
+          <ul>
+            <li>Deflection: 12.5% → 0% post-release</li>
+            <li>Platform navigation queries fully contained — zero deflections</li>
+            <li>Plans &amp; Pricing: 0% frustration rate maintained throughout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHATS OPEN -->
+    <div class="section-title">What Still Can Be Solved With New Recruiter</div>
+    <p style="font-size:12px;color:#6B7280;margin-bottom:12px">Two high-volume categories still have residual deflection. We will have to look at whether these can be solved in upcoming releases.</p>
+    <table class="open-table">
+      <thead><tr>
+        <th>Category</th><th>Potential Approach</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Job Not Live / Under Review</strong></td>
+          <td style="font-size:12px">Time-aware response: if &gt;48hrs elapsed → escalate instead of repeating '24-48 hours'. Branch by rejection reason.</td>
+        </tr>
+        <tr>
+          <td><strong>Account Verification &amp; Docs</strong></td>
+          <td style="font-size:12px">Cross-session check: if recruiter returns with same unresolved issue, skip generic answer and escalate directly.</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div><!-- /body -->
+
+  <div class="footer">
+    Generated Mar 15, 2026 &nbsp;·&nbsp; Job Hai Recruiter Platform &nbsp;·&nbsp; Chatbot Analytics
+  </div>
+
+</div>
+</body>
+</html>

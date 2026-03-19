@@ -1,0 +1,3 @@
+period,users_submitted_feedback,positive_feedback_users,negative_feedback_users,positive_percent,negative_percent
+after_release,123,63,75,51.22,60.98
+before_release,310,122,225,39.35,72.58

@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Hai – Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --blue-light: #eff6ff;
+  --blue-mid: #dbeafe;
+  --gold: #f59e0b;
+  --gold-light: #fffbeb;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* advisor dark theme */
+  --adv-bg: #0a0f1e;
+  --adv-surface: #111827;
+  --adv-surface2: #1a2236;
+  --adv-border: #1f2d45;
+  --adv-text: #e2e8f0;
+  --adv-muted: #7c8fa8;
+  --adv-accent: #3b82f6;
+  --adv-accent-glow: rgba(59,130,246,0.2);
+  --adv-gold: #fbbf24;
+  --adv-green: #34d399;
+  --adv-warn: #f87171;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f8f9fc;
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid var(--gray-200);
+  height: 52px;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky; top: 0; z-index: 200;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--gray-600);
+  cursor: pointer; border: none; background: none;
+  padding: 4px 8px; border-radius: 6px;
+}
+.back-btn:hover { background: var(--gray-100); }
+.page-title { font-size: 15px; font-weight: 600; color: var(--gray-900); font-family: 'Sora', sans-serif; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.coin-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--gold-light); color: var(--gold);
+  font-size: 12px; font-weight: 700;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid #fde68a;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 52px 24px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -80px;
+  width: 400px; height: 300px;
+  background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid var(--blue-mid);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--blue); }
+.hero-sub {
+  font-size: 15px; color: var(--gray-500);
+  max-width: 440px; margin: 0 auto;
+}
+
+/* ===== PLANS GRID ===== */
+.plans-wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.plan-card {
+  background: #fff;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: default;
+}
+.plan-card:hover {
+  border-color: var(--gray-300);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+.plan-card.recommended {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue), 0 8px 32px rgba(37,99,235,0.12);
+}
+.plan-card.recommended:hover { transform: translateY(-3px); }
+.plan-card.hovered-active {
+  border-color: var(--adv-accent) !important;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.25), 0 8px 32px rgba(59,130,246,0.1) !important;
+}
+
+.recommended-badge {
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px; font-weight: 700;
+  text-align: center;
+  padding: 7px;
+  letter-spacing: 0.04em;
+  font-family: 'Sora', sans-serif;
+}
+
+.plan-body { padding: 22px 20px; }
+
+.plan-price {
+  font-family: 'Sora', sans-serif;
+  font-size: 28px; font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 2px;
+  display: flex; align-items: baseline; gap: 8px;
+}
+.plan-price .symbol { font-size: 18px; }
+.plan-price .original {
+  font-size: 14px; font-weight: 400;
+  color: var(--gray-400);
+  text-decoration: line-through;
+}
+.plan-desc {
+  font-size: 12.5px; color: var(--gray-500);
+  margin-bottom: 16px;
+}
+
+.plan-divider { height: 1px; background: var(--gray-100); margin: 14px 0; }
+
+.credits-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.credits-val {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 14px; font-weight: 700; color: var(--gray-800);
+}
+.coin-icon { font-size: 16px; }
+.save-tag {
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 6px;
+  background: var(--green-light); color: var(--green);
+  border: 1px solid #a7f3d0;
+}
+
+.what-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.feature-item {
+  display: flex; align-items: flex-start; gap: 7px;
+  font-size: 12.5px; color: var(--gray-600);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.feature-item .check { color: var(--green); font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+.plan-btn {
+  width: 100%; padding: 12px;
+  border-radius: 10px;
+  font-size: 14px; font-weight: 700;
+  font-family: 'Sora', sans-serif;
+  cursor: pointer; border: none;
+  margin-top: 18px;
+  transition: all 0.15s;
+}
+.plan-btn.outline {
+  background: #fff; color: var(--gray-700);
+  border: 1.5px solid var(--gray-200);
+}
+.plan-btn.outline:hover { border-color: var(--gray-400); background: var(--gray-50); }
+.plan-btn.primary {
+  background: var(--blue); color: #fff;
+}
+.plan-btn.primary:hover { background: var(--blue-dark); }
+.plan-btn.sales {
+  background: var(--gray-900); color: #fff;
+}
+.plan-btn.sales:hover { background: var(--gray-700); }
+
+.cost-per-hire {
+  font-size: 11px; color: var(--gray-400);
+  text-align: center; margin-top: 8px;
+}
+.cost-per-hire strong { color: var(--blue); }
+
+/* ===== ADVISOR DRAWER ===== */
+.advisor-trigger {
+  position: fixed;
+  bottom: 24px; right: 28px;
+  z-index: 300;
+}
+
+/* collapsed pill */
+.adv-pill {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 50px;
+  padding: 10px 16px 10px 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(59,130,246,0.15);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.adv-pill::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--adv-accent), transparent);
+  opacity: 0.6;
+}
+.adv-pill:hover {
+  box-shadow: 0 6px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(59,130,246,0.3);
+  transform: translateY(-1px);
+}
+.adv-pill-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 0 12px rgba(59,130,246,0.4);
+  flex-shrink: 0;
+  position: relative;
+}
+.adv-online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--adv-green);
+  border: 2px solid var(--adv-bg);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(52,211,153,0); }
+}
+.adv-pill-text { line-height: 1.3; }
+.adv-pill-name { font-size: 12px; font-weight: 700; color: var(--adv-text); font-family: 'Sora', sans-serif; }
+.adv-pill-status { font-size: 11px; color: var(--adv-green); }
+.adv-pill-chevron { font-size: 12px; color: var(--adv-muted); margin-left: 4px; }
+
+/* notification badge */
+.adv-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #ef4444; color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+  border: 2px solid var(--adv-bg);
+  animation: badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.adv-badge.show { display: flex; }
+@keyframes badge-pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* ===== DRAWER PANEL ===== */
+.adv-drawer {
+  position: fixed;
+  bottom: 24px; right: 28px;
+  width: 360px;
+  max-height: calc(100vh - 80px);
+  background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 20px;
+  z-index: 300;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.1);
+  overflow: hidden;
+  animation: drawer-in 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+@keyframes drawer-in {
+  from { opacity: 0; transform: scale(0.92) translateY(16px); transform-origin: bottom right; }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.adv-drawer.open { display: flex; }
+.adv-drawer::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--adv-accent), transparent);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+/* drawer header */
+.adv-header {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--adv-border);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+  background: var(--adv-surface);
+}
+.adv-header-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(59,130,246,0.35);
+  position: relative;
+}
+.adv-header-avatar::after {
+  content: '';
+  position: absolute; bottom: 1px; right: 1px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--adv-green); border: 2px solid var(--adv-surface);
+}
+.adv-header-info { flex: 1; }
+.adv-header-name { font-size: 13px; font-weight: 700; color: var(--adv-text); font-family: 'Sora', sans-serif; }
+.adv-header-sub { font-size: 11px; color: var(--adv-green); display: flex; align-items: center; gap: 4px; }
+.adv-header-sub::before { content: '●'; font-size: 8px; }
+.adv-header-actions { display: flex; gap: 6px; }
+.adv-icon-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--adv-surface2); border: 1px solid var(--adv-border);
+  color: var(--adv-muted); font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.adv-icon-btn:hover { color: var(--adv-text); border-color: var(--adv-accent); }
+
+/* context bar */
+.adv-context-bar {
+  padding: 8px 14px;
+  background: var(--adv-accent-glow);
+  border-bottom: 1px solid var(--adv-border);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--adv-muted);
+  flex-shrink: 0;
+}
+.ctx-tag {
+  background: var(--adv-surface2); color: var(--adv-text);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600;
+  border: 1px solid var(--adv-border);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* messages */
+.adv-messages {
+  flex: 1; overflow-y: auto;
+  padding: 14px 12px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-behavior: smooth;
+}
+.adv-messages::-webkit-scrollbar { width: 3px; }
+.adv-messages::-webkit-scrollbar-thumb { background: var(--adv-border); border-radius: 3px; }
+
+.adv-msg {
+  display: flex; gap: 8px; align-items: flex-start;
+  animation: msg-in 0.2s ease-out;
+}
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.adv-msg.user { flex-direction: row-reverse; }
+.adv-msg-av {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0;
+}
+.adv-msg.user .adv-msg-av { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.adv-bubble {
+  max-width: 250px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 12.5px; line-height: 1.55;
+}
+.adv-msg.bot .adv-bubble {
+  background: var(--adv-surface);
+  color: var(--adv-text);
+  border: 1px solid var(--adv-border);
+  border-bottom-left-radius: 4px;
+}
+.adv-msg.user .adv-bubble {
+  background: rgba(59,130,246,0.18);
+  color: var(--adv-text);
+  border: 1px solid rgba(59,130,246,0.3);
+  border-bottom-right-radius: 4px;
+}
+.adv-bubble .h { color: #60a5fa; font-weight: 600; }
+.adv-bubble .g { color: var(--adv-green); font-weight: 600; }
+.adv-bubble .w { color: var(--adv-warn); font-weight: 600; }
+.adv-bubble .gold { color: var(--adv-gold); font-weight: 600; }
+
+/* action buttons */
+.adv-actions {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+}
+.adv-btn {
+  padding: 5px 12px; border-radius: 16px;
+  font-size: 11.5px; font-weight: 700;
+  cursor: pointer; border: none; font-family: inherit;
+  transition: all 0.15s;
+}
+.adv-btn.p { background: var(--adv-accent); color: #fff; }
+.adv-btn.p:hover { background: #2563eb; }
+.adv-btn.s { background: var(--adv-surface2); color: var(--adv-muted); border: 1px solid var(--adv-border); }
+.adv-btn.s:hover { color: var(--adv-text); border-color: var(--adv-accent); }
+.adv-btn.gold-btn { background: rgba(251,191,36,0.15); color: var(--adv-gold); border: 1px solid rgba(251,191,36,0.3); }
+.adv-btn.gold-btn:hover { background: rgba(251,191,36,0.25); }
+
+/* plan recommendation card inside chat */
+.adv-plan-card {
+  background: var(--adv-surface2);
+  border: 1px solid var(--adv-border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.adv-plan-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--adv-accent), #8b5cf6);
+}
+.adv-plan-name { font-size: 13px; font-weight: 700; color: var(--adv-text); margin-bottom: 3px; font-family: 'Sora', sans-serif; }
+.adv-plan-price { font-size: 18px; font-weight: 800; color: #60a5fa; font-family: 'Sora', sans-serif; margin-bottom: 6px; }
+.adv-plan-reason { font-size: 11px; color: var(--adv-muted); line-height: 1.5; margin-bottom: 8px; }
+.adv-plan-stat { display: flex; gap: 12px; margin-bottom: 10px; }
+.adv-plan-stat-item { font-size: 11px; color: var(--adv-muted); display: flex; align-items: center; gap: 4px; }
+.adv-plan-stat-item strong { color: var(--adv-text); font-size: 12px; }
+
+/* typing */
+.adv-typing {
+  display: flex; gap: 3px; align-items: center;
+  background: var(--adv-surface); border: 1px solid var(--adv-border);
+  padding: 10px 14px; border-radius: 12px; border-bottom-left-radius: 4px;
+  width: fit-content;
+}
+.adv-typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--adv-muted);
+  animation: dt 1.2s ease-in-out infinite;
+}
+.adv-typing span:nth-child(2) { animation-delay: 0.2s; }
+.adv-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dt { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-4px);opacity:1} }
+
+/* callback form */
+.callback-form {
+  background: var(--adv-surface2);
+  border: 1px solid var(--adv-border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+}
+.callback-label { font-size: 11px; font-weight: 700; color: var(--adv-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.callback-input {
+  width: 100%;
+  background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--adv-text);
+  font-size: 13px; font-family: inherit;
+  outline: none; margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+.callback-input:focus { border-color: var(--adv-accent); }
+.callback-input::placeholder { color: var(--adv-muted); }
+.callback-submit {
+  width: 100%; padding: 9px;
+  background: var(--adv-accent); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: background 0.15s;
+}
+.callback-submit:hover { background: #2563eb; }
+
+/* quick actions bar */
+.adv-quick-bar {
+  padding: 8px 12px;
+  border-top: 1px solid var(--adv-border);
+  display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0;
+}
+.adv-quick-bar::-webkit-scrollbar { display: none; }
+.quick-chip {
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 11.5px; font-weight: 600;
+  background: var(--adv-surface2);
+  border: 1px solid var(--adv-border);
+  color: var(--adv-muted); cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.quick-chip:hover { color: var(--adv-text); border-color: var(--adv-accent); background: var(--adv-accent-glow); }
+
+/* input row */
+.adv-input-row {
+  padding: 10px 12px;
+  border-top: 1px solid var(--adv-border);
+  display: flex; gap: 8px; align-items: center;
+  flex-shrink: 0;
+  background: var(--adv-surface);
+}
+.adv-input {
+  flex: 1; background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--adv-text);
+  font-size: 12.5px; font-family: inherit;
+  outline: none;
+}
+.adv-input:focus { border-color: var(--adv-accent); }
+.adv-input::placeholder { color: var(--adv-muted); }
+.adv-send {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--adv-accent); border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 13px;
+  transition: background 0.15s;
+}
+.adv-send:hover { background: #2563eb; }
+
+/* hover insight tooltip on plan cards */
+.plan-insight {
+  position: absolute; bottom: 60px; left: 0; right: 0;
+  background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11.5px; color: var(--adv-muted);
+  margin: 0 12px;
+  display: none;
+  animation: msg-in 0.2s ease-out;
+  z-index: 10;
+  line-height: 1.5;
+}
+.plan-insight .adv-h { color: #60a5fa; font-weight: 600; }
+.plan-card:hover .plan-insight { display: block; }
+
+/* demo controls */
+.demo-bar {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,15,30,0.97);
+  border: 1px solid var(--adv-border);
+  border-radius: 12px;
+  padding: 8px 14px;
+  display: none;
+  align-items: center; gap: 10px;
+  z-index: 400;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+}
+.demo-bar.visible { display: flex; }
+.demo-lbl { font-size: 11px; font-weight: 700; color: var(--adv-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.demo-btn-item {
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  background: var(--adv-surface2);
+  border: 1px solid var(--adv-border);
+  color: var(--adv-text); cursor: pointer;
+  transition: all 0.15s;
+}
+.demo-btn-item:hover, .demo-btn-item.active {
+  background: var(--adv-accent); border-color: var(--adv-accent); color: #fff;
+}
+.demo-sep { color: var(--adv-border); }
+
+@media (max-width: 900px) {
+  .plans-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .plans-grid { grid-template-columns: 1fr; }
+  .adv-drawer { width: calc(100vw - 32px); right: 16px; bottom: 16px; }
+  .advisor-trigger { right: 16px; bottom: 16px; }
+}
+
+/* ===== SALES POPUP MODAL ===== */
+.sales-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 500;
+  display: none; opacity: 0;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+}
+.sales-overlay.open {
+  display: flex; opacity: 1;
+}
+.sales-modal {
+  background: var(--adv-bg);
+  border: 1px solid var(--adv-border);
+  border-radius: 24px;
+  width: 440px;
+  max-width: calc(100vw - 32px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.15);
+  animation: modal-in 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.sales-modal::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--adv-surface2); border: 1px solid var(--adv-border);
+  color: var(--adv-muted); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; z-index: 1;
+}
+.modal-close:hover { color: var(--adv-text); border-color: var(--adv-accent); }
+.modal-hero {
+  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08));
+  padding: 32px 28px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--adv-border);
+}
+.modal-avatar {
+  width: 56px; height: 56px; border-radius: 18px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin: 0 auto 14px;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+}
+.modal-eyebrow {
+  font-size: 11px; font-weight: 700;
+  color: var(--adv-accent); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.modal-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--adv-text); margin-bottom: 8px; line-height: 1.2;
+}
+.modal-title span { color: #fbbf24; }
+.modal-sub {
+  font-size: 13px; color: var(--adv-muted); line-height: 1.6;
+  max-width: 320px; margin: 0 auto;
+}
+.modal-body { padding: 24px 28px 28px; }
+.modal-perks {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 22px;
+}
+.modal-perk {
+  background: var(--adv-surface);
+  border: 1px solid var(--adv-border);
+  border-radius: 10px; padding: 12px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.modal-perk-icon { font-size: 18px; flex-shrink: 0; }
+.modal-perk-text { font-size: 12px; color: var(--adv-muted); line-height: 1.4; }
+.modal-perk-text strong { color: var(--adv-text); display: block; font-size: 12.5px; margin-bottom: 2px; }
+.modal-form-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--adv-muted); text-transform: uppercase;
+  letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.modal-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.modal-input {
+  flex: 1; background: var(--adv-surface);
+  border: 1.5px solid var(--adv-border);
+  border-radius: 10px; padding: 11px 14px;
+  color: var(--adv-text); font-size: 13px;
+  font-family: inherit; outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--adv-accent); }
+.modal-input::placeholder { color: var(--adv-muted); }
+.modal-submit {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: opacity 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.modal-submit:hover { opacity: 0.9; }
+.modal-reassure {
+  text-align: center; font-size: 11px;
+  color: var(--adv-muted); margin-top: 10px;
+}
+.modal-reassure span { color: var(--adv-green); }
+/* success state */
+.modal-success {
+  padding: 40px 28px;
+  text-align: center; display: none;
+}
+.modal-success.show { display: block; }
+.modal-success-icon {
+  font-size: 48px; margin-bottom: 16px;
+}
+.modal-success-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 800;
+  color: var(--adv-text); margin-bottom: 8px;
+}
+.modal-success-sub { font-size: 13px; color: var(--adv-muted); line-height: 1.6; }
+.modal-success-sub strong { color: var(--adv-green); }
+
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="back-btn">← Back</button>
+    <span class="page-title">Pricing</span>
+  </div>
+  <div class="topbar-right">
+    <div class="coin-pill">🪙 360 +</div>
+    <span style="font-size:20px;cursor:pointer;" onclick="toggleDemo()" title="Demo">🎬</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">💎 Premium Plans</div>
+  <h1>Buy more <span>credits</span> from bundles below</h1>
+  <p class="hero-sub">Select a plan that fits your hiring requirements</p>
+</div>
+
+<!-- PLANS -->
+<div class="plans-wrap">
+  <div class="plans-grid">
+
+    <!-- Plan 1 -->
+    <div class="plan-card" id="plan-1" onmouseenter="onPlanHover(1)" onmouseleave="onPlanLeave(1)">
+      <div class="plan-body">
+        <div class="plan-price"><span class="symbol">₹</span>500</div>
+        <div class="plan-desc">Suitable for 1 premium job</div>
+        <div class="plan-divider"></div>
+        <div class="credits-row">
+          <div class="credits-val"><span class="coin-icon">🪙</span> 500 credits</div>
+        </div>
+        <div class="what-label">What you can do</div>
+        <div class="feature-item"><span class="check">✓</span> Post up to 1 premium job</div>
+        <div class="feature-item"><span class="check">✓</span> To be used within 30 days</div>
+        <button class="plan-btn outline" onclick="selectPlan(1)">Buy now</button>
+        <div class="cost-per-hire">₹500 per hire attempt</div>
+      </div>
+      <div class="plan-insight" id="insight-1">
+        💡 Good for a quick test. But if it works, you'll want more credits soon — consider the 5-job plan.
+      </div>
+    </div>
+
+    <!-- Plan 2 -->
+    <div class="plan-card" id="plan-2" onmouseenter="onPlanHover(2)" onmouseleave="onPlanLeave(2)">
+      <div class="plan-body">
+        <div class="plan-price"><span class="symbol">₹</span>2,375 <span class="original">₹2,500</span></div>
+        <div class="plan-desc">Suitable for 5 premium jobs</div>
+        <div class="plan-divider"></div>
+        <div class="credits-row">
+          <div class="credits-val"><span class="coin-icon">🪙</span> 2,500 credits</div>
+          <span class="save-tag">Save 5%</span>
+        </div>
+        <div class="what-label">Things to do with 2500 credits</div>
+        <div class="feature-item"><span class="check">✓</span> Post up to 5 premium jobs</div>
+        <div class="feature-item"><span class="check">✓</span> To be used within 30 days</div>
+        <button class="plan-btn outline" onclick="selectPlan(2)">Buy now</button>
+        <div class="cost-per-hire"><strong>₹475</strong> per hire attempt</div>
+      </div>
+      <div class="plan-insight" id="insight-2">
+        📊 Most returning recruiters pick this. 5 posts = enough to fill 2–3 roles with backup options.
+      </div>
+    </div>
+
+    <!-- Plan 3 RECOMMENDED -->
+    <div class="plan-card recommended" id="plan-3" onmouseenter="onPlanHover(3)" onmouseleave="onPlanLeave(3)">
+      <div class="recommended-badge">⭐ RECOMMENDED</div>
+      <div class="plan-body">
+        <div class="plan-price"><span class="symbol">₹</span>4,500 <span class="original">₹5,000</span></div>
+        <div class="plan-desc">Suitable for 10 premium jobs</div>
+        <div class="plan-divider"></div>
+        <div class="credits-row">
+          <div class="credits-val"><span class="coin-icon">🪙</span> 5,000 credits</div>
+          <span class="save-tag">Save 10%</span>
+        </div>
+        <div class="what-label">Things to do with 5000 credits</div>
+        <div class="feature-item"><span class="check">✓</span> Post up to 10 premium jobs</div>
+        <div class="feature-item"><span class="check">✓</span> To be used within 30 days</div>
+        <button class="plan-btn primary" onclick="selectPlan(3)">Buy now</button>
+        <div class="cost-per-hire"><strong>₹450</strong> per hire attempt</div>
+      </div>
+      <div class="plan-insight" id="insight-3">
+        🏆 Best value. Recruiters who pick this fill their roles <strong style="color:#60a5fa">2× faster</strong> — more posts = more candidate signals.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADVISOR TRIGGER (collapsed) -->
+<div class="advisor-trigger" id="advisorTrigger">
+  <div class="adv-pill" onclick="openAdvisor()">
+    <div class="adv-pill-avatar">
+      🤖
+      <div class="adv-online-dot"></div>
+    </div>
+    <div class="adv-pill-text">
+      <div class="adv-pill-name">Hai Advisor</div>
+      <div class="adv-pill-status">Online · help me choose</div>
+    </div>
+    <span class="adv-pill-chevron">↑</span>
+    <div class="adv-badge" id="advBadge">1</div>
+  </div>
+</div>
+
+<!-- ADVISOR DRAWER -->
+<div class="adv-drawer" id="advDrawer">
+
+  <div class="adv-header">
+    <div class="adv-header-avatar">🤖</div>
+    <div class="adv-header-info">
+      <div class="adv-header-name">Hai Advisor</div>
+      <div class="adv-header-sub">Online · plan specialist</div>
+    </div>
+    <div class="adv-header-actions">
+      <button class="adv-icon-btn" onclick="minimizeAdvisor()" title="Minimize">−</button>
+      <button class="adv-icon-btn" onclick="closeAdvisor()" title="Close">✕</button>
+    </div>
+  </div>
+
+  <div class="adv-context-bar">
+    <span>Context:</span>
+    <span class="ctx-tag">🛵 Delivery Boy</span>
+    <span class="ctx-tag">📍 Patna</span>
+    <span class="ctx-tag">1 job posted</span>
+  </div>
+
+  <div class="adv-messages" id="advMessages"></div>
+
+  <div class="adv-quick-bar" id="quickBar">
+    <span class="quick-chip" onclick="handleQuick('help me choose')">Help me choose</span>
+    <span class="quick-chip" onclick="handleQuick('which plan is best value')">Best value?</span>
+    <span class="quick-chip" onclick="handleQuick('call me back')">📞 Call me back</span>
+    <span class="quick-chip" onclick="handleQuick('i need 3 hires')">I need 3 hires</span>
+  </div>
+
+  <div class="adv-input-row">
+    <input class="adv-input" id="advInput" placeholder="Ask about plans…" onkeydown="if(event.key==='Enter') sendAdvMsg()">
+    <button class="adv-send" onclick="sendAdvMsg()">➤</button>
+  </div>
+
+</div>
+
+<!-- DEMO BAR -->
+<div class="demo-bar" id="demoBar">
+  <span class="demo-lbl">▶ Demo</span>
+  <span class="demo-btn-item" id="db1" onclick="runDemo(1)">1 · Idle Trigger</span>
+  <span class="demo-sep">|</span>
+  <span class="demo-btn-item" id="db2" onclick="runDemo(2)">2 · Help Me Choose</span>
+  <span class="demo-sep">|</span>
+  <span class="demo-btn-item" id="db3" onclick="runDemo(3)">3 · Callback Flow</span>
+  <span class="demo-sep">|</span>
+  <span class="demo-btn-item" onclick="resetAll()">↺ Reset</span>
+</div>
+
+<script>
+// ===== UTILS =====
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function scrollBottom() {
+  const m = document.getElementById('advMessages');
+  m.scrollTop = m.scrollHeight;
+}
+
+// ===== STREAMING =====
+async function streamMsg(text, actionsHtml = '', delay = 18) {
+  document.querySelectorAll('.adv-typing-el').forEach(e => e.remove());
+
+  const msgs = document.getElementById('advMessages');
+  const el = document.createElement('div');
+  el.className = 'adv-msg bot';
+  el.innerHTML = `<div class="adv-msg-av">🤖<\/div><div class="adv-bubble"><span class="st"><\/span><\/div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+
+  const span = el.querySelector('.st');
+  const tokens = [];
+  const rx = /(<[^>]+>|&[^;]+;|.)/gs;
+  let m;
+  while ((m = rx.exec(text)) !== null) tokens.push(m[0]);
+
+  let acc = '', i = 0;
+  await new Promise(res => {
+    const iv = setInterval(() => {
+      if (i < tokens.length) { acc += tokens[i++]; span.innerHTML = acc; scrollBottom(); }
+      else { clearInterval(iv); res(); }
+    }, delay);
+  });
+
+  if (actionsHtml) {
+    const d = document.createElement('div');
+    d.className = 'adv-actions';
+    d.innerHTML = actionsHtml;
+    el.querySelector('.adv-bubble').appendChild(d);
+    scrollBottom();
+  }
+}
+
+async function streamMsgWithCard(text, cardHtml, actionsHtml = '', delay = 18) {
+  document.querySelectorAll('.adv-typing-el').forEach(e => e.remove());
+  const msgs = document.getElementById('advMessages');
+  const el = document.createElement('div');
+  el.className = 'adv-msg bot';
+  el.innerHTML = `<div class="adv-msg-av">🤖<\/div><div class="adv-bubble"><span class="st"><\/span><\/div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+
+  const span = el.querySelector('.st');
+  const tokens = [];
+  const rx = /(<[^>]+>|&[^;]+;|.)/gs;
+  let m;
+  while ((m = rx.exec(text)) !== null) tokens.push(m[0]);
+  let acc = '', i = 0;
+  await new Promise(res => {
+    const iv = setInterval(() => {
+      if (i < tokens.length) { acc += tokens[i++]; span.innerHTML = acc; scrollBottom(); }
+      else { clearInterval(iv); res(); }
+    }, delay);
+  });
+
+  const cardDiv = document.createElement('div');
+  cardDiv.innerHTML = cardHtml;
+  el.querySelector('.adv-bubble').appendChild(cardDiv);
+
+  if (actionsHtml) {
+    const d = document.createElement('div');
+    d.className = 'adv-actions';
+    d.innerHTML = actionsHtml;
+    el.querySelector('.adv-bubble').appendChild(d);
+  }
+  scrollBottom();
+}
+
+function addTyping() {
+  document.querySelectorAll('.adv-typing-el').forEach(e => e.remove());
+  const msgs = document.getElementById('advMessages');
+  const el = document.createElement('div');
+  el.className = 'adv-msg bot adv-typing-el';
+  el.innerHTML = `<div class="adv-msg-av">🤖<\/div><div class="adv-typing"><span><\/span><span><\/span><span><\/span><\/div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+function addUserMsg(text) {
+  document.querySelectorAll('.adv-typing-el').forEach(e => e.remove());
+  const msgs = document.getElementById('advMessages');
+  const el = document.createElement('div');
+  el.className = 'adv-msg user';
+  el.innerHTML = `<div class="adv-msg-av">R<\/div><div class="adv-bubble">${text}<\/div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+function hideAllActions() {
+  document.querySelectorAll('.adv-actions').forEach(e => e.style.display = 'none');
+}
+
+// ===== OPEN / CLOSE =====
+let advOpen = false;
+
+let greetFired = false;
+let pendingInsight = null;
+
+async function openAdvisor() {
+  advOpen = true;
+  document.getElementById('advisorTrigger').style.display = 'none';
+  document.getElementById('advDrawer').classList.add('open');
+  document.getElementById('advBadge').classList.remove('show');
+  clearTimeout(idleTimer);
+  scrollBottom();
+
+  if (!greetFired) {
+    greetFired = true;
+    addTyping();
+    await sleep(900);
+    await streamMsg(
+      '👋 Hi Ramesh! I noticed you\'re browsing our plans. I can help you find the right one based on your hiring needs — or get you a custom deal from our team. What would you like to do?',
+      '<button class="adv-btn p" onclick="handleQuick(\'help me choose\')">Help me choose<\/button> <button class="adv-btn s" onclick="handleQuick(\'best value\')">Show cost breakdown<\/button> <button class="adv-btn gold-btn" onclick="askCallback()">📞 Talk to sales<\/button>'
+    );
+    // If user doesn't act within 10s, send a gentle follow-up nudge — once only
+    startInDrawerNudge();
+  }
+}
+
+function minimizeAdvisor() {
+  advOpen = false;
+  document.getElementById('advDrawer').classList.remove('open');
+  document.getElementById('advisorTrigger').style.display = 'block';
+}
+
+function closeAdvisor() {
+  minimizeAdvisor();
+}
+
+// ===== IDLE DETECTION =====
+let idleTimer = null;
+let idleFired = false;
+let hoverFired = {};
+
+function resetIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(fireIdle, 18000);
+}
+
+function fireIdle() {
+  if (idleFired) return;
+  idleFired = true;
+  document.getElementById('advBadge').classList.add('show');
+  const pillText = document.querySelector('.adv-pill-status');
+  if (pillText) pillText.textContent = '💡 I have a tip for you';
+}
+
+
+// In-drawer nudge — fires once if user hasn't interacted 10s after greeting
+let inDrawerNudgeTimer = null;
+let inDrawerNudgeFired = false;
+
+function startInDrawerNudge() {
+  clearTimeout(inDrawerNudgeTimer);
+  inDrawerNudgeFired = false;
+  inDrawerNudgeTimer = setTimeout(async () => {
+    if (inDrawerNudgeFired || !advOpen) return;
+    inDrawerNudgeFired = true;
+    addTyping();
+    await sleep(800);
+    await streamMsg(
+      'Still deciding? I can see you\'re looking at the <span class="h">₹4,500 plan<\/span> area. Most recruiters hiring for roles like yours in Patna find the <span class="h">5-post bundle<\/span> to be the sweet spot — enough to fill 2–3 roles with backup posts. Want me to show you why?',
+      '<button class="adv-btn p" onclick="handleQuick(\'help me choose\')">Yes, show me<\/button> <button class="adv-btn s" onclick="handleQuick(\'best value\')">See cost breakdown<\/button>'
+    );
+  }, 10000);
+}
+
+function cancelInDrawerNudge() {
+  clearTimeout(inDrawerNudgeTimer);
+  inDrawerNudgeFired = true; // mark as done so it doesn't fire after user acts
+}
+
+// ===== PLAN HOVER =====
+const planInsights = {
+  1: { delay: 2000, msg: `The ₹500 plan is a good test run. But delivery roles in Patna average <span class="h">4–6 applicants per post<\/span> — you'll want backups. The 5-post plan gives you <span class="g">5× more reach for only 4.75× the cost<\/span>.` },
+  2: { delay: 2500, msg: `Smart choice territory! 5 posts at <span class="h">₹475 each<\/span> gives you enough volume to fill 2–3 roles. Most recruiters start here and upgrade after their first hire.` },
+  3: { delay: 2000, msg: `<span class="g">Best value<\/span> on the page. At <span class="h">₹450/post<\/span>, this is 10% cheaper than buying individually — and recruiters with 10 posts fill roles <span class="g">2× faster<\/span> due to more A/B testing.` },
+  4: { delay: 1500, msg: `If you're hiring more than 5 roles regularly, <span class="gold">our sales team<\/span> can build a custom bundle — often <span class="h">20–30% cheaper<\/span> than rack rates. Worth a 5-min call.` }
+};
+let hoverTimers = {};
+
+function onPlanHover(n) {
+  resetIdle();
+  if (hoverFired[n] || advOpen) return;
+  clearTimeout(hoverTimers[n]);
+  hoverTimers[n] = setTimeout(async () => {
+    if (hoverFired[n]) return;
+    hoverFired[n] = true;
+    const data = planInsights[n];
+    if (advOpen) {
+      // drawer is open — stream directly
+      addTyping();
+      await sleep(500);
+      await streamMsg(data.msg);
+    } else {
+      // drawer closed — just show badge, queue insight for when they open
+      document.getElementById('advBadge').classList.add('show');
+      pendingInsight = data.msg;
+    }
+  }, planInsights[n].delay);
+}
+
+function onPlanLeave(n) {
+  clearTimeout(hoverTimers[n]);
+}
+
+// ===== HELP ME CHOOSE FLOW =====
+let choosingStep = 0;
+let choiceData = {};
+
+async function startChooseFlow() {
+  choosingStep = 1;
+  addTyping();
+  await sleep(900);
+  await streamMsg(
+    `Sure! Two quick questions and I'll tell you exactly which plan fits. First — <span class="h">how many roles<\/span> are you looking to fill in the next 30 days?`,
+    `<button class="adv-btn p" onclick="chooseRoles(1)">Just 1<\/button>
+     <button class="adv-btn p" onclick="chooseRoles(3)">2–3 roles<\/button>
+     <button class="adv-btn p" onclick="chooseRoles(5)">4–5 roles<\/button>
+     <button class="adv-btn s" onclick="chooseRoles(10)">5+ roles<\/button>`
+  );
+}
+
+async function chooseRoles(n) {
+  hideAllActions();
+  choiceData.roles = n;
+  addUserMsg(n === 10 ? '5+ roles' : n === 1 ? 'Just 1' : `${n} roles`);
+  choosingStep = 2;
+
+  addTyping();
+  await sleep(700);
+  await streamMsg(
+    `Got it — <span class="h">${n === 10 ? '5+ roles' : n + ' role' + (n > 1 ? 's' : '')}<\/span>. And how soon do you need to hire? This affects how many posts you'll need to run simultaneously.`,
+    `<button class="adv-btn p" onclick="chooseUrgency('urgent')">ASAP — this week<\/button>
+     <button class="adv-btn p" onclick="chooseUrgency('normal')">Within 30 days<\/button>
+     <button class="adv-btn s" onclick="chooseUrgency('flexible')">Flexible timeline<\/button>`
+  );
+}
+
+async function chooseUrgency(u) {
+  hideAllActions();
+  choiceData.urgency = u;
+  addUserMsg(u === 'urgent' ? 'ASAP — this week' : u === 'normal' ? 'Within 30 days' : 'Flexible');
+
+  addTyping();
+  await sleep(1000);
+
+  const r = choiceData.roles;
+  let rec, price, reason, cph;
+  if (r <= 1 && u !== 'urgent') {
+    rec = '₹500 Starter'; price = '₹500'; reason = `1 role, no urgency — the starter plan is all you need. If this post works, you can buy more credits anytime.`; cph = '₹500/post';
+  } else if (r <= 3 || (r === 1 && u === 'urgent')) {
+    rec = '₹2,375 — 5 Jobs'; price = '₹2,375'; reason = `${r <= 2 ? '2–3 roles' : 'moderate volume'} + ${u === 'urgent' ? 'urgency' : 'normal timeline'} = you need backup posts. 5 credits lets you repost if a role doesn't fill first try.`; cph = '₹475/post';
+  } else {
+    rec = '₹4,500 — 10 Jobs'; price = '₹4,500'; reason = `${r}+ roles means you'll be posting actively. The 10-post plan gives you flexibility to A/B test job descriptions and repost — that's how fast hirers work.`; cph = '₹450/post';
+  }
+
+  const cardHtml = `
+    <div class="adv-plan-card">
+      <div class="adv-plan-name">My recommendation: ${rec}<\/div>
+      <div class="adv-plan-price">${price}<\/div>
+      <div class="adv-plan-reason">${reason}<\/div>
+      <div class="adv-plan-stat">
+        <div class="adv-plan-stat-item">💰 <strong>${cph}<\/strong> cost per post<\/div>
+        <div class="adv-plan-stat-item">📞 <strong>6–10 calls<\/strong> expected<\/div>
+      <\/div>
+    <\/div>`;
+
+  await streamMsgWithCard(
+    `Based on your situation, here's what I'd pick:`,
+    cardHtml,
+    `<button class="adv-btn p" onclick="confirmPlan()">✓ Sounds good, buy this<\/button>
+     <button class="adv-btn s" onclick="askCallback()">I want a better deal<\/button>`
+  );
+}
+
+function confirmPlan() {
+  hideAllActions();
+  addUserMsg('Sounds good!');
+  addTyping();
+  setTimeout(async () => {
+    await streamMsg(`<span class="g">Great!<\/span> Scroll up and tap <span class="h">Buy now<\/span> on the recommended plan. I've highlighted it for you. Any questions before you go ahead?`);
+    document.getElementById('plan-3').classList.add('hovered-active');
+    setTimeout(() => document.getElementById('plan-3').classList.remove('hovered-active'), 3000);
+  }, 700);
+}
+
+// ===== CALLBACK FLOW =====
+function openCallbackFlow() { openSalesModal('manual'); }
+
+async function askCallback() {
+  cancelInDrawerNudge();
+  hideAllActions();
+  addTyping();
+  await sleep(800);
+  await streamMsg(
+    `I'll have someone from our team call you within <span class="h">10 minutes<\/span>. They can build a custom plan and sometimes unlock <span class="gold">exclusive discounts<\/span> not shown on this page. Leave your number:`,
+    ''
+  );
+
+  const msgs = document.getElementById('advMessages');
+  const el = document.createElement('div');
+  el.className = 'adv-msg bot';
+  el.innerHTML = `
+    <div class="adv-msg-av">🤖<\/div>
+    <div class="adv-bubble" style="max-width:270px;">
+      <div class="callback-form">
+        <div class="callback-label">📞 Request a callback<\/div>
+        <input class="callback-input" id="cbPhone" placeholder="+91 98765 43210" type="tel">
+        <input class="callback-input" id="cbName" placeholder="Your name (optional)">
+        <button class="callback-submit" onclick="submitCallback()">Call me in 10 minutes →<\/button>
+      <\/div>
+    <\/div>`;
+  msgs.appendChild(el);
+  scrollBottom();
+}
+
+async function submitCallback() {
+  const phone = document.getElementById('cbPhone').value;
+  if (!phone || phone.length < 8) {
+    document.getElementById('cbPhone').style.borderColor = '#ef4444';
+    return;
+  }
+  hideAllActions();
+  document.querySelectorAll('.callback-form').forEach(e => e.remove());
+  addUserMsg('📞 ' + phone);
+  addTyping();
+  await sleep(1000);
+  await streamMsg(
+    `<span class="g">✓ Confirmed!<\/span> Our specialist will call <span class="h">${phone}<\/span> within 10 minutes. They'll have your account context and can offer custom pricing for your hiring needs. 🎉`
+  );
+}
+
+// ===== USER MESSAGES =====
+async function sendAdvMsg() {
+  const inp = document.getElementById('advInput');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  handleQuick(text);
+}
+
+async function handleQuick(text) {
+  if (!advOpen) openAdvisor();
+  cancelInDrawerNudge();
+  addUserMsg(text);
+  resetIdle();
+
+  const lower = text.toLowerCase();
+  addTyping();
+  await sleep(700);
+
+  if (lower.includes('help') || lower.includes('choose') || lower.includes('which')) {
+    await startChooseFlow();
+  } else if (lower.includes('call') || lower.includes('callback') || lower.includes('talk')) {
+    await askCallback();
+  } else if (lower.includes('best value') || lower.includes('cheapest')) {
+    await streamMsg(
+      `On a pure cost-per-post basis: <br><br>
+       <span class="h">₹500 plan<\/span> → ₹500/post<br>
+       <span class="h">₹2,375 plan<\/span> → ₹475/post <span class="g">(5% cheaper)<\/span><br>
+       <span class="h">₹4,500 plan<\/span> → ₹450/post <span class="g">(10% cheaper)<\/span><br><br>
+       The more you buy, the cheaper each post gets. For most recruiters, the <span class="h">₹2,375<\/span> hits the sweet spot.`,
+      `<button class="adv-btn p" onclick="selectPlan(2)">Get ₹2,375 plan<\/button>
+       <button class="adv-btn s" onclick="handleQuick('help me choose')">Help me decide<\/button>`
+    );
+  } else if (lower.includes('3 hire') || lower.includes('3 role') || lower.includes('hire')) {
+    const n = lower.match(/\d+/)?.[0] || '3';
+    choiceData.roles = parseInt(n);
+    addTyping();
+    await sleep(500);
+    await streamMsg(
+      `For <span class="h">${n} hires<\/span>, I'd recommend the <span class="h">5-post plan (₹2,375)<\/span>. Each role might need 1–2 posts to fill, so 5 credits gives you a comfortable buffer.`,
+      `<button class="adv-btn p" onclick="selectPlan(2)">Buy ₹2,375 plan<\/button>
+       <button class="adv-btn s" onclick="startChooseFlow()">Tell me more<\/button>`
+    );
+  } else if (lower.includes('discount') || lower.includes('offer') || lower.includes('deal')) {
+    await streamMsg(
+      `The plans already have early-bird pricing. For <span class="gold">bigger discounts<\/span> (20–30%), our sales team can negotiate custom bundles for volume hiring. Want me to connect you?`,
+      `<button class="adv-btn gold-btn" onclick="askCallback()">📞 Get custom quote<\/button>
+       <button class="adv-btn s" onclick="handleQuick('best value')">Show me current rates<\/button>`
+    );
+  } else {
+    await streamMsg(
+      `I'm here to help you pick the right plan! I can <span class="h">recommend a plan<\/span> based on your hiring needs, show you a <span class="h">cost breakdown<\/span>, or connect you with sales for a <span class="h">custom quote<\/span>.`,
+      `<button class="adv-btn p" onclick="startChooseFlow()">Help me choose<\/button>
+       <button class="adv-btn s" onclick="askCallback()">Talk to sales<\/button>`
+    );
+  }
+}
+
+// ===== PLAN SELECT =====
+function selectPlan(n) {
+  const prices = ['','₹500','₹2,375','₹4,500','Custom'];
+  alert(`Proceeding to checkout: ${prices[n]} plan`);
+}
+
+// ===== DEMOS =====
+let idleTimerDemo = null;
+
+async function runDemo(n) {
+  resetAll();
+  document.querySelectorAll('.demo-btn-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(`db${n}`)?.classList.add('active');
+
+  if (n === 1) await demo1();
+  else if (n === 2) await demo2();
+  else if (n === 3) await demo3();
+
+}
+
+async function demo1() {
+  openAdvisor();
+  // greeting already streams via openAdvisor, demo1 just ensures drawer is open
+}
+
+async function demo2() {
+  await openAdvisor();
+  // startChooseFlow is triggered when user clicks "Help me choose"
+}
+
+async function demo3() {
+  // Sales popup demo
+  openSalesModal('manual');
+}
+
+
+function toggleDemo() {
+  document.getElementById('demoBar').classList.toggle('visible');
+}
+
+function resetAll() {
+  idleFired = false;
+  greetFired = false;
+  pendingInsight = null;
+  salesModalShown = false;
+  inDrawerNudgeFired = false;
+  clearTimeout(inDrawerNudgeTimer);
+  closeSalesModal();
+  document.getElementById('modalBody').style.display = '';
+  document.getElementById('modalSuccess').classList.remove('show');
+  document.getElementById('modalPhone').value = '';
+  document.getElementById('modalPhone').style.borderColor = '';
+  document.getElementById('modalName').value = '';
+  hoverFired = {};
+  choosingStep = 0;
+  choiceData = {};
+  clearTimeout(idleTimer);
+  document.getElementById('advMessages').innerHTML = '';
+  document.getElementById('advBadge').classList.remove('show');
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('hovered-active'));
+  minimizeAdvisor();
+  document.querySelectorAll('.demo-btn-item').forEach(b => b.classList.remove('active'));
+  resetIdle();
+  // Re-arm the 7s auto-open
+  setTimeout(() => { if (!greetFired) openAdvisor(); }, 7000);
+}
+
+// ===== SALES POPUP MODAL =====
+let salesModalShown = false;
+
+function openSalesModal(trigger) {
+  if (salesModalShown && trigger === 'auto') return;
+  salesModalShown = true;
+  document.getElementById('salesOverlay').classList.add('open');
+}
+
+function closeSalesModal() {
+  document.getElementById('salesOverlay').classList.remove('open');
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('salesOverlay')) closeSalesModal();
+}
+
+function submitSalesModal() {
+  const phone = document.getElementById('modalPhone').value.trim();
+  if (!phone || phone.length < 8) {
+    document.getElementById('modalPhone').style.borderColor = '#ef4444';
+    return;
+  }
+  document.getElementById('modalBody').style.display = 'none';
+  const success = document.getElementById('modalSuccess');
+  document.getElementById('modalPhoneDisplay').textContent = phone;
+  success.classList.add('show');
+  // auto close after 4s
+  setTimeout(closeSalesModal, 4000);
+}
+
+
+// ===== INIT =====
+window.onload = () => {
+  resetIdle();
+  // Auto-open advisor chat after 7 seconds
+  setTimeout(() => {
+    if (!greetFired) openAdvisor();
+  }, 7000);
+};
+
+document.addEventListener('mousemove', resetIdle);
+document.addEventListener('click', resetIdle);
+document.addEventListener('scroll', resetIdle);
+</script>
+
+<!-- SALES POPUP MODAL -->
+<div class="sales-overlay" id="salesOverlay" onclick="handleOverlayClick(event)">
+  <div class="sales-modal" id="salesModal">
+    <button class="modal-close" onclick="closeSalesModal()">✕</button>
+
+    <!-- Hero -->
+    <div class="modal-hero">
+      <div class="modal-avatar">🎯</div>
+      <div class="modal-eyebrow">Limited Time · Custom Plans</div>
+      <div class="modal-title">Hiring more than 5 roles?<br>Get a <span>custom deal</span></div>
+      <div class="modal-sub">Our team builds tailored credit bundles — often 20–30% cheaper than rack rates. Takes 5 minutes.</div>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body" id="modalBody">
+      <div class="modal-perks">
+        <div class="modal-perk">
+          <div class="modal-perk-icon">💰</div>
+          <div class="modal-perk-text"><strong>Volume Pricing</strong>Up to 30% off for bulk hiring</div>
+        </div>
+        <div class="modal-perk">
+          <div class="modal-perk-icon">⚡</div>
+          <div class="modal-perk-text"><strong>Call in 10 min</strong>No waiting, no forms</div>
+        </div>
+        <div class="modal-perk">
+          <div class="modal-perk-icon">🎯</div>
+          <div class="modal-perk-text"><strong>Tailored Plan</strong>Credits matched to your roles</div>
+        </div>
+        <div class="modal-perk">
+          <div class="modal-perk-icon">🔓</div>
+          <div class="modal-perk-text"><strong>Exclusive Offers</strong>Not shown on this page</div>
+        </div>
+      </div>
+
+      <div class="modal-form-label">📞 Request a callback</div>
+      <div class="modal-input-row">
+        <input class="modal-input" id="modalPhone" placeholder="+91 98765 43210" type="tel">
+      </div>
+      <input class="modal-input" id="modalName" placeholder="Your name (optional)" style="margin-bottom:14px;">
+      <button class="modal-submit" onclick="submitSalesModal()">
+        Call me in 10 minutes →
+      </button>
+      <div class="modal-reassure"><span>✓</span> No spam · We only call once · You can reschedule</div>
+    </div>
+
+    <!-- Success -->
+    <div class="modal-success" id="modalSuccess">
+      <div class="modal-success-icon">🎉</div>
+      <div class="modal-success-title">You're all set!</div>
+      <div class="modal-success-sub">Our specialist will call <strong id="modalPhoneDisplay"></strong> within 10 minutes. They'll have your account context and can unlock exclusive pricing for your hiring volume.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -178,6 +178,9 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                                 sizes={sizes}
                                 wholesaleDiscountPct={wholesaleDiscountPct}
                             />
+                            <p className="text-xs text-[#9A9A9A] mt-3 italic text-center md:text-left">
+                                * Shipping charges are extra according to location.
+                            </p>
                         </div>
                         {/* Cross-link to retail */}
                         <div className="border-t border-[#E8E5E0] pt-4">
