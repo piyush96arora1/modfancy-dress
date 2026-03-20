@@ -4,9 +4,14 @@ import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { CategoryListingJsonLd } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
+import { getFaqsForCategoryPage } from '@/lib/faqs/queries'
+import { FaqSection } from '@/components/public/FaqSection'
+import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
+import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
+import { isClassicalCostumeCategorySlug } from '@/lib/seo/classical-category-slugs'
 import type { ProductWithDetails } from '@/types/database'
 
 interface CategoryPageProps {
@@ -88,17 +93,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   query = query.order('created_at', { ascending: false })
   const { data: products } = await query
 
-  const breadcrumbSchema = BreadcrumbSchema([
-    { name: 'Home', url: '/' },
-    { name: 'Categories', url: '/products' },
-    { name: category.name, url: `/category/${slug}` },
-  ])
+  const categoryFaqs = await getFaqsForCategoryPage(slug)
+
+  const categoryListingJsonLd = CategoryListingJsonLd({
+    variant: 'retail',
+    slug,
+    categoryName: category.name,
+    description: category.description,
+    products: (products ?? []).map((p) => ({ slug: p.slug, name: p.name })),
+  })
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryListingJsonLd) }}
       />
       <div className="fade-in">
         {/* Breadcrumb */}
@@ -121,28 +130,74 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
         </div>
 
-        {/* Products Grid */}
-        {products && products.length > 0 ? (
-          <ProductGrid products={products as ProductWithDetails[]} />
-        ) : (
-          <div className="text-center py-16">
-            <p className="text-[#9A9A9A] text-sm">No products found in this category.</p>
-          </div>
-        )}
+        {/* Products — h2 so outline is h1 → h2 → h4 (product names) */}
+        <section className="mb-2" aria-labelledby="category-products-heading">
+          <h2
+            id="category-products-heading"
+            className="text-base md:text-lg font-semibold text-[#1B2A4A] mb-4 font-[family-name:var(--font-outfit)]"
+          >
+            Products in this category
+          </h2>
+          {products && products.length > 0 ? (
+            <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" />
+          ) : (
+            <div className="text-center py-16">
+              <p className="text-[#9A9A9A] text-sm">No products found in this category.</p>
+            </div>
+          )}
+        </section>
 
-        {/* Category description below products — keeps first fold focused on listing */}
         {category.description && (
-          <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-label="About this category">
+          <section className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]" aria-labelledby="category-about-heading">
+            <h2
+              id="category-about-heading"
+              className="text-base md:text-lg font-semibold text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]"
+            >
+              About this category
+            </h2>
             <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl">{category.description}</p>
           </section>
         )}
 
-        {/* Link to blog for ideas and guides */}
-        <section className="mt-8 pt-6 border-t border-[#E8E5E0]">
+        <SizeGuideTable
+          categoryId={category.id}
+          categoryName={category.name}
+          className="mt-8 pt-8 border-t border-[#E8E5E0]"
+        />
+
+        {isClassicalCostumeCategorySlug(slug) && (
+          <ClassicalDanceComparisonTable
+            className="mt-8 pt-8 border-t border-[#E8E5E0]"
+            headingId={`classical-compare-category-${slug}`}
+          />
+        )}
+
+        <section className="mt-8 pt-6 border-t border-[#E8E5E0]" aria-labelledby="category-guides-heading">
+          <h2
+            id="category-guides-heading"
+            className="text-base md:text-lg font-semibold text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]"
+          >
+            Costume guides & ideas
+          </h2>
           <Link href="/blog" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
             Fancy dress ideas & costume guides on our blog →
           </Link>
         </section>
+
+        {categoryFaqs.length > 0 && (
+          <div>
+            <FaqSection
+              title="Questions about ordering & delivery"
+              headingId={`category-faq-${slug}`}
+              items={categoryFaqs.map(({ id, question, answer }) => ({ id, question, answer }))}
+            />
+            <p className="mt-4 text-center">
+              <Link href="/faq" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+                View all FAQs →
+              </Link>
+            </p>
+          </div>
+        )}
       </div>
     </>
   )

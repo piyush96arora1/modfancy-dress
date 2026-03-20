@@ -8,9 +8,17 @@ interface ProductGridProps {
   pricingMode?: PricingMode
   wholesaleDiscountPct?: number
   showViewAllCard?: boolean
+  /** Passed to each ProductCard — use `h4` when this grid follows a section `h2`. */
+  productTitleTag?: 'h3' | 'h4'
 }
 
-export function ProductGrid({ products, pricingMode = 'retail', wholesaleDiscountPct = 30, showViewAllCard = false }: ProductGridProps) {
+export function ProductGrid({
+  products,
+  pricingMode = 'retail',
+  wholesaleDiscountPct = 30,
+  showViewAllCard = false,
+  productTitleTag = 'h3',
+}: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
@@ -22,7 +30,13 @@ export function ProductGrid({ products, pricingMode = 'retail', wholesaleDiscoun
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 lg:gap-6">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} pricingMode={pricingMode} wholesaleDiscountPct={wholesaleDiscountPct} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          pricingMode={pricingMode}
+          wholesaleDiscountPct={wholesaleDiscountPct}
+          titleTag={productTitleTag}
+        />
       ))}
 
       {showViewAllCard && (

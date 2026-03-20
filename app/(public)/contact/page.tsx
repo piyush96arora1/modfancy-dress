@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Phone, MessageCircle, MapPin, Calendar, Award, ExternalLink, Star, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { ReviewSchema, OrganizationSchema } from '@/lib/seo/structured-data'
+import { ReviewSchema } from '@/lib/seo/structured-data'
 
 export const metadata = generatePageMetadata({
   title: 'Contact Us - Mod Fancy Dress | Delhi Fancy Dress Shop',
@@ -12,7 +12,6 @@ export const metadata = generatePageMetadata({
 
 export default function ContactPage() {
   const reviewSchema = ReviewSchema()
-  const localBusinessSchema = OrganizationSchema()
 
   const reviews = [
     { initials: 'PS', name: 'Priya Sharma', date: 'January 15, 2024', stars: 5, text: 'Excellent service! They provided amazing costumes for our school annual function. Very professional and on-time delivery. Highly recommended!', bg: 'bg-[#EEF1F7]', color: 'text-[#1B2A4A]' },
@@ -25,7 +24,6 @@ export default function ContactPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
       <div className="fade-in">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">

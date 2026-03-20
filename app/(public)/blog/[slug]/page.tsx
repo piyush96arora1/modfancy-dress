@@ -5,6 +5,11 @@ import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { BlogContent } from '@/components/public/BlogContent'
+import { getFaqsForBlog } from '@/lib/faqs/queries'
+import { FaqSection } from '@/components/public/FaqSection'
+import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
+import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
+import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE } from '@/lib/blog/seo-post-slugs'
 import type { BlogPost } from '@/types/database'
 
 interface BlogPostPageProps {
@@ -43,6 +48,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   if (!post) notFound()
 
+  const blogFaqs = await getFaqsForBlog()
+
   const breadcrumbSchema = BreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
@@ -73,6 +80,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="prose prose-sm max-w-none">
           <BlogContent content={(post as BlogPost).content} />
         </div>
+
+        {slug === BLOG_SLUG_ANNUAL_FUNCTION && (
+          <div className="mt-10 not-prose">
+            <OccasionGuideTable headingId={`blog-annual-occasion-${slug}`} />
+          </div>
+        )}
+
+        {slug === BLOG_SLUG_CLASSICAL_DANCE && (
+          <div className="mt-10 not-prose">
+            <ClassicalDanceComparisonTable headingId={`blog-classical-compare-${slug}`} />
+          </div>
+        )}
+
+        {blogFaqs.length > 0 && (
+          <div className="mt-12 md:mt-16 pt-10 md:pt-12 border-t border-[#E8E5E0]">
+            <FaqSection
+              title="Common questions"
+              headingId="blog-faq-heading"
+              items={blogFaqs.map(({ id, question, answer }) => ({ id, question, answer }))}
+            />
+            <p className="mt-4 text-center">
+              <Link href="/faq" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+                View all FAQs →
+              </Link>
+            </p>
+          </div>
+        )}
 
         <footer className="mt-10 pt-6 border-t border-[#E8E5E0] space-y-4">
           <div className="flex flex-wrap gap-4">

@@ -15,9 +15,11 @@ interface ProductCardProps {
   product: ProductWithDetails
   pricingMode?: PricingMode
   wholesaleDiscountPct?: number
+  /** Use `h4` when the grid sits under a section `h2` (e.g. category pages). Default `h3` for listings under page `h1` only. */
+  titleTag?: 'h3' | 'h4'
 }
 
-export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30 }: ProductCardProps) {
+export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3' }: ProductCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const { mode: globalMode } = usePricingMode()
@@ -35,6 +37,8 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
   const displayPrice = pricingMode === 'wholesale' ? wholesalePrice : retailPrice
 
   const basePath = pricingMode === 'wholesale' ? '/wholesale' : '/products'
+
+  const TitleTag = titleTag
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -84,9 +88,9 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
 
         {/* Info */}
         <div className="p-3 md:p-4 flex-1 flex flex-col">
-          <h3 className="font-[family-name:var(--font-outfit)] font-semibold text-sm md:text-base mb-1 line-clamp-2 text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-snug">
+          <TitleTag className="font-[family-name:var(--font-outfit)] font-semibold text-sm md:text-base mb-1 line-clamp-2 text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-snug">
             {product.name}
-          </h3>
+          </TitleTag>
           {displayPrice > 0 && (
             <div className="mt-auto pt-1.5">
               <p className="text-base md:text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">

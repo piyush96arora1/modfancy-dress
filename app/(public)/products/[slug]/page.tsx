@@ -1,13 +1,15 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { ProductSchema, BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib/seo/structured-data'
 import { ChevronRight, Star, MessageCircle } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails, ProductReview } from '@/types/database'
+import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 
 interface ProductPageProps {
   params: Promise<{
@@ -97,36 +99,42 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
-  const { data: reviews } = await supabase
+  const publicSb = createPublicServerClient()
+  const { data: reviews, error: reviewsError } = await publicSb
     .from('product_reviews')
     .select('id, rating, review_text, author_name, created_at')
     .eq('product_id', productData.id)
     .order('created_at', { ascending: false })
-  const reviewCount = reviews?.length ?? 0
-  const aggregateRating =
-    reviewCount > 0
-      ? {
-          ratingValue: reviews!.reduce((s, r) => s + r.rating, 0) / reviewCount,
-          reviewCount,
-        }
-      : null
 
-  const productSchema = ProductSchema(productData, { aggregateRating })
-  const breadcrumbSchema = BreadcrumbSchema([
+  if (reviewsError) {
+    console.error('[ProductPage] product_reviews:', reviewsError.message)
+  }
+
+  const aggregateRating = aggregateRatingFromProductReviews(reviews ?? null)
+
+  const breadcrumbItems = [
     { name: 'Home', url: '/' },
     { name: 'Products', url: '/products' },
+    ...(productData.category
+      ? [{ name: productData.category.name, url: `/category/${productData.category.slug}` }]
+      : []),
     { name: productData.name, url: `/products/${slug}` },
-  ])
+  ]
+
+  const productPageJsonLd = ProductPageJsonLdGraph(
+    productData,
+    {
+      aggregateRating,
+      reviewsForJsonLd: aggregateRating && reviews?.length ? reviews : undefined,
+    },
+    breadcrumbItems
+  )
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productPageJsonLd) }}
       />
       <div className="fade-in">
         {/* Breadcrumb */}
@@ -231,6 +239,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <h2 className="font-semibold text-sm text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Description</h2>
             <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed max-w-3xl">{productData.description}</p>
           </section>
+        )}
+
+        {productData.category?.id && (
+          <SizeGuideTable
+            categoryId={productData.category.id}
+            categoryName={productData.category.name}
+            className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]"
+          />
         )}
 
         {/* Reviews */}

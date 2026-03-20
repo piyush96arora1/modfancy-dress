@@ -4,13 +4,21 @@ import { MobileBottomNav } from '@/components/public/MobileBottomNav'
 import { EnquiryBasketProvider } from '@/lib/context/EnquiryBasketContext'
 import { PricingModeProvider } from '@/lib/context/PricingModeContext'
 import { FloatingEnquiryBadge } from '@/components/public/FloatingEnquiryBadge'
+import { LocalBusinessSchema } from '@/lib/seo/structured-data'
 
 export default function PublicLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const localBusinessJsonLd = LocalBusinessSchema()
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
     <PricingModeProvider>
       <EnquiryBasketProvider>
         <div className="min-h-screen flex flex-col bg-[#FAFAF8] overflow-x-hidden">
@@ -24,5 +32,6 @@ export default function PublicLayout({
         </div>
       </EnquiryBasketProvider>
     </PricingModeProvider>
+    </>
   )
 }

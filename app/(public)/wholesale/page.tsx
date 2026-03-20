@@ -6,6 +6,7 @@ import { CategoryFilter } from '@/components/public/CategoryFilter'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
+import { CategoryPriceTable } from '@/components/public/seo-tables/CategoryPriceTable'
 import type { ProductWithDetails } from '@/types/database'
 
 export const revalidate = 60
@@ -135,6 +136,10 @@ export default async function WholesalePage({ searchParams }: WholesalePageProps
                     <p className="text-sm text-[#2D2D2D]">
                         <strong>📦 Wholesale Pricing</strong> — Bulk order prices per piece. Click any product to send an enquiry.
                     </p>
+                </div>
+
+                <div className="mb-8">
+                    <CategoryPriceTable headingId="wholesale-category-prices" />
                 </div>
 
                 {/* Search */}

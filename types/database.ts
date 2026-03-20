@@ -160,3 +160,17 @@ export type ProductReview = {
   created_at: string
 }
 
+export type Faq = {
+  id: string
+  section: string
+  question: string
+  answer: string
+  sort_order: number
+  is_published: boolean
+  show_on_blog: boolean
+  show_on_category: boolean
+  category_slugs: string[] | null
+  created_at: string
+  updated_at: string
+}
+

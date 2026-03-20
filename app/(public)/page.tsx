@@ -2,13 +2,12 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { CategoryCard } from '@/components/public/CategoryCard'
-import { SearchBar } from '@/components/public/SearchBar'
 import { EventBanner } from '@/components/public/EventBanner'
 import { TickerStrip } from '@/components/public/TickerStrip'
 import { AssetPreloader } from '@/components/public/AssetPreloader'
 import { Button } from '@/components/ui/button'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
-import { MobileStickyActionBarDynamic } from '@/components/public/MobileStickyActionBarDynamic'
+import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
@@ -86,7 +85,7 @@ export default async function HomePage() {
           }}
         />
       )}
-      <div className="pb-24 md:pb-0">
+      <div>
         {/* Running Ticker Strip */}
         {tickerEnabled && tickerText && (
           <div className="relative -mt-4 md:-mt-8 mb-2 md:mb-0" style={{
@@ -119,25 +118,19 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-br from-[#FAFAF8] via-[#F5F3F0] to-[#F0EDE8] rounded-xl" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(200,149,108,0.08),transparent_50%)] rounded-xl" />
 
-          <div className={`relative z-10 max-w-3xl mx-auto px-4 ${hasEventBanner ? 'max-w-2xl' : ''
-            }`}>
+          <div className={`relative z-10 max-w-3xl mx-auto px-4 ${hasEventBanner ? 'max-w-2xl' : ''}`}>
             <h1 className={`font-[family-name:var(--font-outfit)] font-bold text-[#1B2A4A] leading-tight ${hasEventBanner
               ? 'text-2xl md:text-3xl mb-3'
               : 'text-3xl md:text-5xl lg:text-[3.5rem] mb-4 md:mb-5'
               }`}>
-              Discover Stunning
+              Discover Stunning{' '}
               <span className="block text-[#C8956C]">Fancy Dress Costumes</span>
             </h1>
             {!hasEventBanner && (
-              <p className="text-base md:text-lg text-[#6B6B6B] mb-6 md:mb-8 max-w-xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-[#6B6B6B] mb-0 max-w-xl mx-auto leading-relaxed">
                 Costumes for school functions, dance performances, and celebrations. Trusted by 400+ schools across Delhi.
               </p>
             )}
-
-            {/* Search Bar */}
-            <div className={`mx-auto ${hasEventBanner ? 'max-w-xl' : 'max-w-2xl'}`}>
-              <SearchBar />
-            </div>
           </div>
         </section>
 
@@ -211,7 +204,10 @@ export default async function HomePage() {
           )}
         </section>
 
-        <MobileStickyActionBarDynamic />
+        {/* Occasion guide: after shop sections — SEO + helpers, not primary funnel */}
+        <div className="fade-in pt-10 md:pt-12 mt-4 md:mt-6 pb-2 border-t border-[#E8E5E0]">
+          <OccasionGuideTable includeFaqScript headingId="home-occasion-guide" />
+        </div>
       </div>
     </>
   )

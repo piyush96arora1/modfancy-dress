@@ -1,14 +1,23 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema, toAbsoluteUrl } from '@/lib/seo/structured-data'
+import {
+    WholesaleProductPageJsonLdGraph,
+    toAbsoluteUrl,
+    siteUrl,
+    localBusinessEntityId,
+    aggregateRatingFromProductReviews,
+    reviewsForProductJsonLd,
+} from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import type { ProductWithDetails } from '@/types/database'
+import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 
 interface WholesaleProductPageProps {
     params: Promise<{
@@ -88,14 +97,18 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
 
     const wholesalePrice = getProductPrice(productData, 'wholesale', wholesaleDiscountPct)
 
-    const { data: reviews } = await supabase
+    const publicSb = createPublicServerClient()
+    const { data: reviews, error: reviewsError } = await publicSb
         .from('product_reviews')
-        .select('rating')
+        .select('rating, review_text, author_name, created_at')
         .eq('product_id', productData.id)
-    const reviewCount = reviews?.length ?? 0
-    const ratingValue = reviewCount > 0 ? reviews!.reduce((s, r) => s + r.rating, 0) / reviewCount : null
+        .order('created_at', { ascending: false })
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://modfacnydress.com'
+    if (reviewsError) {
+        console.error('[WholesaleProductPage] product_reviews:', reviewsError.message)
+    }
+
+    const reviewAgg = aggregateRatingFromProductReviews(reviews ?? null)
 
     // Wholesale structured data with UnitPriceSpecification
     const productSchema: Record<string, unknown> = {
@@ -121,34 +134,39 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                 priceCurrency: 'INR',
                 unitText: 'piece',
             },
-            seller: { '@type': 'LocalBusiness', name: 'Mod Fancy Dress' },
+            seller: { '@id': localBusinessEntityId() },
         },
     }
-    if (reviewCount >= 1 && ratingValue != null) {
+    if (reviewAgg && reviewAgg.reviewCount >= 1) {
         productSchema.aggregateRating = {
             '@type': 'AggregateRating',
-            ratingValue: Math.round(ratingValue * 10) / 10,
-            reviewCount: reviewCount.toString(),
-            bestRating: '5',
-            worstRating: '1',
+            ratingValue: Math.round(reviewAgg.ratingValue * 10) / 10,
+            reviewCount: reviewAgg.reviewCount,
+            bestRating: 5,
+            worstRating: 1,
+        }
+        const reviewNodes = reviewsForProductJsonLd(reviews ?? [], slug)
+        if (reviewNodes.length > 0) {
+            productSchema.review = reviewNodes
         }
     }
 
-    const breadcrumbSchema = BreadcrumbSchema([
+    const breadcrumbItems = [
         { name: 'Home', url: '/' },
         { name: 'Wholesale', url: '/wholesale' },
+        ...(productData.category
+            ? [{ name: productData.category.name, url: `/wholesale/category/${productData.category.slug}` }]
+            : []),
         { name: productData.name, url: `/wholesale/${slug}` },
-    ])
+    ]
+
+    const wholesalePageJsonLd = WholesaleProductPageJsonLdGraph(productSchema, breadcrumbItems, slug)
 
     return (
         <>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(wholesalePageJsonLd) }}
             />
             <div className="fade-in">
                 {/* Breadcrumb */}
@@ -229,6 +247,14 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                         <h2 className="font-semibold text-sm text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Description</h2>
                         <p className="text-sm text-[#6B6B6B] whitespace-pre-line leading-relaxed max-w-3xl">{productData.description}</p>
                     </section>
+                )}
+
+                {productData.category?.id && (
+                    <SizeGuideTable
+                        categoryId={productData.category.id}
+                        categoryName={productData.category.name}
+                        className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]"
+                    />
                 )}
             </div>
         </>
