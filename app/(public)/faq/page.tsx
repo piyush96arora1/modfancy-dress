@@ -88,12 +88,6 @@ export default async function FaqPage() {
           <CategoryPriceTable headingId="faq-category-prices" />
         </div>
 
-        <FaqSection
-          title="Costume Rental"
-          headingId="faq-section-rental"
-          items={rentalFaqPairs().map((faq, i) => ({ id: `rental-${i}`, question: faq.question, answer: faq.answer }))}
-        />
-
         {faqs.length === 0 ? (
           <div className="rounded-xl border border-[#E8E5E0] bg-[#F5F3F0] p-5 text-sm text-[#6B6B6B]">
             <p className="mb-2">
