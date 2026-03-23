@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }: ProductsPageProps) {
     ? `Search Results for "${search}" - Fancy Dress Costumes`
     : category
       ? `${category.charAt(0).toUpperCase() + category.slice(1)} Fancy Dress Costumes`
-      : 'All Fancy Dress Costumes - Browse Collection'
+      : 'All Fancy Dress Costumes - Buy Online'
 
   const description = search
     ? `Find fancy dress costumes matching "${search}". Quality costumes for school functions, dance performances, and events.`

@@ -5,6 +5,7 @@ import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
+import { smartProductTitle } from '@/lib/seo/title-helpers'
 import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib/seo/structured-data'
 import { ChevronRight, Star, MessageCircle } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const supabase = await createClient()
   const { data: product } = await supabase
     .from('products')
-    .select('name, description, seo_title, meta_description, images:product_images(image_url, is_primary)')
+    .select('name, description, seo_title, meta_description, category:categories(name), images:product_images(image_url, is_primary)')
     .eq('slug', slug)
     .single()
 
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
   const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
   const imageUrl = primaryImage?.image_url
+  const catName = (product.category as { name?: string } | null)?.name ?? null
 
   const description =
     product.meta_description ??
@@ -42,7 +44,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
       : `Buy ${product.name} - fancy dress costume at Mod Fancy Dress. Quality costumes for school functions and events. 15+ years experience.`)
 
   return generatePageMetadata({
-    title: product.seo_title || product.name,
+    title: product.seo_title || smartProductTitle(product.name, catName),
     description,
     path: `/products/${slug}`,
     image: getImageUrl(imageUrl),

@@ -15,8 +15,8 @@ import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
-  title: 'Fancy Dress Costumes & Accessories in Delhi',
-  description: 'Shop fancy dress costumes and accessories in Delhi. 15+ years experience, 400+ successful school functions. Quality costumes for dance performances, school events, and celebrations.',
+  title: 'Fancy Dress Costumes - Buy Online | School & Events',
+  description: 'Buy fancy dress costumes and accessories online. 15+ years experience, 400+ successful school functions. Dance, festival and competition costumes shipped from Delhi.',
   path: '/',
 })
 

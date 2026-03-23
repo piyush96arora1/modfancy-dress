@@ -5,6 +5,7 @@ import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
+import { wholesaleProductTitle } from '@/lib/seo/title-helpers'
 import {
     WholesaleProductPageJsonLdGraph,
     toAbsoluteUrl,
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
             : defaultDescription)
 
     return generatePageMetadata({
-        title: product.seo_title || product.name,
+        title: product.seo_title || wholesaleProductTitle(product.name),
         description,
         path: `/wholesale/${slug}`,
         image: getImageUrl(primaryImage?.image_url),
