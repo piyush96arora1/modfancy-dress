@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Check } from 'lucide-react'
 import type { ProductWithDetails, ProductVariant, PricingMode } from '@/types/database'
 import { getProductPrice, getVariantPrice, getSavingsPercent, formatPrice } from '@/lib/utils/pricing'
+import { computeRentPrice, computeRentDeposit } from '@/lib/utils/rental-pricing'
 
 interface AddToCartButtonProps {
   product: ProductWithDetails
@@ -117,6 +118,12 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
         )}
         {selectedSize && (
           <p className="text-xs text-[#9A9A9A] mt-1">Price for size: {selectedSize}</p>
+        )}
+        {pricingMode === 'retail' && product.rent_price != null && (
+          <p className="text-xs text-[#C8956C] mt-1.5 font-medium">
+            Also on rent: ₹{computeRentPrice(retailPrice)}/event
+            <span className="text-[#9A9A9A] font-normal"> · Deposit ₹{computeRentDeposit(computeRentPrice(retailPrice))}</span>
+          </p>
         )}
       </div>
 

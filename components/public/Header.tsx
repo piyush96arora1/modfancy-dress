@@ -52,11 +52,11 @@ export function Header() {
               Products
             </Link>
             <Link
-              href="/blog"
+              href="/rent"
               prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
-              Blog
+              Rent
             </Link>
             <Link
               href="/about"

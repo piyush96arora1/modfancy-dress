@@ -354,19 +354,51 @@ export function ProductSchema(
     },
     category: product.category?.name || product.categories?.[0]?.category?.name || 'Fancy Dress Costume',
     sku: product.variants?.[0]?.sku || product.slug,
-    offers: product.variants && product.variants.length > 0
-      ? product.variants.map((variant) => ({
-        '@type': 'Offer',
-        url: `${siteUrl}/products/${product.slug}`,
-        priceCurrency: 'INR',
-        price: (variant.price_override || product.price || 0).toString(),
-        availability: product.is_active
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/OutOfStock',
-        itemCondition: 'https://schema.org/NewCondition',
-        seller: sellerRef(),
-      }))
-      : offers,
+    offers: (() => {
+      type OfferNode = {
+        '@type': string
+        url: string
+        priceCurrency: string
+        price: string
+        availability: string
+        itemCondition: string
+        seller: ReturnType<typeof sellerRef>
+        businessFunction?: string
+        description?: string
+      }
+
+      const purchaseOffers: OfferNode[] = product.variants && product.variants.length > 0
+        ? product.variants.map((variant) => ({
+          '@type': 'Offer',
+          url: `${siteUrl}/products/${product.slug}`,
+          priceCurrency: 'INR',
+          price: (variant.price_override || product.price || 0).toString(),
+          availability: product.is_active
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: sellerRef(),
+        }))
+        : [offers]
+
+      if (product.rent_price) {
+        purchaseOffers.push({
+          '@type': 'Offer',
+          url: `${siteUrl}/products/${product.slug}`,
+          priceCurrency: 'INR',
+          price: product.rent_price.toString(),
+          availability: product.is_active
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: sellerRef(),
+          businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut',
+          description: `Available on rent${product.rent_deposit ? `. Refundable deposit: ₹${product.rent_deposit}` : ''}`,
+        })
+      }
+
+      return purchaseOffers
+    })(),
     ...(options?.aggregateRating && options.aggregateRating.reviewCount >= 1
       ? {
           aggregateRating: {

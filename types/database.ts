@@ -18,6 +18,8 @@ export type Product = {
   category_id: string | null
   price: number | null
   wholesale_price: number | null
+  rent_price: number | null
+  rent_deposit: number | null
   quantity: number | null
   size: string | null
   is_active: boolean

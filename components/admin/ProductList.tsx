@@ -84,7 +84,11 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
                       <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Image</div>
                     )}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900">{product.name}</td>
+                  <td className="px-6 py-4">
+                    <Link href={`/admin/products/${product.id}/edit`} className="font-medium text-gray-900 hover:text-indigo-600 hover:underline">
+                      {product.name}
+                    </Link>
+                  </td>
                   <td className="px-6 py-4 text-gray-600">
                     {product.categories && product.categories.length > 0 ? (
                       <div className="flex flex-wrap gap-1">
@@ -149,7 +153,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
           const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
           return (
             <div key={product.id} className="bg-white border rounded-xl overflow-hidden flex flex-col shadow-sm transition-shadow hover:shadow-md relative">
-              <Link href={`/admin/products/${product.id}`} className="flex-1 flex flex-col group relative z-0">
+              <Link href={`/admin/products/${product.id}/edit`} className="flex-1 flex flex-col group relative z-0">
                 {/* Image Top */}
                 <div className="relative aspect-square w-full bg-gray-100 flex-shrink-0 border-b group-hover:opacity-90 transition-opacity">
                   {primaryImage ? (

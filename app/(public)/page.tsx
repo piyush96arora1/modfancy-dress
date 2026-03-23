@@ -16,7 +16,7 @@ import type { ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
   title: 'Fancy Dress Costumes - Buy Online | School & Events',
-  description: 'Buy fancy dress costumes and accessories online. 15+ years experience, 400+ successful school functions. Dance, festival and competition costumes shipped from Delhi.',
+  description: 'Buy or rent fancy dress costumes and accessories. 15+ years experience, 400+ successful school functions. Dance, festival and competition costumes from Delhi.',
   path: '/',
 })
 
@@ -177,6 +177,27 @@ export default async function HomePage() {
             </div>
           </section>
         )}
+
+        {/* Rent Banner */}
+        <section className="mb-8 md:mb-14 fade-in">
+          <Link
+            href="/rent"
+            className="group flex items-center gap-4 px-5 py-4 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0] hover:border-[#C8956C]/40 transition-colors"
+          >
+            <span className="shrink-0 text-2xl" aria-hidden>👗</span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm md:text-base font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+                Costumes on Rent — from ₹200/event
+              </p>
+              <p className="text-xs text-[#6B6B6B] mt-0.5">
+                All costumes available on rent. Visit our Krishna Nagar shop or get delivered via Porter/Rapido.
+              </p>
+            </div>
+            <span className="shrink-0 text-[#C8956C] group-hover:translate-x-0.5 transition-transform text-sm font-medium hidden sm:block">
+              Explore →
+            </span>
+          </Link>
+        </section>
 
         {/* Featured Products */}
         <section className="mb-20 md:mb-16 fade-in">

@@ -16,6 +16,7 @@ import { ImageUpload } from './ImageUpload'
 import { X, Plus } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import { SIZE_OPTIONS } from '@/lib/constants/sizes'
+import { computeRentPrice, computeRentDeposit } from '@/lib/utils/rental-pricing'
 
 // Helper to make string fields optional (empty string becomes undefined)
 const optionalString = z.union([z.string(), z.literal('')]).transform(val => val === '' ? undefined : val).optional()
@@ -46,6 +47,18 @@ const productSchema = z.object({
   category_ids: z.array(z.string()).optional(), // New: multiple categories
   price: z.number().optional().nullable(),
   wholesale_price: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
+    if (val === '' || val === null || val === undefined) return null
+    if (typeof val === 'number') return val
+    const num = Number(val)
+    return isNaN(num) ? null : num
+  }).optional().nullable(),
+  rent_price: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
+    if (val === '' || val === null || val === undefined) return null
+    if (typeof val === 'number') return val
+    const num = Number(val)
+    return isNaN(num) ? null : num
+  }).optional().nullable(),
+  rent_deposit: z.union([z.number(), z.string(), z.literal(''), z.null()]).transform(val => {
     if (val === '' || val === null || val === undefined) return null
     if (typeof val === 'number') return val
     const num = Number(val)
@@ -101,6 +114,8 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       category_ids: product?.category_ids || [],
       price: product?.price || null,
       wholesale_price: product?.wholesale_price || null,
+      rent_price: product?.rent_price || null,
+      rent_deposit: product?.rent_deposit || null,
       quantity: product?.quantity || null,
       size: product?.size || null,
       is_active: product?.is_active ?? true,
@@ -217,6 +232,8 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         category_id: data.category_ids && data.category_ids.length > 0 ? data.category_ids[0] : null, // Keep first category for backward compatibility
         price: data.price || null,
         wholesale_price: data.wholesale_price || null,
+        rent_price: data.rent_price || (data.price ? computeRentPrice(data.price) : null),
+        rent_deposit: data.rent_deposit || (data.rent_price || data.price ? computeRentDeposit(data.rent_price || computeRentPrice(data.price!)) : null),
         quantity: data.quantity || null,
         size: data.size || null,
         is_active: data.is_active,
@@ -548,6 +565,41 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
           />
           <p className="text-xs text-gray-500 mt-1">
             Leave empty to auto-calculate (30% off retail). Enter a value to override.
+          </p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="rent_price">
+            Rent Price <span className="text-gray-400 font-normal">(per event)</span>
+          </Label>
+          <Input
+            id="rent_price"
+            type="number"
+            step="1"
+            {...register('rent_price', { setValueAs: (v) => v === '' ? null : Number(v) })}
+            placeholder={watch('price') ? `Auto: ₹${computeRentPrice(watch('price') || 0)}` : 'Enter rent price'}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Auto-calculated from retail price. Enter a value to override.
+          </p>
+        </div>
+        <div>
+          <Label htmlFor="rent_deposit">
+            Rent Deposit <span className="text-gray-400 font-normal">(refundable)</span>
+          </Label>
+          <Input
+            id="rent_deposit"
+            type="number"
+            step="1"
+            {...register('rent_deposit', { setValueAs: (v) => v === '' ? null : Number(v) })}
+            placeholder={(() => {
+              const rp = watch('rent_price') || (watch('price') ? computeRentPrice(watch('price') || 0) : 0)
+              return rp ? `Auto: ₹${computeRentDeposit(rp)}` : 'Enter deposit'
+            })()}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            ≤₹200 rent → ₹500 | ₹201–500 → ₹1,000 | ₹501+ → ₹2,000
           </p>
         </div>
       </div>

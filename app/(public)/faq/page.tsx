@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
 import { occasionGuideFaqPairs } from '@/lib/seo/occasion-guide-data'
+import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { CategoryPriceTable } from '@/components/public/seo-tables/CategoryPriceTable'
 import { FAQ_SECTION_LABELS, FAQ_SECTION_ORDER } from '@/lib/faq-section-labels'
@@ -33,6 +34,7 @@ export default async function FaqPage() {
 
   const faqPageSchema = FaqPageSchema([
     ...occasionGuideFaqPairs(),
+    ...rentalFaqPairs(),
     ...faqs.map(({ question, answer }) => ({ question, answer })),
   ])
   const breadcrumbSchema = BreadcrumbSchema([

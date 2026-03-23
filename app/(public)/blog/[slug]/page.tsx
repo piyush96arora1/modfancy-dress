@@ -9,7 +9,7 @@ import { getFaqsForBlog } from '@/lib/faqs/queries'
 import { FaqSection } from '@/components/public/FaqSection'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
-import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE } from '@/lib/blog/seo-post-slugs'
+import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE, BLOG_SLUG_RENT_GUIDE, BLOG_SLUG_RENT_VS_BUY } from '@/lib/blog/seo-post-slugs'
 import type { BlogPost } from '@/types/database'
 
 interface BlogPostPageProps {
@@ -112,6 +112,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="flex flex-wrap gap-4">
             <Link href="/products" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
               Shop fancy dress costumes →
+            </Link>
+            <Link href="/rent" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+              Rent costumes →
             </Link>
             <Link href="/wholesale" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
               Wholesale / bulk orders →
