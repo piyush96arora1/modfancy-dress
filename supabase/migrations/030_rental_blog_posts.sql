@@ -42,7 +42,7 @@ Yes. We arrange delivery through Porter or Rapido anywhere in Delhi-NCR. You pay
 
 Most parents tell us the same thing — kids grow fast and school events come once a year. Renting means your child gets a fresh, stage-ready costume without the cost of buying. And if next year the theme changes, you just rent a different one.
 
-Visit our shop in Krishna Nagar, East Delhi, or message us on WhatsApp at +91 92110 77110.',
+Visit our shop in Krishna Nagar, East Delhi, or message us on WhatsApp at +91 93113 65366.',
 
     'Everything parents need to know about renting fancy dress costumes — pricing, deposits, booking, delivery, and returns explained simply.',
     NOW()
@@ -80,7 +80,7 @@ For school groups ordering 10 or more pieces, our wholesale pricing makes buying
 
 Most parents who visit our Krishna Nagar shop end up renting for annual functions and buying for dance class costumes. That way they get the best of both.
 
-If you are still not sure, message us on WhatsApp at +91 92110 77110 with your child''s age and event details. We will suggest the best option — honestly, sometimes we tell parents to just rent even though buying earns us more.
+If you are still not sure, message us on WhatsApp at +91 93113 65366 with your child''s age and event details. We will suggest the best option — honestly, sometimes we tell parents to just rent even though buying earns us more.
 
 Visit Mod Fancy Dress, Krishna Nagar, East Delhi. Open all days.',
 

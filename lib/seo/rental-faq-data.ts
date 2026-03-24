@@ -19,7 +19,7 @@ export function rentalFaqPairs(): { question: string; answer: string }[] {
     {
       question: 'Can I rent fancy dress online or do I need to visit the shop?',
       answer:
-        'You can enquire and reserve on WhatsApp (+91 92110 77110). For pickup, visit our shop in Krishna Nagar, East Delhi. If you cannot come, we can arrange delivery through Porter or Rapido to your doorstep.',
+        'You can enquire and reserve on WhatsApp (+91 93113 65366). For pickup, visit our shop in Krishna Nagar, East Delhi. If you cannot come, we can arrange delivery through Porter or Rapido to your doorstep.',
     },
     {
       question: 'Can I try the costume before renting?',

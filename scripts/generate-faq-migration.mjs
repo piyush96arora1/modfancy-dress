@@ -13,7 +13,7 @@ const rows = [
     section: 'general',
     question: 'How do I place an order?',
     answer:
-      "Browse our collection online and add items to your cart, or WhatsApp us directly at +91 92110 77110 with the costume name and your child's size. We're available daily from 10 AM to 9:30 PM.",
+      "Browse our collection online and add items to your cart, or WhatsApp us directly at +91 93113 65366 with the costume name and your child's size. We're available daily from 10 AM to 9:30 PM.",
     sort_order: 1,
     show_on_blog: true,
     show_on_category: true,

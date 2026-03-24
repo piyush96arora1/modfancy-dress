@@ -3,10 +3,11 @@ import { Phone, MessageCircle, MapPin, Calendar, Award, ExternalLink, Star, Chev
 import { Button } from '@/components/ui/button'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { ReviewSchema } from '@/lib/seo/structured-data'
+import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, BUSINESS_WHATSAPP_E164, whatsappUrl } from '@/lib/constants/contact'
 
 export const metadata = generatePageMetadata({
   title: 'Contact Us - Mod Fancy Dress | Delhi Fancy Dress Shop',
-  description: 'Contact Mod Fancy Dress in Delhi. 15+ years experience, 400+ school functions. Call +91 92110 77110 or WhatsApp. Visit us at S64 South Anarkali, Krishna Nagar, Delhi 110051.',
+  description: `Contact Mod Fancy Dress in Delhi. 15+ years experience, 400+ school functions. Call ${BUSINESS_PHONE_DISPLAY} or WhatsApp. Visit us at S64 South Anarkali, Krishna Nagar, Delhi 110051.`,
   path: '/contact',
 })
 
@@ -82,13 +83,13 @@ export default function ContactPage() {
               </ul>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <a href="tel:+919211077110" className="flex-1">
+              <a href={`tel:${BUSINESS_PHONE_TEL}`} className="flex-1">
                 <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700">
                   <Phone className="w-4 h-4 mr-2" />
                   Call for Quote
                 </Button>
               </a>
-              <a href="https://wa.me/919211077110?text=Hi, I'm interested in placing a bulk order." target="_blank" rel="noopener noreferrer" className="flex-1">
+              <a href={whatsappUrl("Hi, I'm interested in placing a bulk order.")} target="_blank" rel="noopener noreferrer" className="flex-1">
                 <Button size="lg" variant="outline" className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   WhatsApp for Quote
@@ -108,8 +109,7 @@ export default function ContactPage() {
                 <h3 className="text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Call Us</h3>
               </div>
               <div className="space-y-2">
-                <a href="tel:+919211077110" className="block text-base text-[#1B2A4A] hover:text-[#C8956C] font-semibold transition-colors">+91 92110 77110</a>
-                <a href="tel:+919311365366" className="block text-base text-[#1B2A4A] hover:text-[#C8956C] font-semibold transition-colors">+91 93113 65366</a>
+                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="block text-base text-[#1B2A4A] hover:text-[#C8956C] font-semibold transition-colors">{BUSINESS_PHONE_DISPLAY}</a>
               </div>
             </div>
 
@@ -122,7 +122,7 @@ export default function ContactPage() {
                 <h3 className="text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">WhatsApp</h3>
               </div>
               <p className="text-sm text-[#6B6B6B] mb-3">Chat with us on WhatsApp</p>
-              <a href="https://wa.me/919211077110" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              <a href={`https://wa.me/${BUSINESS_WHATSAPP_E164}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp Us
               </a>
@@ -191,13 +191,13 @@ export default function ContactPage() {
           <div className="text-center mb-10">
             <p className="text-sm text-[#6B6B6B] mb-4">Need help choosing the perfect costume?</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+919211077110">
+              <a href={`tel:${BUSINESS_PHONE_TEL}`}>
                 <Button size="lg" className="w-full sm:w-auto">
                   <Phone className="w-4 h-4 mr-2" />
                   Call Now
                 </Button>
               </a>
-              <a href="https://wa.me/919211077110" target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/${BUSINESS_WHATSAPP_E164}`} target="_blank" rel="noopener noreferrer">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   WhatsApp Us

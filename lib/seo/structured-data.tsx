@@ -45,7 +45,7 @@ export function LocalBusinessSchema() {
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
     image: `${siteUrl}/og-image.jpg`,
-    telephone: ['+919211077110', '+919311365366'],
+    telephone: ['+919311365366'],
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'S64, South Anarkali, Som Bazar',
@@ -121,7 +121,7 @@ export function OrganizationSchema() {
     image: `${siteUrl}/og-image.jpg`,
     description:
       'Retailer of fancy dress costumes and accessories. Over 15 years serving schools, events, and families across Delhi, Noida, the National Capital Region, and customers in other states through delivery and coordination.',
-    telephone: ['+919211077110', '+919311365366'],
+    telephone: ['+919311365366'],
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'S64, South Anarkali, Som Bazar',

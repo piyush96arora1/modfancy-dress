@@ -5,6 +5,7 @@ import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
 import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
 import { ChevronRight, MapPin, MessageCircle, Clock } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
+import { BUSINESS_PHONE_DISPLAY, whatsappUrl } from '@/lib/constants/contact'
 import Image from 'next/image'
 
 export const metadata = generatePageMetadata({
@@ -112,7 +113,7 @@ export default async function RentPage() {
               <MessageCircle className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-[#1B2A4A]">WhatsApp enquiry</p>
-                <p className="text-xs text-[#6B6B6B]">+91 92110 77110</p>
+                <p className="text-xs text-[#6B6B6B]">{BUSINESS_PHONE_DISPLAY}</p>
               </div>
             </div>
           </div>
@@ -202,7 +203,7 @@ export default async function RentPage() {
         {/* WhatsApp CTA */}
         <div className="mt-10 md:mt-12">
           <a
-            href={`https://wa.me/919211077110?text=${encodeURIComponent('Hi, I want to rent a fancy dress costume. Can you help?')}`}
+            href={whatsappUrl('Hi, I want to rent a fancy dress costume. Can you help?')}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full max-w-md mx-auto min-h-[48px] py-3 px-6 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white font-semibold text-sm transition-colors touch-manipulation"

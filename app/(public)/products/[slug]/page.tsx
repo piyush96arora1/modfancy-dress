@@ -19,6 +19,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails, ProductReview } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
+import { siteBaseUrl, whatsappUrl } from '@/lib/constants/contact'
 
 interface ProductPageProps {
   params: Promise<{
@@ -140,6 +141,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     breadcrumbItems
   )
 
+  const productPageUrl = `${siteBaseUrl()}/products/${slug}`
+  const waBuyMessage = `Hi, I'm interested in "${productData.name}". Can you help with size/availability?\n\n${productPageUrl}`
+  const waRentMessage = `Hi, I want to rent "${productData.name}". Please share availability and rent price.\n\n${productPageUrl}`
+
   return (
     <>
       <script
@@ -202,7 +207,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             {/* Connect on WhatsApp — desktop only; mobile uses the FAB */}
             <a
-              href={`https://wa.me/919211077110?text=${encodeURIComponent(`Hi, I'm interested in "${productData.name}". Can you help with size/availability?`)}`}
+              href={whatsappUrl(waBuyMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center justify-center gap-2 w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white font-semibold text-sm transition-colors mb-4"
@@ -225,7 +230,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </Link>
                   </div>
                   <a
-                    href={`https://wa.me/919211077110?text=${encodeURIComponent(`Hi, I want to rent "${productData.name}". Please share availability and rent price.`)}`}
+                    href={whatsappUrl(waRentMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-semibold transition-colors touch-manipulation"
@@ -330,7 +335,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* WhatsApp FAB — mobile only, sits above bottom nav */}
       <a
-        href={`https://wa.me/919211077110?text=${encodeURIComponent(`Hi, I'm interested in "${productData.name}". Can you help?`)}`}
+        href={whatsappUrl(waBuyMessage)}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed right-4 bottom-[4.5rem] z-40 md:hidden flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform"

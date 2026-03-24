@@ -58,7 +58,7 @@ BEGIN
   END IF;
   INSERT INTO faqs (section, question, answer, sort_order, show_on_blog, show_on_category, category_slugs)
   SELECT * FROM (VALUES
-  ('general', 'How do I place an order?', 'Browse our collection online and add items to your cart, or WhatsApp us directly at +91 92110 77110 with the costume name and your child''s size. We''re available daily from 10 AM to 9:30 PM.', 1, true, true, NULL),
+  ('general', 'How do I place an order?', 'Browse our collection online and add items to your cart, or WhatsApp us directly at +91 93113 65366 with the costume name and your child''s size. We''re available daily from 10 AM to 9:30 PM.', 1, true, true, NULL),
   ('general', 'Do you sell online or only from your Krishna Nagar store?', 'Both. You can order online through our website and we ship across India, or visit us in person at S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051. Walk-in customers can see and try costumes before buying.', 2, true, true, NULL),
   ('general', 'How many days before the event should I order?', 'Order at least 10–15 days before the event. This gives time for delivery, checking the fit, and making any adjustments if needed. For bulk school orders, we recommend 3–4 weeks minimum.', 3, true, true, NULL),
   ('general', 'Do you offer Cash on Delivery (COD)?', 'WhatsApp us to confirm COD availability for your location. Prepaid orders are processed and dispatched faster.', 4, true, true, NULL),
