@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useEnquiryBasket, type EnquiryItem } from '@/lib/context/EnquiryBasketContext'
-import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
-import { Check, Plus, Package } from 'lucide-react'
+import { getProductPrice, getVariantPrice, formatPrice } from '@/lib/utils/pricing'
+import { Check, Plus } from 'lucide-react'
 import type { ProductWithDetails } from '@/types/database'
 
 interface AddToEnquiryButtonProps {
@@ -19,7 +19,18 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
     const [justAdded, setJustAdded] = useState(false)
 
     const inBasket = isInBasket(product.id)
-    const wholesalePrice = getProductPrice(product, 'wholesale', wholesaleDiscountPct)
+    const variants = product.variants ?? []
+
+    const wholesalePrice = (() => {
+        if (selectedSize) {
+            const variant = variants.find((v) => v.size === selectedSize)
+            if (variant) {
+                return getVariantPrice(product, variant, 'wholesale', wholesaleDiscountPct)
+            }
+        }
+        return getProductPrice(product, 'wholesale', wholesaleDiscountPct)
+    })()
+
     const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
 
     const handleAdd = () => {
@@ -51,6 +62,9 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                     <span className="text-sm font-normal text-[#9A9A9A] ml-1">/piece</span>
                 </p>
                 <p className="text-xs text-[#9A9A9A] mt-0.5">Wholesale price</p>
+                {selectedSize && (
+                    <p className="text-xs text-[#9A9A9A] mt-1">Price for size: {selectedSize}</p>
+                )}
             </div>
 
             {/* Quantity & Size selectors */}
