@@ -72,6 +72,13 @@ const productSchema = z.object({
 
 type ProductFormData = z.infer<typeof productSchema>
 
+function toTitleCase(str: string): string {
+  return str
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+}
+
 interface ProductFormProps {
   product?: any
   categories: Array<{ id: string; name: string }>
@@ -226,7 +233,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
     setLoading(true)
     try {
       const productData = {
-        name: data.name,
+        name: toTitleCase(data.name),
         slug: data.slug,
         description: data.description || null,
         category_id: data.category_ids && data.category_ids.length > 0 ? data.category_ids[0] : null, // Keep first category for backward compatibility
