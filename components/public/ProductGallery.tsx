@@ -95,7 +95,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             {/* Main Image Viewport */}
             <div
                 ref={imageContainerRef}
-                className="aspect-square relative bg-[#F5F3F0] rounded-xl overflow-hidden cursor-crosshair group touch-pan-y"
+                className="aspect-[3/4] relative bg-[#F5F3F0] rounded-xl overflow-hidden cursor-crosshair group touch-pan-y"
                 style={{ boxShadow: 'var(--shadow-md)' }}
                 onMouseEnter={handleMouseEnter}
                 onMouseMove={handleMouseMove}
