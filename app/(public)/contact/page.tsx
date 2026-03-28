@@ -35,7 +35,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-sm md:text-base text-[#6B6B6B]">
-              We're here to help you find the perfect fancy dress costume
+              We&apos;re here to help you find the perfect fancy dress costume
             </p>
           </div>
 
@@ -263,6 +263,5 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </div>
   )
 }
