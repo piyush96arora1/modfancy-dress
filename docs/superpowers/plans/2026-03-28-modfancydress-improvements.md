@@ -47,7 +47,7 @@
 - Modify: `lib/seo/structured-data.tsx` (lines 452–537)
 - Modify: `app/(public)/contact/page.tsx` (lines 5, 15, 27)
 
-- [ ] **Step 1: Delete ReviewSchema function from structured-data.tsx**
+- [x] **Step 1: Delete ReviewSchema function from structured-data.tsx**
 
 In `lib/seo/structured-data.tsx`, delete the entire `ReviewSchema()` function (lines 452–537 inclusive, starting at `// Review Schema` comment):
 
@@ -63,7 +63,7 @@ export function ReviewSchema() {
 
 After deletion, the file should end with the closing brace of `FaqPageSchema` at line 449.
 
-- [ ] **Step 2: Remove ReviewSchema import and usage from contact/page.tsx**
+- [x] **Step 2: Remove ReviewSchema import and usage from contact/page.tsx**
 
 In `app/(public)/contact/page.tsx`:
 
@@ -84,7 +84,7 @@ const reviewSchema = ReviewSchema()
 
 The visible review cards array (`const reviews = [...]`) on lines 17–23 and the HTML rendering remain — they are just UI display, not structured data injection.
 
-- [ ] **Step 3: Run lint to verify no compile errors**
+- [x] **Step 3: Run lint to verify no compile errors**
 
 ```bash
 npm run lint 2>&1 | head -30
@@ -92,7 +92,7 @@ npm run lint 2>&1 | head -30
 
 Expected: No errors referencing `ReviewSchema`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add lib/seo/structured-data.tsx app/(public)/contact/page.tsx
@@ -112,7 +112,7 @@ Four schema bugs in `LocalBusinessSchema()` in `lib/seo/structured-data.tsx`:
 **Files:**
 - Modify: `lib/seo/structured-data.tsx` (lines 34–109)
 
-- [ ] **Step 1: Apply all four fixes in LocalBusinessSchema**
+- [x] **Step 1: Apply all four fixes in LocalBusinessSchema**
 
 In `lib/seo/structured-data.tsx`, replace the `LocalBusinessSchema` function body:
 
@@ -195,7 +195,7 @@ export function LocalBusinessSchema() {
 }
 ```
 
-- [ ] **Step 2: Fix OrganizationSchema — same telephone and add foundingDate**
+- [x] **Step 2: Fix OrganizationSchema — same telephone and add foundingDate**
 
 In `lib/seo/structured-data.tsx`, update `OrganizationSchema()`:
 
@@ -230,7 +230,7 @@ export function OrganizationSchema() {
 }
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add lib/seo/structured-data.tsx
@@ -246,7 +246,7 @@ Next.js 16 automatically injects `<meta name="viewport">` when you export a `vie
 **Files:**
 - Modify: `app/layout.tsx`
 
-- [ ] **Step 1: Add viewport export and remove manual meta tag**
+- [x] **Step 1: Add viewport export and remove manual meta tag**
 
 In `app/layout.tsx`, add the viewport export after the metadata export:
 
@@ -274,7 +274,7 @@ Then remove line 46 from the `<head>` block:
 
 The final `<head>` block should only contain: manifest link, theme-color, apple-mobile meta tags, apple-touch-icon, favicon links, mobile-web-app-capable.
 
-- [ ] **Step 2: Run build check**
+- [x] **Step 2: Run build check**
 
 ```bash
 npm run build 2>&1 | tail -20
@@ -282,7 +282,7 @@ npm run build 2>&1 | tail -20
 
 Expected: Build completes. No viewport-related warnings.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add app/layout.tsx
@@ -300,7 +300,7 @@ Two fixes in one file:
 **Files:**
 - Modify: `next.config.ts`
 
-- [ ] **Step 1: Remove turbopack and add security headers**
+- [x] **Step 1: Remove turbopack and add security headers**
 
 Replace the entire `next.config.ts` with:
 
@@ -378,7 +378,7 @@ if (process.env.NODE_ENV === 'production') {
 export default config;
 ```
 
-- [ ] **Step 2: Verify dev server still starts with webpack**
+- [x] **Step 2: Verify dev server still starts with webpack**
 
 ```bash
 npm run dev -- --webpack 2>&1 | head -10
@@ -386,7 +386,7 @@ npm run dev -- --webpack 2>&1 | head -10
 
 Expected: Server starts on port 3000 without turbopack error.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add next.config.ts
@@ -402,7 +402,7 @@ git commit -m "fix(config): remove turbopack, add security headers (X-Frame-Opti
 **Files:**
 - Modify: `components/public/AssetPreloader.tsx`
 
-- [ ] **Step 1: Remove the preloadFonts function and its call**
+- [x] **Step 1: Remove the preloadFonts function and its call**
 
 In `components/public/AssetPreloader.tsx`, delete the `preloadFonts` function (lines 59–71) and remove its call on line 92:
 
@@ -425,7 +425,7 @@ const preloadFonts = () => {
 preloadFonts()
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add components/public/AssetPreloader.tsx
@@ -444,7 +444,7 @@ Currently all pages make fresh Supabase queries on every request with no caching
 - Modify: `app/(public)/category/[slug]/page.tsx`
 - Modify: `app/(public)/blog/page.tsx`
 
-- [ ] **Step 1: Add revalidate to homepage**
+- [x] **Step 1: Add revalidate to homepage**
 
 In `app/(public)/page.tsx`, add after the metadata export (line 21):
 
@@ -456,7 +456,7 @@ export const metadata = generatePageMetadata({
 export const revalidate = 300
 ```
 
-- [ ] **Step 2: Add revalidate to products listing page**
+- [x] **Step 2: Add revalidate to products listing page**
 
 In `app/(public)/products/page.tsx`, add after the metadata export:
 
@@ -464,7 +464,7 @@ In `app/(public)/products/page.tsx`, add after the metadata export:
 export const revalidate = 300
 ```
 
-- [ ] **Step 3: Add revalidate to category page**
+- [x] **Step 3: Add revalidate to category page**
 
 In `app/(public)/category/[slug]/page.tsx`, add after the metadata export:
 
@@ -472,7 +472,7 @@ In `app/(public)/category/[slug]/page.tsx`, add after the metadata export:
 export const revalidate = 300
 ```
 
-- [ ] **Step 4: Add revalidate to blog listing page**
+- [x] **Step 4: Add revalidate to blog listing page**
 
 In `app/(public)/blog/page.tsx`, add after the metadata export:
 
@@ -480,7 +480,7 @@ In `app/(public)/blog/page.tsx`, add after the metadata export:
 export const revalidate = 300
 ```
 
-- [ ] **Step 5: Fix sitemap revalidation and remove priority/changeFrequency**
+- [x] **Step 5: Fix sitemap revalidation and remove priority/changeFrequency**
 
 In `app/sitemap.ts`, add `export const revalidate = 3600` at the top and remove all `changeFrequency` and `priority` fields from every sitemap entry (Google ignores these, but they pollute the sitemap XML).
 
@@ -559,7 +559,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add app/(public)/page.tsx app/(public)/products/page.tsx "app/(public)/category/[slug]/page.tsx" app/(public)/blog/page.tsx app/sitemap.ts
@@ -575,11 +575,11 @@ Product pages for inactive (`is_active = false`) or missing slugs currently rend
 **Files:**
 - Modify: `app/(public)/products/[slug]/page.tsx`
 
-- [ ] **Step 1: Read the current product fetch logic to find the right insertion point**
+- [x] **Step 1: Read the current product fetch logic to find the right insertion point**
 
 Read `app/(public)/products/[slug]/page.tsx` lines 60–120 to find where the product is fetched in the default export function.
 
-- [ ] **Step 2: Add notFound() call for inactive/missing products**
+- [x] **Step 2: Add notFound() call for inactive/missing products**
 
 In the main page component function, after fetching the product, add a `notFound()` call if the product is missing or inactive:
 
@@ -594,7 +594,7 @@ The `notFound` import is already at line 1: `import { notFound } from 'next/navi
 
 Also ensure `generateMetadata` handles missing products gracefully (it already does on line 39-41, returning `{ title: 'Product Not Found' }` — this is fine since the page function will call `notFound()` before rendering).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add "app/(public)/products/[slug]/page.tsx"
@@ -615,7 +615,7 @@ Additionally, check `components/public/ProductCard.tsx` or similar listing card 
 - Modify: `lib/seo/structured-data.tsx` (line 324)
 - Read + possibly modify: `components/public/ProductCard.tsx` (or similar)
 
-- [ ] **Step 1: Fix displayPrice in ProductSchema**
+- [x] **Step 1: Fix displayPrice in ProductSchema**
 
 In `lib/seo/structured-data.tsx`, line 324, change:
 
@@ -631,7 +631,7 @@ const displayPrice = product.price || 0
 
 The `offers` array below (lines 370–381) already correctly maps variant offers individually, so each size's price will be in the schema. The top-level `displayPrice` should be the base price.
 
-- [ ] **Step 2: Check the ProductCard component for the same bug**
+- [x] **Step 2: Check the ProductCard component for the same bug**
 
 ```bash
 grep -n "price_override\|variants\[0\]" components/public/ProductCard.tsx 2>/dev/null || grep -rn "price_override" components/public/ --include="*.tsx" | head -20
@@ -639,7 +639,7 @@ grep -n "price_override\|variants\[0\]" components/public/ProductCard.tsx 2>/dev
 
 If any listing card component uses `variants[0].price_override` as the display price, change it to use `product.price` instead.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add lib/seo/structured-data.tsx
@@ -718,7 +718,7 @@ Blog post pages currently have no structured data. Adding `BlogPosting` schema e
 - Modify: `lib/seo/structured-data.tsx` — add `BlogPostingSchema()` function
 - Modify: `app/(public)/blog/[slug]/page.tsx` — emit the schema
 
-- [ ] **Step 1: Add BlogPostingSchema to structured-data.tsx**
+- [x] **Step 1: Add BlogPostingSchema to structured-data.tsx**
 
 In `lib/seo/structured-data.tsx`, add before the final export:
 
@@ -766,11 +766,11 @@ export function BlogPostingSchema(post: {
 }
 ```
 
-- [ ] **Step 2: Read blog post page to find injection point**
+- [x] **Step 2: Read blog post page to find injection point**
 
 Read `app/(public)/blog/[slug]/page.tsx` to understand the current structure.
 
-- [ ] **Step 3: Emit BlogPosting schema in blog post page**
+- [x] **Step 3: Emit BlogPosting schema in blog post page**
 
 In `app/(public)/blog/[slug]/page.tsx`, import `BlogPostingSchema` and emit it:
 
@@ -795,7 +795,7 @@ const blogPostingSchema = BlogPostingSchema({
 />
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add lib/seo/structured-data.tsx "app/(public)/blog/[slug]/page.tsx"
@@ -812,7 +812,7 @@ The homepage currently emits only a single-item BreadcrumbList (`Home → /`) wh
 - Modify: `lib/seo/structured-data.tsx` — add `WebSiteSchema()`
 - Modify: `app/(public)/page.tsx` — replace BreadcrumbSchema with WebSiteSchema
 
-- [ ] **Step 1: Add WebSiteSchema to structured-data.tsx**
+- [x] **Step 1: Add WebSiteSchema to structured-data.tsx**
 
 ```typescript
 /** WebSite + SearchAction JSON-LD for the homepage sitelinks search box. */
@@ -836,7 +836,7 @@ export function WebSiteSchema() {
 }
 ```
 
-- [ ] **Step 2: Update homepage to use WebSiteSchema**
+- [x] **Step 2: Update homepage to use WebSiteSchema**
 
 In `app/(public)/page.tsx`:
 
@@ -858,7 +858,7 @@ const websiteSchema = WebSiteSchema()
 />
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add lib/seo/structured-data.tsx app/(public)/page.tsx
@@ -876,7 +876,7 @@ Missing legal pages hurt trust signals and E-E-A-T. Google's quality rater guide
 - Create: `app/(public)/returns/page.tsx`
 - Modify: `components/public/Footer.tsx`
 
-- [ ] **Step 1: Create privacy-policy/page.tsx**
+- [x] **Step 1: Create privacy-policy/page.tsx**
 
 Create `app/(public)/privacy-policy/page.tsx`:
 
@@ -928,7 +928,7 @@ export default function PrivacyPolicyPage() {
 }
 ```
 
-- [ ] **Step 2: Create returns/page.tsx**
+- [x] **Step 2: Create returns/page.tsx**
 
 Create `app/(public)/returns/page.tsx`:
 
@@ -979,11 +979,11 @@ export default function ReturnsPage() {
 }
 ```
 
-- [ ] **Step 3: Read Footer.tsx to find the right insertion point**
+- [x] **Step 3: Read Footer.tsx to find the right insertion point**
 
 Read `components/public/Footer.tsx` to understand the current link structure.
 
-- [ ] **Step 4: Add Privacy Policy and Returns links to the Footer**
+- [x] **Step 4: Add Privacy Policy and Returns links to the Footer**
 
 In `components/public/Footer.tsx`, add links to `/privacy-policy` and `/returns` in the footer's link section. Look for the existing legal/info links area and add:
 
@@ -996,7 +996,7 @@ In `components/public/Footer.tsx`, add links to `/privacy-policy` and `/returns`
 </Link>
 ```
 
-- [ ] **Step 5: Add these pages to sitemap.ts**
+- [x] **Step 5: Add these pages to sitemap.ts**
 
 In `app/sitemap.ts`, add to the `staticPages` array:
 
@@ -1005,7 +1005,7 @@ In `app/sitemap.ts`, add to the `staticPages` array:
 { url: `${baseUrl}/returns`, lastModified: new Date('2026-03-01') },
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add "app/(public)/privacy-policy/page.tsx" "app/(public)/returns/page.tsx" components/public/Footer.tsx app/sitemap.ts
@@ -1021,11 +1021,11 @@ The rental service (`/rent`) is a key revenue stream but absent from `MobileBott
 **Files:**
 - Read + Modify: `components/public/MobileBottomNav.tsx`
 
-- [ ] **Step 1: Read the current MobileBottomNav**
+- [x] **Step 1: Read the current MobileBottomNav**
 
 Read `components/public/MobileBottomNav.tsx` to understand the current tab structure and icon imports.
 
-- [ ] **Step 2: Add Rent tab**
+- [x] **Step 2: Add Rent tab**
 
 The current nav likely has 4 tabs (Home, Products, Cart, Contact or similar). Add a Rent tab using a `Shirt` or `Tag` icon from Lucide:
 
@@ -1043,7 +1043,7 @@ import { Shirt } from 'lucide-react'
 
 If the nav already has 5 tabs, replace the least important one or make the Rent tab replace the Wholesale tab (wholesale is less important for mobile customers).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add components/public/MobileBottomNav.tsx
@@ -1059,7 +1059,7 @@ The contact page currently has no map embed. Adding a Google Maps iframe improve
 **Files:**
 - Modify: `app/(public)/contact/page.tsx`
 
-- [ ] **Step 1: Add Google Maps iframe after the address card**
+- [x] **Step 1: Add Google Maps iframe after the address card**
 
 In `app/(public)/contact/page.tsx`, after the contact grid section (after the Hours card), add a map section:
 
@@ -1081,7 +1081,7 @@ In `app/(public)/contact/page.tsx`, after the contact grid section (after the Ho
 
 Note: Replace the Maps embed URL with the actual embed URL from Google Maps for "S64 South Anarkali Krishna Nagar Delhi". Get it from maps.google.com → Share → Embed a map.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add "app/(public)/contact/page.tsx"
@@ -1097,7 +1097,7 @@ git commit -m "feat(contact): add Google Maps iframe for store location"
 **Files:**
 - Create: `public/llms.txt`
 
-- [ ] **Step 1: Create llms.txt**
+- [x] **Step 1: Create llms.txt**
 
 Create `public/llms.txt`:
 
@@ -1135,7 +1135,7 @@ Dance costumes, festival costumes (Independence Day, Republic Day, Diwali, Navra
 https://www.modfancydress.com/sitemap.xml
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add public/llms.txt
@@ -1153,7 +1153,7 @@ Location-specific landing pages capture high-intent searches like "fancy dress c
 - Create: `app/(public)/fancy-dress-gurgaon/page.tsx`
 - Modify: `app/sitemap.ts` — add these pages
 
-- [ ] **Step 1: Create fancy-dress-noida/page.tsx**
+- [x] **Step 1: Create fancy-dress-noida/page.tsx**
 
 Create `app/(public)/fancy-dress-noida/page.tsx`:
 
@@ -1236,7 +1236,7 @@ export default function FancyDressNoidaPage() {
 }
 ```
 
-- [ ] **Step 2: Create fancy-dress-gurgaon/page.tsx**
+- [x] **Step 2: Create fancy-dress-gurgaon/page.tsx**
 
 Create `app/(public)/fancy-dress-gurgaon/page.tsx` with the same structure but Gurgaon-specific content:
 
@@ -1317,7 +1317,7 @@ export default function FancyDressGurgaonPage() {
 }
 ```
 
-- [ ] **Step 3: Add location pages to sitemap**
+- [x] **Step 3: Add location pages to sitemap**
 
 In `app/sitemap.ts`, add to `staticPages`:
 
@@ -1326,7 +1326,7 @@ In `app/sitemap.ts`, add to `staticPages`:
 { url: `${baseUrl}/fancy-dress-gurgaon`, lastModified: new Date('2026-03-28') },
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add "app/(public)/fancy-dress-noida/page.tsx" "app/(public)/fancy-dress-gurgaon/page.tsx" app/sitemap.ts
@@ -1342,7 +1342,7 @@ The current `notFound()` state shows Next.js default 404 styling. A custom `app/
 **Files:**
 - Create: `app/not-found.tsx`
 
-- [ ] **Step 1: Create app/not-found.tsx**
+- [x] **Step 1: Create app/not-found.tsx**
 
 ```typescript
 import Link from 'next/link'
@@ -1402,7 +1402,7 @@ export default function NotFound() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add app/not-found.tsx
@@ -1418,7 +1418,7 @@ From the brainstorm analysis: some product names have double spaces (e.g., `"Kat
 **Files:**
 - No code change — SQL migration via Supabase MCP
 
-- [ ] **Step 1: Audit product names for double spaces via Supabase**
+- [x] **Step 1: Audit product names for double spaces via Supabase**
 
 Run this SQL to find affected products:
 
@@ -1430,7 +1430,7 @@ WHERE name LIKE '%  %'
 ORDER BY name;
 ```
 
-- [ ] **Step 2: Fix double spaces in product names**
+- [x] **Step 2: Fix double spaces in product names**
 
 ```sql
 UPDATE products
@@ -1440,7 +1440,7 @@ WHERE name LIKE '%  %'
   AND deleted_at IS NULL;
 ```
 
-- [ ] **Step 3: Audit NULL description products**
+- [x] **Step 3: Audit NULL description products**
 
 ```sql
 SELECT id, name, description
@@ -1451,7 +1451,7 @@ WHERE (description IS NULL OR trim(description) = '')
 ORDER BY name;
 ```
 
-- [ ] **Step 4: Add placeholder descriptions for NULL-description products**
+- [x] **Step 4: Add placeholder descriptions for NULL-description products**
 
 For each product found in Step 3, add a meaningful description in the admin panel. Minimum 80 words per product. Example template:
 
@@ -1527,7 +1527,7 @@ Title case rule: capitalize the first letter of every word, lowercase the rest. 
 - No new file — SQL via Supabase MCP for existing products
 - Modify: `components/admin/ProductForm.tsx` — normalize `data.name` in `onSubmit`
 
-- [ ] **Step 1: Fix existing product names in the database**
+- [x] **Step 1: Fix existing product names in the database**
 
 Run this SQL to normalize all active product names to title case using PostgreSQL's `initcap()` (capitalizes first letter of each word, lowercases the rest), combined with double-space cleanup:
 
@@ -1551,7 +1551,7 @@ WHERE deleted_at IS NULL
 ORDER BY name;
 ```
 
-- [ ] **Step 2: Add toTitleCase helper in ProductForm.tsx**
+- [x] **Step 2: Add toTitleCase helper in ProductForm.tsx**
 
 In `components/admin/ProductForm.tsx`, add a helper function above the component:
 
@@ -1564,7 +1564,7 @@ function toTitleCase(str: string): string {
 }
 ```
 
-- [ ] **Step 3: Apply normalization in onSubmit before saving**
+- [x] **Step 3: Apply normalization in onSubmit before saving**
 
 In `components/admin/ProductForm.tsx`, in the `onSubmit` function at line 228, change:
 
@@ -1582,7 +1582,7 @@ const productData = {
 
 This means every product saved through the admin — new or edited — will have its name normalized automatically, without the user needing to remember to format it correctly.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add components/admin/ProductForm.tsx
@@ -1594,28 +1594,28 @@ git commit -m "feat(admin): normalize product names to title case on save; fix e
 ## Summary Checklist
 
 ### Sprint 1 (Critical — Do First)
-- [ ] Task 1: Delete fabricated ReviewSchema
-- [ ] Task 2: Fix LocalBusinessSchema (ClothingStore, geo, telephone, reviewCount)
-- [ ] Task 3: Fix duplicate viewport meta
-- [ ] Task 4: Remove turbopack, add security headers
-- [ ] Task 5: Remove spurious Google Fonts preconnects
-- [ ] Task 6: Add ISR revalidate=300 + fix sitemap
-- [ ] Task 7: Fix inactive product soft-404
+- [x] Task 1: Delete fabricated ReviewSchema
+- [x] Task 2: Fix LocalBusinessSchema (ClothingStore, geo, telephone, reviewCount)
+- [x] Task 3: Fix duplicate viewport meta
+- [x] Task 4: Remove turbopack, add security headers
+- [x] Task 5: Remove spurious Google Fonts preconnects
+- [x] Task 6: Add ISR revalidate=300 + fix sitemap
+- [x] Task 7: Fix inactive product soft-404
 
 ### Sprint 2 (High Impact — This Month)
-- [ ] Task 8: Fix category listing price display bug
+- [x] Task 8: Fix category listing price display bug
 - [ ] Task 9: Create og-image.jpg and logo.png
-- [ ] Task 10: Add BlogPosting schema to blog posts
-- [ ] Task 11: Add WebSite+SearchAction schema to homepage
-- [ ] Task 12: Create Privacy Policy + Returns pages + footer links
-- [ ] Task 13: Add Rent tab to mobile bottom nav
-- [ ] Task 14: Add Google Maps iframe to contact page
-- [ ] Task 15: Create public/llms.txt
+- [x] Task 10: Add BlogPosting schema to blog posts
+- [x] Task 11: Add WebSite+SearchAction schema to homepage
+- [x] Task 12: Create Privacy Policy + Returns pages + footer links
+- [x] Task 13: Add Rent tab to mobile bottom nav
+- [x] Task 14: Add Google Maps iframe to contact page
+- [x] Task 15: Create public/llms.txt
 
 ### Sprint 3 (Content + Local — Next 4 Weeks)
-- [ ] Task 16: Create Noida + Gurgaon location pages
-- [ ] Task 17: Create custom 404 page
-- [ ] Task 18: Fix product name/description quality issues (database)
+- [x] Task 16: Create Noida + Gurgaon location pages
+- [x] Task 17: Create custom 404 page
+- [x] Task 18: Fix product name/description quality issues (database)
 - [ ] Task 19: Expand About page to 500+ words
 - [ ] Task 20: Expand Wholesale page to 800+ words
 
@@ -1627,7 +1627,7 @@ git commit -m "feat(admin): normalize product names to title case on save; fix e
 - [ ] Claim Justdial, Sulekha, IndiaMART listings with exact NAP (external)
 - [ ] Set up review solicitation in WhatsApp follow-up messages (process change)
 - [ ] Enforce WebP ≤200 KB for all new product image uploads (process change)
-- [ ] Audit Supabase product descriptions — fix any with <80 words (admin panel)
+- [x] Audit Supabase product descriptions — fix any with <80 words (admin panel)
 - [ ] Add `lang="hi"` override for Hindi blog posts in generateMetadata
 - [ ] Bring Add to Cart above fold on mobile — reduce image height or add sticky CTA bar
 - [ ] Add CTA button overlay on banner slides; update homepage H1 with geo intent
