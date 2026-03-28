@@ -3,7 +3,7 @@
 import { useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Search, ShoppingCart, Phone } from 'lucide-react'
+import { Home, Search, ShoppingCart, Phone, Shirt } from 'lucide-react'
 import { useCart } from '@/lib/store/cart'
 
 export function MobileBottomNav() {
@@ -28,6 +28,12 @@ export function MobileBottomNav() {
       label: 'Shop',
       icon: Search,
       active: pathname?.startsWith('/products') || pathname?.startsWith('/category'),
+    },
+    {
+      href: '/rent',
+      label: 'Rent',
+      icon: Shirt,
+      active: pathname === '/rent',
     },
     {
       href: '/cart',
