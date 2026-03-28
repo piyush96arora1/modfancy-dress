@@ -109,7 +109,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     src={getImageUrl(selectedImage.image_url)}
                     alt={selectedImage.alt_text || `${productName} Main Image`}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     priority
                     sizes="(max-width: 768px) 100vw, 50vw"
                 />
