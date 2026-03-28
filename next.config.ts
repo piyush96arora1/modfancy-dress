@@ -1,13 +1,30 @@
 import type { NextConfig } from "next";
 import redirectsData from "./redirects.json";
 
+const securityHeaders = [
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(self), interest-cohort=()',
+  },
+]
+
 const nextConfig: NextConfig = {
-  turbopack: {},
   async redirects() {
     return redirectsData as any;
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: securityHeaders,
+      },
+    ]
+  },
   images: {
-    unoptimized: true, // keeping this since Vercel optimization limit reached
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,7 +35,7 @@ const nextConfig: NextConfig = {
         hostname: '**.supabase.co',
       },
     ],
-    minimumCacheTTL: 86400, // 24 hours (was 60 seconds — this alone helps)
+    minimumCacheTTL: 86400,
   },
 };
 
@@ -33,12 +50,12 @@ if (process.env.NODE_ENV === 'production') {
     runtimeCaching: [
       {
         urlPattern: /^https:\/\/udnidqllpmyoothwznbv\.supabase\.co\/storage\/v1\/object\/public\/product-images\/.*/i,
-        handler: 'StaleWhileRevalidate', // was CacheFirst
+        handler: 'StaleWhileRevalidate',
         options: {
           cacheName: 'supabase-images',
           expiration: {
-            maxEntries: 30,            // was 500 — this was the killer
-            maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+            maxEntries: 30,
+            maxAgeSeconds: 7 * 24 * 60 * 60,
           },
           cacheableResponse: {
             statuses: [0, 200],
