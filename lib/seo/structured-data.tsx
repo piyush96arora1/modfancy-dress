@@ -34,7 +34,7 @@ function sortProductImagesForSchema(
 export function LocalBusinessSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'ClothingStore',
     '@id': localBusinessEntityId(),
     parentOrganization: {
       '@id': organizationEntityId(),
@@ -45,7 +45,7 @@ export function LocalBusinessSchema() {
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
     image: `${siteUrl}/og-image.jpg`,
-    telephone: ['+919311365366'],
+    telephone: '+919311365366',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'S64, South Anarkali, Som Bazar',
@@ -56,8 +56,8 @@ export function LocalBusinessSchema() {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: '28.7041',
-      longitude: '77.1025',
+      latitude: '28.6680',
+      longitude: '77.2897',
     },
     areaServed: [
       {
@@ -98,9 +98,9 @@ export function LocalBusinessSchema() {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.7',
-      reviewCount: '700',
-      bestRating: '5',
-      worstRating: '1',
+      reviewCount: 700,
+      bestRating: 5,
+      worstRating: 1,
     },
     sameAs: [
       'https://share.google/j5z6wKKjqsCHJKajh',
@@ -121,7 +121,8 @@ export function OrganizationSchema() {
     image: `${siteUrl}/og-image.jpg`,
     description:
       'Retailer of fancy dress costumes and accessories. Over 15 years serving schools, events, and families across Delhi, Noida, the National Capital Region, and customers in other states through delivery and coordination.',
-    telephone: ['+919311365366'],
+    telephone: '+919311365366',
+    foundingDate: '2010',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'S64, South Anarkali, Som Bazar',
@@ -321,9 +322,7 @@ export function ProductSchema(
     reviewsForJsonLd?: ProductReviewRowForSchema[]
   }
 ) {
-  const displayPrice = product.variants?.length > 0 && product.variants[0].price_override
-    ? product.variants[0].price_override
-    : product.price || 0
+  const displayPrice = product.price || 0
 
   const imageUrls = sortProductImagesForSchema(product.images)
     .map((img) => toAbsoluteUrl(getImageUrl(img.image_url)))
@@ -448,91 +447,64 @@ export function FaqPageSchema(faqs: Array<{ question: string; answer: string }>)
   }
 }
 
-// Review Schema
-export function ReviewSchema() {
+/** BlogPosting JSON-LD for individual blog post pages. */
+export function BlogPostingSchema(post: {
+  title: string
+  slug: string
+  excerpt: string | null
+  content: string | null
+  published_at: string
+  updated_at: string
+  cover_image_url?: string | null
+}) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: 'Mod Fancy Dress',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.7',
-      reviewCount: '700',
-      bestRating: '5',
-      worstRating: '1',
+    '@type': 'BlogPosting',
+    '@id': `${siteUrl}/blog/${post.slug}#article`,
+    headline: post.title,
+    description: post.excerpt?.trim() || post.title,
+    url: `${siteUrl}/blog/${post.slug}`,
+    datePublished: post.published_at,
+    dateModified: post.updated_at,
+    author: {
+      '@type': 'Organization',
+      '@id': organizationEntityId(),
+      name: 'Mod Fancy Dress',
     },
-    review: [
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Priya Sharma',
-        },
-        datePublished: '2024-01-15',
-        reviewBody: 'Excellent service! They provided amazing costumes for our school annual function. Very professional and on-time delivery.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
+    publisher: {
+      '@type': 'Organization',
+      '@id': organizationEntityId(),
+      name: 'Mod Fancy Dress',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
       },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Rajesh Kumar',
-        },
-        datePublished: '2024-02-20',
-        reviewBody: 'Great quality costumes at reasonable prices. They have a huge collection and helped us choose the perfect outfits for our dance performance.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Anita Mehta',
-        },
-        datePublished: '2024-03-10',
-        reviewBody: '15 years of experience shows! They understand school requirements perfectly. Highly recommended for school functions.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Vikram Singh',
-        },
-        datePublished: '2024-04-05',
-        reviewBody: 'Best fancy dress shop in Delhi NCR. They have completed 400+ school functions and it shows in their service quality.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '4.5',
-          bestRating: '5',
-        },
-      },
-      {
-        '@type': 'Review',
-        author: {
-          '@type': 'Person',
-          name: 'Sunita Devi',
-        },
-        datePublished: '2024-05-12',
-        reviewBody: 'Very reliable and professional. They delivered exactly what we needed for our school event. Will definitely use their services again.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
-      },
-    ],
+    },
+    ...(post.cover_image_url ? { image: toAbsoluteUrl(post.cover_image_url) } : {}),
+    isPartOf: {
+      '@type': 'Blog',
+      '@id': `${siteUrl}/blog`,
+      name: 'Mod Fancy Dress Blog',
+    },
   }
 }
 
+/** WebSite + SearchAction JSON-LD for the homepage sitelinks search box. */
+export function WebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteUrl}#website`,
+    url: siteUrl,
+    name: 'Mod Fancy Dress',
+    description: 'Fancy dress costumes and accessories — Delhi NCR',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/products?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }
+}

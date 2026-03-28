@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Phone, MessageCircle, MapPin, Calendar, Award, ExternalLink, Star, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { ReviewSchema } from '@/lib/seo/structured-data'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, BUSINESS_WHATSAPP_E164, whatsappUrl } from '@/lib/constants/contact'
 
 export const metadata = generatePageMetadata({
@@ -12,8 +11,6 @@ export const metadata = generatePageMetadata({
 })
 
 export default function ContactPage() {
-  const reviewSchema = ReviewSchema()
-
   const reviews = [
     { initials: 'PS', name: 'Priya Sharma', date: 'January 15, 2024', stars: 5, text: 'Excellent service! They provided amazing costumes for our school annual function. Very professional and on-time delivery. Highly recommended!', bg: 'bg-[#EEF1F7]', color: 'text-[#1B2A4A]' },
     { initials: 'RK', name: 'Rajesh Kumar', date: 'February 20, 2024', stars: 5, text: 'Great quality costumes at reasonable prices. They have a huge collection and helped us choose the perfect outfits for our dance performance. Will definitely come back!', bg: 'bg-[#FBF5EF]', color: 'text-[#C8956C]' },
@@ -23,9 +20,7 @@ export default function ContactPage() {
   ]
 
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }} />
-      <div className="fade-in">
+    <div className="fade-in">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
@@ -156,6 +151,20 @@ export default function ContactPage() {
             </div>
           </div>
 
+          {/* Map */}
+          <div className="mb-6 rounded-xl overflow-hidden border border-[#E8E5E0]" style={{ boxShadow: 'var(--shadow-xs)' }}>
+            <iframe
+              src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
+              width="100%"
+              height="280"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Mod Fancy Dress — S64 South Anarkali, Krishna Nagar, Delhi"
+            />
+          </div>
+
           {/* Google Business */}
           <div className="bg-white rounded-xl p-5 border border-[#E8E5E0] mb-8" style={{ boxShadow: 'var(--shadow-xs)' }}>
             <h3 className="text-base font-bold text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]">Find Us Online</h3>
@@ -254,6 +263,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
