@@ -78,24 +78,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .is('deleted_at', null)
     .single()
 
-  if (!product) {
-    const { data: inactiveProduct } = await supabase
-      .from('products')
-      .select(`
-        *,
-        category:categories(*),
-        images:product_images(*),
-        variants:product_variants(*)
-      `)
-      .eq('slug', slug)
-      .is('deleted_at', null)
-      .single()
-
-    if (inactiveProduct) {
-      product = inactiveProduct
-    } else {
-      notFound()
-    }
+  if (!product || !product.is_active || product.deleted_at) {
+    notFound()
   }
 
   const productData = product as ProductWithDetails
