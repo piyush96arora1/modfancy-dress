@@ -20,6 +20,8 @@ interface CategoryPageProps {
   }>
 }
 
+export const revalidate = 300
+
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
   const supabase = await createClient()

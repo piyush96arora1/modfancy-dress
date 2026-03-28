@@ -8,7 +8,7 @@ import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import type { ProductWithDetails } from '@/types/database'
 
-export const revalidate = 60
+export const revalidate = 300
 
 interface ProductsPageProps {
   searchParams: Promise<{

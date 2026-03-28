@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { WebSiteSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails } from '@/types/database'
@@ -19,6 +19,8 @@ export const metadata = generatePageMetadata({
   description: 'Buy or rent fancy dress costumes and accessories. 15+ years experience, 400+ successful school functions. Dance, festival and competition costumes from Delhi.',
   path: '/',
 })
+
+export const revalidate = 300
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -66,15 +68,13 @@ export default async function HomePage() {
     .eq('is_active', true)
     .order('name')
 
-  const breadcrumbSchema = BreadcrumbSchema([
-    { name: 'Home', url: '/' },
-  ])
+  const websiteSchema = WebSiteSchema()
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       {products && products.length > 0 && (
         <AssetPreloader

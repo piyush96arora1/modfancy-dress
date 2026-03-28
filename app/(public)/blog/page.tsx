@@ -11,6 +11,8 @@ export const metadata = generatePageMetadata({
   type: 'article',
 })
 
+export const revalidate = 300
+
 export default async function BlogListPage() {
   const supabase = await createClient()
   const { data: posts } = await supabase
