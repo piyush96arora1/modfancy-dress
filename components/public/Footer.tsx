@@ -5,7 +5,7 @@ import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, BUSINESS_WHATSAPP_E164 } fr
 export function Footer() {
   return (
     <footer className="bg-[#1B2A4A] text-white mt-auto pb-20 md:pb-0">
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-14">
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
           {/* Brand */}
           <div className="md:col-span-2">
@@ -33,8 +33,8 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-4">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm">
+            <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-3">Quick Links</h4>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
               <li>
                 <Link href="/products" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   All Products
@@ -57,12 +57,12 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/cart" className="text-white/70 hover:text-[#C8956C] transition-colors">
-                  Shopping Cart
+                  Cart
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-white/70 hover:text-[#C8956C] transition-colors">
-                  Contact Us
+                  Contact
                 </Link>
               </li>
             </ul>
@@ -92,7 +92,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 text-center">
+        <div className="mt-8 pt-5 border-t border-white/10 text-center">
           <div className="flex items-center justify-center gap-4 mb-2">
             <Link href="/privacy-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Privacy Policy
