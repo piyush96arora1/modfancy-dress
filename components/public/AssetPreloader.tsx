@@ -55,21 +55,6 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
       })
     }
 
-    // Preload fonts (already handled by Next.js, but ensure they're prioritized)
-    const preloadFonts = () => {
-      // Google Fonts are already optimized by Next.js, but we can ensure they're prioritized
-      const fontLink = document.createElement('link')
-      fontLink.rel = 'preconnect'
-      fontLink.href = 'https://fonts.googleapis.com'
-      document.head.appendChild(fontLink)
-
-      const fontLink2 = document.createElement('link')
-      fontLink2.rel = 'preconnect'
-      fontLink2.href = 'https://fonts.gstatic.com'
-      fontLink2.crossOrigin = 'anonymous'
-      document.head.appendChild(fontLink2)
-    }
-
     // Preload critical routes
     const preloadRoutes = () => {
       const routes = ['/products', '/contact']
@@ -89,7 +74,6 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
 
     // Run preloading
     preloadImages()
-    preloadFonts()
     preloadRoutes()
 
     // Preload additional product images on idle
