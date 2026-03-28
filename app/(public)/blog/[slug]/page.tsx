@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { BreadcrumbSchema } from '@/lib/seo/structured-data'
+import { BreadcrumbSchema, BlogPostingSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { BlogContent } from '@/components/public/BlogContent'
 import { getFaqsForBlog } from '@/lib/faqs/queries'
@@ -56,11 +56,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     { name: post.title, url: `/blog/${slug}` },
   ])
 
+  const blogPostingSchema = BlogPostingSchema({
+    title: post.title,
+    slug: post.slug,
+    excerpt: post.excerpt ?? null,
+    content: (post as BlogPost).content ?? null,
+    published_at: post.published_at as string,
+    updated_at: post.updated_at,
+    cover_image_url: (post as any).cover_image_url ?? null,
+  })
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
       <article className="fade-in max-w-3xl">
         <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
