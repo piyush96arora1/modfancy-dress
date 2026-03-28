@@ -93,6 +93,15 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-10 pt-6 border-t border-white/10 text-center">
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <Link href="/privacy-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-white/20">·</span>
+            <Link href="/returns" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Returns &amp; Refunds
+            </Link>
+          </div>
           <p className="text-xs text-white/40">
             &copy; {new Date().getFullYear()} Mod Fancy Dress. All rights reserved.
           </p>
