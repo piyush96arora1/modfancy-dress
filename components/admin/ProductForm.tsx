@@ -94,6 +94,9 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
   const [creatingCategory, setCreatingCategory] = useState(false)
   const [customSizes, setCustomSizes] = useState<Record<number, boolean>>({})
   const [customProductSize, setCustomProductSize] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [submitAttempted, setSubmitAttempted] = useState(false)
+  const [categorySearch, setCategorySearch] = useState('')
   const [images, setImages] = useState<Array<{ url: string; isPrimary: boolean; order: number }>>(
     product?.images?.map((img: any) => ({
       url: img.image_url,
@@ -202,6 +205,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
   }
 
   const onSubmit = async (data: ProductFormData) => {
+    setSubmitAttempted(true)
     if (images.length === 0) {
       alert('Please add at least one product image')
       return
@@ -428,30 +432,40 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-4xl space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="name">Product Name *</Label>
-          <Input
-            id="name"
-            {...register('name')}
-            placeholder="Product Name"
-          />
-          {errors.name && (
-            <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
-          )}
-        </div>
+      <div>
+        <Label htmlFor="name">Product Name *</Label>
+        <Input
+          id="name"
+          {...register('name')}
+          placeholder="Product Name"
+        />
+        {errors.name && (
+          <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+        )}
+      </div>
 
-        <div>
-          <Label htmlFor="slug">Slug *</Label>
-          <Input
-            id="slug"
-            {...register('slug')}
-            placeholder="product-slug"
-          />
-          {errors.slug && (
-            <p className="text-sm text-red-600 mt-1">{errors.slug.message}</p>
-          )}
-        </div>
+      <div>
+        <button
+          type="button"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          className="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1"
+        >
+          <span>{showAdvanced ? '▾' : '▸'}</span>
+          Advanced (Slug)
+        </button>
+        {showAdvanced && (
+          <div className="mt-2">
+            <Label htmlFor="slug">Slug *</Label>
+            <Input
+              id="slug"
+              {...register('slug')}
+              placeholder="product-slug"
+            />
+            {errors.slug && (
+              <p className="text-sm text-red-600 mt-1">{errors.slug.message}</p>
+            )}
+          </div>
+        )}
       </div>
 
       <div>
@@ -503,9 +517,18 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             </div>
           </div>
         ) : (
-          <div className="border rounded-lg p-4 max-h-60 overflow-y-auto bg-white">
-            <div className="space-y-2">
-              {categories.map((cat) => {
+          <div className="border rounded-lg bg-white">
+            <div className="p-2 border-b">
+              <input
+                type="text"
+                value={categorySearch}
+                onChange={(e) => setCategorySearch(e.target.value)}
+                placeholder="Search categories..."
+                className="w-full text-sm px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+            <div className="p-4 max-h-48 overflow-y-auto space-y-2">
+              {categories.filter(cat => cat.name.toLowerCase().includes(categorySearch.toLowerCase())).map((cat) => {
                 const categoryIds = watch('category_ids') || []
                 const isSelected = categoryIds.includes(cat.id)
                 return (
@@ -530,8 +553,10 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
                   </label>
                 )
               })}
-              {categories.length === 0 && (
-                <p className="text-sm text-gray-500">No categories available. Create one above.</p>
+              {categories.filter(cat => cat.name.toLowerCase().includes(categorySearch.toLowerCase())).length === 0 && (
+                <p className="text-sm text-gray-500">
+                  {categorySearch ? `No categories match "${categorySearch}"` : 'No categories available. Create one above.'}
+                </p>
               )}
             </div>
           </div>
@@ -734,7 +759,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
             </div>
           ))}
         </div>
-        {images.length === 0 && (
+        {submitAttempted && images.length === 0 && (
           <p className="text-sm text-red-600 mt-1">At least one image is required</p>
         )}
       </div>
@@ -889,11 +914,12 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         ))}
       </div>
 
-      <div className="flex gap-4">
+      <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 -mx-4 mt-8 flex gap-3 md:static md:bg-transparent md:border-0 md:px-0 md:py-0 md:mx-0 md:mt-0">
         <Button
           type="submit"
           loading={loading}
           disabled={loading}
+          className="flex-1 md:flex-none"
         >
           {loading ? 'Saving...' : product ? 'Update Product' : 'Create Product'}
         </Button>
@@ -901,6 +927,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
           type="button"
           variant="outline"
           onClick={() => router.back()}
+          className="flex-1 md:flex-none"
         >
           Cancel
         </Button>

@@ -59,6 +59,7 @@ export function ImageUpload({
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        capture="environment"
         onChange={handleUpload}
         disabled={uploading}
         className="hidden"
@@ -68,6 +69,7 @@ export function ImageUpload({
         variant="outline"
         disabled={uploading}
         onClick={handleButtonClick}
+        className="w-full sm:w-auto"
       >
         <Upload className="w-4 h-4 mr-2" />
         {uploading ? 'Uploading...' : label}
