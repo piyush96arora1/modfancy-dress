@@ -59,7 +59,7 @@ export function ImageUpload({
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
+
         onChange={handleUpload}
         disabled={uploading}
         className="hidden"
