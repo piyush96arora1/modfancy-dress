@@ -56,6 +56,16 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/wholesale/schools" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Bulk / Schools
+                </Link>
+              </li>
+              <li>
+                <Link href="/fancy-dress-delhi" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Delhi Store
+                </Link>
+              </li>
+              <li>
                 <Link href="/cart" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Cart
                 </Link>
@@ -80,10 +90,10 @@ export function Footer() {
                 <MessageCircle className="w-4 h-4 flex-shrink-0" />
                 WhatsApp Us
               </a>
-              <div className="flex items-start gap-2 text-white/70">
+<div className="flex items-start gap-2 text-white/70">
                 <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <address className="not-italic text-xs leading-relaxed">
-                  S64, South Anarkali, Som Bazar<br />
+                  S64, South Anarkali, Som Bazar,<br />
                   Krishna Nagar, Delhi 110051
                 </address>
               </div>

@@ -61,12 +61,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/returns`, lastModified: new Date('2026-03-28') },
     { url: `${baseUrl}/fancy-dress-noida`, lastModified: new Date('2026-03-28') },
     { url: `${baseUrl}/fancy-dress-gurgaon`, lastModified: new Date('2026-03-28') },
+    { url: `${baseUrl}/fancy-dress-delhi`, lastModified: new Date('2026-04-14') },
+    { url: `${baseUrl}/wholesale/schools`, lastModified: new Date('2026-04-14') },
+    { url: `${baseUrl}/compare/local-vs-online`, lastModified: new Date('2026-04-14') },
   ]
 
   return [
     ...staticPages,
     ...productUrls,
-    ...wholesaleProductUrls,
     ...categoryUrls,
     ...wholesaleCategoryUrls,
     ...blogUrls,

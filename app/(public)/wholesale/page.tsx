@@ -135,6 +135,7 @@ export default async function WholesalePage({ searchParams }: WholesalePageProps
                 <div className="mb-4 px-4 py-3 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0]">
                     <p className="text-sm text-[#2D2D2D]">
                         <strong>📦 Wholesale Pricing</strong> — Bulk order prices per piece. Click any product to send an enquiry.
+                        {' '}<Link href="/wholesale/schools" className="text-[#C8956C] hover:underline font-medium">School &amp; bulk orders →</Link>
                     </p>
                 </div>
 

@@ -5,7 +5,7 @@ import { MapPin, Truck } from 'lucide-react'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, whatsappUrl } from '@/lib/constants/contact'
 
 export const metadata = generatePageMetadata({
-  title: 'Fancy Dress Costumes in Gurgaon — Delivery Available | Mod Fancy Dress',
+  title: 'Fancy Dress Costumes in Gurgaon — Delivery Available',
   description: 'Fancy dress costumes delivered to Gurgaon from our Delhi store. School function specialists with 400+ costume styles. Call or WhatsApp for delivery to DLF, Sohna Road, Cyber City area.',
   path: '/fancy-dress-gurgaon',
 })
@@ -34,6 +34,7 @@ export default function FancyDressGurgaonPage() {
         <p>Getting quality fancy dress costumes in Gurgaon can be challenging. Most local shops have limited stock, especially for niche categories like classical dance costumes, freedom fighter outfits, or multi-character school sets. Mod Fancy Dress, based in <strong className="text-[#2D2D2D]">Krishna Nagar, East Delhi</strong>, stocks over 400 costume styles and regularly delivers to Gurgaon for school events and occasions.</p>
         <p>We specialise in <strong className="text-[#2D2D2D]">bulk orders for Gurgaon schools</strong> — many corporate school campuses in Gurgaon host large annual functions requiring 100–300 costumes. We have experience coordinating multi-character sets for entire school productions, including classical Indian dance, historical, and folk costume themes.</p>
         <p>Rental costumes are also available from ₹200/event with delivery to Gurgaon. Please book at least 2 days in advance for outstation delivery to ensure availability.</p>
+        <p>For school bulk orders of 100–300 costumes, see our <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline font-medium">schools &amp; bulk orders page</Link> for pricing tiers and the ordering process. You can also <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline font-medium">visit our Delhi store</Link> to see costumes before placing a large order.</p>
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Ordering Process for Gurgaon</h2>
         <ol className="list-decimal pl-5 space-y-1.5">
           <li>Browse the full catalogue at modfancydress.com/products</li>
@@ -60,6 +61,18 @@ export default function FancyDressGurgaonPage() {
             <p className="mt-1"><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a> — Open daily 10 AM – 9:30 PM</p>
           </div>
         </div>
+      </div>
+      <div className="rounded-xl overflow-hidden border border-[#E8E5E0] mt-6">
+        <iframe
+          src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
+          width="100%"
+          height="240"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Gurgaon)"
+        />
       </div>
     </div>
   )

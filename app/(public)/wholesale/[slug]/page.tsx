@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
     return generatePageMetadata({
         title: product.seo_title || wholesaleProductTitle(product.name),
         description,
-        path: `/wholesale/${slug}`,
+        path: `/products/${slug}`,
         image: getImageUrl(primaryImage?.image_url),
         type: 'product',
     })

@@ -5,7 +5,7 @@ import { MapPin, Truck } from 'lucide-react'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, whatsappUrl } from '@/lib/constants/contact'
 
 export const metadata = generatePageMetadata({
-  title: 'Fancy Dress Costumes in Noida — Delivery Available | Mod Fancy Dress',
+  title: 'Fancy Dress Costumes in Noida — Delivery Available',
   description: 'Looking for fancy dress costumes in Noida? Mod Fancy Dress (Krishna Nagar, Delhi) delivers to all sectors of Noida. 400+ costume styles, school function specialists. Call or WhatsApp for same-day delivery.',
   path: '/fancy-dress-noida',
 })
@@ -43,6 +43,7 @@ export default function FancyDressNoidaPage() {
         </ol>
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Popular Costumes for Noida Schools</h2>
         <p>Based on orders from Noida, the most popular costumes are: freedom fighter costumes for Republic Day (Jan 26) and Independence Day (Aug 15); classical dance costumes for annual functions; Navratri/Garba costumes; and professional costumes (doctor, nurse, police) for career-day events.</p>
+        <p>For school bulk orders of 50+ costumes, see our <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline font-medium">dedicated schools &amp; bulk orders page</Link>. You can also <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline font-medium">visit our Delhi store</Link> in Krishna Nagar if you prefer to browse in person before ordering delivery to Noida.</p>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 mb-8">
         <a href={whatsappUrl('Hi, I need fancy dress costumes delivered to Noida.')} target="_blank" rel="noopener noreferrer" className="flex-1">
@@ -61,6 +62,18 @@ export default function FancyDressNoidaPage() {
             <p className="mt-1"><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a> — Open daily 10 AM – 9:30 PM</p>
           </div>
         </div>
+      </div>
+      <div className="rounded-xl overflow-hidden border border-[#E8E5E0] mt-6">
+        <iframe
+          src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
+          width="100%"
+          height="240"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Noida)"
+        />
       </div>
     </div>
   )

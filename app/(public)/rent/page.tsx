@@ -67,8 +67,41 @@ export default async function RentPage() {
   const faqs = rentalFaqPairs()
   const faqSchema = FaqPageSchema(faqs)
 
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': 'https://www.modfancydress.com/rent#service',
+    name: 'Fancy Dress Costume Rental',
+    serviceType: 'Costume Rental',
+    description: 'Rent fancy dress costumes in Delhi NCR. 400+ styles including dance, festival, and competition costumes. Prices from ₹200 per event with refundable deposit.',
+    url: 'https://www.modfancydress.com/rent',
+    provider: {
+      '@type': 'ClothingStore',
+      '@id': 'https://www.modfancydress.com/#organization',
+      name: 'Mod Fancy Dress',
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Delhi' },
+      { '@type': 'City', name: 'Noida' },
+      { '@type': 'City', name: 'Gurgaon' },
+      { '@type': 'City', name: 'Ghaziabad' },
+      { '@type': 'City', name: 'Faridabad' },
+      { '@type': 'City', name: 'Greater Noida' },
+    ],
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      priceRange: '₹200–₹1000',
+      description: 'Rental price per event. Refundable security deposit of ₹500–₹2,000 required.',
+    },
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

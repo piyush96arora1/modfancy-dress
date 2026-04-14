@@ -131,7 +131,9 @@ export function OrganizationSchema() {
       postalCode: '110051',
       addressCountry: 'IN',
     },
-    sameAs: ['https://share.google/j5z6wKKjqsCHJKajh'],
+    sameAs: [
+      'https://share.google/j5z6wKKjqsCHJKajh',
+    ],
     subOrganization: {
       '@id': localBusinessEntityId(),
     },
@@ -467,9 +469,12 @@ export function BlogPostingSchema(post: {
     datePublished: post.published_at,
     dateModified: post.updated_at,
     author: {
-      '@type': 'Organization',
-      '@id': organizationEntityId(),
-      name: 'Mod Fancy Dress',
+      '@type': 'Person',
+      name: 'Piyush Arora',
+      jobTitle: 'Founder',
+      worksFor: {
+        '@id': organizationEntityId(),
+      },
     },
     publisher: {
       '@type': 'Organization',
