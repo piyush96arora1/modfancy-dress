@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
-
-export const revalidate = 86400
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -21,6 +19,8 @@ import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails, ProductReview } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 import { siteBaseUrl, whatsappUrl } from '@/lib/constants/contact'
+
+export const revalidate = 86400
 
 interface ProductPageProps {
   params: Promise<{

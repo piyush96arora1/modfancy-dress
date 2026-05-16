@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
-
-export const revalidate = 86400
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, BlogPostingSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
@@ -13,6 +11,8 @@ import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuide
 import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
 import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE, BLOG_SLUG_RENT_GUIDE, BLOG_SLUG_RENT_VS_BUY } from '@/lib/blog/seo-post-slugs'
 import type { BlogPost } from '@/types/database'
+
+export const revalidate = 86400
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>

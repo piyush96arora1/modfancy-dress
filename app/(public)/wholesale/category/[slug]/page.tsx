@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
-
-export const revalidate = 86400
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -16,6 +14,8 @@ import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
 import { isClassicalCostumeCategorySlug } from '@/lib/seo/classical-category-slugs'
 import type { ProductWithDetails } from '@/types/database'
+
+export const revalidate = 86400
 
 interface WholesaleCategoryPageProps {
     params: Promise<{

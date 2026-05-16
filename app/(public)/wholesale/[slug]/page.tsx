@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
-
-export const revalidate = 86400
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -20,6 +18,8 @@ import { getImageUrl } from '@/lib/imageUrl'
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import type { ProductWithDetails } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
+
+export const revalidate = 86400
 
 interface WholesaleProductPageProps {
     params: Promise<{
