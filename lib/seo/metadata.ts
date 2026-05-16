@@ -36,7 +36,7 @@ export function generatePageMetadata({
   const rawDescription = description || defaultDescription
   const fullDescription = rawDescription.length > 155 ? truncateMetaDescription(rawDescription, 155) || rawDescription.slice(0, 152) + '…' : rawDescription
   const url = `${siteUrl}${path}`
-  const ogImage = image || `${siteUrl}/og-image.jpg`
+  const ogImage = image || `${siteUrl}/modfancydress-logo.png`
 
   // OpenGraph only supports 'website' or 'article', so map 'product' to 'website'
   const ogType = type === 'product' ? 'website' : type

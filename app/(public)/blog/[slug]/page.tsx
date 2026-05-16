@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createPublicServerClient } from '@/lib/supabase/public-server'
+import {
+  getBlogPostBySlugCached,
+  getPublishedBlogSlugsCached,
+} from '@/lib/supabase/cached-queries'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, BlogPostingSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
@@ -16,12 +19,8 @@ export const revalidate = 86400
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const supabase = createPublicServerClient()
-  const { data } = await supabase
-    .from('blog_posts')
-    .select('slug')
-    .not('published_at', 'is', null)
-  return (data ?? []).map(({ slug }) => ({ slug }))
+  const slugs = await getPublishedBlogSlugsCached()
+  return slugs.map((slug) => ({ slug }))
 }
 
 interface BlogPostPageProps {
@@ -30,13 +29,7 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-  const { data: post } = await supabase
-    .from('blog_posts')
-    .select('title, excerpt, published_at')
-    .eq('slug', slug)
-    .not('published_at', 'is', null)
-    .single()
+  const post = await getBlogPostBySlugCached(slug)
 
   if (!post) return { title: 'Post Not Found' }
 
@@ -50,13 +43,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-  const { data: post } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .not('published_at', 'is', null)
-    .single()
+  const post = await getBlogPostBySlugCached(slug)
 
   if (!post) notFound()
 

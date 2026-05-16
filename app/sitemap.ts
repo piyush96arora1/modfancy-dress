@@ -66,11 +66,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/compare/local-vs-online`, lastModified: new Date('2026-04-14') },
   ]
 
+  // wholesaleCategoryUrls intentionally excluded — those pages canonical to
+  // /category/<slug> and are noindex'd to eliminate duplicate-content drag.
+  void wholesaleCategoryUrls
+
   return [
     ...staticPages,
     ...productUrls,
     ...categoryUrls,
-    ...wholesaleCategoryUrls,
     ...blogUrls,
   ]
 }

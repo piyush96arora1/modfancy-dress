@@ -53,12 +53,16 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
         ? category.meta_description
         : (defaultDescription.length > 155 ? defaultDescription.slice(0, 152) + '…' : defaultDescription)
 
-    return generatePageMetadata({
+    const meta = generatePageMetadata({
         title: wholesaleCategoryTitle(category.name),
         description,
-        path: `/wholesale/category/${slug}`,
+        path: `/category/${slug}`, // canonical → retail equivalent (dedup)
         image: getImageUrl(category.image_url),
     })
+    return {
+        ...meta,
+        robots: { ...(meta.robots as object), index: false, follow: true },
+    }
 }
 
 export default async function WholesaleCategoryPage({ params }: WholesaleCategoryPageProps) {

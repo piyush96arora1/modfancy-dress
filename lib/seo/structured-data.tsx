@@ -43,8 +43,8 @@ export function LocalBusinessSchema() {
     description:
       'Fancy dress costumes and accessories. Based in Delhi with 15+ years of experience; we serve customers across Delhi, Noida, the wider NCR (Gurugram, Ghaziabad, Faridabad, Greater Noida, and nearby areas), and ship to many localities in other states — contact us for delivery options.',
     url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
-    image: `${siteUrl}/og-image.jpg`,
+    logo: `${siteUrl}/modfancydress-logo.png`,
+    image: `${siteUrl}/modfancydress-logo.png`,
     telephone: '+919311365366',
     address: {
       '@type': 'PostalAddress',
@@ -117,8 +117,8 @@ export function OrganizationSchema() {
     name: 'Mod Fancy Dress',
     alternateName: 'Mod Fancy Dress — Delhi & NCR',
     url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
-    image: `${siteUrl}/og-image.jpg`,
+    logo: `${siteUrl}/modfancydress-logo.png`,
+    image: `${siteUrl}/modfancydress-logo.png`,
     description:
       'Retailer of fancy dress costumes and accessories. Over 15 years serving schools, events, and families across Delhi, Noida, the National Capital Region, and customers in other states through delivery and coordination.',
     telephone: '+919311365366',
@@ -482,7 +482,7 @@ export function BlogPostingSchema(post: {
       name: 'Mod Fancy Dress',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/modfancydress-logo.png`,
       },
     },
     ...(post.cover_image_url ? { image: toAbsoluteUrl(post.cover_image_url) } : {}),

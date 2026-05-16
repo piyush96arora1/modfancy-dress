@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+import {
+  getProductBySlugCached,
+  getProductMetaBySlugCached,
+  getActiveProductSlugsCached,
+} from '@/lib/supabase/cached-queries'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -24,13 +29,8 @@ export const revalidate = 86400
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const supabase = createPublicServerClient()
-  const { data } = await supabase
-    .from('products')
-    .select('slug')
-    .eq('is_active', true)
-    .is('deleted_at', null)
-  return (data ?? []).map(({ slug }) => ({ slug }))
+  const slugs = await getActiveProductSlugsCached()
+  return slugs.map((slug) => ({ slug }))
 }
 
 interface ProductPageProps {
@@ -41,12 +41,7 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-  const { data: product } = await supabase
-    .from('products')
-    .select('name, description, seo_title, meta_description, category:categories(name), images:product_images(image_url, is_primary)')
-    .eq('slug', slug)
-    .single()
+  const product = await getProductMetaBySlugCached(slug)
 
   if (!product) {
     return {
@@ -75,20 +70,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-
-  let { data: product } = await supabase
-    .from('products')
-    .select(`
-      *,
-      category:categories(*),
-      images:product_images(*),
-      variants:product_variants(*)
-    `)
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .is('deleted_at', null)
-    .single()
+  const product = await getProductBySlugCached(slug)
 
   if (!product || !product.is_active || product.deleted_at) {
     notFound()

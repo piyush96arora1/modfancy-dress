@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createPublicServerClient } from '@/lib/supabase/public-server'
+import {
+  getCategoryBySlugCached,
+  getCategoryMetaBySlugCached,
+  getProductsForCategoryCached,
+  getActiveCategorySlugsCached,
+} from '@/lib/supabase/cached-queries'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -24,23 +29,13 @@ export const revalidate = 86400
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const supabase = createPublicServerClient()
-  const { data } = await supabase
-    .from('categories')
-    .select('slug')
-    .eq('is_active', true)
-  return (data ?? []).map(({ slug }) => ({ slug }))
+  const slugs = await getActiveCategorySlugsCached()
+  return slugs.map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-  const { data: category } = await supabase
-    .from('categories')
-    .select('id, name, description, seo_title, meta_description, image_url')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single()
+  const category = await getCategoryMetaBySlugCached(slug)
 
   if (!category) {
     return {
@@ -64,46 +59,13 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params
-  const supabase = createPublicServerClient()
-
-  const { data: category } = await supabase
-    .from('categories')
-    .select('id, name, slug, description, image_url')
-    .eq('slug', slug)
-    .eq('is_active', true)
-    .single()
+  const category = await getCategoryBySlugCached(slug)
 
   if (!category) {
     notFound()
   }
 
-  const { data: productCategories } = await supabase
-    .from('product_categories')
-    .select('product_id')
-    .eq('category_id', category.id)
-
-  const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
-
-  let query = supabase
-    .from('products')
-    .select(`
-      *,
-      category:categories(name),
-      categories:product_categories(category:categories(name)),
-      images:product_images(image_url, is_primary),
-      variants:product_variants(price_override)
-    `)
-    .eq('is_active', true)
-    .is('deleted_at', null)
-
-  if (productIdsFromJunction.length > 0) {
-    query = query.or(`category_id.eq.${category.id},id.in.(${productIdsFromJunction.join(',')})`)
-  } else {
-    query = query.eq('category_id', category.id)
-  }
-
-  query = query.order('created_at', { ascending: false })
-  const { data: products } = await query
+  const products = await getProductsForCategoryCached(category.id)
 
   const categoryFaqs = await getFaqsForCategoryPage(slug)
 
