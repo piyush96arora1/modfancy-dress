@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+
+export const revalidate = 86400
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -29,7 +30,7 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const { data: product } = await supabase
     .from('products')
     .select('name, description, seo_title, meta_description, category:categories(name), images:product_images(image_url, is_primary)')
@@ -63,7 +64,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
 
   let { data: product } = await supabase
     .from('products')

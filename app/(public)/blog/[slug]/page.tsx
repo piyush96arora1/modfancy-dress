@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
+
+export const revalidate = 86400
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, BlogPostingSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
@@ -18,7 +20,7 @@ interface BlogPostPageProps {
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const { data: post } = await supabase
     .from('blog_posts')
     .select('title, excerpt, published_at')
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const { data: post } = await supabase
     .from('blog_posts')
     .select('*')

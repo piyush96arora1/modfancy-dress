@@ -1,10 +1,10 @@
 import { MetadataRoute } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.com'
 
   const { data: products } = await supabase

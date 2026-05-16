@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { ChevronRight } from 'lucide-react'
 import type { BlogPost } from '@/types/database'
@@ -11,10 +11,10 @@ export const metadata = generatePageMetadata({
   type: 'article',
 })
 
-export const revalidate = 300
+export const revalidate = 86400
 
 export default async function BlogListPage() {
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const { data: posts } = await supabase
     .from('blog_posts')
     .select('slug, title, excerpt, language, published_at')

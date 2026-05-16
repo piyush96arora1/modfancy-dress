@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { CategoryCard } from '@/components/public/CategoryCard'
 import { EventBanner } from '@/components/public/EventBanner'
@@ -20,10 +20,10 @@ export const metadata = generatePageMetadata({
   path: '/',
 })
 
-export const revalidate = 300
+export const revalidate = 86400
 
 export default async function HomePage() {
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
 
   // Fetch global settings (for Ticker)
   const { data: bannerSettings } = await supabase

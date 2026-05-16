@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
+
+export const revalidate = 86400
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -23,7 +25,7 @@ interface WholesaleCategoryPageProps {
 
 export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
     const { slug } = await params
-    const supabase = await createClient()
+    const supabase = createPublicServerClient()
     const { data: category } = await supabase
         .from('categories')
         .select('name, description, seo_title, meta_description, image_url')
@@ -51,7 +53,7 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
 
 export default async function WholesaleCategoryPage({ params }: WholesaleCategoryPageProps) {
     const { slug } = await params
-    const supabase = await createClient()
+    const supabase = createPublicServerClient()
 
     // Fetch wholesale discount setting
     const { data: settings } = await supabase

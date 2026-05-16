@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -20,11 +20,11 @@ interface CategoryPageProps {
   }>
 }
 
-export const revalidate = 300
+export const revalidate = 86400
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const { data: category } = await supabase
     .from('categories')
     .select('id, name, description, seo_title, meta_description, image_url')
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
 
   const { data: category } = await supabase
     .from('categories')

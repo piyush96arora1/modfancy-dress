@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+
+export const revalidate = 86400
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -28,7 +29,7 @@ interface WholesaleProductPageProps {
 
 export async function generateMetadata({ params }: WholesaleProductPageProps) {
     const { slug } = await params
-    const supabase = await createClient()
+    const supabase = createPublicServerClient()
     const { data: product } = await supabase
         .from('products')
         .select('name, description, seo_title, meta_description, price, wholesale_price, images:product_images(image_url, is_primary)')
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
 
 export default async function WholesaleProductPage({ params }: WholesaleProductPageProps) {
     const { slug } = await params
-    const supabase = await createClient()
+    const supabase = createPublicServerClient()
 
     // Fetch wholesale discount setting
     const { data: settings } = await supabase
