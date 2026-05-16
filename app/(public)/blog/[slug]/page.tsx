@@ -13,6 +13,16 @@ import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE, BLOG_SLUG_RENT_GU
 import type { BlogPost } from '@/types/database'
 
 export const revalidate = 86400
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+  const supabase = createPublicServerClient()
+  const { data } = await supabase
+    .from('blog_posts')
+    .select('slug')
+    .not('published_at', 'is', null)
+  return (data ?? []).map(({ slug }) => ({ slug }))
+}
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>

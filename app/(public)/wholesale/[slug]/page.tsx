@@ -20,6 +20,17 @@ import type { ProductWithDetails } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 
 export const revalidate = 86400
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+        .from('products')
+        .select('slug')
+        .eq('is_active', true)
+        .is('deleted_at', null)
+    return (data ?? []).map(({ slug }) => ({ slug }))
+}
 
 interface WholesaleProductPageProps {
     params: Promise<{

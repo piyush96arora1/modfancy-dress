@@ -21,6 +21,17 @@ import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 import { siteBaseUrl, whatsappUrl } from '@/lib/constants/contact'
 
 export const revalidate = 86400
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+  const supabase = createPublicServerClient()
+  const { data } = await supabase
+    .from('products')
+    .select('slug')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+  return (data ?? []).map(({ slug }) => ({ slug }))
+}
 
 interface ProductPageProps {
   params: Promise<{

@@ -21,6 +21,16 @@ interface CategoryPageProps {
 }
 
 export const revalidate = 86400
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+  const supabase = createPublicServerClient()
+  const { data } = await supabase
+    .from('categories')
+    .select('slug')
+    .eq('is_active', true)
+  return (data ?? []).map(({ slug }) => ({ slug }))
+}
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
