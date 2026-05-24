@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { getCategoryPriceTableRows } from '@/lib/catalog/category-price-stats'
 import { SeoTableWrap, seoTableClass } from '@/components/public/seo-tables/table-styles'
 
@@ -10,7 +10,7 @@ type Props = {
 
 /** Server component: category-level counts and retail price bands from Supabase. */
 export async function CategoryPriceTable({ headingId = 'category-price-comparison', className = '' }: Props) {
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const rows = await getCategoryPriceTableRows(supabase)
   if (rows.length === 0) return null
 

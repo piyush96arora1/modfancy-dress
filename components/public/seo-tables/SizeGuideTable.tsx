@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { getSizeGuideRowsForCategory } from '@/lib/catalog/size-guide'
 import type { SizeGuideRow } from '@/lib/catalog/size-guide'
 import { SeoTableWrap, seoTableClass } from '@/components/public/seo-tables/table-styles'
@@ -37,7 +37,7 @@ type Props = {
 
 /** Server component: loads variant sizes for products in this category. Renders nothing if no size data. */
 export async function SizeGuideTable({ categoryId, categoryName, className = '' }: Props) {
-  const supabase = await createClient()
+  const supabase = createPublicServerClient()
   const rows = await getSizeGuideRowsForCategory(supabase, categoryId)
   if (!rows?.length) return null
 
