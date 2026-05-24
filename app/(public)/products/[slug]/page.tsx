@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { createPublicServerClient } from '@/lib/supabase/public-server'
 import {
   getProductBySlugCached,
   getProductMetaBySlugCached,
   getActiveProductSlugsCached,
+  getProductReviewsCached,
 } from '@/lib/supabase/cached-queries'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
@@ -88,17 +88,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
-  const publicSb = createPublicServerClient()
-  const { data: reviews, error: reviewsError } = await publicSb
-    .from('product_reviews')
-    .select('id, rating, review_text, author_name, created_at')
-    .eq('product_id', productData.id)
-    .order('created_at', { ascending: false })
-
-  if (reviewsError) {
-    console.error('[ProductPage] product_reviews:', reviewsError.message)
-  }
-
+  const reviews = await getProductReviewsCached(productData.id)
   const aggregateRating = aggregateRatingFromProductReviews(reviews ?? null)
 
   const breadcrumbItems = [

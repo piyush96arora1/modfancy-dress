@@ -17,6 +17,20 @@ import { createPublicServerClient } from './public-server'
 
 const ONE_DAY = 86400
 
+export const getProductReviewsCached = unstable_cache(
+  async (productId: string) => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('product_reviews')
+      .select('id, rating, review_text, author_name, created_at')
+      .eq('product_id', productId)
+      .order('created_at', { ascending: false })
+    return data ?? []
+  },
+  ['product-reviews-by-id'],
+  { revalidate: ONE_DAY, tags: ['products', 'reviews'] }
+)
+
 export const getProductBySlugCached = unstable_cache(
   async (slug: string) => {
     const supabase = createPublicServerClient()
