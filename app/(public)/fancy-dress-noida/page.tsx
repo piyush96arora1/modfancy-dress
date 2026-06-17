@@ -9,6 +9,8 @@ import {
   localBusinessEntityId,
   siteUrl,
 } from '@/lib/seo/structured-data'
+import { CustomerReviews } from '@/components/public/CustomerReviews'
+import { NOIDA_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Noida — Buy or Rent',
@@ -171,6 +173,8 @@ export default function FancyDressNoidaPage() {
           <Link href="/fancy-dress-gurgaon" className="text-[#C8956C] hover:underline font-medium">Fancy dress Gurgaon</Link>
         </div>
       </div>
+
+      <CustomerReviews reviews={NOIDA_TESTIMONIALS} gbpUrl="https://share.google/OvjwothbT7G0sBGws" />
     </div>
   )
 }

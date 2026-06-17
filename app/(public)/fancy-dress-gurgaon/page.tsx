@@ -8,6 +8,8 @@ import {
   FaqPageSchema,
   localBusinessEntityId,
 } from '@/lib/seo/structured-data'
+import { CustomerReviews } from '@/components/public/CustomerReviews'
+import { GURGAON_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
 
 export const metadata = generatePageMetadata({
   title: 'Costume on Rent in Gurgaon — Fancy Dress',
@@ -170,6 +172,8 @@ export default function FancyDressGurgaonPage() {
           ))}
         </div>
       </div>
+
+      <CustomerReviews reviews={GURGAON_TESTIMONIALS} gbpUrl="https://share.google/OvjwothbT7G0sBGws" />
     </div>
   )
 }

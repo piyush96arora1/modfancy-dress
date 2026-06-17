@@ -9,6 +9,8 @@ import {
   localBusinessEntityId,
   siteUrl,
 } from '@/lib/seo/structured-data'
+import { CustomerReviews } from '@/components/public/CustomerReviews'
+import { DELHI_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Delhi — Buy or Rent Fancy Dress',
@@ -237,6 +239,8 @@ export default function FancyDressDelhiPage() {
           pages.
         </p>
       </section>
+
+      <CustomerReviews reviews={DELHI_TESTIMONIALS} gbpUrl="https://share.google/OvjwothbT7G0sBGws" />
     </div>
   )
 }
