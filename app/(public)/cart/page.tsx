@@ -12,6 +12,22 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Trash2, ShoppingBag, ChevronRight, Check } from 'lucide-react'
 
+/**
+ * Generate a client-side UUID for the order so we don't need to read the row
+ * back after insert. This keeps checkout working once RLS is enabled on
+ * `orders` (anon can INSERT but not SELECT — keeps customer PII private).
+ */
+function generateOrderId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+  const b = crypto.getRandomValues(new Uint8Array(16))
+  b[6] = (b[6] & 0x0f) | 0x40
+  b[8] = (b[8] & 0x3f) | 0x80
+  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0'))
+  return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`
+}
+
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotal, clearCart } = useCart()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -37,9 +53,12 @@ export default function CartPage() {
       const totalAmount = getTotal()
       const orderNumber = `ORD-${new Date().toISOString().split('T')[0].replace(/-/g, '')}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
 
-      const { data: order, error: orderError } = await supabase
+      const orderId = generateOrderId()
+
+      const { error: orderError } = await supabase
         .from('orders')
         .insert({
+          id: orderId,
           order_number: orderNumber,
           customer_name: formData.customerName,
           customer_email: formData.customerEmail,
@@ -52,8 +71,8 @@ export default function CartPage() {
           total_amount: totalAmount,
           status: 'pending',
         })
-        .select()
-        .single()
+      // No .select(): once RLS is enabled, anon can INSERT an order but cannot
+      // read it back (customer PII stays private). We use the client orderId below.
 
       if (orderError) {
         console.error('Order creation error:', orderError)
@@ -61,7 +80,7 @@ export default function CartPage() {
       }
 
       const orderItems = items.map((item) => ({
-        order_id: order.id,
+        order_id: orderId,
         product_id: item.productId,
         variant_id: item.variantId || null,
         product_name: item.name,
@@ -78,7 +97,7 @@ export default function CartPage() {
       if (itemsError) throw itemsError
 
       clearCart()
-      setOrderSuccess(order.order_number)
+      setOrderSuccess(orderNumber)
     } catch (error) {
       console.error('Error placing order:', error)
       alert('Failed to place order. Please try again.')
