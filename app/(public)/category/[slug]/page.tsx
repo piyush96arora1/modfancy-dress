@@ -104,6 +104,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
         </div>
 
+        {category.description && (
+          <p className="text-sm text-[#6B6B6B] leading-relaxed mb-5 md:mb-6 max-w-3xl">
+            {category.description}
+          </p>
+        )}
+
         {/* Products — h2 so outline is h1 → h2 → h4 (product names) */}
         <section className="mb-2" aria-labelledby="category-products-heading">
           <h2

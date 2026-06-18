@@ -1,4 +1,9 @@
 [
+  { "source": "/category/vegetables", "destination": "/category/vegetable-costumes", "permanent": true },
+  { "source": "/category/ramleela-collection", "destination": "/category/ramleela-costumes", "permanent": true },
+  { "source": "/category/animal-wildlife-fancy-dress-costumes", "destination": "/category/animal-costumes", "permanent": true },
+  { "source": "/category/doraemon", "destination": "/category/cartoon-characters", "permanent": true },
+  { "source": "/category/mythological-characters-costume", "destination": "/category/indian-mythology-costumes", "permanent": true },
   {
     "source": "/products/kathak-dance-dress-costume-yellow-with-purple",
     "destination": "/products/kathak-dance-dress-costume-yellow-with-purple-fancy-dress",

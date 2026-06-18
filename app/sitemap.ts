@@ -15,8 +15,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { data: categories } = await supabase
     .from('categories')
-    .select('slug, updated_at')
+    .select('id, slug, updated_at')
     .eq('is_active', true)
+
+  // Category ids that actually have products — keeps empty categories out of the
+  // sitemap (index-bloat prevention). A category counts if it has any junction row
+  // or is the primary category of an active product.
+  const { data: junctionRows } = await supabase
+    .from('product_categories')
+    .select('category_id')
+  const { data: primaryRows } = await supabase
+    .from('products')
+    .select('category_id')
+    .eq('is_active', true)
+    .is('deleted_at', null)
+    .not('category_id', 'is', null)
+  const nonEmptyCategoryIds = new Set<string>([
+    ...(junctionRows || []).map((r) => r.category_id as string),
+    ...(primaryRows || []).map((r) => r.category_id as string),
+  ])
 
   const { data: blogPosts } = await supabase
     .from('blog_posts')
@@ -33,10 +50,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(product.updated_at),
   })) || []
 
-  const categoryUrls = categories?.map((category) => ({
-    url: `${baseUrl}/category/${category.slug}`,
-    lastModified: new Date(category.updated_at),
-  })) || []
+  const categoryUrls = (categories || [])
+    .filter((category) => nonEmptyCategoryIds.has(category.id as string))
+    .map((category) => ({
+      url: `${baseUrl}/category/${category.slug}`,
+      lastModified: new Date(category.updated_at),
+    }))
 
   const wholesaleCategoryUrls = categories?.map((category) => ({
     url: `${baseUrl}/wholesale/category/${category.slug}`,
