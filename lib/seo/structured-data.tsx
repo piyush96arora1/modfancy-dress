@@ -103,7 +103,7 @@ export function LocalBusinessSchema() {
       worstRating: 1,
     },
     sameAs: [
-      'https://share.google/j5z6wKKjqsCHJKajh',
+      'https://www.google.com/maps?cid=17989257548569961947',
     ],
   }
 }
@@ -132,7 +132,7 @@ export function OrganizationSchema() {
       addressCountry: 'IN',
     },
     sameAs: [
-      'https://share.google/j5z6wKKjqsCHJKajh',
+      'https://www.google.com/maps?cid=17989257548569961947',
     ],
     subOrganization: {
       '@id': localBusinessEntityId(),
