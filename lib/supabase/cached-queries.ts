@@ -46,6 +46,11 @@ export const getProductBySlugCached = unstable_cache(
       .eq('is_active', true)
       .is('deleted_at', null)
       .single()
+    // Deterministic variant order: keeps the buy box's default selection, the displayed
+    // price, the sku, and the Product-schema offer price in sync across ISR regenerations.
+    if (data?.variants?.length) {
+      data.variants.sort((a: { id: string }, b: { id: string }) => a.id.localeCompare(b.id))
+    }
     return data
   },
   ['product-by-slug'],

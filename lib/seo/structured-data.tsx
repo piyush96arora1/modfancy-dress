@@ -1,5 +1,6 @@
 import { ProductWithDetails } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
+import { getProductPrice, getVariantPrice } from '@/lib/utils/pricing'
 
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.modfancydress.com'
 
@@ -324,23 +325,49 @@ export function ProductSchema(
     reviewsForJsonLd?: ProductReviewRowForSchema[]
   }
 ) {
-  const displayPrice = product.price || 0
-
   const imageUrls = sortProductImagesForSchema(product.images)
     .map((img) => toAbsoluteUrl(getImageUrl(img.image_url)))
     .filter(Boolean)
 
-  const offers = {
-    '@type': 'Offer',
-    url: `${siteUrl}/products/${product.slug}`,
-    priceCurrency: 'INR',
-    price: displayPrice.toString(),
-    availability: product.is_active
-      ? 'https://schema.org/InStock'
-      : 'https://schema.org/OutOfStock',
-    itemCondition: 'https://schema.org/NewCondition',
-    seller: sellerRef(),
+  // Mirror the buy box (AddToCartButton): it preselects the first size/colour and shows that
+  // variant's price, else the product price. The structured-data price MUST equal the displayed
+  // price, or Google Merchant Center rejects the product as a price mismatch.
+  const schemaVariants = product.variants ?? []
+  const schemaSizes = [
+    ...new Set([
+      ...(product.size ? [product.size] : []),
+      ...schemaVariants.map((v) => v.size).filter((s): s is string => Boolean(s)),
+    ]),
+  ]
+  const schemaColors = [
+    ...new Set(schemaVariants.map((v) => v.color).filter((c): c is string => Boolean(c))),
+  ]
+  const defaultSize = schemaSizes[0] ?? ''
+  const defaultColor = schemaColors[0] ?? ''
+  let displayPrice = getProductPrice(product, 'retail')
+  if (defaultSize || defaultColor) {
+    const defaultVariant = schemaVariants.find(
+      (v) => (!defaultSize || v.size === defaultSize) && (!defaultColor || v.color === defaultColor)
+    )
+    if (defaultVariant) displayPrice = getVariantPrice(product, defaultVariant, 'retail')
   }
+
+  // Single sale Offer at the displayed price. Rent is shown on-page for customers but is
+  // intentionally NOT emitted as an offer (a LeaseOut offer breaks Merchant Center price extraction).
+  const offer =
+    displayPrice > 0
+      ? {
+          '@type': 'Offer',
+          url: `${siteUrl}/products/${product.slug}`,
+          priceCurrency: 'INR',
+          price: displayPrice.toString(),
+          availability: product.is_active
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: sellerRef(),
+        }
+      : undefined
 
   return {
     '@context': 'https://schema.org',
@@ -348,58 +375,14 @@ export function ProductSchema(
     '@id': `${siteUrl}/products/${product.slug}#product`,
     name: product.name,
     description: product.description || `${product.name} - Fancy dress costume available at Mod Fancy Dress`,
-    image: imageUrls,
+    ...(imageUrls.length ? { image: imageUrls } : {}),
     brand: {
       '@type': 'Brand',
       name: 'Mod Fancy Dress',
     },
     category: product.category?.name || product.categories?.[0]?.category?.name || 'Fancy Dress Costume',
     sku: product.variants?.[0]?.sku || product.slug,
-    offers: (() => {
-      type OfferNode = {
-        '@type': string
-        url: string
-        priceCurrency: string
-        price: string
-        availability: string
-        itemCondition: string
-        seller: ReturnType<typeof sellerRef>
-        businessFunction?: string
-        description?: string
-      }
-
-      const purchaseOffers: OfferNode[] = product.variants && product.variants.length > 0
-        ? product.variants.map((variant) => ({
-          '@type': 'Offer',
-          url: `${siteUrl}/products/${product.slug}`,
-          priceCurrency: 'INR',
-          price: (variant.price_override || product.price || 0).toString(),
-          availability: product.is_active
-            ? 'https://schema.org/InStock'
-            : 'https://schema.org/OutOfStock',
-          itemCondition: 'https://schema.org/NewCondition',
-          seller: sellerRef(),
-        }))
-        : [offers]
-
-      if (product.rent_price) {
-        purchaseOffers.push({
-          '@type': 'Offer',
-          url: `${siteUrl}/products/${product.slug}`,
-          priceCurrency: 'INR',
-          price: product.rent_price.toString(),
-          availability: product.is_active
-            ? 'https://schema.org/InStock'
-            : 'https://schema.org/OutOfStock',
-          itemCondition: 'https://schema.org/NewCondition',
-          seller: sellerRef(),
-          businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut',
-          description: `Available on rent${product.rent_deposit ? `. Refundable deposit: ₹${product.rent_deposit}` : ''}`,
-        })
-      }
-
-      return purchaseOffers
-    })(),
+    ...(offer ? { offers: offer } : {}),
     ...(options?.aggregateRating && options.aggregateRating.reviewCount >= 1
       ? {
           aggregateRating: {
