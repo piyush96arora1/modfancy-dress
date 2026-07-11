@@ -9,7 +9,7 @@ import {
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { CategoryListingJsonLd } from '@/lib/seo/structured-data'
+import { CategoryListingJsonLd, FaqPageSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import { getFaqsForCategoryPage } from '@/lib/faqs/queries'
@@ -77,12 +77,26 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     products: (products ?? []).map((p) => ({ slug: p.slug, name: p.name })),
   })
 
+  // FAQPage JSON-LD from the visible category FAQs. Google no longer shows FAQ rich
+  // results for commercial pages (Aug 2023), but this markup is still parsed by AI
+  // Overviews / LLM answer engines, which is worth the citation signal here.
+  const categoryFaqSchema =
+    categoryFaqs.length > 0
+      ? FaqPageSchema(categoryFaqs.map(({ question, answer }) => ({ question, answer })))
+      : null
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryListingJsonLd) }}
       />
+      {categoryFaqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(categoryFaqSchema) }}
+        />
+      )}
       <div className="fade-in">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
