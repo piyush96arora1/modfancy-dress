@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useCallback, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
@@ -18,21 +17,41 @@ export function EventBanner({ banners }: EventBannerProps) {
     Autoplay({ delay: 5000, stopOnInteraction: false })
   ])
   const [selectedIndex, setSelectedIndex] = useState(0)
+  // Track which slides have entered the viewport so we only ever download the
+  // images that have actually been shown. Slide 0 is visible on first paint.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]))
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     setSelectedIndex(emblaApi.selectedScrollSnap())
   }, [emblaApi])
 
+  const markSlidesInView = useCallback(() => {
+    if (!emblaApi) return
+    setLoadedSlides((prev) => {
+      const next = new Set(prev)
+      for (const i of emblaApi.slidesInView()) next.add(i)
+      return next
+    })
+  }, [emblaApi])
+
   useEffect(() => {
     if (!emblaApi) return
+    onSelect()
+    markSlidesInView()
     emblaApi.on('select', onSelect)
+    emblaApi.on('select', markSlidesInView)
+    emblaApi.on('slidesInView', markSlidesInView)
     emblaApi.on('reInit', onSelect)
+    emblaApi.on('reInit', markSlidesInView)
     return () => {
       emblaApi.off('select', onSelect)
+      emblaApi.off('select', markSlidesInView)
+      emblaApi.off('slidesInView', markSlidesInView)
       emblaApi.off('reInit', onSelect)
+      emblaApi.off('reInit', markSlidesInView)
     }
-  }, [emblaApi, onSelect])
+  }, [emblaApi, onSelect, markSlidesInView])
 
   if (!banners || banners.length === 0) return null
 
@@ -41,32 +60,31 @@ export function EventBanner({ banners }: EventBannerProps) {
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y">
           {banners.map((banner, index) => {
-            const isPriority = index === 0;
+            const isPriority = index === 0
+            // Only mount the image once its slide has been in view (slide 0 always).
+            const shouldLoad = isPriority || loadedSlides.has(index)
 
             const bannerContent = (
               <div className="relative w-full flex-none overflow-hidden">
-                {/* Desktop Banner */}
-                <div className="hidden md:block relative w-full aspect-[16/5] overflow-hidden">
-                  <Image
-                    src={getImageUrl(banner.desktop_image_url)}
-                    alt={banner.alt_text || 'Promotional Banner'}
-                    fill
-                    className="object-cover"
-                    priority={isPriority}
-                    sizes="100vw"
-                  />
-                </div>
-
-                {/* Mobile Banner */}
-                <div className="block md:hidden relative w-full aspect-[2.16/1] overflow-hidden">
-                  <Image
-                    src={getImageUrl(banner.mobile_image_url)}
-                    alt={banner.alt_text || 'Promotional Banner'}
-                    fill
-                    className="object-cover"
-                    priority={isPriority}
-                    sizes="100vw"
-                  />
+                {/* One responsive container: mobile aspect below md, desktop aspect at md+.
+                    <picture> lets the browser download ONLY the matching device image. */}
+                <div className="relative w-full aspect-[2.16/1] md:aspect-[16/5] overflow-hidden bg-[#F5F3F0]">
+                  {shouldLoad && (
+                    <picture>
+                      <source
+                        media="(min-width: 768px)"
+                        srcSet={getImageUrl(banner.desktop_image_url)}
+                      />
+                      <img
+                        src={getImageUrl(banner.mobile_image_url)}
+                        alt={banner.alt_text || 'Promotional Banner'}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading={isPriority ? 'eager' : 'lazy'}
+                        fetchPriority={isPriority ? 'high' : 'auto'}
+                        decoding="async"
+                      />
+                    </picture>
+                  )}
                 </div>
               </div>
             )
@@ -116,5 +134,4 @@ export function EventBanner({ banners }: EventBannerProps) {
     </div>
   )
 }
-
 
