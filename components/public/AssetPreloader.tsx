@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import type { ProductWithDetails } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
 
-
 interface AssetPreloaderProps {
   products: ProductWithDetails[]
   bannerImages?: {
@@ -15,96 +14,51 @@ interface AssetPreloaderProps {
 
 export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) {
   useEffect(() => {
-    if (!products || products.length === 0) return
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
-    // Preload critical product images
-    const preloadImages = () => {
-      const imageUrls: string[] = []
+    // 1) Preload ONLY the banner — it's the LCP element. Product images sit below
+    //    the fold and must not compete for bandwidth here (no rel=preload for them).
+    //    No crossOrigin, so this matches the plain <img> in EventBanner and is
+    //    actually reused (avoids a duplicate fetch of the hero image).
+    const bannerUrl = isMobile ? bannerImages?.mobile : bannerImages?.desktop
+    if (bannerUrl) {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'image'
+      link.href = getImageUrl(bannerUrl)
+      link.fetchPriority = 'high'
+      document.head.appendChild(link)
+    }
 
-      // Preload featured product images (first 8 products, primary images)
-      products.slice(0, 8).forEach((product) => {
+    // 2) Prefetch key routes for instant navigation.
+    ;['/products', '/contact'].forEach((route) => {
+      const link = document.createElement('link')
+      link.rel = 'prefetch'
+      link.href = route
+      document.head.appendChild(link)
+    })
+    const apiLink = document.createElement('link')
+    apiLink.rel = 'prefetch'
+    apiLink.href = '/api/products'
+    document.head.appendChild(apiLink)
+
+    // 3) Warm the first section's product images on idle so they're cached by the
+    //    time the user scrolls — without blocking the banner LCP.
+    const warmProductImages = () => {
+      products.slice(0, 20).forEach((product) => {
         const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
         if (primaryImage?.image_url) {
-          imageUrls.push(getImageUrl(primaryImage.image_url))
+          const img = new Image()
+          img.src = getImageUrl(primaryImage.image_url)
         }
       })
-
-      // Preload banner images if available - only preload the one that fits the current viewport
-      const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-
-      if (isMobile && bannerImages?.mobile) {
-        imageUrls.push(getImageUrl(bannerImages.mobile))
-      } else if (!isMobile && bannerImages?.desktop) {
-        imageUrls.push(getImageUrl(bannerImages.desktop))
-      }
-
-      // Preload images with link preload
-      imageUrls.forEach((url) => {
-        const link = document.createElement('link')
-        link.rel = 'preload'
-        link.as = 'image'
-        link.href = url
-        link.crossOrigin = 'anonymous'
-        document.head.appendChild(link)
-      })
-
-      // Also preload using Image objects for browser cache
-      imageUrls.forEach((url) => {
-        const img = new Image()
-        img.src = url
-      })
     }
-
-    // Preload critical routes
-    const preloadRoutes = () => {
-      const routes = ['/products', '/contact']
-      routes.forEach((route) => {
-        const link = document.createElement('link')
-        link.rel = 'prefetch'
-        link.href = route
-        document.head.appendChild(link)
-      })
-
-      // Prefetch products API endpoint for instant navigation
-      const apiLink = document.createElement('link')
-      apiLink.rel = 'prefetch'
-      apiLink.href = '/api/products'
-      document.head.appendChild(apiLink)
-    }
-
-    // Run preloading
-    preloadImages()
-    preloadRoutes()
-
-    // Preload additional product images on idle
     if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => {
-        if (products.length > 8) {
-          products.slice(8, 20).forEach((product) => {
-            const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
-            if (primaryImage?.image_url) {
-              const img = new Image()
-              img.src = getImageUrl(primaryImage.image_url)
-            }
-          })
-        }
-      })
+      requestIdleCallback(warmProductImages)
     } else {
-      // Fallback for browsers without requestIdleCallback
-      setTimeout(() => {
-        if (products.length > 8) {
-          products.slice(8, 20).forEach((product) => {
-            const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
-            if (primaryImage?.image_url) {
-              const img = new Image()
-              img.src = getImageUrl(primaryImage.image_url)
-            }
-          })
-        }
-      }, 2000)
+      setTimeout(warmProductImages, 2000)
     }
   }, [products, bannerImages])
 
   return null // This component doesn't render anything
 }
-

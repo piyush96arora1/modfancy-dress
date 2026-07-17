@@ -136,6 +136,56 @@ export const getProductsForCategoryCached = unstable_cache(
   { revalidate: ONE_DAY, tags: ['products', 'categories'] }
 )
 
+export const getHomepageSectionsCached = unstable_cache(
+  async () => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('homepage_sections')
+      .select('id, title, source_type, category_id, product_count, sort_order, is_enabled, category:categories(name, slug)')
+      .eq('is_enabled', true)
+      .order('sort_order', { ascending: true })
+    // Normalize the embedded category to a single object (Supabase may return
+    // a to-one relation as an object or a 1-element array depending on version).
+    return (data ?? []).map((s: Record<string, unknown>) => ({
+      ...s,
+      category: Array.isArray(s.category) ? (s.category[0] ?? null) : (s.category ?? null),
+    })) as Array<{
+      id: string
+      title: string
+      source_type: 'category' | 'latest'
+      category_id: string | null
+      product_count: number
+      sort_order: number
+      is_enabled: boolean
+      category: { name: string; slug: string } | null
+    }>
+  },
+  ['homepage-sections-enabled'],
+  { revalidate: ONE_DAY, tags: ['homepage-sections', 'categories'] }
+)
+
+export const getLatestProductsCached = unstable_cache(
+  async (limit: number) => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('products')
+      .select(`
+        *,
+        category:categories(name),
+        categories:product_categories(category:categories(name)),
+        images:product_images(image_url, is_primary),
+        variants:product_variants(price_override)
+      `)
+      .eq('is_active', true)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    return data ?? []
+  },
+  ['latest-products'],
+  { revalidate: ONE_DAY, tags: ['products'] }
+)
+
 export const getBlogPostBySlugCached = unstable_cache(
   async (slug: string) => {
     const supabase = createPublicServerClient()

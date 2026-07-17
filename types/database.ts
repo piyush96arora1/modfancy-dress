@@ -42,6 +42,18 @@ export type Banner = {
   updated_at: string
 }
 
+export type HomepageSection = {
+  id: string
+  title: string
+  source_type: 'category' | 'latest'
+  category_id: string | null
+  product_count: number
+  sort_order: number
+  is_enabled: boolean
+  created_at: string
+  updated_at: string
+}
+
 export type ProductImage = {
   id: string
   product_id: string

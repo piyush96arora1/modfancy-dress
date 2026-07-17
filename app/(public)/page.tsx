@@ -1,12 +1,15 @@
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
-import { ProductGrid } from '@/components/public/ProductGrid'
+import {
+  getHomepageSectionsCached,
+  getLatestProductsCached,
+  getProductsForCategoryCached,
+} from '@/lib/supabase/cached-queries'
 import { CategoryCard } from '@/components/public/CategoryCard'
+import { HomepageSection } from '@/components/public/HomepageSection'
 import { EventBanner } from '@/components/public/EventBanner'
 import { TickerStrip } from '@/components/public/TickerStrip'
 import { AssetPreloader } from '@/components/public/AssetPreloader'
-import { Button } from '@/components/ui/button'
-import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { WebSiteSchema } from '@/lib/seo/structured-data'
@@ -46,20 +49,23 @@ export default async function HomePage() {
   // Determine if we should show the carousel (at least one enabled banner exists)
   const hasEventBanner = banners && banners.length > 0
 
-  // Fetch featured products (active products with images, not deleted)
-  const { data: products } = await supabase
-    .from('products')
-    .select(`
-      *,
-      category:categories(name),
-      categories:product_categories(category:categories(name)),
-      images:product_images(image_url, is_primary),
-      variants:product_variants(price_override)
-    `)
-    .eq('is_active', true)
-    .is('deleted_at', null)
-    .order('created_at', { ascending: false })
-    .limit(8)
+  // Fetch admin-configured homepage sections + their products.
+  // Cached queries keep the page ISR-cacheable; product queries run in parallel.
+  const sections = await getHomepageSectionsCached()
+  const sectionsWithProducts = await Promise.all(
+    sections.map(async (section) => {
+      let sectionProducts: ProductWithDetails[]
+      if (section.source_type === 'category' && section.category_id) {
+        const all = await getProductsForCategoryCached(section.category_id)
+        sectionProducts = ((all ?? []) as ProductWithDetails[]).slice(0, section.product_count || 8)
+      } else {
+        sectionProducts = (await getLatestProductsCached(section.product_count || 8)) as ProductWithDetails[]
+      }
+      return { section, products: sectionProducts }
+    })
+  )
+  const visibleSections = sectionsWithProducts.filter((s) => s.products.length > 0)
+  const firstSectionProducts = visibleSections[0]?.products ?? []
 
   // Fetch categories
   const { data: categories } = await supabase
@@ -76,15 +82,13 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
-      {products && products.length > 0 && (
-        <AssetPreloader
-          products={products as ProductWithDetails[]}
-          bannerImages={{
-            desktop: getImageUrl(banners?.[0]?.desktop_image_url) || null,
-            mobile: getImageUrl(banners?.[0]?.mobile_image_url) || null
-          }}
-        />
-      )}
+      <AssetPreloader
+        products={firstSectionProducts}
+        bannerImages={{
+          desktop: getImageUrl(banners?.[0]?.desktop_image_url) || null,
+          mobile: getImageUrl(banners?.[0]?.mobile_image_url) || null
+        }}
+      />
       <div>
         {/* Running Ticker Strip */}
         {tickerEnabled && tickerText && (
@@ -199,31 +203,25 @@ export default async function HomePage() {
           </Link>
         </section>
 
-        {/* Featured Products */}
-        <section className="mb-20 md:mb-16 fade-in">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 md:mb-8">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">New Arrivals</h2>
-              <PricingModeToggle currentMode="retail" />
-            </div>
-            <Link
-              href="/products"
-              prefetch={true}
-              className="w-full sm:w-auto"
-            >
-              <Button variant="outline" className="w-full sm:w-auto text-sm">
-                View All Products →
-              </Button>
-            </Link>
+        {/* Configurable homepage sections (managed in Admin → Homepage) */}
+        {visibleSections.length > 0 && (
+          <div className="mb-20 md:mb-16">
+            {visibleSections.map(({ section, products: sectionProducts }, i) => (
+              <HomepageSection
+                key={section.id}
+                title={section.title}
+                headingId={`home-section-${section.id}`}
+                viewAllHref={
+                  section.source_type === 'category' && section.category?.slug
+                    ? `/category/${section.category.slug}`
+                    : '/products'
+                }
+                products={sectionProducts}
+                showPricingToggle={i === 0}
+              />
+            ))}
           </div>
-          {products && products.length > 0 ? (
-            <ProductGrid products={products as ProductWithDetails[]} showViewAllCard={true} />
-          ) : (
-            <p className="text-[#9A9A9A] text-center py-12">
-              No products available yet. Check back soon!
-            </p>
-          )}
-        </section>
+        )}
 
         {/* Occasion guide: after shop sections — SEO + helpers, not primary funnel */}
         <div className="fade-in pt-10 md:pt-12 mt-4 md:mt-6 pb-2 border-t border-[#E8E5E0]">

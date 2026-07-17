@@ -62,6 +62,7 @@ export default function AdminLayout({
     { href: '/admin/enquiries', label: 'Enquiries' },
     { href: '/admin/catalogues', label: 'Catalogues' },
     { href: '/admin/banner', label: 'Banner' },
+    { href: '/admin/homepage', label: 'Homepage' },
   ]
 
   return (
