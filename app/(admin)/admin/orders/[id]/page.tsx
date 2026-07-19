@@ -6,6 +6,10 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft } from 'lucide-react'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
+import { ProductThumb } from '@/components/admin/ProductThumb'
+import { whatsappChatUrl } from '@/lib/constants/contact'
+import { primaryImageUrl } from '@/lib/imageUrl'
 
 export default function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -18,7 +22,7 @@ export default function OrderDetailPage() {
       const supabase = createClient()
       const { data, error } = await supabase
         .from('orders')
-        .select(`*, items:order_items(*)`)
+        .select(`*, items:order_items(*, product:products(images:product_images(image_url, is_primary)))`)
         .eq('id', id)
         .single()
 
@@ -88,9 +92,21 @@ export default function OrderDetailPage() {
               <span className="text-gray-600">Email:</span>
               <span className="ml-2">{order.customer_email}</span>
             </div>
-            <div>
+            <div className="flex items-center">
               <span className="text-gray-600">Phone:</span>
               <span className="ml-2">{order.customer_phone}</span>
+              {order.customer_phone && (
+                <a
+                  href={whatsappChatUrl(order.customer_phone)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Chat on WhatsApp"
+                  aria-label="Chat with customer on WhatsApp"
+                  className="ml-2 inline-flex items-center text-[#25D366] hover:text-[#1da851] transition-colors"
+                >
+                  <WhatsAppIcon className="w-4 h-4" />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -134,7 +150,15 @@ export default function OrderDetailPage() {
               <tbody className="divide-y">
                 {order.items?.map((item: any) => (
                   <tr key={item.id}>
-                    <td className="px-4 py-2">{item.product_name}</td>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center gap-3">
+                        <ProductThumb
+                          src={primaryImageUrl(item.product?.images)}
+                          alt={item.product_name}
+                        />
+                        <span>{item.product_name}</span>
+                      </div>
+                    </td>
                     <td className="px-4 py-2 text-gray-600">{item.size || '—'}</td>
                     <td className="px-4 py-2 text-gray-600">{item.color || '—'}</td>
                     <td className="px-4 py-2">{item.quantity}</td>
@@ -152,7 +176,13 @@ export default function OrderDetailPage() {
           <div className="md:hidden space-y-3">
             {order.items?.map((item: any) => (
               <div key={item.id} className="border rounded-lg p-4 space-y-2">
-                <div className="font-semibold">{item.product_name}</div>
+                <div className="flex items-center gap-3">
+                  <ProductThumb
+                    src={primaryImageUrl(item.product?.images)}
+                    alt={item.product_name}
+                  />
+                  <div className="font-semibold">{item.product_name}</div>
+                </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   {item.size && (
                     <div>

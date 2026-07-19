@@ -14,7 +14,7 @@ export default function AdminOrdersPage() {
       const supabase = createClient()
       const { data } = await supabase
         .from('orders')
-        .select(`*, items:order_items(*)`)
+        .select(`*, items:order_items(*, product:products(images:product_images(image_url, is_primary)))`)
         .is('deleted_at', null)
         .order('created_at', { ascending: false })
       setOrders(data || [])

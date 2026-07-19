@@ -5,9 +5,56 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { ViewOrderButton } from './ViewOrderButton'
+import { ProductThumb } from './ProductThumb'
+import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
+import { whatsappChatUrl } from '@/lib/constants/contact'
+import { primaryImageUrl } from '@/lib/imageUrl'
 
 interface OrderListProps {
   orders: any[]
+}
+
+/** Row of product thumbnails for an order, capped with a +N overflow badge. */
+function OrderThumbnails({ items }: { items: any[] }) {
+  if (!items || items.length === 0) return null
+  const shown = items.slice(0, 4)
+  const extra = items.length - shown.length
+  return (
+    <div className="flex items-center gap-1">
+      {shown.map((item: any) => (
+        <ProductThumb
+          key={item.id}
+          src={primaryImageUrl(item.product?.images)}
+          alt={item.product_name}
+          className="h-8 w-8"
+          sizes="32px"
+        />
+      ))}
+      {extra > 0 && (
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-xs font-medium text-gray-500">
+          +{extra}
+        </span>
+      )}
+    </div>
+  )
+}
+
+/** Green WhatsApp link showing the customer's number. */
+function CustomerWhatsApp({ phone }: { phone?: string }) {
+  if (!phone) return null
+  return (
+    <a
+      href={whatsappChatUrl(phone)}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Chat on WhatsApp"
+      aria-label="Chat with customer on WhatsApp"
+      className="mt-1 inline-flex items-center gap-1 text-sm text-[#25D366] hover:text-[#1da851] transition-colors"
+    >
+      <WhatsAppIcon className="w-4 h-4" />
+      {phone}
+    </a>
+  )
 }
 
 export function OrderList({ orders }: OrderListProps) {
@@ -97,12 +144,18 @@ export function OrderList({ orders }: OrderListProps) {
                 <tr key={order.id}>
                   <td className="px-6 py-4 font-medium text-gray-900">{order.order_number}</td>
                   <td className="px-6 py-4">
-                    <div>
+                    <div className="flex flex-col">
                       <div className="font-medium text-gray-900">{order.customer_name}</div>
                       <div className="text-sm text-gray-500">{order.customer_email}</div>
+                      <CustomerWhatsApp phone={order.customer_phone} />
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-900">{itemCount} item(s)</td>
+                  <td className="px-6 py-4 text-gray-900">
+                    <div className="space-y-1.5">
+                      <OrderThumbnails items={order.items} />
+                      <div>{itemCount} item(s)</div>
+                    </div>
+                  </td>
                   <td className="px-6 py-4 font-medium text-gray-900">₹{order.total_amount.toFixed(2)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-xs rounded ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
@@ -174,14 +227,20 @@ export function OrderList({ orders }: OrderListProps) {
               </div>
 
               <div className="space-y-2 text-sm">
-                <div>
+                <div className="flex flex-col">
                   <span className="text-gray-600">Customer:</span>
                   <div className="font-medium text-gray-900">{order.customer_name}</div>
                   <div className="text-gray-500 text-xs">{order.customer_email}</div>
+                  <CustomerWhatsApp phone={order.customer_phone} />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Items:</span>
-                  <span className="font-medium text-gray-900">{itemCount} item(s)</span>
+                <div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Items:</span>
+                    <span className="font-medium text-gray-900">{itemCount} item(s)</span>
+                  </div>
+                  <div className="mt-2">
+                    <OrderThumbnails items={order.items} />
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total:</span>
