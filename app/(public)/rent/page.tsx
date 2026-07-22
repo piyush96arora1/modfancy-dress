@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { getRentCategoriesCached } from '@/lib/supabase/cached-queries'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
 import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
@@ -8,6 +8,8 @@ import { getImageUrl } from '@/lib/imageUrl'
 import { BUSINESS_PHONE_DISPLAY, whatsappUrl } from '@/lib/constants/contact'
 import Image from 'next/image'
 
+export const revalidate = 86400
+
 export const metadata = generatePageMetadata({
   title: 'Fancy Dress on Rent in Delhi - Krishna Nagar Shop',
   description:
@@ -15,49 +17,8 @@ export const metadata = generatePageMetadata({
   path: '/rent',
 })
 
-type RentCategory = {
-  name: string
-  slug: string
-  image_url: string | null
-  min_rent: number
-  max_rent: number
-  product_count: number
-}
-
 export default async function RentPage() {
-  const supabase = await createClient()
-
-  const { data: rows } = await supabase
-    .from('products')
-    .select('rent_price, category:categories(name, slug, image_url)')
-    .eq('is_active', true)
-    .is('deleted_at', null)
-    .not('rent_price', 'is', null)
-
-  const catMap = new Map<string, RentCategory>()
-  for (const row of rows ?? []) {
-    const rawCat = row.category as unknown
-    const cat = Array.isArray(rawCat) ? rawCat[0] as { name: string; slug: string; image_url: string | null } | undefined : rawCat as { name: string; slug: string; image_url: string | null } | null
-    if (!cat) continue
-    const rp = Number(row.rent_price)
-    const existing = catMap.get(cat.slug)
-    if (existing) {
-      existing.min_rent = Math.min(existing.min_rent, rp)
-      existing.max_rent = Math.max(existing.max_rent, rp)
-      existing.product_count++
-    } else {
-      catMap.set(cat.slug, {
-        name: cat.name,
-        slug: cat.slug,
-        image_url: cat.image_url,
-        min_rent: rp,
-        max_rent: rp,
-        product_count: 1,
-      })
-    }
-  }
-
-  const categories = [...catMap.values()].sort((a, b) => b.product_count - a.product_count)
+  const categories = await getRentCategoriesCached()
 
   const breadcrumbSchema = BreadcrumbSchema([
     { name: 'Home', url: '/' },

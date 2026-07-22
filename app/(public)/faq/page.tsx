@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
 import { ChevronRight } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
@@ -8,12 +7,12 @@ import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { CategoryPriceTable } from '@/components/public/seo-tables/CategoryPriceTable'
 import { FAQ_SECTION_LABELS, FAQ_SECTION_ORDER } from '@/lib/faq-section-labels'
-import { getFaqsForFaqPage } from '@/lib/faqs/queries'
+import { getFaqsForFaqPageCached } from '@/lib/faqs/queries'
 import { FaqSection } from '@/components/public/FaqSection'
 import type { Faq } from '@/types/database'
 import { BUSINESS_PHONE_DISPLAY } from '@/lib/constants/contact'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 
 export const metadata = generatePageMetadata({
   title: 'FAQ - Mod Fancy Dress | Orders, Sizing, Bulk & Delivery',
@@ -31,7 +30,7 @@ function sortFaqsForPage(faqs: Faq[]): Faq[] {
 }
 
 export default async function FaqPage() {
-  const faqs = sortFaqsForPage(await getFaqsForFaqPage())
+  const faqs = sortFaqsForPage(await getFaqsForFaqPageCached())
 
   const faqPageSchema = FaqPageSchema([
     ...occasionGuideFaqPairs(),

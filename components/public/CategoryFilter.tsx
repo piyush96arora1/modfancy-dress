@@ -8,14 +8,17 @@ import { usePricingMode } from '@/lib/context/PricingModeContext'
 
 interface CategoryFilterProps {
   categories: Array<{ id: string; name: string; slug: string }>
-  currentCategory: string | null
-  searchQuery: string | null
 }
 
-export function CategoryFilter({ categories, currentCategory, searchQuery }: CategoryFilterProps) {
+export function CategoryFilter({ categories }: CategoryFilterProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const searchParams = useSearchParams()
   const { mode } = usePricingMode()
+
+  // Derive current filter state from the URL so this works on a statically
+  // rendered listing page (no server-provided props needed).
+  const currentCategory = searchParams.get('category')
+  const searchQuery = searchParams.get('search')
 
   const basePath = mode === 'wholesale' ? '/wholesale' : '/products'
 

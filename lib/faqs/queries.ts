@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
 import type { Faq } from '@/types/database'
 
@@ -16,6 +17,16 @@ export async function getFaqsForFaqPage(): Promise<Faq[]> {
   }
   return (data ?? []) as Faq[]
 }
+
+/**
+ * Cached wrapper so the /faq page renders as ISR instead of dynamic.
+ * 24h cache; invalidate via revalidateTag('faqs') if an admin FAQ editor is added.
+ */
+export const getFaqsForFaqPageCached = unstable_cache(
+  getFaqsForFaqPage,
+  ['faqs-for-faq-page'],
+  { revalidate: 86400, tags: ['faqs'] }
+)
 
 /** Curated subset for blog post footers (`show_on_blog`). */
 export async function getFaqsForBlog(): Promise<Faq[]> {

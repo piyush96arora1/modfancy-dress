@@ -16,6 +16,7 @@ import { createPublicServerClient } from './public-server'
  */
 
 const ONE_DAY = 86400
+const ONE_HOUR = 3600
 
 export const getProductReviewsCached = unstable_cache(
   async (productId: string) => {
@@ -239,4 +240,112 @@ export const getPublishedBlogSlugsCached = unstable_cache(
   },
   ['published-blog-slugs'],
   { revalidate: ONE_DAY, tags: ['blog'] }
+)
+
+/** Categories that have at least one rentable product, with rent-price range + count. */
+export type RentCategory = {
+  name: string
+  slug: string
+  image_url: string | null
+  min_rent: number
+  max_rent: number
+  product_count: number
+}
+
+export const getRentCategoriesCached = unstable_cache(
+  async (): Promise<RentCategory[]> => {
+    const supabase = createPublicServerClient()
+    const { data: rows } = await supabase
+      .from('products')
+      .select('rent_price, category:categories(name, slug, image_url)')
+      .eq('is_active', true)
+      .is('deleted_at', null)
+      .not('rent_price', 'is', null)
+
+    const catMap = new Map<string, RentCategory>()
+    for (const row of rows ?? []) {
+      const rawCat = (row as { category: unknown }).category
+      const cat = Array.isArray(rawCat)
+        ? (rawCat[0] as { name: string; slug: string; image_url: string | null } | undefined)
+        : (rawCat as { name: string; slug: string; image_url: string | null } | null)
+      if (!cat) continue
+      const rp = Number((row as { rent_price: number | string }).rent_price)
+      const existing = catMap.get(cat.slug)
+      if (existing) {
+        existing.min_rent = Math.min(existing.min_rent, rp)
+        existing.max_rent = Math.max(existing.max_rent, rp)
+        existing.product_count++
+      } else {
+        catMap.set(cat.slug, {
+          name: cat.name,
+          slug: cat.slug,
+          image_url: cat.image_url,
+          min_rent: rp,
+          max_rent: rp,
+          product_count: 1,
+        })
+      }
+    }
+
+    return [...catMap.values()].sort((a, b) => b.product_count - a.product_count)
+  },
+  ['rent-categories'],
+  { revalidate: ONE_DAY, tags: ['products', 'categories'] }
+)
+
+/**
+ * Full active catalog for the /products and /wholesale listing pages.
+ * Selects category + junction slugs so the browse page can filter by category
+ * client-side (keeping the page statically rendered). 1h cache: new products
+ * appear on the listing within the hour without a redeploy.
+ */
+export const getAllActiveProductsCached = unstable_cache(
+  async () => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('products')
+      .select(`
+        *,
+        category:categories(name, slug),
+        categories:product_categories(category:categories(name, slug)),
+        images:product_images(image_url, is_primary),
+        variants:product_variants(price_override)
+      `)
+      .eq('is_active', true)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+    return data ?? []
+  },
+  ['all-active-products'],
+  { revalidate: ONE_HOUR, tags: ['products'] }
+)
+
+/** Active categories (with image) for the listing-page category filter. */
+export const getActiveCategoriesCached = unstable_cache(
+  async () => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('categories')
+      .select('id, name, slug, image_url')
+      .eq('is_active', true)
+      .order('name')
+    return data ?? []
+  },
+  ['active-categories-with-image'],
+  { revalidate: ONE_HOUR, tags: ['categories'] }
+)
+
+/** Wholesale discount percentage from site_settings (defaults to 30). */
+export const getWholesaleDiscountPctCached = unstable_cache(
+  async (): Promise<number> => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'wholesale_discount_pct')
+      .single()
+    return (data as { value?: { value?: number } } | null)?.value?.value ?? 30
+  },
+  ['wholesale-discount-pct'],
+  { revalidate: ONE_HOUR, tags: ['products', 'settings'] }
 )
