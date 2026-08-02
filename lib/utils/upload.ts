@@ -12,21 +12,34 @@ export async function uploadCompressedImage(
 ): Promise<string> {
     const supabase = createClient()
 
-    // Step 1: Compress in browser
+    // Step 1: Compress in browser.
+    //
+    // `alwaysKeepResolution` is what keeps images sharp. Without it the library is free to
+    // halve the pixel dimensions over and over trying to reach `maxSizeMB`, and a photo that
+    // can't hit the target just gets downscaled until it gives up — that was the source of
+    // the blurry uploads. With it on, the image is resized once to `maxWidthOrHeight` and
+    // everything after that is quality-only.
     const compressed = await imageCompression(file, {
-        maxSizeMB: 0.1,           // max 100KB
-        maxWidthOrHeight: 1200,    // preserve aspect ratio, cap at 1200px
-        useWebWorker: true,        // non-blocking
-        fileType: 'image/webp',    // always output webp
-        initialQuality: 0.85,      // matches our script quality
+        maxSizeMB: 0.4,             // ~400KB; 100KB was unreachable and forced downscaling
+        maxWidthOrHeight: 1600,     // preserve aspect ratio, cap at 1600px
+        useWebWorker: true,         // non-blocking
+        fileType: 'image/webp',     // preferred output; see the guard below
+        initialQuality: 0.92,
+        alwaysKeepResolution: true, // never trade pixels for file size
     })
 
-    // Step 2: Generate filename
-    // If the original file is already a webp, we might want to keep the name but append a timestamp
-    // or just generate a new one to avoid collisions if not provided
+    // Step 2: Generate filename.
+    //
+    // Trust what the browser actually produced rather than assuming webp. `canvas.toBlob()`
+    // silently falls back to image/png when it can't encode the requested type, and naming a
+    // PNG `.webp` (with a webp content-type) misrepresents the file to every client that
+    // fetches it. Deriving both from `compressed.type` keeps them honest.
+    const isWebp = compressed.type === 'image/webp'
+    const ext = isWebp ? 'webp' : 'png'
+
     const name = filename
-        ? `${filename}.webp`
-        : `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`
+        ? `${filename}.${ext}`
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const storagePath = `${folder}/${name}`
 
@@ -34,7 +47,7 @@ export async function uploadCompressedImage(
     const { error } = await supabase.storage
         .from('product-images')
         .upload(storagePath, compressed, {
-            contentType: 'image/webp',
+            contentType: compressed.type || 'image/png',
             cacheControl: '31536000', // 1 year
             upsert: false,
         })
