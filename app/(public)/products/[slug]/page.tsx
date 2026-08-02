@@ -184,11 +184,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-white border border-[#E8E5E0]">
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-[#1B2A4A]">
-                      Rent from <span className="text-[#C8956C] font-bold">₹{productData.rent_price}/event</span>
+                      Available on <span className="text-[#C8956C] font-bold">Rent</span>
                     </p>
-                    <Link href="/rent" className="block text-[10px] text-[#9A9A9A] hover:text-[#C8956C] transition-colors mt-0.5">
-                      Shop pickup or Porter/Rapido delivery →
-                    </Link>
+                    <p className="text-[10px] text-[#9A9A9A] mt-0.5">
+                      Get rental price on WhatsApp ·{' '}
+                      <Link href="/rent" className="hover:text-[#C8956C] transition-colors">
+                        Shop pickup or Porter/Rapido delivery →
+                      </Link>
+                    </p>
                   </div>
                   <a
                     href={whatsappUrl(waRentMessage)}
@@ -198,7 +201,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     aria-label="Enquire about renting this costume on WhatsApp"
                   >
                     <WhatsAppIcon className="w-3.5 h-3.5" />
-                    Rent
+                    Enquire
                   </a>
                 </div>
               )}

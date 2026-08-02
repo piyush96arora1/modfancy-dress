@@ -144,11 +144,6 @@ export default async function RentPage() {
                 <h3 className="text-center font-medium text-xs md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] leading-tight">
                   {cat.name}
                 </h3>
-                <p className="text-[10px] md:text-xs text-[#C8956C] font-medium">
-                  {cat.min_rent === cat.max_rent
-                    ? `₹${cat.min_rent}/event`
-                    : `₹${cat.min_rent}–₹${cat.max_rent}/event`}
-                </p>
                 <p className="text-[10px] text-[#9A9A9A]">{cat.product_count} costumes</p>
               </Link>
             ))}
