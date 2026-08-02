@@ -1,9 +1,19 @@
-/** Primary business WhatsApp / phone (India, E.164 without + for wa.me). */
-export const BUSINESS_WHATSAPP_E164 = '919311365366'
+/**
+ * Business WhatsApp chat number (India, E.164 without + for wa.me).
+ * Deliberately different from the call line below — chat and calls go to separate handsets.
+ */
+export const BUSINESS_WHATSAPP_E164 = '919953764137'
 
+/** Spaced display format for the WhatsApp number — use in any "WhatsApp us at ..." copy. */
+export const BUSINESS_WHATSAPP_DISPLAY = '+91 99537 64137'
+
+/**
+ * Business call line. This is the NAP phone number published in LocalBusiness /
+ * Organization schema and on Google Business Profile — keep it in sync with GBP.
+ */
 export const BUSINESS_PHONE_TEL = '+919311365366'
 
-/** Spaced display format for UI */
+/** Spaced display format for the call line — use in "Call us at ..." copy. */
 export const BUSINESS_PHONE_DISPLAY = '+91 93113 65366'
 
 export function whatsappUrl(prefilledText: string): string {

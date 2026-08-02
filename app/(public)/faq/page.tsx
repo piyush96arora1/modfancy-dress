@@ -10,7 +10,7 @@ import { FAQ_SECTION_LABELS, FAQ_SECTION_ORDER } from '@/lib/faq-section-labels'
 import { getFaqsForFaqPageCached } from '@/lib/faqs/queries'
 import { FaqSection } from '@/components/public/FaqSection'
 import type { Faq } from '@/types/database'
-import { BUSINESS_PHONE_DISPLAY } from '@/lib/constants/contact'
+import { BUSINESS_WHATSAPP_DISPLAY } from '@/lib/constants/contact'
 
 export const revalidate = 86400
 
@@ -79,7 +79,7 @@ export default async function FaqPage() {
             <Link href="/contact" className="text-[#C8956C] hover:text-[#A07048] font-medium">
               contact us
             </Link>{' '}
-            or WhatsApp {BUSINESS_PHONE_DISPLAY}.
+            or WhatsApp {BUSINESS_WHATSAPP_DISPLAY}.
           </p>
         </header>
 
