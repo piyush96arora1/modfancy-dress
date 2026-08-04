@@ -95,8 +95,9 @@ Once output is PNG the three settings interact badly:
 1. PNG is lossless, so `initialQuality: 0.85` does nothing — `toBlob` ignores quality for PNG.
 2. The library must still reach `maxSizeMB: 0.1` (100 KB), and its only remaining lever is
    **shrinking dimensions**.
-3. A photo-as-PNG cannot reach 100 KB, so it downscales until it gives up. Observed output:
-   `536×716` at 597 KB — roughly one halving step below a ~1072×1432 source.
+3. A photo-as-PNG cannot reach 100 KB, so it downscales until it gives up. The loop shrinks
+   the canvas 5% per iteration over `maxIteration` (default 10) passes: `1200 × 0.95¹⁰ = 718px`.
+   Observed output was `536×716` — a near-exact match, confirming the mechanism.
 
 The blur was aggressive downscaling in pursuit of an unreachable target. Raising
 `initialQuality` alone would have changed nothing.
@@ -121,6 +122,34 @@ immediately reveals whether WebP encoding works.
 
 The 91 existing PNG-as-webp images were left in place. Decision: fix forward, evaluate a
 backfill after observing a real upload.
+
+### Follow-up: iOS regression (2026-08-04)
+
+Naming files after their real format collided with `getImageUrl()`, which rewrote
+`.png → .webp` on every URL. That rule exists to map legacy `/products/foo.jpg` rows onto
+pre-generated `/products-webp/foo.webp` files, and it was harmless only because uploads were
+previously *named* `.webp` regardless of their bytes — the old mislabelling happened to agree
+with it.
+
+Real uploads settled the open format question empirically: laptop produced genuine WebP, iOS
+Safari fell back (it cannot encode WebP via `canvas.toBlob`; it displays WebP fine, so viewers
+are unaffected). The iOS files stored as `.png`, `getImageUrl` requested `.webp`, and those
+404'd — one live product page (`gujrati-boy-fancy-dress`) showed a broken image.
+
+Fixes:
+
+- `lib/imageUrl.ts` — URLs already inside a `-webp` folder are returned untouched; the stored
+  filename is authoritative. Legacy rewriting is unchanged, and the 66 legacy `products/*.png`
+  rows still resolve to their existing pre-generated WebP variants.
+- `lib/utils/upload.ts` — feature-detect WebP encoding and fall back to **JPEG rather than
+  PNG**. Format labelling was the visible symptom; the real cost was that PNG is lossless, so
+  `initialQuality` and `maxSizeMB` were both inert and iOS uploads landed at ~3 MB. JPEG keeps
+  the encode lossy, so the size target is reachable (~300–400 KB).
+- `maxIteration: 3` — at fixed resolution each pass allocates a fresh full-size canvas, which
+  is heavy on iOS Safari's canvas memory ceiling and buys little once quality starts at 0.92.
+
+The two changes are complementary: the upload change optimises the common path, the URL change
+stops any unexpected format from 404ing. Worst case is now a heavy file, not a broken image.
 
 ---
 
