@@ -1,17 +1,69 @@
 [
-  { "source": "/products/mother-india-white-saree-fancy-dress", "destination": "/products/bharat-mata-fancy-dress-costume", "permanent": true },
-  { "source": "/wholesale/mother-india-white-saree-fancy-dress", "destination": "/wholesale/bharat-mata-fancy-dress-costume", "permanent": true },
-  { "source": "/products/subash-chandra-bose-fancy-dress-costume", "destination": "/products/subhash-chander-bose-fancy-dress", "permanent": true },
-  { "source": "/wholesale/subash-chandra-bose-fancy-dress-costume", "destination": "/wholesale/subhash-chander-bose-fancy-dress", "permanent": true },
-  { "source": "/products/mangal-pandey-dress-fancy-dress", "destination": "/products/mangal-pandey-fancy-dress", "permanent": true },
-  { "source": "/wholesale/mangal-pandey-dress-fancy-dress", "destination": "/wholesale/mangal-pandey-fancy-dress", "permanent": true },
-  { "source": "/products/police-fancy-dress-costumes-kids", "destination": "/products/police-fancy-dress", "permanent": true },
-  { "source": "/wholesale/police-fancy-dress-costumes-kids", "destination": "/wholesale/police-fancy-dress", "permanent": true },
-  { "source": "/category/vegetables", "destination": "/category/vegetable-costumes", "permanent": true },
-  { "source": "/category/ramleela-collection", "destination": "/category/ramleela-costumes", "permanent": true },
-  { "source": "/category/animal-wildlife-fancy-dress-costumes", "destination": "/category/animal-costumes", "permanent": true },
-  { "source": "/category/doraemon", "destination": "/category/cartoon-characters", "permanent": true },
-  { "source": "/category/mythological-characters-costume", "destination": "/category/indian-mythology-costumes", "permanent": true },
+  {
+    "source": "/products/mother-india-white-saree-fancy-dress",
+    "destination": "/products/bharat-mata-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mother-india-white-saree-fancy-dress",
+    "destination": "/wholesale/bharat-mata-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/products/subash-chandra-bose-fancy-dress-costume",
+    "destination": "/products/subhash-chander-bose-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/subash-chandra-bose-fancy-dress-costume",
+    "destination": "/wholesale/subhash-chander-bose-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/mangal-pandey-dress-fancy-dress",
+    "destination": "/products/mangal-pandey-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mangal-pandey-dress-fancy-dress",
+    "destination": "/wholesale/mangal-pandey-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/police-fancy-dress-costumes-kids",
+    "destination": "/products/police-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/police-fancy-dress-costumes-kids",
+    "destination": "/wholesale/police-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/category/vegetables",
+    "destination": "/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/category/ramleela-collection",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/category/animal-wildlife-fancy-dress-costumes",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/category/doraemon",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/category/mythological-characters-costume",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
   {
     "source": "/products/kathak-dance-dress-costume-yellow-with-purple",
     "destination": "/products/kathak-dance-dress-costume-yellow-with-purple-fancy-dress",
@@ -1304,12 +1356,12 @@
   },
   {
     "source": "/products/mother-india-white-saree",
-    "destination": "/products/mother-india-white-saree-fancy-dress",
+    "destination": "/products/bharat-mata-fancy-dress-costume",
     "permanent": true
   },
   {
     "source": "/wholesale/mother-india-white-saree",
-    "destination": "/wholesale/mother-india-white-saree-fancy-dress",
+    "destination": "/wholesale/bharat-mata-fancy-dress-costume",
     "permanent": true
   },
   {
@@ -1354,12 +1406,12 @@
   },
   {
     "source": "/products/mangal-pandey-dress",
-    "destination": "/products/mangal-pandey-dress-fancy-dress",
+    "destination": "/products/mangal-pandey-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/mangal-pandey-dress",
-    "destination": "/wholesale/mangal-pandey-dress-fancy-dress",
+    "destination": "/wholesale/mangal-pandey-fancy-dress",
     "permanent": true
   },
   {
@@ -1590,6 +1642,36 @@
   {
     "source": "/wholesale/ghoomar-lehenga",
     "destination": "/wholesale/ghoomar-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/blue-lehnga-dandia-dress",
+    "destination": "/products/blue-lehenga-dandiya-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/blue-lehnga-dandia-dress",
+    "destination": "/wholesale/blue-lehenga-dandiya-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pink-lehnga-dandiya-dress",
+    "destination": "/products/pink-lehenga-dandiya-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pink-lehnga-dandiya-dress",
+    "destination": "/wholesale/pink-lehenga-dandiya-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/dandiya-fancy-dress-lehnga",
+    "destination": "/products/dandiya-fancy-dress-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dandiya-fancy-dress-lehnga",
+    "destination": "/wholesale/dandiya-fancy-dress-lehenga",
     "permanent": true
   }
 ]
