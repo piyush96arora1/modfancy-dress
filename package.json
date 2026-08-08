@@ -9,7 +9,8 @@
     "lint": "eslint",
     "import:collection": "tsx scripts/import-collection.ts",
     "verify:setup": "tsx scripts/verify-setup.ts",
-    "check:missing": "tsx scripts/check-missing-products.ts"
+    "check:missing": "tsx scripts/check-missing-products.ts",
+    "audit:descriptions": "tsx scripts/audit-product-descriptions.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
