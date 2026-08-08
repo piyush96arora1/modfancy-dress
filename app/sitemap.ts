@@ -70,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/products`, lastModified: new Date('2026-03-01') },
-    { url: `${baseUrl}/wholesale`, lastModified: new Date('2026-03-01') },
+    { url: `${baseUrl}/wholesale`, lastModified: new Date('2026-08-08') },
     { url: `${baseUrl}/rent`, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/blog`, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/about`, lastModified: new Date('2026-03-01') },
@@ -82,11 +82,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/fancy-dress-gurgaon`, lastModified: new Date('2026-03-28') },
     { url: `${baseUrl}/fancy-dress-delhi`, lastModified: new Date('2026-04-14') },
     { url: `${baseUrl}/wholesale/schools`, lastModified: new Date('2026-04-14') },
+    { url: `${baseUrl}/wholesale/delhi-market`, lastModified: new Date('2026-08-08') },
+    { url: `${baseUrl}/wholesale/resellers`, lastModified: new Date('2026-08-08') },
+    { url: `${baseUrl}/wholesale/dance-academies`, lastModified: new Date('2026-08-08') },
     { url: `${baseUrl}/compare/local-vs-online`, lastModified: new Date('2026-04-14') },
   ]
 
-  // wholesaleCategoryUrls intentionally excluded — those pages canonical to
-  // /category/<slug> and are noindex'd to eliminate duplicate-content drag.
+  // Wholesale URLs intentionally excluded from the sitemap: /wholesale/<slug>
+  // canonicals to /products/<slug> and /wholesale/category/<slug> canonicals to
+  // /category/<slug>. Listing a canonicalised URL in the sitemap contradicts its
+  // own canonical tag, so only the retail equivalents are submitted. The
+  // hand-written wholesale landing pages (/wholesale and its /schools,
+  // /delhi-market, /resellers, /dance-academies children) carry self-referencing
+  // canonicals and unique content, so they ARE listed in staticPages above.
+  void wholesaleProductUrls
   void wholesaleCategoryUrls
 
   return [

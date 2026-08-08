@@ -6,14 +6,14 @@ export function Footer() {
   return (
     <footer className="bg-[#1B2A4A] text-white mt-auto pb-20 md:pb-0">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10">
           {/* Brand */}
           <div className="md:col-span-2">
             <h3 className="font-[family-name:var(--font-outfit)] font-bold text-xl md:text-2xl mb-3 text-white">
               Mod Fancy Dress
             </h3>
             <p className="text-white/70 text-sm leading-relaxed max-w-sm mb-4">
-              Delhi's trusted fancy dress destination. 15+ years of experience crafting memorable costumes for school functions, dance performances, and celebrations.
+              Delhi&apos;s trusted fancy dress destination. 15+ years of experience crafting memorable costumes for school functions, dance performances, and celebrations.
             </p>
             {/* Trust Badges */}
             <div className="flex items-center gap-4 text-xs text-white/50">
@@ -56,8 +56,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale/schools" className="text-white/70 hover:text-[#C8956C] transition-colors">
-                  Bulk / Schools
+                <Link href="/rent" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Rent
                 </Link>
               </li>
               <li>
@@ -73,6 +73,39 @@ export function Footer() {
               <li>
                 <Link href="/contact" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Wholesale — sitewide internal links so each B2B landing page is
+              crawlable from every page, not just from /wholesale. */}
+          <div>
+            <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-3">Wholesale</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/wholesale" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Wholesale Prices
+                </Link>
+              </li>
+              <li>
+                <Link href="/wholesale/schools" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Schools &amp; Bulk Orders
+                </Link>
+              </li>
+              <li>
+                <Link href="/wholesale/dance-academies" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Dance Academies
+                </Link>
+              </li>
+              <li>
+                <Link href="/wholesale/resellers" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Retailers &amp; Resellers
+                </Link>
+              </li>
+              <li>
+                <Link href="/wholesale/delhi-market" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Delhi Wholesale Market
                 </Link>
               </li>
             </ul>
