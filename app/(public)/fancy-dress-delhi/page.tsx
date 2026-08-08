@@ -25,7 +25,7 @@ const FAQS = [
   {
     question: 'Where is the best costume shop in Delhi?',
     answer:
-      'Mod Fancy Dress in Krishna Nagar, East Delhi is one of the most trusted fancy dress costume shops in Delhi, with 15+ years of experience and 700+ Google reviews at a 4.7-star rating. The store is at S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051, a 5-minute walk from Krishna Nagar Metro Station on the Blue Line.',
+      'Mod Fancy Dress in Krishna Nagar, East Delhi is one of the most trusted fancy dress costume shops in Delhi, with 15+ years of experience and 700+ Google reviews at a 4.7-star rating. The store is at S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051, a 5-minute walk from Krishna Nagar Metro Station on the Pink Line.',
   },
   {
     question: 'Can I get a costume on rent in Delhi?',
@@ -114,7 +114,7 @@ export default function FancyDressDelhiPage() {
       <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
         <p>Mod Fancy Dress has been Delhi&apos;s go-to costume shop for over <strong className="text-[#2D2D2D]">15 years</strong>. Our store in <strong className="text-[#2D2D2D]">Krishna Nagar, East Delhi</strong> stocks more than <strong className="text-[#2D2D2D]">400 fancy dress styles</strong> for children and adults — from classical Indian dance costumes and freedom fighter outfits to superhero costumes and international character dress. We have served <strong className="text-[#2D2D2D]">400+ school functions</strong> across Delhi NCR and hold over <strong className="text-[#2D2D2D]">700 Google reviews</strong> with a 4.7-star rating.</p>
 
-        <p>Our store is easily accessible from most Delhi areas: <strong className="text-[#2D2D2D]">Krishna Nagar Metro Station</strong> (Blue Line) is a 5-minute walk. We regularly serve customers from East Delhi (Shahdara, Preet Vihar, Laxmi Nagar, Mayur Vihar), Central Delhi (Connaught Place, Karol Bagh), South Delhi (Saket, Hauz Khas, Greater Kailash), and North Delhi (Model Town, Pitampura, Rohini). Delivery is also available to all Delhi pin codes via Porter and Rapido.</p>
+        <p>Our store is easily accessible from most Delhi areas: <strong className="text-[#2D2D2D]">Krishna Nagar Metro Station</strong> (Pink Line) is a 5-minute walk. We regularly serve customers from East Delhi (Shahdara, Preet Vihar, Laxmi Nagar, Mayur Vihar), Central Delhi (Connaught Place, Karol Bagh), South Delhi (Saket, Hauz Khas, Greater Kailash), and North Delhi (Model Town, Pitampura, Rohini). Delivery is also available to all Delhi pin codes via Porter and Rapido.</p>
 
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">What We Stock</h2>
         <p>Our Delhi store stocks costumes across every category schools and events need:</p>
@@ -136,7 +136,7 @@ export default function FancyDressDelhiPage() {
 
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">How to Reach Our Krishna Nagar Store</h2>
         <ol className="list-decimal pl-5 space-y-1.5">
-          <li>Take the Blue Line Metro to <strong className="text-[#2D2D2D]">Krishna Nagar Station</strong> — we are a 5-minute walk from Exit 2</li>
+          <li>Take the Pink Line Metro to <strong className="text-[#2D2D2D]">Krishna Nagar Station</strong> — we are a 5-minute walk from Exit 2. Coming from the Blue Line, change at Karkardooma</li>
           <li>By road: Enter Krishna Nagar from the GT Road side, turn into South Anarkali market. Look for Mod Fancy Dress at S64, Som Bazar</li>
           <li>By auto or cab: Tell the driver &ldquo;Som Bazar, South Anarkali, Krishna Nagar&rdquo; — it is a well-known market</li>
           <li>Parking is available on the market street for two-wheelers. For cars, use the parking near Krishna Nagar Metro</li>
