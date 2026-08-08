@@ -53,16 +53,17 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
         ? category.meta_description
         : (defaultDescription.length > 155 ? defaultDescription.slice(0, 152) + '…' : defaultDescription)
 
-    const meta = generatePageMetadata({
+    // Canonical → retail equivalent (dedup). Deliberately NOT noindex: pairing
+    // noindex with a cross-canonical sends contradictory signals, and Google can
+    // propagate the noindex to the canonical target (/category/<slug>), which we
+    // do want indexed. Canonical alone is the supported dedup signal — same
+    // pattern as /wholesale/<product>.
+    return generatePageMetadata({
         title: wholesaleCategoryTitle(category.name),
         description,
-        path: `/category/${slug}`, // canonical → retail equivalent (dedup)
+        path: `/category/${slug}`,
         image: getImageUrl(category.image_url),
     })
-    return {
-        ...meta,
-        robots: { ...(meta.robots as object), index: false, follow: true },
-    }
 }
 
 export default async function WholesaleCategoryPage({ params }: WholesaleCategoryPageProps) {
