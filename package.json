@@ -10,7 +10,10 @@
     "import:collection": "tsx scripts/import-collection.ts",
     "verify:setup": "tsx scripts/verify-setup.ts",
     "check:missing": "tsx scripts/check-missing-products.ts",
-    "audit:descriptions": "tsx scripts/audit-product-descriptions.ts"
+    "audit:descriptions": "tsx scripts/audit-product-descriptions.ts",
+    "scrape:vastra": "node scripts/vastra-scrape.mjs",
+    "test": "tsx --test tests/*.test.ts",
+    "import:catalog": "tsx scripts/import-supplier-catalog.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
