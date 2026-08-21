@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { ImageOff } from 'lucide-react'
 import type { CatalogCategory } from '@/lib/supabase/supplier-queries'
 
 export function CatalogCategoryCard({ category }: { category: CatalogCategory }) {
@@ -22,8 +23,11 @@ export function CatalogCategoryCard({ category }: { category: CatalogCategory })
               sizes="(max-width: 768px) 50vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center px-3 text-center text-[#9A9A9A] text-sm">
-              {category.name}
+            // 10 of the 61 categories have no supplier image. Show a neutral mark rather than
+            // the category name, which the heading below already states — repeating it renders
+            // the name twice and makes the link announce it twice.
+            <div className="w-full h-full flex items-center justify-center text-[#C8956C]/30">
+              <ImageOff className="w-8 h-8" aria-hidden="true" />
             </div>
           )}
         </div>
