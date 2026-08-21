@@ -1673,5 +1673,15 @@
     "source": "/wholesale/dandiya-fancy-dress-lehnga",
     "destination": "/wholesale/dandiya-fancy-dress-lehenga",
     "permanent": true
+  },
+  {
+    "source": "/products/maggie-fancy-dress",
+    "destination": "/products/maggi-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/maggie-fancy-dress",
+    "destination": "/wholesale/maggi-fancy-dress",
+    "permanent": true
   }
 ]
