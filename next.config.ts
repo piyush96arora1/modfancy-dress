@@ -37,6 +37,17 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
+      // Belt-and-braces for the private catalogue: it must never be indexed even if a page's
+      // robots metadata is wrong or missing. Complements the noindex meta tag, the robots.txt
+      // disallow, and its absence from the sitemap.
+      {
+        source: '/catalog',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
+      {
+        source: '/catalog/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
     ]
   },
   images: {

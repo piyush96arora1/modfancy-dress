@@ -77,23 +77,34 @@ export type CatalogProduct = {
   categoryName: string
   categorySlug: string
   thumbUrl: string | null
-  notes: string | null
   setValue: number
   minOrderQty: number
 }
 
+/*
+ * Deliberately ABSENT from every client-facing shape:
+ *
+ *   supplier_price  — the cost itself.
+ *   notes           — 135 of the 179 supplier notes contain digits and many are the cost
+ *                     verbatim ("1500" on an item costing ₹1500 that we show at ₹1800,
+ *                     "2 pair 60 ke" on a ₹30 item). Rendering them would defeat the point of
+ *                     hiding supplier_price. The column stays populated for the owner.
+ *   variants[].rate — the supplier's per-size cost (334 rows carry one). Exposed only as a
+ *                     marked-up priceLabel, never raw.
+ */
+
 export type CatalogVariant = {
   color: string
   size: string
-  rate: number
-  in_stock: boolean
+  /** Marked-up price for this size, or null when the size carries no separate rate. */
+  priceLabel: string | null
+  inStock: boolean
 }
 
 export type CatalogProductDetail = CatalogProduct & {
   images: { url: string; thumbUrl: string }[]
   hasSizes: boolean
   variants: CatalogVariant[] | null
-  tags: string | null
 }
 
 export type CatalogCategoryPage = {
@@ -138,7 +149,6 @@ function toCatalogProduct(row: any, markupPct: number): CatalogProduct {
     categoryName: row.supplier_categories?.name ?? row.category_name ?? '',
     categorySlug: row.supplier_categories?.slug ?? row.category_slug ?? '',
     thumbUrl: primary?.thumb_url ?? row.thumb_url ?? null,
-    notes: row.notes ?? null,
     setValue: row.set_value ?? 1,
     minOrderQty: row.min_order_qty ?? 0,
   }
@@ -234,24 +244,6 @@ export const getCatalogCategoryBySlugCached = unstable_cache(
   { revalidate: ONE_DAY, tags: ['catalog'] }
 )
 
-/** Every category slug, for generateStaticParams on /catalog/[slug]. */
-export async function fetchCatalogCategorySlugs(): Promise<string[]> {
-  const rows = unwrap<{ slug: string }[]>(
-    await createPublicServerClient()
-      .from('supplier_categories')
-      .select('slug')
-      .eq('is_active', true),
-    'catalog category slugs'
-  )
-  return (rows ?? []).map((c) => c.slug)
-}
-
-export const getCatalogCategorySlugsCached = unstable_cache(
-  fetchCatalogCategorySlugs,
-  ['catalog-category-slugs'],
-  { revalidate: ONE_DAY, tags: ['catalog'] }
-)
-
 // ---------------------------------------------------------------- products
 
 /**
@@ -280,7 +272,7 @@ export async function fetchCatalogProductsForCategory(slug: string, page: number
   const result = await supabase
     .from('supplier_products')
     .select(
-      'id, name, slug, supplier_price, notes, set_value, min_order_qty,' +
+      'id, name, slug, supplier_price, set_value, min_order_qty,' +
         'supplier_categories!inner(name, slug), supplier_product_images(thumb_url, is_primary)',
       { count: 'exact' }
     )
@@ -288,6 +280,13 @@ export async function fetchCatalogProductsForCategory(slug: string, page: number
     .eq('is_active', true)
     .order('name')
     .range(from, from + CATALOG_PAGE_SIZE - 1)
+
+  // A ?page= beyond the last page makes PostgREST answer 416 with no error code, which
+  // unwrap would otherwise turn into a 500. An offset past the end is a dead link, not an
+  // outage: return an empty page so the route can 404. Every other error still throws.
+  if (result.status === 416) {
+    return { products: [], total: result.count ?? 0, pageSize: CATALOG_PAGE_SIZE }
+  }
 
   const rows = unwrap<any[]>(result, `catalog products ${slug}`)
 
@@ -314,7 +313,7 @@ export async function fetchCatalogProductBySlug(
     await supabase
       .from('supplier_products')
       .select(
-        'id, name, slug, supplier_price, notes, tags, set_value, min_order_qty, has_sizes, variants,' +
+        'id, name, slug, supplier_price, set_value, min_order_qty, has_sizes, variants,' +
           'supplier_categories!inner(name, slug),' +
           'supplier_product_images(url, thumb_url, is_primary, sort_order)'
       )
@@ -333,12 +332,25 @@ export async function fetchCatalogProductBySlug(
     )
     .map((i: any) => ({ url: i.url, thumbUrl: i.thumb_url }))
 
+  // Marked up per size; the raw supplier rate never leaves this function.
+  const rawVariants = (data.variants ?? []) as {
+    color: string
+    size: string
+    rate: number
+    in_stock: boolean
+  }[]
+  const variants: CatalogVariant[] = rawVariants.map((v) => ({
+    color: v.color,
+    size: v.size,
+    priceLabel: v.rate > 0 ? formatSupplierPrice(supplierDisplayPrice(v.rate, markupPct)) : null,
+    inStock: Boolean(v.in_stock),
+  }))
+
   return {
     ...toCatalogProduct(data, markupPct),
     images,
     hasSizes: Boolean(data.has_sizes),
-    variants: (data.variants as CatalogVariant[] | null) ?? null,
-    tags: data.tags ?? null,
+    variants: variants.length ? variants : null,
   }
 }
 

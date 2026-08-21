@@ -62,9 +62,12 @@ test('resolveCatalogSlug marks the slug it returns as taken', () => {
 })
 
 test('the real 827 products all get unique slugs', () => {
-  const db = JSON.parse(readFileSync('vastra-data/db.json', 'utf8'))
+  type ScrapedProduct = { design_id: string; listing: { design_number: string } }
+  const db = JSON.parse(readFileSync('vastra-data/db.json', 'utf8')) as {
+    products: Record<string, ScrapedProduct>
+  }
   const taken = new Set<string>()
-  const products = (Object.values(db.products) as any[]).sort((a, b) =>
+  const products = Object.values(db.products).sort((a, b) =>
     a.design_id.localeCompare(b.design_id)
   )
   for (const p of products) {
