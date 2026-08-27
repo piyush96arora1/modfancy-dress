@@ -10,6 +10,7 @@
     "import:collection": "tsx scripts/import-collection.ts",
     "verify:setup": "tsx scripts/verify-setup.ts",
     "check:missing": "tsx scripts/check-missing-products.ts",
+    "check:categories": "tsx scripts/check-category-health.ts",
     "audit:descriptions": "tsx scripts/audit-product-descriptions.ts",
     "scrape:vastra": "node scripts/vastra-scrape.mjs",
     "test": "tsx --test tests/*.test.ts",

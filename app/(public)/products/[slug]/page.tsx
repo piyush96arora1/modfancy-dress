@@ -5,9 +5,13 @@ import {
   getProductMetaBySlugCached,
   getActiveProductSlugsCached,
   getProductReviewsCached,
+  getProductsForCategoryCached,
 } from '@/lib/supabase/cached-queries'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
+import { RelatedProducts } from '@/components/public/RelatedProducts'
+import { getProductCategoriesCached } from '@/lib/supabase/related-queries'
+import { pickRichestPool } from '@/lib/utils/related-products'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { smartProductTitle } from '@/lib/seo/title-helpers'
 import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib/seo/structured-data'
@@ -81,8 +85,35 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const colors = [...new Set(productData.variants?.map((v) => v.color).filter((c): c is string => Boolean(c)) || [])]
 
-  const reviews = await getProductReviewsCached(productData.id)
+  const [reviews, productCategories] = await Promise.all([
+    getProductReviewsCached(productData.id),
+    getProductCategoriesCached(productData.id),
+  ])
+
+  // Siblings come from whichever of the product's categories holds the most
+  // products, not necessarily its primary one — a costume filed primarily under a
+  // near-empty category still gets a full block. `getProductsForCategoryCached` is
+  // keyed by category, so these reads are shared by every product page in that
+  // category and by the category page itself.
+  const relatedPool = pickRichestPool(
+    await Promise.all(
+      productCategories.map(async (c) => ({
+        categoryId: c.id,
+        categoryName: c.name,
+        categorySlug: c.slug,
+        products: (await getProductsForCategoryCached(c.id)) ?? [],
+      }))
+    )
+  )
   const aggregateRating = aggregateRatingFromProductReviews(reviews ?? null)
+
+  // Size guides are looked up by category id, so a product whose primary category
+  // was switched off silently loses its table. `productCategories` is already
+  // filtered to active categories, so falling back to the one the related block
+  // settled on keeps the table rendering. No-op for a healthy product.
+  const sizeGuideCategory =
+    productCategories.find((c) => c.id === productData.category?.id) ??
+    (relatedPool ? { id: relatedPool.categoryId, name: relatedPool.categoryName } : null)
 
   const breadcrumbItems = [
     { name: 'Home', url: '/' },
@@ -245,10 +276,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </section>
         )}
 
-        {productData.category?.id && (
+        {relatedPool && (
+          <RelatedProducts
+            categoryProducts={relatedPool.products as ProductWithDetails[]}
+            currentProductId={productData.id}
+            categoryName={relatedPool.categoryName}
+            categorySlug={relatedPool.categorySlug}
+            className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]"
+          />
+        )}
+
+        {sizeGuideCategory && (
           <SizeGuideTable
-            categoryId={productData.category.id}
-            categoryName={productData.category.name}
+            categoryId={sizeGuideCategory.id}
+            categoryName={sizeGuideCategory.name}
             className="mt-10 md:mt-12 pt-8 border-t border-[#E8E5E0]"
           />
         )}

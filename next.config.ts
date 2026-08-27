@@ -81,7 +81,10 @@ if (process.env.NODE_ENV === 'production') {
         options: {
           cacheName: 'supabase-images',
           expiration: {
-            maxEntries: 30,
+            // Product pages now carry 8 sibling product images below the fold on
+            // top of the gallery's own, so a 30-entry cache evicted itself within
+            // a couple of page views.
+            maxEntries: 60,
             maxAgeSeconds: 7 * 24 * 60 * 60,
           },
           cacheableResponse: {

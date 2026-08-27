@@ -17,9 +17,11 @@ interface ProductCardProps {
   wholesaleDiscountPct?: number
   /** Use `h4` when the grid sits under a section `h2` (e.g. category pages). Default `h3` for listings under page `h1` only. */
   titleTag?: 'h3' | 'h4'
+  /** Hide the category badge where the surrounding section already names the category. */
+  showCategoryBadge?: boolean
 }
 
-export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3' }: ProductCardProps) {
+export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3', showCategoryBadge = true }: ProductCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const { mode: globalMode } = usePricingMode()
@@ -71,7 +73,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
             </div>
           )}
           {/* Category badge */}
-          {product.categories && product.categories.length > 0 ? (
+          {!showCategoryBadge ? null : product.categories && product.categories.length > 0 ? (
             <div className="absolute top-2 left-2">
               <span className="text-[10px] px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
                 {product.categories[0].category.name}
