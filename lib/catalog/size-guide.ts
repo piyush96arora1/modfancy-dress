@@ -10,8 +10,18 @@ export type SizeGuideRow = {
   priceDisplay: string
 }
 
-function effectiveVariantPrice(productPrice: number, override: number | null): number {
-  return override ?? productPrice
+/**
+ * A variant's price: its own override, else the parent product's price.
+ * Null when neither is usable — a missing price is not a free product, and
+ * letting it through as 0 would print "₹0" as a size's minimum on a table
+ * Google reads.
+ */
+function effectiveVariantPrice(
+  productPrice: number | undefined,
+  override: number | null
+): number | null {
+  const price = override ?? productPrice
+  return typeof price === 'number' && price > 0 ? price : null
 }
 
 /**
@@ -29,9 +39,11 @@ export async function getSizeGuideRowsForCategory(
     .select('id, price, size')
     .in('id', productIds)
 
+  // Products with no price are left out rather than recorded as 0; see
+  // effectiveVariantPrice.
   const priceById = new Map<string, number>()
   for (const p of products ?? []) {
-    priceById.set(p.id, p.price ?? 0)
+    if (typeof p.price === 'number' && p.price > 0) priceById.set(p.id, p.price)
   }
 
   const { data: variants } = await supabase
@@ -47,8 +59,8 @@ export async function getSizeGuideRowsForCategory(
     const label = v.size?.trim()
     if (!label) continue
     const key = normalizeSizeKey(label)
-    const base = priceById.get(v.product_id) ?? 0
-    const eff = effectiveVariantPrice(base, v.price_override)
+    const eff = effectiveVariantPrice(priceById.get(v.product_id), v.price_override)
+    if (eff === null) continue
     const cur = byKey.get(key)
     if (!cur) {
       byKey.set(key, { display: label, min: eff, max: eff })
@@ -58,15 +70,31 @@ export async function getSizeGuideRowsForCategory(
     }
   }
 
-  // Product-level size when no variant rows used that product's sizes
+  /*
+   * Sizes carried on the product row rather than on variant rows.
+   *
+   * A size already priced from variants is authoritative and is left alone.
+   * Every other product sharing a size now WIDENS that size's range. Previously
+   * only the first product seen set the price and the rest were skipped, so
+   * Superhero Costumes — a ₹550 Balveer and two ₹1400 costumes, all "3-9 yrs",
+   * none with variant rows — advertised "From ₹1,400" and hid the ₹550. The bug
+   * was invisible while categories held one product per size.
+   */
+  const pricedFromVariants = new Set(byKey.keys())
+
   for (const p of products ?? []) {
     const label = p.size?.trim()
     if (!label) continue
     const key = normalizeSizeKey(label)
-    if ([...byKey.keys()].some((k) => k === key)) continue
-    const eff = p.price ?? 0
-    if (!byKey.has(key)) {
+    if (pricedFromVariants.has(key)) continue
+    const eff = priceById.get(p.id)
+    if (eff === undefined) continue
+    const cur = byKey.get(key)
+    if (!cur) {
       byKey.set(key, { display: label, min: eff, max: eff })
+    } else {
+      cur.min = Math.min(cur.min, eff)
+      cur.max = Math.max(cur.max, eff)
     }
   }
 
