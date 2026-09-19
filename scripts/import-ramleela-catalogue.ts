@@ -33,8 +33,10 @@
  * model against a decorated backdrop rather than a flat-lay on the shop floor,
  * so the alt text says "worn by" instead of "laid flat".
  *
- * Size is left null, matching vanvasi-ram. The supplier carries no size data and
- * a guessed age range on a saree causes returns.
+ * Size is 3-9 yrs, confirmed by the owner on 19 Sep 2026. The supplier carries
+ * no size data, so it was left null on first import rather than guessed, and
+ * filled in once the owner said. `sita dress for kid girl` is 210/mo, so the age
+ * band earns its place in the meta as well as the body.
  *
  * Dry run:  npx tsx scripts/import-ramleela-catalogue.ts
  * Apply:    npx tsx scripts/import-ramleela-catalogue.ts --apply
@@ -63,13 +65,13 @@ const LISTINGS: Listing[] = [
     slug: 'vanvasi-sita-saree-dress',
     name: 'Vanvasi Sita Saree Dress',
     description: [
-      'A vanvasi Sita dress — the plain saffron saree Sita is shown in through the forest years, with a cream and gold border and a matching orange blouse edged in the same cream. There is no zari work, no mirror and no print, and that is the point: the exile scenes call for simplicity, and a heavily worked saree reads as the Ayodhya queen rather than the vanvas. Shown here as a saree with the pallu over the left shoulder and a matching short-sleeved blouse — WhatsApp us about sizing and how it fastens before you order.',
+      'A vanvasi Sita dress — the plain saffron saree Sita is shown in through the forest years, with a cream and gold border and a matching orange blouse edged in the same cream. There is no zari work, no mirror and no print, and that is the point: the exile scenes call for simplicity, and a heavily worked saree reads as the Ayodhya queen rather than the vanvas. Shown here as a saree with the pallu over the left shoulder and a matching short-sleeved blouse — WhatsApp us about how it fastens before you order. Fits most girls 3 to 9 years.',
       'The same saree doubles as a Meera Bai costume — plain saffron with a gold border is the standard Meera look — so one purchase covers both a Ramleela role and a bhakti-poet or saint character for a separate school event.',
       'Vanvasi Sita ki dress — Ramleela, Dussehra aur Meera Bai fancy dress dono ke liye.',
       STORE_TAIL,
     ].join('\n'),
     meta_description:
-      'Vanvasi Sita dress for girls — plain saffron saree with gold border, doubles as Meera Bai. Buy ₹900 or rent ₹600 in Delhi NCR.',
+      'Vanvasi Sita dress for girls 3-9 yrs — plain saffron saree with gold border, doubles as Meera Bai. Buy ₹900 or rent ₹600 in Delhi NCR.',
     seo_title: 'Sita Vanvas Dress - Vanvasi Sita Saree for Girls',
     alts: [
       'Vanvasi Sita saree dress worn by a young girl — plain saffron saree with a cream and gold border and matching orange blouse, hands folded in namaste',
@@ -81,7 +83,7 @@ publishCatalogProducts(sb, LISTINGS, {
   price: 900,
   rentPrice: 600,
   rentDeposit: 2000,
-  size: null,
+  size: '3-9 yrs',
   primaryCategoryId: RAMLEELA_CATEGORY_ID,
   categoryIds: [RAMLEELA_CATEGORY_ID],
   apply: APPLY,
