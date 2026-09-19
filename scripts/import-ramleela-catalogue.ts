@@ -2,10 +2,15 @@
  * Publishes Ramleela characters from the supplier catalogue into Ramleela
  * Costumes (the live category — "Ramleela Collection" is inactive and empty).
  *
- * Vanvasi Sita, priced to match Vanvasi Ram at ₹900 / rent ₹600 / deposit ₹2000
- * on the owner's instruction. NOTE: vanvasi-ram was soft-deleted on
- * 19 Sep 2026 at 06:36 UTC, so the reference product is currently off the site;
- * the price is carried over regardless, as asked.
+ * Vanvasi Sita, priced to match Vanvasi Ram at ₹900 / rent ₹450 / deposit ₹1000
+ * on the owner's instruction.
+ *
+ * Read the price off `vanvasi-ram-fancy-dress` (live since Mar 2026), NOT off
+ * `vanvasi-ram`. The latter is a duplicate created and deleted on 19 Sep 2026
+ * within three hours, and it carried different rent terms (₹600 / ₹2000). The
+ * buy price is ₹900 on both, so only rent and deposit differ — which is exactly
+ * why it is worth checking the slug rather than the name. Ram and Sita are
+ * bought as a pair, so the two must agree.
  *
  * Why this one earns its copy:
  *
@@ -71,7 +76,7 @@ const LISTINGS: Listing[] = [
       STORE_TAIL,
     ].join('\n'),
     meta_description:
-      'Vanvasi Sita dress for girls 3-9 yrs — plain saffron saree with gold border, doubles as Meera Bai. Buy ₹900 or rent ₹600 in Delhi NCR.',
+      'Vanvasi Sita dress for girls 3-9 yrs — plain saffron saree with gold border, doubles as Meera Bai. Buy ₹900 or rent ₹450 in Delhi NCR.',
     seo_title: 'Sita Vanvas Dress - Vanvasi Sita Saree for Girls',
     alts: [
       'Vanvasi Sita saree dress worn by a young girl — plain saffron saree with a cream and gold border and matching orange blouse, hands folded in namaste',
@@ -81,8 +86,8 @@ const LISTINGS: Listing[] = [
 
 publishCatalogProducts(sb, LISTINGS, {
   price: 900,
-  rentPrice: 600,
-  rentDeposit: 2000,
+  rentPrice: 450,
+  rentDeposit: 1000,
   size: '3-9 yrs',
   primaryCategoryId: RAMLEELA_CATEGORY_ID,
   categoryIds: [RAMLEELA_CATEGORY_ID],
