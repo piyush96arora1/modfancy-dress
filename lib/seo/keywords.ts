@@ -307,6 +307,17 @@ const PRODUCT_KEYWORDS: Record<string, string[]> = {
     'Hulk dress for boy',
     'Avengers fancy dress',
   ],
+  // No Iron Man rows exist in the Semrush exports — they were seeded from other
+  // queries — so these carry no volume claim. Both spellings are listed because
+  // Indian shoppers use them interchangeably and neither is clearly dominant.
+  'iron-man-muscle-fancy-dress-with-mask': [
+    'Iron Man fancy dress',
+    'Ironman costume for kids',
+    'Iron Man dress for boy',
+    'Iron Man muscle suit',
+    'Iron Man mask',
+    'Avengers fancy dress',
+  ],
 }
 
 /** Category pages, keyed by category slug. */
