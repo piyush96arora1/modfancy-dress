@@ -14,6 +14,7 @@ import { getProductCategoriesCached } from '@/lib/supabase/related-queries'
 import { pickRichestPool } from '@/lib/utils/related-products'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { smartProductTitle } from '@/lib/seo/title-helpers'
+import { productKeywords } from '@/lib/seo/keywords'
 import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib/seo/structured-data'
 import { ChevronRight, Star } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
@@ -40,10 +41,12 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params
   const product = await getProductMetaBySlugCached(slug)
 
+  // notFound() here as well as in the page body. Returning ordinary metadata for a
+  // missing product made Next serve the 404 UI with a 200 status — a soft 404 that
+  // Google keeps crawling. The query behind this call filters is_active and
+  // deleted_at exactly as the page body does, so the two always agree.
   if (!product) {
-    return {
-      title: 'Product Not Found',
-    }
+    notFound()
   }
 
   const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
@@ -62,6 +65,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
     path: `/products/${slug}`,
     image: getImageUrl(imageUrl),
     type: 'product',
+    keywords: productKeywords(slug, catName),
   })
 }
 

@@ -9,6 +9,7 @@ import {
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
+import { categoryKeywords } from '@/lib/seo/keywords'
 import { CategoryListingJsonLd, FaqPageSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     description,
     path: `/category/${slug}`,
     image: getImageUrl(category.image_url),
+    keywords: categoryKeywords(slug),
   })
 }
 

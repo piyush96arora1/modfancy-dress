@@ -4,6 +4,7 @@ import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { AddToEnquiryButton } from '@/components/public/AddToEnquiryButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
+import { productKeywords } from '@/lib/seo/keywords'
 import { wholesaleProductTitle } from '@/lib/seo/title-helpers'
 import {
     WholesaleProductPageJsonLdGraph,
@@ -43,12 +44,17 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
     const supabase = createPublicServerClient()
     const { data: product } = await supabase
         .from('products')
-        .select('name, description, seo_title, meta_description, price, wholesale_price, images:product_images(image_url, is_primary)')
+        .select('name, description, seo_title, meta_description, price, wholesale_price, category:categories(name), images:product_images(image_url, is_primary)')
         .eq('slug', slug)
+        // Must match the page body's filters below. Without these, a soft-deleted
+        // product still produced a full title and description for a page that then
+        // rendered 404 — and did so with a 200 status.
+        .eq('is_active', true)
+        .is('deleted_at', null)
         .single()
 
     if (!product) {
-        return { title: 'Product Not Found' }
+        notFound()
     }
 
     const primaryImage = product.images?.find((img: any) => img.is_primary) || product.images?.[0]
@@ -66,6 +72,7 @@ export async function generateMetadata({ params }: WholesaleProductPageProps) {
         path: `/products/${slug}`,
         image: getImageUrl(primaryImage?.image_url),
         type: 'product',
+        keywords: productKeywords(slug, (product.category as { name?: string } | null)?.name ?? null),
     })
 }
 

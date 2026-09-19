@@ -104,7 +104,8 @@ const PRODUCT_KEYWORDS: Record<string, string[]> = {
     'Shri Ram costume for kids',
   ],
   // ram costume ideas 390 · rama fancy dress 170 · ram dress for child 170
-  'vanvasi-ram': [
+  // merged into the older vanvasi-ram-fancy-dress page on 19 Sep 2026
+  'vanvasi-ram-fancy-dress': [
     'Vanvasi Ram fancy dress',
     'Ram costume ideas',
     'Ram dress for child',

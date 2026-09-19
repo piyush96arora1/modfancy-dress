@@ -1683,5 +1683,45 @@
     "source": "/wholesale/maggie-fancy-dress",
     "destination": "/wholesale/maggi-fancy-dress",
     "permanent": true
+  },
+  {
+    "source": "/products/raavan-black-dress",
+    "destination": "/products/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/raavan-black-dress",
+    "destination": "/wholesale/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/hanuman-yellow-dress",
+    "destination": "/products/hanuman-yellow-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/hanuman-yellow-dress",
+    "destination": "/wholesale/hanuman-yellow-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/ravan-fancy-dress-costume-black",
+    "destination": "/products/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ravan-fancy-dress-costume-black",
+    "destination": "/wholesale/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/vanvasi-ram",
+    "destination": "/products/vanvasi-ram-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/vanvasi-ram",
+    "destination": "/wholesale/vanvasi-ram-fancy-dress",
+    "permanent": true
   }
 ]

@@ -15,6 +15,60 @@ export function truncateMetaDescription(text: string | null | undefined, max = 1
   return out + (out.length < t.length ? '…' : '')
 }
 
+/**
+ * Site-wide keywords, used when a page does not supply its own.
+ */
+export const SITE_KEYWORDS = [
+  'fancy dress',
+  'fancy dress costumes',
+  'buy fancy dress online',
+  'fancy dress on rent',
+  'fancy dress on rent near me',
+  'costume on rent Delhi',
+  'fancy dress for kids',
+  'school function costumes',
+  'dance costumes',
+  'fancy dress Delhi',
+  'costume shop Delhi',
+  'school annual day dress',
+  'fancy dress competition costume',
+  'wholesale fancy dress',
+  'Krishna Nagar costumes',
+]
+
+/**
+ * Appended after page keywords so a specific page still carries the shop's
+ * location and intent terms. Kept short — a long tag reads as stuffing.
+ */
+const BRAND_TAIL_KEYWORDS = [
+  'fancy dress on rent',
+  'fancy dress Delhi',
+  'costume shop Delhi',
+  'Krishna Nagar costumes',
+]
+
+const MAX_KEYWORDS = 20
+
+/**
+ * Page keywords first, then the brand tail, de-duplicated case-insensitively
+ * and capped. Falls back to the site-wide list when a page supplies none.
+ */
+function resolveKeywords(pageKeywords?: string[]): string[] {
+  if (!pageKeywords?.length) return SITE_KEYWORDS
+
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const kw of [...pageKeywords, ...BRAND_TAIL_KEYWORDS]) {
+    const clean = kw.trim()
+    const key = clean.toLowerCase()
+    if (!clean || seen.has(key)) continue
+    seen.add(key)
+    out.push(clean)
+    if (out.length === MAX_KEYWORDS) break
+  }
+  return out
+}
+
 export function generatePageMetadata({
   title,
   description,
@@ -22,6 +76,7 @@ export function generatePageMetadata({
   image,
   type = 'website',
   verification,
+  keywords,
 }: {
   title: string
   description?: string
@@ -31,6 +86,11 @@ export function generatePageMetadata({
   verification?: {
     google?: string
   }
+  /**
+   * Page-specific keywords, most important first. They are emitted ahead of a
+   * short brand tail; pass nothing and the page keeps the site-wide list.
+   */
+  keywords?: string[]
 }): Metadata {
   const fullTitle = `${title} | ${siteName}`
   const rawDescription = description || defaultDescription
@@ -45,23 +105,7 @@ export function generatePageMetadata({
     title: fullTitle,
     description: fullDescription,
     verification,
-    keywords: [
-      'fancy dress',
-      'fancy dress costumes',
-      'buy fancy dress online',
-      'fancy dress on rent',
-      'fancy dress on rent near me',
-      'costume on rent Delhi',
-      'fancy dress for kids',
-      'school function costumes',
-      'dance costumes',
-      'fancy dress Delhi',
-      'costume shop Delhi',
-      'school annual day dress',
-      'fancy dress competition costume',
-      'wholesale fancy dress',
-      'Krishna Nagar costumes',
-    ],
+    keywords: resolveKeywords(keywords),
     authors: [{ name: siteName }],
     creator: siteName,
     publisher: siteName,
