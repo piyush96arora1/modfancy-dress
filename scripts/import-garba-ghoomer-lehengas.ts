@@ -26,10 +26,9 @@
  * in quality signals than it wins. The seo_title and meta_description stay in
  * English because those are the SERP snippet.
  *
- * Images are COPIED from catalog/full/ into products-webp/ rather than linked,
- * so a future catalogue re-import cannot break a live product page.
- *
- * Idempotent on slug: a product that already exists is skipped, not duplicated.
+ * The write machinery lives in scripts/lib/publish-catalog-product.ts; this
+ * file is the batch: the listings, the price and the categories. Images are
+ * copied rather than linked and the run is idempotent on slug — see that module.
  *
  * Dry run:  npx tsx scripts/import-garba-ghoomer-lehengas.ts
  * Apply:    npx tsx scripts/import-garba-ghoomer-lehengas.ts --apply
@@ -37,6 +36,7 @@
 import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
+import { publishCatalogProducts, type Listing } from './lib/publish-catalog-product'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
@@ -46,9 +46,7 @@ const sb = createClient(
 )
 
 const APPLY = process.argv.includes('--apply')
-const META_MAX = 155 // generatePageMetadata truncates above this
 
-const BUCKET = 'product-images'
 const DANDIYA_CATEGORY_ID = '4fc402b9-3b95-461c-b624-cfb67ebf9b4c'
 const GARBA_CATEGORY_ID = '6b6cfc1d-aaf9-4c16-a167-429f9c20b002'
 
@@ -60,14 +58,6 @@ const SIZE = 'Adult' // the value 18 existing products already use
 const STORE_TAIL = 'Buy or rent at Mod Fancy Dress, Krishna Nagar, Delhi NCR.'
 const SET_NOTE = 'The set is three pieces — flared chaniya, matching choli and dupatta. Adult free size.'
 
-/**
- * The supplier_* tables are not in types/database.ts, so supabase-js infers
- * their rows as `never`. Declaring the shapes here keeps the reads typed
- * without an `any` cast, the same split supplier-queries.ts uses.
- */
-type SupplierImageRow = { url: string; is_primary: boolean | null; sort_order: number | null }
-type SupplierProductRow = { slug: string; supplier_product_images: SupplierImageRow[] | null }
-
 type Item = {
   /** Row in supplier_products this is built from. */
   supplierSlug: string
@@ -78,6 +68,7 @@ type Item = {
   hinglish: string
   meta_description: string
   seo_title: string
+  /** Every set in this batch has a single flat-lay photo. */
   alt: string
 }
 
@@ -279,140 +270,28 @@ const ITEMS: Item[] = [
   },
 ]
 
-/** Full body copy: description, the set note, the Hinglish line, the store tail. */
-function fullDescription(item: Item): string {
-  return [item.body, SET_NOTE, item.hinglish, STORE_TAIL].join('\n')
+/** Body copy: description, the set note, the Hinglish line, the store tail. */
+function toListing(item: Item): Listing {
+  return {
+    supplierSlug: item.supplierSlug,
+    slug: item.slug,
+    name: item.name,
+    description: [item.body, SET_NOTE, item.hinglish, STORE_TAIL].join('\n'),
+    meta_description: item.meta_description,
+    seo_title: item.seo_title,
+    alts: [item.alt],
+  }
 }
 
-/** `.../object/public/product-images/catalog/full/x.webp` -> `catalog/full/x.webp` */
-function storagePath(publicUrl: string): string {
-  const marker = `/object/public/${BUCKET}/`
-  const i = publicUrl.indexOf(marker)
-  if (i === -1) throw new Error(`cannot derive storage path from ${publicUrl}`)
-  return publicUrl.slice(i + marker.length)
-}
-
-async function main() {
-  // ---- preflight: every meta_description must survive generatePageMetadata intact
-  const tooLong = ITEMS.filter((i) => i.meta_description.length > META_MAX)
-  if (tooLong.length) {
-    for (const i of tooLong) {
-      console.error(`meta_description too long (${i.meta_description.length}): ${i.slug}`)
-    }
-    process.exit(1)
-  }
-  const slugs = new Set(ITEMS.map((i) => i.slug))
-  if (slugs.size !== ITEMS.length) throw new Error('duplicate slug in ITEMS')
-
-  // ---- source rows
-  const { data: supplierRows, error } = await sb
-    .from('supplier_products')
-    .select('slug, supplier_product_images(url, is_primary, sort_order)')
-    .in(
-      'slug',
-      ITEMS.map((i) => i.supplierSlug)
-    )
-  if (error) throw new Error(`supplier read failed: ${error.message}`)
-
-  const sourceImage = new Map<string, string>()
-  for (const row of (supplierRows ?? []) as unknown as SupplierProductRow[]) {
-    const imgs = [...(row.supplier_product_images ?? [])].sort(
-      (a, b) =>
-        Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)) ||
-        (a.sort_order ?? 0) - (b.sort_order ?? 0)
-    )
-    if (imgs[0]) sourceImage.set(row.slug, imgs[0].url)
-  }
-  const missing = ITEMS.filter((i) => !sourceImage.has(i.supplierSlug))
-  if (missing.length) {
-    throw new Error(`no catalogue image for: ${missing.map((m) => m.supplierSlug).join(', ')}`)
-  }
-
-  console.log(`${APPLY ? 'APPLYING' : 'DRY RUN'} — ${ITEMS.length} products\n`)
-
-  let inserted = 0
-  let skipped = 0
-
-  for (const item of ITEMS) {
-    const { data: existing } = await sb
-      .from('products')
-      .select('id')
-      .eq('slug', item.slug)
-      .maybeSingle()
-
-    if (existing) {
-      console.log(`SKIP  ${item.slug} — already exists`)
-      skipped++
-      continue
-    }
-
-    const from = storagePath(sourceImage.get(item.supplierSlug)!)
-    const to = `products-webp/${item.slug}.webp`
-    const description = fullDescription(item)
-
-    if (!APPLY) {
-      console.log(`NEW   ${item.name}`)
-      console.log(`      /products/${item.slug}`)
-      console.log(`      ₹${PRICE} · rent ₹${RENT_PRICE} · deposit ₹${RENT_DEPOSIT} · ${SIZE}`)
-      console.log(`      title: ${item.seo_title}`)
-      console.log(`      meta (${item.meta_description.length}): ${item.meta_description}`)
-      console.log(`      image: ${from}\n          -> ${to}`)
-      console.log(`      ${description.split('\n').join('\n      ')}\n`)
-      inserted++
-      continue
-    }
-
-    // ---- image first: a product row with no usable image is worse than no row
-    const { error: copyErr } = await sb.storage.from(BUCKET).copy(from, to)
-    if (copyErr && !/exists/i.test(copyErr.message)) {
-      throw new Error(`image copy failed for ${item.slug}: ${copyErr.message}`)
-    }
-    const publicUrl = sb.storage.from(BUCKET).getPublicUrl(to).data.publicUrl
-
-    const { data: product, error: insErr } = await sb
-      .from('products')
-      .insert({
-        name: item.name,
-        slug: item.slug,
-        description,
-        category_id: DANDIYA_CATEGORY_ID,
-        price: PRICE,
-        rent_price: RENT_PRICE,
-        rent_deposit: RENT_DEPOSIT,
-        size: SIZE,
-        is_active: true,
-        seo_title: item.seo_title,
-        meta_description: item.meta_description,
-      })
-      .select('id')
-      .single()
-    if (insErr || !product) throw new Error(`insert failed for ${item.slug}: ${insErr?.message}`)
-    const productId = (product as { id: string }).id
-
-    const { error: junErr } = await sb.from('product_categories').insert([
-      { product_id: productId, category_id: DANDIYA_CATEGORY_ID },
-      { product_id: productId, category_id: GARBA_CATEGORY_ID },
-    ])
-    if (junErr) throw new Error(`category link failed for ${item.slug}: ${junErr.message}`)
-
-    const { error: imgErr } = await sb.from('product_images').insert({
-      product_id: productId,
-      image_url: publicUrl,
-      alt_text: item.alt,
-      is_primary: true,
-      order: 0,
-    })
-    if (imgErr) throw new Error(`image row failed for ${item.slug}: ${imgErr.message}`)
-
-    console.log(`OK    ${item.slug}`)
-    inserted++
-  }
-
-  console.log(`\n${APPLY ? 'inserted' : 'would insert'}: ${inserted} · skipped: ${skipped}`)
-  if (!APPLY) console.log('\nRe-run with --apply to write.')
-}
-
-main().catch((e) => {
+publishCatalogProducts(sb, ITEMS.map(toListing), {
+  price: PRICE,
+  rentPrice: RENT_PRICE,
+  rentDeposit: RENT_DEPOSIT,
+  size: SIZE,
+  primaryCategoryId: DANDIYA_CATEGORY_ID,
+  categoryIds: [DANDIYA_CATEGORY_ID, GARBA_CATEGORY_ID],
+  apply: APPLY,
+}).catch((e) => {
   console.error(e)
   process.exit(1)
 })

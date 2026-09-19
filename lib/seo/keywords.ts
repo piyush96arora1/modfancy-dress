@@ -67,6 +67,24 @@ const GARBA_CORE = [
 ]
 
 /**
+ * Shared by every product in Superhero Costumes. Position 0 across the board at
+ * export time, on a category page whose own copy promises "Captain America,
+ * Green Hulk, Chota Bheem" — the listing, not the landing page, was the gap.
+ */
+const SUPERHERO_CORE = [
+  'kids superhero costumes', // 720 · KD 25
+  'superhero dress', // 390 · KD 25
+  'superhero dress for boy', // 320 · KD 24
+  'superhero fancy dress', // 260 · KD 27
+  'superhero dress for kids', // 170 · KD 14
+  'superhero costumes for boys', // 140 · KD 26
+  'childrens super hero fancy dress', // 110 · KD 13
+  'superhero fancy dress competition', // 110 · KD 10
+  'superhero dress for baby boy', // 110 · KD 23
+  'superhero costume for kids',
+]
+
+/**
  * Character-specific terms, keyed by product slug. Each list is merged ahead of
  * `RAMLEELA_CORE`, so the character term always leads.
  */
@@ -278,6 +296,17 @@ const PRODUCT_KEYWORDS: Record<string, string[]> = {
     'peacock print lehenga',
     'printed navratri dress',
   ],
+
+  // `hulk mask` is 720/mo on its own and this costume ships with the mask, so
+  // the term is honest here. It leads for that reason.
+  'hulk-muscle-fancy-dress-with-mask': [
+    'Hulk fancy dress', // 170 · KD 23
+    'Hulk mask', // 720 · KD 25
+    'Hulk costume for kids',
+    'Hulk muscle suit',
+    'Hulk dress for boy',
+    'Avengers fancy dress',
+  ],
 }
 
 /** Category pages, keyed by category slug. */
@@ -306,6 +335,18 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
     'dandiya dress online',
     'chaniya choli for dandiya',
   ],
+  'superhero-costumes': [
+    'superhero costume for kids',
+    'kids superhero costumes',
+    'superhero dress',
+    'superhero dress for boy',
+    'superhero fancy dress',
+    'superhero dress for kids',
+    'superhero fancy dress competition',
+    'Hulk fancy dress',
+    'Captain America costume kids',
+    'Avengers fancy dress',
+  ],
   'garba-dress': [
     'garba costume',
     'garba dance costume',
@@ -329,6 +370,7 @@ const CATEGORY_CORE: Record<string, string[]> = {
   'ramleela costumes': RAMLEELA_CORE,
   'dandiya dress': GARBA_CORE,
   'garba dress': GARBA_CORE,
+  'superhero costumes': SUPERHERO_CORE,
 }
 
 /**
