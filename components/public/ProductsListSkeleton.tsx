@@ -1,7 +1,16 @@
-import { SearchBar } from '@/components/public/SearchBar'
+/**
+ * Loading skeleton for the /products listing.
+ *
+ * This lives here rather than in a `loading.tsx` on purpose. A `loading.tsx` at
+ * the /products segment wraps every child route in a Suspense boundary, which
+ * makes Next stream the shell with a 200 before /products/[slug] can call
+ * notFound() — turning every missing or soft-deleted product URL into a soft 404.
+ * Rendered from an in-page <Suspense> instead, the skeleton only wraps the
+ * listing itself and child routes keep their real status codes.
+ */
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 
-export default function Loading() {
+export function ProductsListSkeleton() {
     return (
         <div className="fade-in">
             {/* Page Header Skeleton */}

@@ -1,7 +1,14 @@
-import { SearchBar } from '@/components/public/SearchBar'
+/**
+ * Loading skeleton for the /wholesale listing.
+ *
+ * Lives here rather than in a `loading.tsx` for the same reason as
+ * ProductsListSkeleton: a `loading.tsx` on the /wholesale segment wraps every
+ * child route in a Suspense boundary, so Next streams a 200 shell before
+ * /wholesale/[slug] can call notFound(), turning missing products into soft 404s.
+ */
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 
-export default function Loading() {
+export function WholesaleListSkeleton() {
     return (
         <div className="fade-in">
             {/* Page Header Skeleton */}

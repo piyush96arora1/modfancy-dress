@@ -1,8 +1,10 @@
+import { Suspense } from 'react'
 import {
   getAllActiveProductsCached,
   getActiveCategoriesCached,
 } from '@/lib/supabase/cached-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
+import { ProductsListSkeleton } from '@/components/public/ProductsListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import type { ProductWithDetails } from '@/types/database'
 
@@ -18,7 +20,7 @@ export const metadata = generatePageMetadata({
   path: '/products',
 })
 
-export default async function ProductsPage() {
+async function ProductsList() {
   const [products, categories] = await Promise.all([
     getAllActiveProductsCached(),
     getActiveCategoriesCached(),
@@ -32,5 +34,13 @@ export default async function ProductsPage() {
       basePath="/products"
       pricingMode="retail"
     />
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsListSkeleton />}>
+      <ProductsList />
+    </Suspense>
   )
 }

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import {
     getAllActiveProductsCached,
@@ -5,6 +6,7 @@ import {
     getWholesaleDiscountPctCached,
 } from '@/lib/supabase/cached-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
+import { WholesaleListSkeleton } from '@/components/public/WholesaleListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { CategoryPriceTable } from '@/components/public/seo-tables/CategoryPriceTable'
 import { FaqPageSchema } from '@/lib/seo/structured-data'
@@ -63,7 +65,7 @@ const wholesaleFaqs = [
     },
 ]
 
-export default async function WholesalePage() {
+async function WholesaleContent() {
     const [products, categories, wholesaleDiscountPct] = await Promise.all([
         getAllActiveProductsCached(),
         getActiveCategoriesCached(),
@@ -251,5 +253,13 @@ export default async function WholesalePage() {
                 <CategoryPriceTable headingId="wholesale-category-prices" />
             </div>
         </ProductsBrowser>
+    )
+}
+
+export default function WholesalePage() {
+    return (
+        <Suspense fallback={<WholesaleListSkeleton />}>
+            <WholesaleContent />
+        </Suspense>
     )
 }
