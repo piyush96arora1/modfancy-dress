@@ -310,6 +310,23 @@ const PRODUCT_KEYWORDS: Record<string, string[]> = {
   // No Iron Man rows exist in the Semrush exports — they were seeded from other
   // queries — so these carry no volume claim. Both spellings are listed because
   // Indian shoppers use them interchangeably and neither is clearly dominant.
+  // `sita vanvas dress` at 880/mo is the largest character term in the export
+  // that we stock exactly, and the site ranks 0 for it. The Meera terms are here
+  // because the garment genuinely is the standard Meera Bai costume and the site
+  // already ranks #22 for `meera bai fancy dress` with nothing aimed at it.
+  'vanvasi-sita-saree-dress': [
+    'sita vanvas dress', // 880 · KD 29
+    'vanvasi sita fancy dress', // 260 · KD 25
+    'sita costume', // 480 · KD 26
+    'sita dress', // 390 · KD 26
+    'sita fancy dress', // 320 · KD 27
+    'sita costume for fancy dress', // 210 · KD 17
+    'sita mata dress', // 210 · KD 27
+    'sita dress for kid girl', // 210 · KD 25
+    'meera bai fancy dress', // 210 · KD 23 — currently #22
+    'meera bai costume', // 170 · KD 27
+    'meera fancy dress', // 140 · KD 19
+  ],
   'iron-man-muscle-fancy-dress-with-mask': [
     'Iron Man fancy dress',
     'Ironman costume for kids',
@@ -333,6 +350,9 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
     'Dussehra costume',
     'mythological characters for fancy dress competition',
     'Indian mythology fancy dress',
+    'sita vanvas dress',
+    'sita costume',
+    'ram sita dress',
   ],
   'dandiya-dress': [
     'dandiya dress',
