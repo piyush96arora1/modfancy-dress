@@ -49,16 +49,16 @@ export default async function CatalogCategoryPage({ params, searchParams }: Prop
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
       <nav
-        className="flex items-center gap-1 text-sm text-[#9A9A9A] mb-4 flex-wrap"
+        className="flex items-center gap-1 text-sm text-[#6B6B6B] mb-4 flex-wrap"
         aria-label="Breadcrumb"
       >
-        <Link href="/catalog" className="hover:text-[#C8956C]">
+        <Link href="/catalog" className="hover:text-[#8F6240]">
           Catalogue
         </Link>
         {found.parent && (
           <>
             <ChevronRight className="w-4 h-4" />
-            <Link href={`/catalog/${found.parent.slug}`} className="hover:text-[#C8956C]">
+            <Link href={`/catalog/${found.parent.slug}`} className="hover:text-[#8F6240]">
               {found.parent.name}
             </Link>
           </>
@@ -72,7 +72,7 @@ export default async function CatalogCategoryPage({ params, searchParams }: Prop
           <h1 className="text-2xl sm:text-3xl font-semibold text-[#2C2C2C]">
             {found.category.name}
           </h1>
-          <p className="text-[#9A9A9A] mt-1">
+          <p className="text-[#6B6B6B] mt-1">
             {total} {total === 1 ? 'item' : 'items'}
           </p>
         </div>

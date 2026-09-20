@@ -88,7 +88,7 @@ export default function LocalVsOnlinePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
           <span>›</span>
           <span className="text-[#2D2D2D]">Specialist Store vs Marketplace</span>
@@ -97,10 +97,10 @@ export default function LocalVsOnlinePage() {
         <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]">
           Mod Fancy Dress vs Amazon / Flipkart — Which Should You Use?
         </h1>
-        <p className="text-xs text-[#9A9A9A] mb-4">By Piyush Arora, Mod Fancy Dress · Updated April 2026</p>
+        <p className="text-xs text-[#6B6B6B] mb-4">By Piyush Arora, Mod Fancy Dress · Updated April 2026</p>
 
         <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
-          <p>Many parents in Delhi start their fancy dress search on Amazon or Flipkart. Both Mod Fancy Dress and Amazon/Flipkart let you order online and get home delivery — but they are fundamentally different types of sellers. Mod Fancy Dress is a specialist costume store: we sell exclusively online at <Link href="/products" className="text-[#C8956C] hover:underline">modfancydress.com</Link> with same-day Porter/Rapido delivery, and also have a <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline">physical store in Krishna Nagar, Delhi</Link> you can visit. Amazon and Flipkart are general marketplaces with hundreds of sellers offering varying quality.</p>
+          <p>Many parents in Delhi start their fancy dress search on Amazon or Flipkart. Both Mod Fancy Dress and Amazon/Flipkart let you order online and get home delivery — but they are fundamentally different types of sellers. Mod Fancy Dress is a specialist costume store: we sell exclusively online at <Link href="/products" className="text-[#8F6240] hover:underline">modfancydress.com</Link> with same-day Porter/Rapido delivery, and also have a <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline">physical store in Krishna Nagar, Delhi</Link> you can visit. Amazon and Flipkart are general marketplaces with hundreds of sellers offering varying quality.</p>
           <p>The honest answer: <strong className="text-[#2D2D2D]">both work for simple costumes</strong>. A specialist store wins decisively when you need the right fit, a specific Indian theme, rental for a one-time event, bulk matching sets for school, or same-day delivery with a trusted product.</p>
         </div>
 
@@ -149,7 +149,7 @@ export default function LocalVsOnlinePage() {
               <li><strong className="text-[#2D2D2D]">Rental for a one-time event</strong> — Amazon and Flipkart don't offer rentals; we do from ₹200/event with refundable deposit</li>
               <li><strong className="text-[#2D2D2D]">Bulk school orders</strong> — matching sets of 50–300 costumes across sizes are our speciality; marketplace sellers cannot guarantee this</li>
               <li><strong className="text-[#2D2D2D]">Same-day need</strong> — Porter or Rapido delivery from our Delhi store reaches most Delhi NCR locations within hours; standard courier does not</li>
-              <li><strong className="text-[#2D2D2D]">You want to see the product first</strong> — visit our <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline">Krishna Nagar store</Link> before buying</li>
+              <li><strong className="text-[#2D2D2D]">You want to see the product first</strong> — visit our <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline">Krishna Nagar store</Link> before buying</li>
             </ul>
           </div>
 
@@ -178,17 +178,17 @@ export default function LocalVsOnlinePage() {
           </Link>
         </div>
 
-        <p className="text-xs text-[#9A9A9A] mb-8">
+        <p className="text-xs text-[#6B6B6B] mb-8">
           <strong>Disclosure:</strong> This comparison was written by Mod Fancy Dress. We are one of the options being compared. Marketplace pricing data is approximate, based on publicly available listings as of April 2026 — check current prices before deciding.
         </p>
 
         <div className="space-y-2 text-sm">
           <p className="font-medium text-[#1B2A4A]">Related guides</p>
           <ul className="space-y-1">
-            <li><Link href="/blog/rent-or-buy-fancy-dress-costume" className="text-[#C8956C] hover:underline">Rent vs Buy a Fancy Dress Costume — Full Guide</Link></li>
-            <li><Link href="/wholesale/schools" className="text-[#C8956C] hover:underline">Bulk Fancy Dress Costumes for Schools</Link></li>
-            <li><Link href="/rent" className="text-[#C8956C] hover:underline">Rental Costumes from ₹200/event</Link></li>
-            <li><Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline">Visit our Krishna Nagar Store in Delhi</Link></li>
+            <li><Link href="/blog/rent-or-buy-fancy-dress-costume" className="text-[#8F6240] hover:underline">Rent vs Buy a Fancy Dress Costume — Full Guide</Link></li>
+            <li><Link href="/wholesale/schools" className="text-[#8F6240] hover:underline">Bulk Fancy Dress Costumes for Schools</Link></li>
+            <li><Link href="/rent" className="text-[#8F6240] hover:underline">Rental Costumes from ₹200/event</Link></li>
+            <li><Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline">Visit our Krishna Nagar Store in Delhi</Link></li>
           </ul>
         </div>
       </div>

@@ -190,7 +190,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
             />
             <div className="fade-in">
                 {/* Breadcrumb */}
-                <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6 overflow-x-auto">
+                <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6 overflow-x-auto">
                     <Link href="/" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Home</Link>
                     <ChevronRight className="w-3 h-3 flex-shrink-0" />
                     <Link href="/wholesale" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Wholesale</Link>
@@ -216,7 +216,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                         {/* Category pill */}
                         {productData.category && (
                             <Link href={`/wholesale/category/${productData.category.slug}`} className="inline-block mb-2">
-                                <span className="text-xs px-2.5 py-1 bg-[#F5F3F0] text-[#6B6B6B] rounded-full font-medium hover:bg-[#FBF5EF] hover:text-[#C8956C] transition-colors">
+                                <span className="text-xs px-2.5 py-1 bg-[#F5F3F0] text-[#6B6B6B] rounded-full font-medium hover:bg-[#FBF5EF] hover:text-[#8F6240] transition-colors">
                                     {productData.category.name}
                                 </span>
                             </Link>
@@ -231,7 +231,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                                 sizes={sizes}
                                 wholesaleDiscountPct={wholesaleDiscountPct}
                             />
-                            <p className="text-xs text-[#9A9A9A] mt-3 italic text-center md:text-left">
+                            <p className="text-xs text-[#6B6B6B] mt-3 italic text-center md:text-left">
                                 * Shipping charges are extra according to location.
                             </p>
                         </div>
@@ -239,7 +239,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                         <div className="border-t border-[#E8E5E0] pt-4">
                             <Link
                                 href={`/products/${slug}`}
-                                className="inline-flex items-center gap-1.5 text-sm text-[#C8956C] hover:text-[#A07048] font-medium transition-colors"
+                                className="inline-flex items-center gap-1.5 text-sm text-[#8F6240] hover:text-[#7F5636] font-medium transition-colors"
                             >
                                 Need just a few? View retail price →
                             </Link>

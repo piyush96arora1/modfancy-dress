@@ -24,8 +24,8 @@ export default async function CatalogSearchPage({
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-      <nav className="flex items-center gap-1 text-sm text-[#9A9A9A] mb-4" aria-label="Breadcrumb">
-        <Link href="/catalog" className="hover:text-[#C8956C]">
+      <nav className="flex items-center gap-1 text-sm text-[#6B6B6B] mb-4" aria-label="Breadcrumb">
+        <Link href="/catalog" className="hover:text-[#8F6240]">
           Catalogue
         </Link>
         <ChevronRight className="w-4 h-4" />
@@ -41,7 +41,7 @@ export default async function CatalogSearchPage({
       </div>
 
       {term.length >= 2 && (
-        <p className="text-[#9A9A9A] mb-4">
+        <p className="text-[#6B6B6B] mb-4">
           {results.length} {results.length === 1 ? 'item' : 'items'} found
         </p>
       )}
@@ -49,7 +49,7 @@ export default async function CatalogSearchPage({
       {term.length >= 2 ? (
         <CatalogGrid products={results} emptyMessage={`Nothing matched “${term}”.`} />
       ) : (
-        <p className="text-[#9A9A9A]">Type at least two characters to search.</p>
+        <p className="text-[#6B6B6B]">Type at least two characters to search.</p>
       )}
     </div>
   )

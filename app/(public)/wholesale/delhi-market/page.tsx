@@ -86,7 +86,7 @@ export default function WholesaleDelhiMarketPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
           <span>›</span>
           <Link href="/wholesale" className="hover:text-[#1B2A4A]">Wholesale</Link>
@@ -100,7 +100,7 @@ export default function WholesaleDelhiMarketPage() {
 
         <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
           <div className="flex items-start gap-3">
-            <MapPin className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <MapPin className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-[#1B2A4A] text-sm mb-1">S64, Som Bazar, Krishna Nagar — open daily</p>
               <p className="text-sm text-[#6B6B6B]">Message us before a bulk visit and we will have your sizes ready on the counter.</p>
@@ -151,7 +151,7 @@ export default function WholesaleDelhiMarketPage() {
           {pricingTiers.map((tier) => (
             <div key={tier.range} className="rounded-xl border border-[#E8E5E0] bg-white p-4" style={{ boxShadow: 'var(--shadow-xs)' }}>
               <p className="font-semibold text-[#1B2A4A] text-xs">{tier.range}</p>
-              <p className="text-xl font-bold text-[#C8956C] mt-1">{tier.discount}</p>
+              <p className="text-xl font-bold text-[#8F6240] mt-1">{tier.discount}</p>
             </div>
           ))}
         </div>
@@ -171,14 +171,14 @@ export default function WholesaleDelhiMarketPage() {
 
           <div className="rounded-xl border border-[#E8E5E0] bg-[#F5F3F0] p-4">
             <div className="flex items-start gap-3">
-              <Package className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <Package className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Who we supply from this market</p>
                 <p className="text-xs text-[#6B6B6B]">
                   <strong className="text-[#2D2D2D]">400+ school functions</strong> supplied, <strong className="text-[#2D2D2D]">700+ reviews at 4.7★</strong>. See{' '}
-                  <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline">schools &amp; bulk orders</Link>,{' '}
-                  <Link href="/wholesale/resellers" className="text-[#C8956C] hover:underline">reseller supply</Link>, or{' '}
-                  <Link href="/wholesale/dance-academies" className="text-[#C8956C] hover:underline">dance academies</Link>.
+                  <Link href="/wholesale/schools" className="text-[#8F6240] hover:underline">schools &amp; bulk orders</Link>,{' '}
+                  <Link href="/wholesale/resellers" className="text-[#8F6240] hover:underline">reseller supply</Link>, or{' '}
+                  <Link href="/wholesale/dance-academies" className="text-[#8F6240] hover:underline">dance academies</Link>.
                 </p>
               </div>
             </div>
@@ -210,7 +210,7 @@ export default function WholesaleDelhiMarketPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#6B6B6B] mb-6">
           <div className="bg-white rounded-xl p-4 border border-[#E8E5E0]">
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+              <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium text-[#2D2D2D]">Shop Address</p>
                 <address className="not-italic text-xs leading-relaxed">
@@ -218,18 +218,18 @@ export default function WholesaleDelhiMarketPage() {
                   Krishna Nagar, Delhi 110051
                 </address>
                 <p className="mt-1 text-xs">
-                  <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
+                  <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#8F6240] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
                 </p>
               </div>
             </div>
           </div>
           <div className="bg-white rounded-xl p-4 border border-[#E8E5E0]">
             <div className="flex items-start gap-2">
-              <Clock className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+              <Clock className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium text-[#2D2D2D]">Market Timings</p>
                 <p className="text-xs">Open daily 10:00 AM – 9:30 PM</p>
-                <p className="text-xs text-[#9A9A9A] mt-1">Best for bulk visits: weekdays, 10 AM – 1 PM</p>
+                <p className="text-xs text-[#6B6B6B] mt-1">Best for bulk visits: weekdays, 10 AM – 1 PM</p>
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function WholesaleDelhiMarketPage() {
             <Link href="/fancy-dress-delhi" className="text-sm px-3 py-1.5 rounded-full bg-[#FBF5EF] border border-[#E8E5E0] text-[#1B2A4A] hover:border-[#C8956C]">Fancy Dress in Delhi</Link>
           </div>
           <p className="text-sm text-[#6B6B6B] leading-relaxed flex items-start gap-2">
-            <ClipboardList className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <ClipboardList className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <span>
               Buying one costume rather than a bulk lot? Our{' '}
               <Link href="/fancy-dress-delhi" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">Delhi costume shop page</Link>{' '}

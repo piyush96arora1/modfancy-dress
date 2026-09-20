@@ -14,7 +14,7 @@ export function CatalogGallery({
 
   if (images.length === 0) {
     return (
-      <div className="aspect-[3/4] rounded-xl bg-[#F5F3F0] border border-[#E8E5E0] flex items-center justify-center text-[#9A9A9A]">
+      <div className="aspect-[3/4] rounded-xl bg-[#F5F3F0] border border-[#E8E5E0] flex items-center justify-center text-[#6B6B6B]">
         No Image
       </div>
     )

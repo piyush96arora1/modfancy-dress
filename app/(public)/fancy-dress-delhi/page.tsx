@@ -90,7 +90,7 @@ export default function FancyDressDelhiPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
       />
-      <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+      <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
         <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
         <span>›</span>
         <span className="text-[#2D2D2D]">Fancy Dress Delhi</span>
@@ -103,7 +103,7 @@ export default function FancyDressDelhiPage() {
       {/* Store card */}
       <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
         <div className="flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+          <MapPin className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Physical Store — Open Daily</p>
             <p className="text-sm text-[#6B6B6B]">S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051. Open 10 AM – 9:30 PM, all 7 days. Visit us in person to try sizes and see the full collection.</p>
@@ -173,7 +173,7 @@ export default function FancyDressDelhiPage() {
         href={GOOGLE_PROFILE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1B2A4A] hover:text-[#C8956C] mb-8"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1B2A4A] hover:text-[#8F6240] mb-8"
       >
         <ExternalLink className="w-4 h-4" />
         View us on Google — 700+ reviews, 4.7★
@@ -182,17 +182,17 @@ export default function FancyDressDelhiPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#6B6B6B]">
         <div className="bg-white rounded-xl p-4 border border-[#E8E5E0]">
           <div className="flex items-start gap-2">
-            <Clock className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <Clock className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-medium text-[#2D2D2D]">Store Hours</p>
               <p>Open daily: 10:00 AM – 9:30 PM</p>
-              <p className="text-xs text-[#9A9A9A] mt-1">Including Sundays and public holidays</p>
+              <p className="text-xs text-[#6B6B6B] mt-1">Including Sundays and public holidays</p>
             </div>
           </div>
         </div>
         <div className="bg-white rounded-xl p-4 border border-[#E8E5E0]">
           <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-medium text-[#2D2D2D]">Store Address</p>
               <address className="not-italic text-xs leading-relaxed">

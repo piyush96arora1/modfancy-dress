@@ -317,6 +317,68 @@ export function CategoryListingJsonLd(args: {
 // Product Schema — pass aggregateRating from real reviews for star ratings in search results
 const sellerRef = () => ({ '@id': localBusinessEntityId() })
 
+/**
+ * Delivery promise as Google reads it, mirroring <DeliveryPromise /> on the product page.
+ * Google requires the markup to match the visible page, so the two move together.
+ *
+ * One entry for India rather than a Delhi-specific DefinedRegion: handlingTime 0-1 day and
+ * transitTime 0-5 days is the honest union of "same day in Delhi NCR" and "3 to 5 business
+ * days elsewhere", and a single unambiguous region beats two overlapping ones that Google
+ * has to reconcile.
+ *
+ * No shippingRate: charges genuinely vary by location and are quoted per order, and an
+ * invented rate is the kind of mismatch that gets a Merchant Center account flagged.
+ *
+ * International shipping is offered and is stated on the page, but it is deliberately NOT
+ * claimed here — we have no country list and no measured transit window, and guessing one
+ * would be exactly the misrepresentation this markup is supposed to avoid.
+ */
+function shippingDetails() {
+  return {
+    '@type': 'OfferShippingDetails',
+    shippingDestination: {
+      '@type': 'DefinedRegion',
+      addressCountry: 'IN',
+    },
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 0,
+        maxValue: 1,
+        unitCode: 'DAY',
+      },
+      transitTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 0,
+        maxValue: 5,
+        unitCode: 'DAY',
+      },
+    },
+  }
+}
+
+/**
+ * The policy as /returns actually states it: 7 days, in store, exchange or store credit,
+ * no cash refunds. Flattering it into a FullRefund would be a misrepresentation, and the
+ * accurate version still earns the returns annotation.
+ */
+function returnPolicy() {
+  return {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: 'IN',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 7,
+    returnMethod: 'https://schema.org/ReturnInStore',
+    returnFees: 'https://schema.org/FreeReturn',
+    refundType: [
+      'https://schema.org/ExchangeRefund',
+      'https://schema.org/StoreCreditRefund',
+    ],
+    merchantReturnLink: `${siteUrl}/returns`,
+  }
+}
+
 export function ProductSchema(
   product: ProductWithDetails,
   options?: {
@@ -366,6 +428,8 @@ export function ProductSchema(
             : 'https://schema.org/OutOfStock',
           itemCondition: 'https://schema.org/NewCondition',
           seller: sellerRef(),
+          shippingDetails: shippingDetails(),
+          hasMerchantReturnPolicy: returnPolicy(),
         }
       : undefined
 

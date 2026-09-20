@@ -26,17 +26,17 @@ export function CatalogCategoryCard({ category }: { category: CatalogCategory })
             // 10 of the 61 categories have no supplier image. Show a neutral mark rather than
             // the category name, which the heading below already states — repeating it renders
             // the name twice and makes the link announce it twice.
-            <div className="w-full h-full flex items-center justify-center text-[#C8956C]/30">
+            <div className="w-full h-full flex items-center justify-center text-[#8F6240]/30">
               <ImageOff className="w-8 h-8" aria-hidden="true" />
             </div>
           )}
         </div>
         <div className="p-3 sm:p-4">
-          <h3 className="text-sm sm:text-base font-medium text-[#2C2C2C] group-hover:text-[#C8956C] transition-colors line-clamp-2">
+          <h3 className="text-sm sm:text-base font-medium text-[#2C2C2C] group-hover:text-[#8F6240] transition-colors line-clamp-2">
             {category.name}
           </h3>
           {category.childCount > 0 && (
-            <p className="text-xs text-[#9A9A9A] mt-1">{category.childCount} sub-categories</p>
+            <p className="text-xs text-[#6B6B6B] mt-1">{category.childCount} sub-categories</p>
           )}
         </div>
       </div>

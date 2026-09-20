@@ -91,7 +91,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
           </span>
         )}
       </div>
-      <h3 className={`text-center font-medium text-[10px] md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-tight ${isPending ? 'opacity-50' : ''}`}>
+      <h3 className={`text-center font-medium text-xs md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-tight ${isPending ? 'opacity-50' : ''}`}>
         {category.name}
       </h3>
     </Link>

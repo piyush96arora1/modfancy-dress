@@ -89,7 +89,7 @@ export function MobileBottomNav() {
                 active:scale-[0.92]
                 ${isActive
                   ? 'text-[#1B2A4A]'
-                  : 'text-[#9A9A9A] active:text-[#1B2A4A]'
+                  : 'text-[#6B6B6B] active:text-[#1B2A4A]'
                 }
               `}
             >
@@ -102,15 +102,15 @@ export function MobileBottomNav() {
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />
                 {item.badge && (
-                  <span className="absolute -top-1 -right-1.5 bg-[#C8956C] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1.5 bg-[#C8956C] text-[#1B2A4A] text-[11px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                     {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
               </div>
               <span
                 className={`
-                  relative z-[1] text-[9px] mt-1 font-medium transition-all duration-200
-                  ${isActive ? 'text-[#1B2A4A]' : 'text-[#9A9A9A]'}
+                  relative z-[1] text-[11px] mt-1 font-medium transition-all duration-200
+                  ${isActive ? 'text-[#1B2A4A]' : 'text-[#6B6B6B]'}
                 `}
               >
                 {item.label}

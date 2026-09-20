@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, MouseEvent, TouchEvent } from 'react'
 import Image from 'next/image'
+import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductImage } from '@/types/database'
@@ -151,7 +152,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         top: 0,
                         width: '500px', // Large zoom pane
                         height: '500px',
-                        boxShadow: 'var(--shadow-2xl)', /* large elevated drop shadow */
+                        boxShadow: 'var(--shadow-xl)', /* large elevated drop shadow */
                         backgroundImage: `url(${getImageUrl(selectedImage.image_url)})`,
                         backgroundPosition: `${bgPos.x}% ${bgPos.y}%`,
                         backgroundSize: `${ZOOM_LEVEL * 100}% ${ZOOM_LEVEL * 100}%`,
@@ -172,11 +173,20 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 className={cn(
                                     "relative aspect-square w-20 md:w-24 flex-shrink-0 bg-[#F5F3F0] rounded-lg overflow-hidden border-2 snap-center transition-all duration-200",
                                     isSelected
-                                        ? "border-[#C8956C] ring-2 ring-[#C8956C]/20 shadow-sm"
-                                        : "border-transparent border-[#E8E5E0] hover:border-[#C8956C]/50 opacity-70 hover:opacity-100"
+                                        ? "border-[#1B2A4A] ring-2 ring-[#1B2A4A]/25 shadow-sm"
+                                        : "border-[#E8E5E0] hover:border-[#1B2A4A]/50 opacity-70 hover:opacity-100"
                                 )}
                                 aria-label={`Select image ${img.order}`}
+                                aria-current={isSelected ? 'true' : undefined}
                             >
+                                {/* Selection was signalled by a gold border alone: 2.6:1 against
+                                    white, and colour as the only cue. The navy border carries the
+                                    contrast, the tick carries the meaning without relying on it. */}
+                                {isSelected && (
+                                    <span className="absolute top-1 right-1 z-10 w-4 h-4 rounded-full bg-[#1B2A4A] flex items-center justify-center">
+                                        <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                                    </span>
+                                )}
                                 <Image
                                     src={getImageUrl(img.image_url)}
                                     alt={img.alt_text || `${productName} Thumbnail`}

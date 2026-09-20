@@ -128,7 +128,7 @@ export default async function HomePage() {
               : 'text-3xl md:text-5xl lg:text-[3.5rem] mb-4 md:mb-5'
               }`}>
               Discover Stunning{' '}
-              <span className="block text-[#C8956C]">Fancy Dress Costumes</span>
+              <span className="block text-[#8F6240]">Fancy Dress Costumes</span>
             </h1>
             {!hasEventBanner && (
               <p className="text-base md:text-lg text-[#6B6B6B] mb-0 max-w-xl mx-auto leading-relaxed">
@@ -143,26 +143,26 @@ export default async function HomePage() {
           <div className="flex items-center justify-center gap-4 md:gap-8 py-4 px-4 rounded-xl bg-white border border-[#E8E5E0]" style={{ boxShadow: 'var(--shadow-xs)' }}>
             <div className="flex flex-col items-center text-center">
               <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
-                <Award className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+                <Award className="w-4 h-4 md:w-5 md:h-5 text-[#8F6240]" />
               </div>
               <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">15+ Years</span>
-              <span className="text-[10px] md:text-xs text-[#9A9A9A]">Experience</span>
+              <span className="text-xs text-[#6B6B6B]">Experience</span>
             </div>
             <div className="w-px h-10 bg-[#E8E5E0]" />
             <div className="flex flex-col items-center text-center">
               <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
-                <Calendar className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+                <Calendar className="w-4 h-4 md:w-5 md:h-5 text-[#8F6240]" />
               </div>
               <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">400+</span>
-              <span className="text-[10px] md:text-xs text-[#9A9A9A]">School Events</span>
+              <span className="text-xs text-[#6B6B6B]">School Events</span>
             </div>
             <div className="w-px h-10 bg-[#E8E5E0]" />
             <div className="flex flex-col items-center text-center">
               <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-1.5">
-                <Star className="w-4 h-4 md:w-5 md:h-5 text-[#C8956C]" />
+                <Star className="w-4 h-4 md:w-5 md:h-5 text-[#8F6240]" />
               </div>
               <span className="text-sm md:text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">4.7★</span>
-              <span className="text-[10px] md:text-xs text-[#9A9A9A]">700+ Reviews</span>
+              <span className="text-xs text-[#6B6B6B]">700+ Reviews</span>
             </div>
           </div>
         </section>
@@ -197,7 +197,7 @@ export default async function HomePage() {
                 All costumes available on rent. Visit our Krishna Nagar shop or get delivered via Porter/Rapido.
               </p>
             </div>
-            <span className="shrink-0 text-[#C8956C] group-hover:translate-x-0.5 transition-transform text-sm font-medium hidden sm:block">
+            <span className="shrink-0 text-[#8F6240] group-hover:translate-x-0.5 transition-transform text-sm font-medium hidden sm:block">
               Explore →
             </span>
           </Link>

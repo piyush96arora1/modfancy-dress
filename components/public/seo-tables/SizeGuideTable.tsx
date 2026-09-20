@@ -69,7 +69,7 @@ export async function SizeGuideTable({ categoryId, categoryName, className = '' 
       <details className="md:hidden rounded-xl border border-[#E8E5E0] bg-white overflow-hidden">
         <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-[#1B2A4A] flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
           <span>Show size &amp; price table</span>
-          <span className="text-[#9A9A9A] text-xs font-normal">Scroll →</span>
+          <span className="text-[#6B6B6B] text-xs font-normal">Scroll →</span>
         </summary>
         <div className="px-2 pb-3">
           <SeoTableWrap className="border-0 shadow-none rounded-lg">

@@ -47,7 +47,7 @@ export function RelatedProducts({
         </h2>
         <Link
           href={`/category/${categorySlug}`}
-          className="shrink-0 inline-flex items-center gap-1 text-xs font-medium text-[#6B6B6B] hover:text-[#C8956C] transition-colors"
+          className="shrink-0 inline-flex items-center gap-1 text-xs font-medium text-[#6B6B6B] hover:text-[#8F6240] transition-colors"
         >
           View all
           <ArrowRight className="w-3 h-3" aria-hidden="true" />

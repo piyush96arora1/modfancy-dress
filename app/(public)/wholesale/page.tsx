@@ -92,7 +92,7 @@ async function WholesaleContent() {
             <div className="mb-4 px-4 py-3 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0]">
                 <p className="text-sm text-[#2D2D2D]">
                     <strong>📦 Wholesale Pricing</strong> — Bulk order prices per piece. Click any product to send an enquiry.
-                    {' '}<Link href="/wholesale/schools" className="text-[#C8956C] hover:underline font-medium">School &amp; bulk orders →</Link>
+                    {' '}<Link href="/wholesale/schools" className="text-[#8F6240] hover:underline font-medium">School &amp; bulk orders →</Link>
                 </p>
             </div>
 
@@ -105,7 +105,7 @@ async function WholesaleContent() {
                     <strong className="text-[#2D2D2D]">400+ school functions</strong> and now hold{' '}
                     <strong className="text-[#2D2D2D]">400+ costume styles</strong> in stock. Every price shown on this
                     page is the per-piece bulk rate, not the retail rate — switch to{' '}
-                    <Link href="/products" className="text-[#C8956C] hover:underline">the retail catalogue</Link>{' '}
+                    <Link href="/products" className="text-[#8F6240] hover:underline">the retail catalogue</Link>{' '}
                     if you are buying single pieces.
                 </p>
                 <p>
@@ -128,8 +128,8 @@ async function WholesaleContent() {
                         style={{ boxShadow: 'var(--shadow-xs)' }}
                     >
                         <p className="font-semibold text-[#1B2A4A] text-sm">{tier.range}</p>
-                        <p className="text-2xl font-bold text-[#C8956C] my-1">{tier.discount}</p>
-                        <p className="text-xs text-[#9A9A9A]">{tier.note}</p>
+                        <p className="text-2xl font-bold text-[#8F6240] my-1">{tier.discount}</p>
+                        <p className="text-xs text-[#6B6B6B]">{tier.note}</p>
                     </div>
                 ))}
             </div>
@@ -137,7 +137,7 @@ async function WholesaleContent() {
             {/* Ordering logistics */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
                 <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
-                    <Clock className="w-5 h-5 text-[#C8956C] mb-2" />
+                    <Clock className="w-5 h-5 text-[#8F6240] mb-2" />
                     <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1">Lead time &amp; stock confirmation</h3>
                     <p className="text-xs text-[#6B6B6B] leading-relaxed">
                         WhatsApp us the costume list, quantity, size breakdown and event date. We check live stock and
@@ -146,7 +146,7 @@ async function WholesaleContent() {
                     </p>
                 </div>
                 <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
-                    <Truck className="w-5 h-5 text-[#C8956C] mb-2" />
+                    <Truck className="w-5 h-5 text-[#8F6240] mb-2" />
                     <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1">Delivery or store pickup</h3>
                     <p className="text-xs text-[#6B6B6B] leading-relaxed">
                         Bulk orders go out across Delhi NCR via Porter or Rapido, with shipping charges extra according
@@ -155,7 +155,7 @@ async function WholesaleContent() {
                     </p>
                 </div>
                 <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
-                    <Wallet className="w-5 h-5 text-[#C8956C] mb-2" />
+                    <Wallet className="w-5 h-5 text-[#8F6240] mb-2" />
                     <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1">Payment terms</h3>
                     <p className="text-xs text-[#6B6B6B] leading-relaxed">
                         Orders above ₹10,000 need a 30% advance to confirm the order and lock the stock. The balance is
@@ -172,16 +172,16 @@ async function WholesaleContent() {
                 <p>
                     <strong className="text-[#2D2D2D]">Schools</strong> order matched sets for annual functions and
                     national day programmes — sizing, packing and event deadlines are covered on our{' '}
-                    <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline">school bulk order page</Link>.{' '}
+                    <Link href="/wholesale/schools" className="text-[#8F6240] hover:underline">school bulk order page</Link>.{' '}
                     <strong className="text-[#2D2D2D]">Dance academies</strong> book coordinated group costumes per
                     routine, often in several colourways;{' '}
-                    <Link href="/wholesale/dance-academies" className="text-[#C8956C] hover:underline">see the dance academy page</Link>.{' '}
+                    <Link href="/wholesale/dance-academies" className="text-[#8F6240] hover:underline">see the dance academy page</Link>.{' '}
                     <strong className="text-[#2D2D2D]">Event and production companies</strong> buy for corporate shows,
                     mall activations and themed parties. <strong className="text-[#2D2D2D]">Resellers</strong> and
                     smaller costume shops restock at trade rates ahead of season —{' '}
-                    <Link href="/wholesale/resellers" className="text-[#C8956C] hover:underline">reseller terms are here</Link>.
+                    <Link href="/wholesale/resellers" className="text-[#8F6240] hover:underline">reseller terms are here</Link>.
                     If you are comparing suppliers, our{' '}
-                    <Link href="/wholesale/delhi-market" className="text-[#C8956C] hover:underline">guide to the Delhi fancy dress wholesale market</Link>{' '}
+                    <Link href="/wholesale/delhi-market" className="text-[#8F6240] hover:underline">guide to the Delhi fancy dress wholesale market</Link>{' '}
                     explains how the Som Bazar trade works.
                 </p>
                 <p>
@@ -226,7 +226,7 @@ async function WholesaleContent() {
 
             <div className="bg-white rounded-xl p-4 border border-[#E8E5E0] text-sm text-[#6B6B6B] mb-8">
                 <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
                     <div>
                         <p className="font-medium text-[#2D2D2D]">Wholesale counter</p>
                         <p>S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051 — open daily 10 AM – 9:30 PM</p>

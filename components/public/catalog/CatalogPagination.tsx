@@ -26,7 +26,7 @@ export function CatalogPagination({
       ) : (
         <span />
       )}
-      <span className="text-sm text-[#9A9A9A]">
+      <span className="text-sm text-[#6B6B6B]">
         Page {page} of {pages}
       </span>
       {page < pages ? (

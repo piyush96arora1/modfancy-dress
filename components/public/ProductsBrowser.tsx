@@ -87,7 +87,7 @@ function Listing({
           {search && (
             <Link
               href={clearSearchHref}
-              className="text-xs text-[#C8956C] hover:text-[#A07048] font-medium transition-colors"
+              className="text-xs text-[#8F6240] hover:text-[#7F5636] font-medium transition-colors"
             >
               Clear search
             </Link>
@@ -95,7 +95,7 @@ function Listing({
         </div>
         <div className="flex items-center gap-3">
           {count > 0 && (
-            <p className="text-xs text-[#9A9A9A] font-medium">
+            <p className="text-xs text-[#6B6B6B] font-medium">
               {count} {count === 1 ? 'product' : 'products'}
             </p>
           )}
@@ -126,13 +126,13 @@ function Listing({
           />
         ) : (
           <div className="text-center py-12">
-            <p className="text-[#9A9A9A] mb-2 text-base">
+            <p className="text-[#6B6B6B] mb-2 text-base">
               {search ? `No products found for "${search}"` : 'No products found.'}
             </p>
             {(search || category) && (
               <Link
                 href={basePath}
-                className="text-sm text-[#C8956C] hover:text-[#A07048] underline font-medium transition-colors"
+                className="text-sm text-[#8F6240] hover:text-[#7F5636] underline font-medium transition-colors"
               >
                 {isWholesale ? 'Browse all wholesale products' : 'Browse all products'}
               </Link>

@@ -18,6 +18,7 @@ import { productKeywords } from '@/lib/seo/keywords'
 import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib/seo/structured-data'
 import { ChevronRight, Star } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
+import { DeliveryPromise } from '@/components/public/DeliveryPromise'
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails, ProductReview } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
@@ -149,7 +150,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       />
       <div className="fade-in">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6 overflow-x-auto">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6 overflow-x-auto">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Home</Link>
           <ChevronRight className="w-3 h-3 flex-shrink-0" />
           <Link href="/products" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Products</Link>
@@ -179,8 +180,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div>
             {/* Category pill */}
             {productData.category && (
-              <Link href={`/category/${productData.category.slug}`} className="inline-block mb-2">
-                <span className="text-xs px-2.5 py-1 bg-[#F5F3F0] text-[#6B6B6B] rounded-full font-medium hover:bg-[#FBF5EF] hover:text-[#C8956C] transition-colors">
+              <Link href={`/category/${productData.category.slug}`} className="inline-flex items-center min-h-[44px] mb-1">
+                <span className="text-xs px-3 py-1.5 bg-[#F5F3F0] text-[#2D2D2D] rounded-full font-medium hover:bg-[#FBF5EF] hover:text-[#8F6240] transition-colors">
                   {productData.category.name}
                 </span>
               </Link>
@@ -196,9 +197,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 colors={colors}
                 variants={productData.variants}
               />
-              <p className="text-xs text-[#9A9A9A] mt-3 italic text-center md:text-left">
-                * Shipping charges are extra according to location.
-              </p>
+            </div>
+
+            {/* Delivery expectations. Sits BELOW the CTA on purpose: on mobile the LCP
+                element is the gallery image and the CTA is directly under it, so anything
+                inserted above pushes both down. Static server markup, so it costs no CLS
+                and no INP. Mirrors offers.shippingDetails in the Product schema. */}
+            <div className="mb-4">
+              <DeliveryPromise />
             </div>
 
             {/* Connect on WhatsApp — desktop only; mobile uses the FAB */}
@@ -206,7 +212,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               href={whatsappUrl(waBuyMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center justify-center gap-2 w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white font-semibold text-sm transition-colors mb-4"
+              className="hidden md:flex items-center justify-center gap-2 w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-[#1B2A4A] font-semibold text-sm transition-colors mb-4"
               aria-label="Connect on WhatsApp to ask about this product"
             >
               <WhatsAppIcon className="w-4 h-4 shrink-0" />
@@ -219,12 +225,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-white border border-[#E8E5E0]">
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-[#1B2A4A]">
-                      Available on <span className="text-[#C8956C] font-bold">Rent</span>
+                      Available on <span className="text-[#8F6240] font-bold">Rent</span>
                     </p>
-                    <p className="text-[10px] text-[#9A9A9A] mt-0.5">
+                    <p className="text-xs text-[#6B6B6B] mt-1">
                       Get rental price on WhatsApp ·{' '}
-                      <Link href="/rent" className="hover:text-[#C8956C] transition-colors">
-                        Shop pickup or Porter/Rapido delivery →
+                      <Link
+                        href="/rent"
+                        className="inline-block py-1 underline underline-offset-2 hover:text-[#8F6240] transition-colors"
+                      >
+                        Shop pickup or Porter/Rapido delivery
                       </Link>
                     </p>
                   </div>
@@ -232,7 +241,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     href={whatsappUrl(waRentMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-semibold transition-colors touch-manipulation"
+                    className="shrink-0 inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg bg-[#25D366] hover:bg-[#20BD5A] text-[#1B2A4A] text-xs font-semibold transition-colors touch-manipulation"
                     aria-label="Enquire about renting this costume on WhatsApp"
                   >
                     <WhatsAppIcon className="w-3.5 h-3.5" />
@@ -241,10 +250,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               )}
 
-              <div className="px-4 py-3 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0]">
+              <div className="rounded-xl bg-[#F5F3F0] border border-[#E8E5E0]">
+                {/* Padding belongs on the anchor, not the wrapper: on the wrapper the box
+                    looks like a 48px target but only the ~20px text line is tappable. */}
                 <Link
                   href={`/wholesale/${slug}`}
-                  className="text-sm text-[#1B2A4A] hover:text-[#C8956C] font-medium transition-colors"
+                  className="flex items-center min-h-[44px] px-4 py-3 text-sm text-[#1B2A4A] hover:text-[#8F6240] font-medium transition-colors"
                 >
                   🏷️ Buying in bulk? View wholesale prices →
                 </Link>
@@ -317,14 +328,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       {[1, 2, 3, 4, 5].map((i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${i <= review.rating ? 'text-[#C8956C] fill-[#C8956C]' : 'text-[#E8E5E0]'}`}
+                          className={`w-4 h-4 ${i <= review.rating ? 'text-[#8F6240] fill-[#C8956C]' : 'text-[#E8E5E0]'}`}
                         />
                       ))}
                     </span>
                     {review.author_name && (
                       <span className="text-sm font-medium text-[#2D2D2D]">{review.author_name}</span>
                     )}
-                    <span className="text-xs text-[#9A9A9A]">
+                    <span className="text-xs text-[#6B6B6B]">
                       {new Date(review.created_at).toLocaleDateString('en-IN', {
                         year: 'numeric',
                         month: 'short',
@@ -347,7 +358,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         href={whatsappUrl(waBuyMessage)}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed right-4 bottom-[4.5rem] z-40 md:hidden flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform"
+        className="fixed right-4 bottom-[4.5rem] z-40 md:hidden flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-[#1B2A4A] shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform"
         aria-label="Chat on WhatsApp"
       >
         <WhatsAppIcon className="w-5 h-5" />

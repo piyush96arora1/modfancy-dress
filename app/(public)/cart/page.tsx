@@ -115,7 +115,7 @@ export default function CartPage() {
         </div>
         <h1 className="text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-2">Order Placed!</h1>
         <p className="text-[#6B6B6B] text-sm mb-1">Your order number is:</p>
-        <p className="text-lg font-bold text-[#C8956C] mb-6 font-[family-name:var(--font-outfit)]">{orderSuccess}</p>
+        <p className="text-lg font-bold text-[#8F6240] mb-6 font-[family-name:var(--font-outfit)]">{orderSuccess}</p>
         <Button onClick={() => router.push('/')}>Continue Shopping</Button>
       </div>
     )
@@ -125,7 +125,7 @@ export default function CartPage() {
     return (
       <div className="text-center py-16 fade-in">
         <div className="w-16 h-16 rounded-full bg-[#F5F3F0] flex items-center justify-center mx-auto mb-4">
-          <ShoppingBag className="w-7 h-7 text-[#9A9A9A]" />
+          <ShoppingBag className="w-7 h-7 text-[#6B6B6B]" />
         </div>
         <h1 className="text-2xl font-bold mb-2 text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Your Cart is Empty</h1>
         <p className="text-[#6B6B6B] text-sm mb-6">Add some products to get started!</p>
@@ -137,7 +137,7 @@ export default function CartPage() {
   return (
     <div className="fade-in">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+      <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
         <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
         <ChevronRight className="w-3 h-3" />
         <span className="text-[#2D2D2D]">Shopping Cart</span>
@@ -163,8 +163,8 @@ export default function CartPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-sm mb-1 text-[#2D2D2D] font-[family-name:var(--font-outfit)]">{item.name}</h3>
-                  {item.size && <p className="text-xs text-[#9A9A9A] mb-0.5">Size: {item.size}</p>}
-                  {item.color && <p className="text-xs text-[#9A9A9A] mb-1">Color: {item.color}</p>}
+                  {item.size && <p className="text-xs text-[#6B6B6B] mb-0.5">Size: {item.size}</p>}
+                  {item.color && <p className="text-xs text-[#6B6B6B] mb-1">Color: {item.color}</p>}
                   <p className="font-bold text-base text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">₹{item.price.toFixed(0)}</p>
                   <div className="flex items-center gap-2 flex-wrap">
                     <Input
@@ -190,7 +190,7 @@ export default function CartPage() {
                         setRemovingItems(prev => ({ ...prev, [itemKey]: false }))
                       }}
                       disabled={removingItems[`${item.productId}-${item.variantId || 'none'}`]}
-                      className="p-1.5 text-[#9A9A9A] hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+                      className="p-1.5 text-[#6B6B6B] hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -214,7 +214,7 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>₹{getTotal().toFixed(0)}</span>
               </div>
-              <p className="text-[10px] text-[#9A9A9A] mt-1 text-right italic">
+              <p className="text-xs text-[#6B6B6B] mt-1 text-right italic">
                 * Shipping charges are extra according to location.
               </p>
             </div>

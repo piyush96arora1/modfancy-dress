@@ -150,7 +150,7 @@ export default function WholesaleDanceAcademiesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
           <span>›</span>
           <Link href="/wholesale" className="hover:text-[#1B2A4A]">Wholesale</Link>
@@ -164,7 +164,7 @@ export default function WholesaleDanceAcademiesPage() {
 
         <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
           <div className="flex items-start gap-3">
-            <Music className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <Music className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Matched Sets for Classical &amp; Folk Repertoire</p>
               <p className="text-sm text-[#6B6B6B]">Classical and folk costumes as matched sets across mixed sizes, to buy or rent. Send your size list on WhatsApp for stock and pricing.</p>
@@ -173,7 +173,7 @@ export default function WholesaleDanceAcademiesPage() {
         </div>
 
         <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
-          <p>Academies do not shop the way schools do. A school needs one costume per child for one evening; an academy needs a <strong className="text-[#2D2D2D]">performance-grade set that survives a season</strong> — the same twelve costumes through weeks of rehearsal, a competition and a recital. With <strong className="text-[#2D2D2D]">15+ years</strong> and <strong className="text-[#2D2D2D]">400+ styles</strong> at our Krishna Nagar store, we build group orders around that. Everything here can be <Link href="/wholesale" className="text-[#C8956C] hover:underline">bought or rented in bulk</Link>, from ₹200.</p>
+          <p>Academies do not shop the way schools do. A school needs one costume per child for one evening; an academy needs a <strong className="text-[#2D2D2D]">performance-grade set that survives a season</strong> — the same twelve costumes through weeks of rehearsal, a competition and a recital. With <strong className="text-[#2D2D2D]">15+ years</strong> and <strong className="text-[#2D2D2D]">400+ styles</strong> at our Krishna Nagar store, we build group orders around that. Everything here can be <Link href="/wholesale" className="text-[#8F6240] hover:underline">bought or rented in bulk</Link>, from ₹200.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Bulk Pricing for Group Orders</h2>
           <p>Discounts apply to the retail price per piece:</p>
@@ -183,8 +183,8 @@ export default function WholesaleDanceAcademiesPage() {
           {pricingTiers.map((tier) => (
             <div key={tier.range} className="rounded-xl border border-[#E8E5E0] bg-white p-4" style={{ boxShadow: 'var(--shadow-xs)' }}>
               <p className="font-semibold text-[#1B2A4A] text-sm">{tier.range}</p>
-              <p className="text-2xl font-bold text-[#C8956C] my-1">{tier.discount}</p>
-              <p className="text-xs text-[#9A9A9A]">{tier.note}</p>
+              <p className="text-2xl font-bold text-[#8F6240] my-1">{tier.discount}</p>
+              <p className="text-xs text-[#6B6B6B]">{tier.note}</p>
             </div>
           ))}
         </div>
@@ -209,7 +209,7 @@ export default function WholesaleDanceAcademiesPage() {
               <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1.5 font-[family-name:var(--font-outfit)]">{form.name}</h3>
               <p className="text-sm text-[#6B6B6B] leading-relaxed">{form.body}</p>
               <p className="text-xs mt-2">
-                <Link href={form.href} className="text-[#C8956C] hover:underline">{form.linkLabel} →</Link>
+                <Link href={form.href} className="text-[#8F6240] hover:underline">{form.linkLabel} →</Link>
               </p>
             </div>
           ))}
@@ -225,9 +225,9 @@ export default function WholesaleDanceAcademiesPage() {
               <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1.5 font-[family-name:var(--font-outfit)]">{form.name}</h3>
               <p className="text-sm text-[#6B6B6B] leading-relaxed">{form.body}</p>
               <p className="text-xs mt-2 flex flex-wrap gap-x-3">
-                <Link href={form.href} className="text-[#C8956C] hover:underline">{form.linkLabel} →</Link>
+                <Link href={form.href} className="text-[#8F6240] hover:underline">{form.linkLabel} →</Link>
                 {form.extraHref && (
-                  <Link href={form.extraHref} className="text-[#C8956C] hover:underline">{form.extraLabel} →</Link>
+                  <Link href={form.extraHref} className="text-[#8F6240] hover:underline">{form.extraLabel} →</Link>
                 )}
               </p>
             </div>
@@ -240,7 +240,7 @@ export default function WholesaleDanceAcademiesPage() {
 
           <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
             <div className="flex items-start gap-3">
-              <Ruler className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <Ruler className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1 font-[family-name:var(--font-outfit)]">Sizing a Mixed-Age Troupe</h3>
                 <ul className="space-y-1 text-xs text-[#6B6B6B]">
@@ -257,11 +257,11 @@ export default function WholesaleDanceAcademiesPage() {
           <p>Stage light changes fabric: under strong front light pastels wash out and fine detail dies past the third row, which is why performance costumes lean on saturated colour, contrast borders and reflective zari or mirror work. Movement is the second constraint — spins, ghoomar circles and Bhangra jumps all load waist drawstrings, armhole seams, hems and pleat stitching. Tell us how many rehearsals a costume must survive, because rehearsal wear finishes costumes long before the performance does.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Buy or Rent for a Competition</h2>
-          <p>For a single competition or one recital item, <Link href="/rent" className="text-[#C8956C] hover:underline">renting</Link> keeps the per-dancer cost down and leaves nothing to store. Buying pays off when an item repeats across a season or is re-cast each year. Many academies do both — buy the signature items, rent the rest.</p>
+          <p>For a single competition or one recital item, <Link href="/rent" className="text-[#8F6240] hover:underline">renting</Link> keeps the per-dancer cost down and leaves nothing to store. Buying pays off when an item repeats across a season or is re-cast each year. Many academies do both — buy the signature items, rent the rest.</p>
 
           <div className="rounded-xl border border-[#E8E5E0] bg-[#FBF5EF] p-4">
             <div className="flex items-start gap-3">
-              <CalendarClock className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <CalendarClock className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <h3 className="font-semibold text-[#1B2A4A] text-sm mb-1 font-[family-name:var(--font-outfit)]">Planning a Competition Season</h3>
                 <p className="text-xs text-[#6B6B6B]">Season pushes every academy toward the same styles in the same weeks. Book early and plan the season in one enquiry rather than item by item — a larger order reaches a better tier and keeps the colour lot consistent.</p>
@@ -270,7 +270,7 @@ export default function WholesaleDanceAcademiesPage() {
           </div>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Accessories &amp; Jewellery</h2>
-          <p>A costume is only finished once the jewellery is on. Ankle bells, temple and oxidised sets, head ornaments, belts, dupattas and turbans count toward the same quantity tiers, and mismatched jewellery reads more clearly from the audience than a slightly off fabric shade. Browse <Link href="/category/accessories" className="text-[#C8956C] hover:underline">accessories</Link>, <Link href="/category/dance-dress" className="text-[#C8956C] hover:underline">dance dress</Link> and <Link href="/category/states-fancy-dress" className="text-[#C8956C] hover:underline">state costumes</Link>.</p>
+          <p>A costume is only finished once the jewellery is on. Ankle bells, temple and oxidised sets, head ornaments, belts, dupattas and turbans count toward the same quantity tiers, and mismatched jewellery reads more clearly from the audience than a slightly off fabric shade. Browse <Link href="/category/accessories" className="text-[#8F6240] hover:underline">accessories</Link>, <Link href="/category/dance-dress" className="text-[#8F6240] hover:underline">dance dress</Link> and <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline">state costumes</Link>.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Frequently Asked Questions</h2>
         </div>
@@ -286,13 +286,13 @@ export default function WholesaleDanceAcademiesPage() {
 
         <div className="rounded-xl border border-[#E8E5E0] bg-[#F5F3F0] p-4 mb-8">
           <div className="flex items-start gap-3">
-            <Sparkles className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <Sparkles className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Other bulk buyers we supply</p>
               <p className="text-sm text-[#6B6B6B]">
-                <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline">Schools</Link>,{' '}
-                <Link href="/wholesale/resellers" className="text-[#C8956C] hover:underline">resellers</Link>, and the{' '}
-                <Link href="/wholesale/delhi-market" className="text-[#C8956C] hover:underline">Delhi wholesale costume market</Link>. Unsure? <Link href="/contact" className="text-[#C8956C] hover:underline">Contact us</Link>.
+                <Link href="/wholesale/schools" className="text-[#8F6240] hover:underline">Schools</Link>,{' '}
+                <Link href="/wholesale/resellers" className="text-[#8F6240] hover:underline">resellers</Link>, and the{' '}
+                <Link href="/wholesale/delhi-market" className="text-[#8F6240] hover:underline">Delhi wholesale costume market</Link>. Unsure? <Link href="/contact" className="text-[#8F6240] hover:underline">Contact us</Link>.
               </p>
             </div>
           </div>
@@ -317,12 +317,12 @@ export default function WholesaleDanceAcademiesPage() {
 
         <div className="bg-white rounded-xl p-4 border border-[#E8E5E0] text-sm text-[#6B6B6B] mb-6">
           <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-medium text-[#2D2D2D]">Store Address</p>
               <p>S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051</p>
               <p className="mt-1">
-                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
+                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#8F6240] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
                 {' '}— Open daily 10 AM – 9:30 PM
               </p>
             </div>

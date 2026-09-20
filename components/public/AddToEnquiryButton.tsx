@@ -59,11 +59,11 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
             <div>
                 <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
                     {formatPrice(wholesalePrice)}
-                    <span className="text-sm font-normal text-[#9A9A9A] ml-1">/piece</span>
+                    <span className="text-sm font-normal text-[#6B6B6B] ml-1">/piece</span>
                 </p>
-                <p className="text-xs text-[#9A9A9A] mt-0.5">Wholesale price</p>
+                <p className="text-xs text-[#6B6B6B] mt-0.5">Wholesale price</p>
                 {selectedSize && (
-                    <p className="text-xs text-[#9A9A9A] mt-1">Price for size: {selectedSize}</p>
+                    <p className="text-xs text-[#6B6B6B] mt-1">Price for size: {selectedSize}</p>
                 )}
             </div>
 
@@ -76,7 +76,7 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                             <button
                                 type="button"
                                 onClick={() => setQuantity(Math.max(5, quantity - 5))}
-                                className="w-8 h-8 rounded-lg bg-white border border-[#E8E5E0] text-[#2D2D2D] font-bold hover:bg-[#F5F3F0] transition-colors text-sm"
+                                className="w-11 h-11 rounded-lg bg-white border border-[#949086] text-[#2D2D2D] font-bold hover:bg-[#F5F3F0] transition-colors text-sm"
                             >
                                 −
                             </button>
@@ -85,19 +85,19 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                                 min="5"
                                 value={quantity}
                                 onChange={(e) => setQuantity(Math.max(5, parseInt(e.target.value) || 5))}
-                                className="w-16 text-center border border-[#E8E5E0] rounded-lg py-1.5 text-sm bg-white font-medium"
+                                className="w-16 h-11 text-center border border-[#949086] rounded-lg text-sm bg-white font-medium"
                             />
                             <button
                                 type="button"
                                 onClick={() => setQuantity(quantity + 5)}
-                                className="w-8 h-8 rounded-lg bg-white border border-[#E8E5E0] text-[#2D2D2D] font-bold hover:bg-[#F5F3F0] transition-colors text-sm"
+                                className="w-11 h-11 rounded-lg bg-white border border-[#949086] text-[#2D2D2D] font-bold hover:bg-[#F5F3F0] transition-colors text-sm"
                             >
                                 +
                             </button>
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className="text-xs text-[#9A9A9A]">Estimated total</p>
+                        <p className="text-xs text-[#6B6B6B]">Estimated total</p>
                         <p className="text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
                             {formatPrice(wholesalePrice * quantity)}
                         </p>
@@ -173,7 +173,7 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
                 </button>
             )}
 
-            <p className="text-[10px] text-[#9A9A9A] text-center leading-relaxed">
+            <p className="text-xs text-[#6B6B6B] text-center leading-relaxed">
                 Add products to your enquiry list, then submit all at once with your details.
             </p>
         </div>

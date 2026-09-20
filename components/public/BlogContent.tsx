@@ -17,9 +17,9 @@ function renderInline(text: string): ReactNode[] {
       const href = m[2]
       nodes.push(
         href.startsWith('/') ? (
-          <Link key={key++} href={href} className="text-[#C8956C] hover:underline font-medium">{label}</Link>
+          <Link key={key++} href={href} className="text-[#8F6240] hover:underline font-medium">{label}</Link>
         ) : (
-          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="text-[#C8956C] hover:underline font-medium">{label}</a>
+          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="text-[#8F6240] hover:underline font-medium">{label}</a>
         )
       )
     } else if (m[3] !== undefined) {

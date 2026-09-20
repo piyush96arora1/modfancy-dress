@@ -61,7 +61,7 @@ export default async function FaqPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">
             Home
           </Link>
@@ -76,7 +76,7 @@ export default async function FaqPage() {
           <p className="text-sm md:text-base text-[#6B6B6B] leading-relaxed">
             Ordering, sizing, school &amp; bulk orders, costumes, delivery, and visiting our Krishna Nagar store. For
             anything else,{' '}
-            <Link href="/contact" className="text-[#C8956C] hover:text-[#A07048] font-medium">
+            <Link href="/contact" className="text-[#8F6240] hover:text-[#7F5636] font-medium">
               contact us
             </Link>{' '}
             or WhatsApp {BUSINESS_WHATSAPP_DISPLAY}.
@@ -97,7 +97,7 @@ export default async function FaqPage() {
               ), then refresh.
             </p>
             <p>
-              <Link href="/contact" className="text-[#C8956C] hover:underline font-medium">
+              <Link href="/contact" className="text-[#8F6240] hover:underline font-medium">
                 Contact us
               </Link>{' '}
               for help in the meantime.

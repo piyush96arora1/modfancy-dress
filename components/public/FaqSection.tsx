@@ -33,7 +33,7 @@ export function FaqSection({
             >
               <summary className="cursor-pointer list-none flex items-center justify-between gap-3 p-4 font-medium text-sm md:text-[15px] text-[#1B2A4A] hover:bg-[#FAFAF8] transition-colors [&::-webkit-details-marker]:hidden">
                 <span className="text-left pr-2">{f.question}</span>
-                <span className="text-[#C8956C] text-xs shrink-0 group-open:rotate-180 transition-transform" aria-hidden>
+                <span className="text-[#8F6240] text-xs shrink-0 group-open:rotate-180 transition-transform" aria-hidden>
                   ▼
                 </span>
               </summary>

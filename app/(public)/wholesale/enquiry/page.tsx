@@ -128,7 +128,7 @@ export default function WholesaleEnquiryPage() {
     return (
         <div className="fade-in">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+            <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
                 <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
                 <ChevronRight className="w-3 h-3 flex-shrink-0" />
                 <Link href="/wholesale" className="hover:text-[#1B2A4A] transition-colors">Wholesale</Link>
@@ -164,17 +164,17 @@ export default function WholesaleEnquiryPage() {
                                             sizes="80px"
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-[#9A9A9A] text-xs">No img</div>
+                                        <div className="w-full h-full flex items-center justify-center text-[#6B6B6B] text-xs">No img</div>
                                     )}
                                 </div>
                             </Link>
 
                             {/* Details */}
                             <div className="flex-1 min-w-0">
-                                <Link href={`/wholesale/${item.slug}`} className="text-sm font-semibold text-[#1B2A4A] hover:text-[#C8956C] transition-colors line-clamp-1">
+                                <Link href={`/wholesale/${item.slug}`} className="text-sm font-semibold text-[#1B2A4A] hover:text-[#8F6240] transition-colors line-clamp-1">
                                     {item.product_name}
                                 </Link>
-                                <p className="text-xs text-[#9A9A9A] mt-0.5">
+                                <p className="text-xs text-[#6B6B6B] mt-0.5">
                                     {formatPrice(item.wholesale_price)}/piece
                                     {item.size && ` · Size: ${item.size}`}
                                 </p>
@@ -211,7 +211,7 @@ export default function WholesaleEnquiryPage() {
                                 <button
                                     type="button"
                                     onClick={() => removeItem(item.product_id)}
-                                    className="text-[#9A9A9A] hover:text-red-500 transition-colors p-0.5"
+                                    className="text-[#6B6B6B] hover:text-red-500 transition-colors p-0.5"
                                     aria-label={`Remove ${item.product_name}`}
                                 >
                                     <X className="w-4 h-4" />
@@ -230,7 +230,7 @@ export default function WholesaleEnquiryPage() {
                             {formatPrice(estimatedTotal)}
                         </span>
                     </div>
-                    <p className="text-[10px] text-[#9A9A9A]">
+                    <p className="text-xs text-[#6B6B6B]">
                         * Shipping charges are extra according to location. Final pricing may vary based on quantities and availability. Our team will confirm details.
                     </p>
                 </div>
@@ -267,7 +267,7 @@ export default function WholesaleEnquiryPage() {
 
                         <div>
                             <Label htmlFor="enquiry-email" className="text-xs">
-                                Email <span className="text-[#9A9A9A]">(optional)</span>
+                                Email <span className="text-[#6B6B6B]">(optional)</span>
                             </Label>
                             <Input
                                 id="enquiry-email"
@@ -280,7 +280,7 @@ export default function WholesaleEnquiryPage() {
 
                         <div>
                             <Label htmlFor="enquiry-message" className="text-xs">
-                                Message <span className="text-[#9A9A9A]">(optional)</span>
+                                Message <span className="text-[#6B6B6B]">(optional)</span>
                             </Label>
                             <Textarea
                                 id="enquiry-message"
@@ -312,7 +312,7 @@ export default function WholesaleEnquiryPage() {
                             )}
                         </Button>
 
-                        <p className="text-[10px] text-[#9A9A9A] text-center leading-relaxed">
+                        <p className="text-xs text-[#6B6B6B] text-center leading-relaxed">
                             We'll contact you within 24 hours with pricing and availability.
                         </p>
                     </form>

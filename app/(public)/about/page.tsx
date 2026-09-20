@@ -29,7 +29,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <div className="fade-in max-w-4xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">
             Home
           </Link>
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <section className="bg-[#F5F3F0] rounded-xl p-5 md:p-6 mb-6" style={{ boxShadow: 'var(--shadow-xs)' }}>
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center shrink-0">
-              <Award className="w-5 h-5 text-[#C8956C]" />
+              <Award className="w-5 h-5 text-[#8F6240]" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">
@@ -81,7 +81,7 @@ export default function AboutPage() {
           </div>
           <div className="bg-white rounded-xl border border-[#E8E5E0] p-5" style={{ boxShadow: 'var(--shadow-card)' }}>
             <div className="w-10 h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center mb-3">
-              <Truck className="w-5 h-5 text-[#C8956C]" />
+              <Truck className="w-5 h-5 text-[#8F6240]" />
             </div>
             <h2 className="font-semibold text-[#1B2A4A] mb-2 text-sm font-[family-name:var(--font-outfit)]">
               Where we reach
@@ -110,7 +110,7 @@ export default function AboutPage() {
                 <br />
                 Krishna Nagar, Delhi 110051
               </address>
-              <p className="text-xs text-[#9A9A9A] mt-2">Open daily 10:00 – 21:30</p>
+              <p className="text-xs text-[#6B6B6B] mt-2">Open daily 10:00 – 21:30</p>
             </div>
           </div>
         </section>

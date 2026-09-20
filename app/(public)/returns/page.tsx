@@ -13,7 +13,7 @@ export default function ReturnsPage() {
       <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] mb-6 font-[family-name:var(--font-outfit)]">
         Returns &amp; Refund Policy
       </h1>
-      <p className="text-sm text-[#9A9A9A] mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-[#6B6B6B] mb-8">Last updated: March 2026</p>
 
       <div className="space-y-6 text-[#6B6B6B] text-sm leading-relaxed">
         <section>
@@ -32,7 +32,7 @@ export default function ReturnsPage() {
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Contact Us</h2>
           <p>
             For return or refund queries, contact us at <strong>+91 93113 65366</strong> or{' '}
-            <Link href="/contact" className="text-[#C8956C] hover:underline">visit our contact page</Link>.
+            <Link href="/contact" className="text-[#8F6240] hover:underline">visit our contact page</Link>.
           </p>
         </section>
       </div>

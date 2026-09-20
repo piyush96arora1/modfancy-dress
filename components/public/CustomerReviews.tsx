@@ -30,7 +30,7 @@ export function CustomerReviews({
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
-                  className="w-4 h-4 fill-[#C8956C] text-[#C8956C]"
+                  className="w-4 h-4 fill-[#C8956C] text-[#8F6240]"
                   aria-hidden="true"
                 />
               ))}
@@ -48,7 +48,7 @@ export function CustomerReviews({
           href={gbpUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-[#C8956C] hover:underline mt-4"
+          className="inline-flex items-center gap-1 text-sm font-medium text-[#8F6240] hover:underline mt-4"
         >
           Read all reviews on Google &rarr;
         </a>

@@ -38,14 +38,14 @@ export default async function CatalogProductPage({ params }: Props) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
       <nav
-        className="flex items-center gap-1 text-sm text-[#9A9A9A] mb-6 flex-wrap"
+        className="flex items-center gap-1 text-sm text-[#6B6B6B] mb-6 flex-wrap"
         aria-label="Breadcrumb"
       >
-        <Link href="/catalog" className="hover:text-[#C8956C]">
+        <Link href="/catalog" className="hover:text-[#8F6240]">
           Catalogue
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <Link href={`/catalog/${product.categorySlug}`} className="hover:text-[#C8956C]">
+        <Link href={`/catalog/${product.categorySlug}`} className="hover:text-[#8F6240]">
           {product.categoryName}
         </Link>
       </nav>
@@ -55,7 +55,7 @@ export default async function CatalogProductPage({ params }: Props) {
 
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-[#2C2C2C]">{product.name}</h1>
-          <p className="text-sm text-[#9A9A9A] mt-1">{product.categoryName}</p>
+          <p className="text-sm text-[#6B6B6B] mt-1">{product.categoryName}</p>
 
           <p className="text-3xl font-semibold text-[#2C2C2C] mt-5">{product.priceLabel}</p>
 
@@ -63,13 +63,13 @@ export default async function CatalogProductPage({ params }: Props) {
             <dl className="mt-4 space-y-1 text-sm text-[#2C2C2C]">
               {product.setValue > 1 && (
                 <div className="flex gap-2">
-                  <dt className="text-[#9A9A9A]">Set of</dt>
+                  <dt className="text-[#6B6B6B]">Set of</dt>
                   <dd>{product.setValue}</dd>
                 </div>
               )}
               {product.minOrderQty > 0 && (
                 <div className="flex gap-2">
-                  <dt className="text-[#9A9A9A]">Minimum order</dt>
+                  <dt className="text-[#6B6B6B]">Minimum order</dt>
                   <dd>{product.minOrderQty}</dd>
                 </div>
               )}
@@ -81,7 +81,7 @@ export default async function CatalogProductPage({ params }: Props) {
               <h2 className="text-base font-medium text-[#2C2C2C] mb-2">Available options</h2>
               <div className="overflow-x-auto rounded-xl border border-[#E8E5E0] bg-white">
                 <table className="w-full text-sm">
-                  <thead className="bg-[#F5F3F0] text-[#9A9A9A]">
+                  <thead className="bg-[#F5F3F0] text-[#6B6B6B]">
                     <tr>
                       <th className="text-left px-3 py-2 font-medium">Colour</th>
                       <th className="text-left px-3 py-2 font-medium">Size</th>

@@ -12,7 +12,7 @@ export function CatalogGrid({
   emptyMessage?: string
 }) {
   if (products.length === 0) {
-    return <p className="text-[#9A9A9A] py-10 text-center">{emptyMessage}</p>
+    return <p className="text-[#6B6B6B] py-10 text-center">{emptyMessage}</p>
   }
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">

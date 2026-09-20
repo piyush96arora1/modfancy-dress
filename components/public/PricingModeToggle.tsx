@@ -23,7 +23,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
                 href={retailHref}
                 onClick={() => setMode('retail')}
                 className={`
-          flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+          flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg text-sm font-medium transition-all duration-200
           ${currentMode === 'retail'
                         ? 'bg-[#1B2A4A] text-white shadow-sm'
                         : 'text-[#6B6B6B] hover:text-[#2D2D2D] hover:bg-[#F5F3F0]'
@@ -37,7 +37,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
                 href={wholesaleHref}
                 onClick={() => setMode('wholesale')}
                 className={`
-          flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+          flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg text-sm font-medium transition-all duration-200
           ${currentMode === 'wholesale'
                         ? 'bg-[#1B2A4A] text-white shadow-sm'
                         : 'text-[#6B6B6B] hover:text-[#2D2D2D] hover:bg-[#F5F3F0]'

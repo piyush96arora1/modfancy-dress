@@ -51,7 +51,7 @@ export default function WholesaleSchoolsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
           <span>›</span>
           <Link href="/wholesale" className="hover:text-[#1B2A4A]">Wholesale</Link>
@@ -65,7 +65,7 @@ export default function WholesaleSchoolsPage() {
 
         <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
           <div className="flex items-start gap-3">
-            <Package className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <Package className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Trusted by 400+ Schools Across Delhi NCR</p>
               <p className="text-sm text-[#6B6B6B]">We supply matching sets of 10–300+ costumes for school annual functions, Republic Day, Independence Day, Navratri, and cultural programmes. WhatsApp us your requirement and we will send a price list within a few hours.</p>
@@ -89,8 +89,8 @@ export default function WholesaleSchoolsPage() {
           {pricingTiers.map((tier) => (
             <div key={tier.range} className="rounded-xl border border-[#E8E5E0] bg-white p-4" style={{ boxShadow: 'var(--shadow-xs)' }}>
               <p className="font-semibold text-[#1B2A4A] text-sm">{tier.range}</p>
-              <p className="text-2xl font-bold text-[#C8956C] my-1">{tier.discount}</p>
-              <p className="text-xs text-[#9A9A9A]">{tier.note}</p>
+              <p className="text-2xl font-bold text-[#8F6240] my-1">{tier.discount}</p>
+              <p className="text-xs text-[#6B6B6B]">{tier.note}</p>
             </div>
           ))}
         </div>
@@ -128,7 +128,7 @@ export default function WholesaleSchoolsPage() {
 
           <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <CheckCircle className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-[#1B2A4A] text-sm mb-1">What schools tell us they value most</p>
                 <ul className="space-y-1 text-xs text-[#6B6B6B]">
@@ -166,12 +166,12 @@ export default function WholesaleSchoolsPage() {
 
         <div className="bg-white rounded-xl p-4 border border-[#E8E5E0] text-sm text-[#6B6B6B] mb-6">
           <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-medium text-[#2D2D2D]">Store Address</p>
               <p>S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051</p>
               <p className="mt-1">
-                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
+                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#8F6240] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
                 {' '}— Open daily 10 AM – 9:30 PM
               </p>
             </div>

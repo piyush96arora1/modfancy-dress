@@ -36,7 +36,7 @@ export function Header() {
       <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group truncate pr-2">
+          <Link href="/" className="flex items-center gap-2 group truncate pr-2 min-h-[44px]">
             <span className="font-[family-name:var(--font-outfit)] text-[1.1rem] sm:text-lg md:text-2xl font-bold text-[#1B2A4A] tracking-tight truncate">
               Mod Fancy Dress
             </span>
@@ -106,10 +106,10 @@ export function Header() {
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4">
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 hover:bg-[#F5F3F0] rounded-lg transition-colors">
+            <Link href="/cart" className="relative flex items-center justify-center min-w-[44px] min-h-[44px] hover:bg-[#F5F3F0] rounded-lg transition-colors" aria-label="Cart">
               <ShoppingCart className="w-5 h-5 md:w-[22px] md:h-[22px] text-[#2D2D2D]" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-[#C8956C] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center" style={{ boxShadow: 'var(--shadow-sm)' }}>
+                <span className="absolute top-0.5 right-0.5 bg-[#C8956C] text-[#1B2A4A] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" style={{ boxShadow: 'var(--shadow-sm)' }}>
                   {itemCount > 99 ? '99+' : itemCount}
                 </span>
               )}
@@ -152,7 +152,7 @@ export function Header() {
                   router.push('/admin/products')
                 })
               }}
-              className={`text-xs text-[#1B2A4A] hover:text-[#C8956C] transition-opacity relative inline-flex items-center gap-2 font-medium ${isAdminPending ? 'opacity-50' : ''}`}
+              className={`text-xs text-[#1B2A4A] hover:text-[#8F6240] transition-opacity relative inline-flex items-center gap-2 font-medium ${isAdminPending ? 'opacity-50' : ''}`}
             >
               {isAdminPending && <LoadingSpinner size="sm" />}
               Admin Panel

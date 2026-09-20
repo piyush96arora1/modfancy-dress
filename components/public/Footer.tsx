@@ -115,11 +115,11 @@ export function Footer() {
           <div>
             <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-4">Get in Touch</h4>
             <div className="space-y-3 text-sm">
-              <a href={`tel:${BUSINESS_PHONE_TEL}`} className="flex items-center gap-2 text-white/70 hover:text-[#C8956C] transition-colors">
+              <a href={`tel:${BUSINESS_PHONE_TEL}`} className="flex items-center gap-2 min-h-[44px] text-white/70 hover:text-[#C8956C] transition-colors">
                 <Phone className="w-4 h-4 flex-shrink-0" />
                 {BUSINESS_PHONE_DISPLAY}
               </a>
-              <a href={`https://wa.me/${BUSINESS_WHATSAPP_E164}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/70 hover:text-[#C8956C] transition-colors">
+              <a href={`https://wa.me/${BUSINESS_WHATSAPP_E164}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 min-h-[44px] text-white/70 hover:text-[#C8956C] transition-colors">
                 <MessageCircle className="w-4 h-4 flex-shrink-0" />
                 WhatsApp Us
               </a>

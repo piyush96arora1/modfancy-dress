@@ -68,20 +68,20 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[#9A9A9A]">
+            <div className="w-full h-full flex items-center justify-center text-[#6B6B6B]">
               <span className="text-xs">No Image</span>
             </div>
           )}
           {/* Category badge */}
           {!showCategoryBadge ? null : product.categories && product.categories.length > 0 ? (
             <div className="absolute top-2 left-2">
-              <span className="text-[10px] px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+              <span className="text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
                 {product.categories[0].category.name}
               </span>
             </div>
           ) : product.category && (
             <div className="absolute top-2 left-2">
-              <span className="text-[10px] px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+              <span className="text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
                 {product.category.name}
               </span>
             </div>
@@ -98,7 +98,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
               <p className="text-base md:text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
                 {formatPrice(displayPrice)}
                 {pricingMode === 'wholesale' && (
-                  <span className="text-[10px] font-normal text-[#9A9A9A] ml-1">/piece</span>
+                  <span className="text-xs font-normal text-[#6B6B6B] ml-1">/piece</span>
                 )}
               </p>
             </div>

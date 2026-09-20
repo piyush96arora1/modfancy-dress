@@ -26,7 +26,7 @@ export default async function BlogListPage() {
 
   return (
     <div className="fade-in">
-      <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+      <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
         <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
         <ChevronRight className="w-3 h-3 shrink-0" />
         <span className="text-[#2D2D2D]">Blog</span>
@@ -40,10 +40,10 @@ export default async function BlogListPage() {
           Practical ideas and guides for school annual functions, Republic Day, Navratri, Kathak, Garba and more. Written in a simple, parent-to-parent tone.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <Link href="/products" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+          <Link href="/products" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
             Browse costumes →
           </Link>
-          <Link href="/wholesale" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+          <Link href="/wholesale" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
             Wholesale / bulk orders →
           </Link>
         </div>

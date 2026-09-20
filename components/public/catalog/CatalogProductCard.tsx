@@ -33,20 +33,20 @@ export function CatalogProductCard({
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[#9A9A9A]">
+            <div className="w-full h-full flex items-center justify-center text-[#6B6B6B]">
               <span className="text-xs">No Image</span>
             </div>
           )}
         </div>
         <div className="p-3 sm:p-4 flex flex-col flex-1">
-          <TitleTag className="text-sm sm:text-base font-medium text-[#2C2C2C] line-clamp-2 group-hover:text-[#C8956C] transition-colors">
+          <TitleTag className="text-sm sm:text-base font-medium text-[#2C2C2C] line-clamp-2 group-hover:text-[#8F6240] transition-colors">
             {product.name}
           </TitleTag>
           <p className="mt-auto pt-2 text-base sm:text-lg font-semibold text-[#2C2C2C]">
             {product.priceLabel}
           </p>
           {product.setValue > 1 && (
-            <p className="text-xs text-[#9A9A9A]">Set of {product.setValue}</p>
+            <p className="text-xs text-[#6B6B6B]">Set of {product.setValue}</p>
           )}
         </div>
       </div>

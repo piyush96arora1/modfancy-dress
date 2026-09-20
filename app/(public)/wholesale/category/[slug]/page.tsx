@@ -136,7 +136,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
             />
             <div className="fade-in">
                 {/* Breadcrumb */}
-                <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+                <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
                     <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
                     <ChevronRight className="w-3 h-3 flex-shrink-0" />
                     <Link href="/wholesale" className="hover:text-[#1B2A4A] transition-colors">Wholesale</Link>
@@ -159,7 +159,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                 <div className="mb-4">
                     <Link
                         href={`/category/${slug}`}
-                        className="text-sm text-[#C8956C] hover:text-[#A07048] font-medium transition-colors"
+                        className="text-sm text-[#8F6240] hover:text-[#7F5636] font-medium transition-colors"
                     >
                         ← View retail prices for {category.name}
                     </Link>
@@ -181,7 +181,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                         />
                     ) : (
                         <div className="text-center py-16">
-                            <p className="text-[#9A9A9A] text-sm">No products found in this category.</p>
+                            <p className="text-[#6B6B6B] text-sm">No products found in this category.</p>
                         </div>
                     )}
                 </section>
@@ -218,7 +218,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                     >
                         Costume guides & ideas
                     </h2>
-                    <Link href="/blog" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+                    <Link href="/blog" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
                         Fancy dress ideas & costume guides on our blog →
                     </Link>
                 </section>
@@ -231,7 +231,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                             items={categoryFaqs.map(({ id, question, answer }) => ({ id, question, answer }))}
                         />
                         <p className="mt-4 text-center">
-                            <Link href="/faq" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+                            <Link href="/faq" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
                                 View all FAQs →
                             </Link>
                         </p>

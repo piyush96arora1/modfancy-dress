@@ -13,16 +13,16 @@ export const metadata = generatePageMetadata({
 export default function ContactPage() {
   const reviews = [
     { initials: 'PS', name: 'Priya Sharma', date: 'January 15, 2024', stars: 5, text: 'Excellent service! They provided amazing costumes for our school annual function. Very professional and on-time delivery. Highly recommended!', bg: 'bg-[#EEF1F7]', color: 'text-[#1B2A4A]' },
-    { initials: 'RK', name: 'Rajesh Kumar', date: 'February 20, 2024', stars: 5, text: 'Great quality costumes at reasonable prices. They have a huge collection and helped us choose the perfect outfits for our dance performance. Will definitely come back!', bg: 'bg-[#FBF5EF]', color: 'text-[#C8956C]' },
+    { initials: 'RK', name: 'Rajesh Kumar', date: 'February 20, 2024', stars: 5, text: 'Great quality costumes at reasonable prices. They have a huge collection and helped us choose the perfect outfits for our dance performance. Will definitely come back!', bg: 'bg-[#FBF5EF]', color: 'text-[#8F6240]' },
     { initials: 'AM', name: 'Anita Mehta', date: 'March 10, 2024', stars: 5, text: '15 years of experience shows! They understand school requirements perfectly. Completed our function smoothly. Highly recommended for school functions.', bg: 'bg-[#F5F3F0]', color: 'text-[#6B6B6B]' },
     { initials: 'VS', name: 'Vikram Singh', date: 'April 5, 2024', stars: 4, text: 'Best fancy dress shop in Delhi. They have completed 400+ school functions and it shows in their service quality. Great collection and reasonable prices.', bg: 'bg-[#EEF1F7]', color: 'text-[#1B2A4A]' },
-    { initials: 'SD', name: 'Sunita Devi', date: 'May 12, 2024', stars: 5, text: 'Very reliable and professional. They delivered exactly what we needed for our school event. Will definitely use their services again. Thank you!', bg: 'bg-[#FBF5EF]', color: 'text-[#C8956C]' },
+    { initials: 'SD', name: 'Sunita Devi', date: 'May 12, 2024', stars: 5, text: 'Very reliable and professional. They delivered exactly what we needed for our school event. Will definitely use their services again. Thank you!', bg: 'bg-[#FBF5EF]', color: 'text-[#8F6240]' },
   ]
 
   return (
     <div className="fade-in">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="text-[#2D2D2D]">Contact</span>
@@ -43,7 +43,7 @@ export default function ContactPage() {
           <div className="bg-[#F5F3F0] rounded-xl p-5 md:p-6 mb-6" style={{ boxShadow: 'var(--shadow-xs)' }}>
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-full bg-[#FBF5EF] flex items-center justify-center flex-shrink-0">
-                <Award className="w-5 h-5 text-[#C8956C]" />
+                <Award className="w-5 h-5 text-[#8F6240]" />
               </div>
               <div>
                 <h2 className="text-lg font-bold text-[#1B2A4A] mb-1.5 font-[family-name:var(--font-outfit)]">About Us</h2>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                 <h3 className="text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Call Us</h3>
               </div>
               <div className="space-y-2">
-                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="block text-base text-[#1B2A4A] hover:text-[#C8956C] font-semibold transition-colors">{BUSINESS_PHONE_DISPLAY}</a>
+                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="block text-base text-[#1B2A4A] hover:text-[#8F6240] font-semibold transition-colors">{BUSINESS_PHONE_DISPLAY}</a>
               </div>
             </div>
 
@@ -127,7 +127,7 @@ export default function ContactPage() {
             <div className="bg-white rounded-xl p-5 border border-[#E8E5E0]" style={{ boxShadow: 'var(--shadow-xs)' }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-9 h-9 bg-[#FBF5EF] rounded-full flex items-center justify-center">
-                  <MapPin className="w-4 h-4 text-[#C8956C]" />
+                  <MapPin className="w-4 h-4 text-[#8F6240]" />
                 </div>
                 <h3 className="text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Visit Us</h3>
               </div>
@@ -147,7 +147,7 @@ export default function ContactPage() {
                 <h3 className="text-base font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Business Hours</h3>
               </div>
               <p className="text-sm text-[#6B6B6B]"><strong className="text-[#2D2D2D]">Daily:</strong> 10:00 AM - 9:30 PM</p>
-              <p className="text-xs text-[#9A9A9A] mt-1">Open all days</p>
+              <p className="text-xs text-[#6B6B6B] mt-1">Open all days</p>
             </div>
           </div>
 
@@ -176,22 +176,22 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-medium text-sm text-[#2D2D2D]">Google Business Profile</p>
-                    <p className="text-xs text-[#9A9A9A]">View our business information</p>
+                    <p className="text-xs text-[#6B6B6B]">View our business information</p>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-[#9A9A9A] group-hover:text-[#C8956C]" />
+                <ExternalLink className="w-4 h-4 text-[#6B6B6B] group-hover:text-[#8F6240]" />
               </a>
               <a href="https://g.page/r/CdvlhuNtrqb5EAI/review" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-3 bg-[#F5F3F0] hover:bg-[#FBF5EF] rounded-lg transition-colors group">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center" style={{ boxShadow: 'var(--shadow-xs)' }}>
-                    <Award className="w-4 h-4 text-[#C8956C]" />
+                    <Award className="w-4 h-4 text-[#8F6240]" />
                   </div>
                   <div>
                     <p className="font-medium text-sm text-[#2D2D2D]">Leave a Review</p>
-                    <p className="text-xs text-[#9A9A9A]">Share your experience with us</p>
+                    <p className="text-xs text-[#6B6B6B]">Share your experience with us</p>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-[#9A9A9A] group-hover:text-[#C8956C]" />
+                <ExternalLink className="w-4 h-4 text-[#6B6B6B] group-hover:text-[#8F6240]" />
               </a>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function ContactPage() {
               <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
               <div>
                 <h3 className="text-lg font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Customer Reviews</h3>
-                <p className="text-xs text-[#9A9A9A]">4.7 out of 5 stars from 700+ reviews</p>
+                <p className="text-xs text-[#6B6B6B]">4.7 out of 5 stars from 700+ reviews</p>
               </div>
             </div>
 
@@ -243,7 +243,7 @@ export default function ContactPage() {
                             <Star key={j} className="w-3 h-3 text-[#E8E5E0]" />
                           ))}
                         </div>
-                        <span className="text-[10px] text-[#9A9A9A]">{review.date}</span>
+                        <span className="text-xs text-[#6B6B6B]">{review.date}</span>
                       </div>
                       <p className="text-sm text-[#6B6B6B] leading-relaxed">{review.text}</p>
                     </div>
@@ -254,7 +254,7 @@ export default function ContactPage() {
 
             {/* Google link */}
             <div className="mt-5 pt-4 border-t border-[#F5F3F0] text-center">
-              <a href="https://g.page/r/CdvlhuNtrqb5EAI/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-[#C8956C] hover:text-[#A07048] font-medium transition-colors">
+              <a href="https://g.page/r/CdvlhuNtrqb5EAI/review" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-[#8F6240] hover:text-[#7F5636] font-medium transition-colors">
                 <Award className="w-4 h-4" />
                 Leave a Review on Google
                 <ExternalLink className="w-3.5 h-3.5" />

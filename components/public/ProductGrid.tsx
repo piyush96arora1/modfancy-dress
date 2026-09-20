@@ -22,7 +22,7 @@ export function ProductGrid({
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-[#9A9A9A] text-sm">No products found.</p>
+        <p className="text-[#6B6B6B] text-sm">No products found.</p>
       </div>
     )
   }
@@ -45,7 +45,7 @@ export function ProductGrid({
           className="group flex flex-col items-center justify-center p-6 text-center bg-[#FAFAF8] border border-[#E8E5E0] rounded-2xl hover:bg-[#F5F3F0] transition-all duration-300 min-h-[280px]"
         >
           <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform duration-300">
-            <ArrowRight className="w-5 h-5 text-[#C8956C]" />
+            <ArrowRight className="w-5 h-5 text-[#8F6240]" />
           </div>
           <h3 className="font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] text-lg mb-2">
             View All Costumes

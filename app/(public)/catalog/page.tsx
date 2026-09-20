@@ -30,7 +30,7 @@ export default async function CatalogIndexPage() {
       <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-[#2C2C2C]">Catalogue</h1>
-          <p className="text-[#9A9A9A] mt-1">
+          <p className="text-[#6B6B6B] mt-1">
             {counts.products} items across {counts.categories} categories
           </p>
         </div>

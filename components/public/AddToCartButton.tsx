@@ -19,6 +19,10 @@ interface AddToCartButtonProps {
 
 export function AddToCartButton({ product, sizes, colors, variants, pricingMode = 'retail', wholesaleDiscountPct = 30 }: AddToCartButtonProps) {
   const [selectedSize, setSelectedSize] = useState<string>(sizes.length > 0 ? sizes[0] : '')
+  // A single option is information, not a decision. Rendering a control for it invites a
+  // tap that changes nothing and costs vertical space above the CTA.
+  const hasSizeChoice = sizes.length > 1
+  const hasColorChoice = colors.length > 1
   const [selectedColor, setSelectedColor] = useState<string>(colors.length > 0 ? colors[0] : '')
   const [quantity, setQuantity] = useState(pricingMode === 'wholesale' ? 10 : 1)
   const [adding, setAdding] = useState(false)
@@ -101,32 +105,46 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
     <div className="space-y-5">
       {/* Price */}
       <div>
-        <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
-          {formatPrice(currentPrice)}
-          {pricingMode === 'wholesale' && (
-            <span className="text-sm font-normal text-[#9A9A9A] ml-1">/piece</span>
+        <div className="flex items-baseline flex-wrap gap-x-3 gap-y-1">
+          <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+            {formatPrice(currentPrice)}
+            {pricingMode === 'wholesale' && (
+              <span className="text-sm font-normal text-[#6B6B6B] ml-1">/piece</span>
+            )}
+          </p>
+          {/* One size is a fact, not a choice: state it beside the price rather than
+              rendering a control the customer cannot act on. */}
+          {!hasSizeChoice && sizes.length === 1 && (
+            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F5F3F0] text-[#2D2D2D]">
+              Size: {sizes[0]}
+            </span>
           )}
-        </p>
+          {!hasColorChoice && colors.length === 1 && (
+            <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-[#F5F3F0] text-[#2D2D2D]">
+              Colour: {colors[0]}
+            </span>
+          )}
+        </div>
         {pricingMode === 'wholesale' && retailPrice > currentPrice && (
           <div className="flex items-center gap-2 mt-1">
-            <p className="text-sm text-[#9A9A9A] line-through">{formatPrice(retailPrice)}</p>
+            <p className="text-sm text-[#6B6B6B] line-through">{formatPrice(retailPrice)}</p>
             <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-semibold">
               Save {savingsPercent}%
             </span>
           </div>
         )}
-        {selectedSize && (
-          <p className="text-xs text-[#9A9A9A] mt-1">Price for size: {selectedSize}</p>
+        {hasSizeChoice && selectedSize && (
+          <p className="text-xs text-[#6B6B6B] mt-1">Price for size: {selectedSize}</p>
         )}
         {pricingMode === 'retail' && product.rent_price != null && (
-          <p className="text-xs text-[#C8956C] mt-1.5 font-medium">
+          <p className="text-xs text-[#8F6240] mt-1.5 font-medium">
             Also available on rent
           </p>
         )}
       </div>
 
-      {/* Size Pills */}
-      {sizes.length > 0 && (
+      {/* Size Pills — only when there is more than one to pick from. */}
+      {hasSizeChoice && (
         <div>
           <label className="block text-sm font-medium mb-2 text-[#2D2D2D]">Size</label>
           <div className="flex flex-wrap gap-2">
@@ -146,8 +164,8 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
         </div>
       )}
 
-      {/* Color Pills */}
-      {colors.length > 0 && (
+      {/* Color Pills — same rule as sizes. */}
+      {hasColorChoice && (
         <div>
           <label className="block text-sm font-medium mb-2 text-[#2D2D2D]">Color</label>
           <div className="flex flex-wrap gap-2">
@@ -167,13 +185,19 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
         </div>
       )}
 
-      {/* Quantity */}
+      {/*
+       * Quantity is a wholesale concern only. A retail costume buyer takes one, and the
+       * stepper cost ~92px directly above the Add to Cart button — enough to push the CTA
+       * below the fold on a 390x844 phone. Fashion PDPs defer quantity to the cart; bulk
+       * buyers still need it, so it stays in wholesale mode.
+       */}
+      {pricingMode === 'wholesale' && (
       <div>
         <label className="block text-sm font-medium mb-2 text-[#2D2D2D]">Quantity</label>
         <div className="flex items-center gap-1">
           <button
             onClick={() => setQuantity(Math.max(pricingMode === 'wholesale' ? 5 : 1, quantity - 1))}
-            className="w-10 h-10 rounded-lg border border-[#E8E5E0] flex items-center justify-center text-[#2D2D2D] hover:border-[#1B2A4A] transition-colors text-lg font-medium"
+            className="w-11 h-11 rounded-lg border border-[#949086] flex items-center justify-center text-[#2D2D2D] hover:border-[#1B2A4A] transition-colors text-lg font-medium"
           >
             −
           </button>
@@ -182,21 +206,20 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
             min={pricingMode === 'wholesale' ? "5" : "1"}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(pricingMode === 'wholesale' ? 5 : 1, parseInt(e.target.value) || (pricingMode === 'wholesale' ? 5 : 1)))}
-            className="w-16 text-center h-10 rounded-lg"
+            className="w-16 text-center h-11 rounded-lg"
           />
           <button
             onClick={() => setQuantity(quantity + 1)}
-            className="w-10 h-10 rounded-lg border border-[#E8E5E0] flex items-center justify-center text-[#2D2D2D] hover:border-[#1B2A4A] transition-colors text-lg font-medium"
+            className="w-11 h-11 rounded-lg border border-[#949086] flex items-center justify-center text-[#2D2D2D] hover:border-[#1B2A4A] transition-colors text-lg font-medium"
           >
             +
           </button>
         </div>
-        {pricingMode === 'wholesale' && (
-          <p className="text-xs text-[#6B6B6B] mt-1.5">
-            Total: <strong className="text-[#1B2A4A]">{formatPrice(currentPrice * quantity)}</strong> for {quantity} pieces
-          </p>
-        )}
+        <p className="text-xs text-[#6B6B6B] mt-1.5">
+          Total: <strong className="text-[#1B2A4A]">{formatPrice(currentPrice * quantity)}</strong> for {quantity} pieces
+        </p>
       </div>
+      )}
 
       {/* Add to Cart Button */}
       <Button

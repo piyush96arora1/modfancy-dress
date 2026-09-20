@@ -81,7 +81,7 @@ export default function FancyDressGurgaonPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
-      <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+      <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
         <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
         <span>›</span>
         <span className="text-[#2D2D2D]">Fancy Dress Gurgaon</span>
@@ -91,7 +91,7 @@ export default function FancyDressGurgaonPage() {
       </h1>
       <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
         <div className="flex items-start gap-3">
-          <Truck className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+          <Truck className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold text-[#1B2A4A] text-sm mb-1">Serving Gurgaon (Gurugram) with delivery</p>
             <p className="text-sm text-[#6B6B6B]">We deliver to DLF Phases, Sohna Road, Golf Course Road, Cyber City, and other Gurgaon areas. Advance booking recommended — call us to confirm availability and timing for your area.</p>
@@ -100,9 +100,9 @@ export default function FancyDressGurgaonPage() {
       </div>
       <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
         <p>Looking for a fancy dress costume in Gurgaon? Most local shops carry limited stock, especially for niche categories like classical dance costumes, freedom fighter outfits, or multi-character school sets. Mod Fancy Dress is a fancy dress costume shop based in <strong className="text-[#2D2D2D]">Krishna Nagar, East Delhi</strong> — with 15+ years of experience, 700+ Google reviews and a 4.7★ rating — and we regularly serve Gurgaon (Gurugram) with delivery for school events and occasions. We do not have a Gurgaon outlet; you buy or rent through delivery or by visiting our Delhi store.</p>
-        <p>You can <strong className="text-[#2D2D2D]">buy or rent costumes from ₹200</strong>. We stock over 400 styles, including <Link href="/category/leaders-freedom-fighters" className="text-[#C8956C] hover:underline font-medium">leaders &amp; freedom fighters</Link>, <Link href="/category/classical-dance-dress" className="text-[#C8956C] hover:underline font-medium">classical dance dresses</Link>, <Link href="/category/janmashtami-dress" className="text-[#C8956C] hover:underline font-medium">Janmashtami costumes</Link> and <Link href="/category/states-fancy-dress" className="text-[#C8956C] hover:underline font-medium">states of India fancy dress</Link>. Need a costume just for one event? See our <Link href="/rent" className="text-[#C8956C] hover:underline font-medium">rental range</Link> starting at ₹200 per event.</p>
+        <p>You can <strong className="text-[#2D2D2D]">buy or rent costumes from ₹200</strong>. We stock over 400 styles, including <Link href="/category/leaders-freedom-fighters" className="text-[#8F6240] hover:underline font-medium">leaders &amp; freedom fighters</Link>, <Link href="/category/classical-dance-dress" className="text-[#8F6240] hover:underline font-medium">classical dance dresses</Link>, <Link href="/category/janmashtami-dress" className="text-[#8F6240] hover:underline font-medium">Janmashtami costumes</Link> and <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline font-medium">states of India fancy dress</Link>. Need a costume just for one event? See our <Link href="/rent" className="text-[#8F6240] hover:underline font-medium">rental range</Link> starting at ₹200 per event.</p>
         <p>We specialise in <strong className="text-[#2D2D2D]">bulk orders for Gurgaon schools</strong> — many corporate school campuses in Gurgaon host large annual functions requiring 100–300 costumes. We have experience coordinating multi-character sets for entire school productions, including classical Indian dance, historical, and folk costume themes.</p>
-        <p>For school bulk orders of 100–300 costumes, see our <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline font-medium">schools &amp; bulk orders page</Link> for pricing tiers and the ordering process. You can also <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline font-medium">visit our Delhi store</Link> to see costumes before placing a large order, or check how we serve nearby <Link href="/fancy-dress-noida" className="text-[#C8956C] hover:underline font-medium">Noida</Link>.</p>
+        <p>For school bulk orders of 100–300 costumes, see our <Link href="/wholesale/schools" className="text-[#8F6240] hover:underline font-medium">schools &amp; bulk orders page</Link> for pricing tiers and the ordering process. You can also <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline font-medium">visit our Delhi store</Link> to see costumes before placing a large order, or check how we serve nearby <Link href="/fancy-dress-noida" className="text-[#8F6240] hover:underline font-medium">Noida</Link>.</p>
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Ordering Process for Gurgaon</h2>
         <ol className="list-decimal pl-5 space-y-1.5">
           <li>Browse the full catalogue at modfancydress.com/products</li>
@@ -124,26 +124,26 @@ export default function FancyDressGurgaonPage() {
       <div className="bg-[#FBF5EF] rounded-xl p-5 mb-8 border border-[#E8E5E0]">
         <h2 className="text-base font-semibold text-[#1B2A4A] mb-3 font-[family-name:var(--font-outfit)]">Explore</h2>
         <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-          <Link href="/rent" className="text-[#C8956C] hover:underline">Costume Rentals</Link>
-          <Link href="/category/leaders-freedom-fighters" className="text-[#C8956C] hover:underline">Leaders &amp; Freedom Fighters</Link>
-          <Link href="/category/classical-dance-dress" className="text-[#C8956C] hover:underline">Classical Dance Dress</Link>
-          <Link href="/category/janmashtami-dress" className="text-[#C8956C] hover:underline">Janmashtami Dress</Link>
-          <Link href="/category/states-fancy-dress" className="text-[#C8956C] hover:underline">States Fancy Dress</Link>
-          <Link href="/fancy-dress-delhi" className="text-[#C8956C] hover:underline">Fancy Dress Delhi</Link>
-          <Link href="/fancy-dress-noida" className="text-[#C8956C] hover:underline">Fancy Dress Noida</Link>
+          <Link href="/rent" className="text-[#8F6240] hover:underline">Costume Rentals</Link>
+          <Link href="/category/leaders-freedom-fighters" className="text-[#8F6240] hover:underline">Leaders &amp; Freedom Fighters</Link>
+          <Link href="/category/classical-dance-dress" className="text-[#8F6240] hover:underline">Classical Dance Dress</Link>
+          <Link href="/category/janmashtami-dress" className="text-[#8F6240] hover:underline">Janmashtami Dress</Link>
+          <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline">States Fancy Dress</Link>
+          <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline">Fancy Dress Delhi</Link>
+          <Link href="/fancy-dress-noida" className="text-[#8F6240] hover:underline">Fancy Dress Noida</Link>
         </div>
       </div>
 
       <div className="bg-white rounded-xl p-4 border border-[#E8E5E0] text-sm text-[#6B6B6B]">
         <div className="flex items-start gap-2">
-          <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+          <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
           <div>
             <p className="font-medium text-[#2D2D2D]">Store Address (serving Gurgaon)</p>
             <p>S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051</p>
-            <p className="mt-1"><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a> — Open daily 10 AM – 9:30 PM</p>
+            <p className="mt-1"><a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#8F6240] hover:underline">{BUSINESS_PHONE_DISPLAY}</a> — Open daily 10 AM – 9:30 PM</p>
             <p className="mt-2 flex items-center gap-1.5">
-              <Star className="w-4 h-4 text-[#C8956C] shrink-0" />
-              <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="text-[#C8956C] hover:underline font-medium">View us on Google — 700+ reviews, 4.7★</a>
+              <Star className="w-4 h-4 text-[#8F6240] shrink-0" />
+              <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="text-[#8F6240] hover:underline font-medium">View us on Google — 700+ reviews, 4.7★</a>
             </p>
           </div>
         </div>

@@ -72,7 +72,7 @@ export default async function RentPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="fade-in">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3 shrink-0" />
           <span className="text-[#2D2D2D]">Rent</span>
@@ -90,21 +90,21 @@ export default async function RentPage() {
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <MapPin className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <MapPin className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-[#1B2A4A]">Visit our shop</p>
                 <p className="text-xs text-[#6B6B6B]">Krishna Nagar, East Delhi</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <Clock className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <Clock className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-[#1B2A4A]">Refundable deposit</p>
                 <p className="text-xs text-[#6B6B6B]">₹500 – ₹2,000 based on costume</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <MessageCircle className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <MessageCircle className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-[#1B2A4A]">WhatsApp enquiry</p>
                 <p className="text-xs text-[#6B6B6B]">{BUSINESS_PHONE_DISPLAY}</p>
@@ -144,7 +144,7 @@ export default async function RentPage() {
                 <h3 className="text-center font-medium text-xs md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] leading-tight">
                   {cat.name}
                 </h3>
-                <p className="text-[10px] text-[#9A9A9A]">{cat.product_count} costumes</p>
+                <p className="text-xs text-[#6B6B6B]">{cat.product_count} costumes</p>
               </Link>
             ))}
           </div>
@@ -157,15 +157,15 @@ export default async function RentPage() {
           </h2>
           <ol className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-[#6B6B6B]">
             <li className="p-4 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <span className="block text-lg font-bold text-[#C8956C] mb-1">1</span>
+              <span className="block text-lg font-bold text-[#8F6240] mb-1">1</span>
               <strong className="text-[#1B2A4A]">Browse & enquire</strong> — pick a costume and send a WhatsApp message with your event date.
             </li>
             <li className="p-4 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <span className="block text-lg font-bold text-[#C8956C] mb-1">2</span>
+              <span className="block text-lg font-bold text-[#8F6240] mb-1">2</span>
               <strong className="text-[#1B2A4A]">Collect or get delivered</strong> — visit our Krishna Nagar shop to try the costume, or book a Porter/Rapido for doorstep delivery. Pay rent + refundable deposit.
             </li>
             <li className="p-4 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <span className="block text-lg font-bold text-[#C8956C] mb-1">3</span>
+              <span className="block text-lg font-bold text-[#8F6240] mb-1">3</span>
               <strong className="text-[#1B2A4A]">Return & get deposit back</strong> — bring it back after the event and collect your full deposit.
             </li>
           </ol>
@@ -179,9 +179,9 @@ export default async function RentPage() {
           <div className="space-y-3">
             {faqs.map((faq, i) => (
               <details key={i} className="group rounded-lg border border-[#E8E5E0] bg-white">
-                <summary className="cursor-pointer select-none px-4 py-3 text-sm font-medium text-[#1B2A4A] hover:text-[#C8956C] transition-colors list-none flex items-center justify-between gap-2">
+                <summary className="cursor-pointer select-none px-4 py-3 text-sm font-medium text-[#1B2A4A] hover:text-[#8F6240] transition-colors list-none flex items-center justify-between gap-2">
                   {faq.question}
-                  <ChevronRight className="w-4 h-4 shrink-0 text-[#9A9A9A] group-open:rotate-90 transition-transform" />
+                  <ChevronRight className="w-4 h-4 shrink-0 text-[#6B6B6B] group-open:rotate-90 transition-transform" />
                 </summary>
                 <p className="px-4 pb-3 text-sm text-[#6B6B6B] leading-relaxed">{faq.answer}</p>
               </details>
@@ -195,7 +195,7 @@ export default async function RentPage() {
             href={whatsappUrl('Hi, I want to rent a fancy dress costume. Can you help?')}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full max-w-md mx-auto min-h-[48px] py-3 px-6 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white font-semibold text-sm transition-colors touch-manipulation"
+            className="flex items-center justify-center gap-2 w-full max-w-md mx-auto min-h-[48px] py-3 px-6 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-[#1B2A4A] font-semibold text-sm transition-colors touch-manipulation"
           >
             <MessageCircle className="w-5 h-5 shrink-0" aria-hidden />
             <span>Enquire about renting on WhatsApp</span>

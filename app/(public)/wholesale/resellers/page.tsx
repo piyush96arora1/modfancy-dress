@@ -119,7 +119,7 @@ export default function WholesaleResellersPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="fade-in max-w-3xl mx-auto">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
           <Link href="/" className="hover:text-[#1B2A4A]">Home</Link>
           <span>›</span>
           <Link href="/wholesale" className="hover:text-[#1B2A4A]">Wholesale</Link>
@@ -133,7 +133,7 @@ export default function WholesaleResellersPage() {
 
         <div className="bg-[#FBF5EF] rounded-xl p-5 mb-6 border border-[#E8E5E0]">
           <div className="flex items-start gap-3">
-            <Store className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <Store className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-[#1B2A4A] text-sm mb-1">For shops, online sellers and rental businesses</p>
               <p className="text-sm text-[#6B6B6B]">We supply costume shops, party-supply stores, Meesho, Amazon, Flipkart and Instagram sellers, event-rental firms and boutiques from our Krishna Nagar counter.</p>
@@ -142,7 +142,7 @@ export default function WholesaleResellersPage() {
         </div>
 
         <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
-          <p>If you buy costumes to sell on, you shop differently from a school. A school buys once, for one function, on one date. You are buying <strong className="text-[#2D2D2D]">stock</strong> — so cost per piece, how fast a style turns and what you still hold in February decide your margin. Buying for one school event instead? See <Link href="/wholesale/schools" className="text-[#C8956C] hover:underline">bulk costumes for schools</Link>.</p>
+          <p>If you buy costumes to sell on, you shop differently from a school. A school buys once, for one function, on one date. You are buying <strong className="text-[#2D2D2D]">stock</strong> — so cost per piece, how fast a style turns and what you still hold in February decide your margin. Buying for one school event instead? See <Link href="/wholesale/schools" className="text-[#8F6240] hover:underline">bulk costumes for schools</Link>.</p>
 
           <p>Mod Fancy Dress has supplied costumes for <strong className="text-[#2D2D2D]">15+ years</strong> from Krishna Nagar, inside the Delhi wholesale market. We carry <strong className="text-[#2D2D2D]">400+ styles</strong> in ages 3–14 and adult S–XL, have supplied <strong className="text-[#2D2D2D]">400+ school functions</strong>, and hold <strong className="text-[#2D2D2D]">700+ reviews at 4.7★</strong>.</p>
 
@@ -155,8 +155,8 @@ export default function WholesaleResellersPage() {
           {pricingTiers.map((tier) => (
             <div key={tier.range} className="rounded-xl border border-[#E8E5E0] bg-white p-4" style={{ boxShadow: 'var(--shadow-xs)' }}>
               <p className="font-semibold text-[#1B2A4A] text-sm">{tier.range}</p>
-              <p className="text-2xl font-bold text-[#C8956C] my-1">{tier.discount}</p>
-              <p className="text-xs text-[#9A9A9A]">{tier.note}</p>
+              <p className="text-2xl font-bold text-[#8F6240] my-1">{tier.discount}</p>
+              <p className="text-xs text-[#6B6B6B]">{tier.note}</p>
             </div>
           ))}
         </div>
@@ -165,14 +165,14 @@ export default function WholesaleResellersPage() {
           <p>The line that matters to a reseller is <strong className="text-[#2D2D2D]">50–99 pieces</strong>, where mixed styles are allowed — one order across eight or ten costumes, still at 20% off, which builds a shelf instead of dressing one event. The 15% tier needs 10 of the same costume: fine for a school&apos;s matching set, risky before a style has proved itself.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Minimum Order to Open a Reseller Account</h2>
-          <p>No application form, no membership fee — the entry point is simply 10 pieces of one costume. We do not publish a fixed minimum order value, because the figure swings with your style mix; WhatsApp us the categories you want to stock and we will say what a workable first order looks like. Browse <Link href="/products" className="text-[#C8956C] hover:underline">the catalogue</Link> first.</p>
+          <p>No application form, no membership fee — the entry point is simply 10 pieces of one costume. We do not publish a fixed minimum order value, because the figure swings with your style mix; WhatsApp us the categories you want to stock and we will say what a workable first order looks like. Browse <Link href="/products" className="text-[#8F6240] hover:underline">the catalogue</Link> first.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Restocking and Repeat Orders</h2>
         </div>
 
         <div className="rounded-xl border border-[#E8E5E0] bg-white p-4 mb-8">
           <div className="flex items-start gap-3">
-            <RefreshCw className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+            <RefreshCw className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
             <p className="text-sm text-[#6B6B6B] leading-relaxed">Send the costume names and size breakdown from your last invoice back on the same WhatsApp thread — we check stock and return an updated quote. In peak weeks stock moves fast, so confirm before promising a date.</p>
           </div>
         </div>
@@ -187,10 +187,10 @@ export default function WholesaleResellersPage() {
           {sellingSeasons.map((s) => (
             <div key={s.season} className="rounded-xl border border-[#E8E5E0] bg-[#F5F3F0] p-4">
               <div className="flex items-start gap-2.5">
-                <CalendarDays className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+                <CalendarDays className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-semibold text-[#1B2A4A] text-sm">{s.season}</h3>
-                  <p className="text-xs text-[#C8956C] font-medium mt-0.5">{s.buyWindow}</p>
+                  <p className="text-xs text-[#8F6240] font-medium mt-0.5">{s.buyWindow}</p>
                   <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{s.stock}</p>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function WholesaleResellersPage() {
         </div>
 
         <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
-          <p>The patriotic range sells twice a year, so buy it deep once; annual-function season runs through January. <Link href="/wholesale/dance-academies" className="text-[#C8956C] hover:underline">Dance academies</Link> peak around recitals instead.</p>
+          <p>The patriotic range sells twice a year, so buy it deep once; annual-function season runs through January. <Link href="/wholesale/dance-academies" className="text-[#8F6240] hover:underline">Dance academies</Link> peak around recitals instead.</p>
 
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Which Categories Sell Fastest</h2>
         </div>
@@ -209,7 +209,7 @@ export default function WholesaleResellersPage() {
           {fastMovers.map((c) => (
             <div key={c.name} className="rounded-xl border border-[#E8E5E0] bg-white p-4">
               <div className="flex items-start gap-2.5">
-                <TrendingUp className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+                <TrendingUp className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-semibold text-[#2D2D2D] text-sm">{c.name}</h3>
                   <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{c.why}</p>
@@ -228,8 +228,8 @@ export default function WholesaleResellersPage() {
 
         <div className="rounded-xl border border-[#E8E5E0] bg-[#FBF5EF] p-4 mb-8">
           <div className="flex items-start gap-3">
-            <Truck className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
-            <p className="text-sm text-[#6B6B6B] leading-relaxed">Inside Delhi NCR: Porter or Rapido delivery, or pickup from the store. Outside NCR: transport or courier, with <strong className="text-[#2D2D2D]">shipping charges extra according to location</strong>, quoted separately from the goods. Send your city and pin code for a freight quote, and allow extra transit days — or make one buying trip a season, using the <Link href="/wholesale/delhi-market" className="text-[#C8956C] hover:underline">Delhi market guide</Link>.</p>
+            <Truck className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
+            <p className="text-sm text-[#6B6B6B] leading-relaxed">Inside Delhi NCR: Porter or Rapido delivery, or pickup from the store. Outside NCR: transport or courier, with <strong className="text-[#2D2D2D]">shipping charges extra according to location</strong>, quoted separately from the goods. Send your city and pin code for a freight quote, and allow extra transit days — or make one buying trip a season, using the <Link href="/wholesale/delhi-market" className="text-[#8F6240] hover:underline">Delhi market guide</Link>.</p>
           </div>
         </div>
 
@@ -237,7 +237,7 @@ export default function WholesaleResellersPage() {
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Payment Terms</h2>
           <div className="rounded-xl border border-[#E8E5E0] bg-white p-4">
             <div className="flex items-start gap-3">
-              <Wallet className="w-5 h-5 text-[#C8956C] shrink-0 mt-0.5" />
+              <Wallet className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <p>A <strong className="text-[#2D2D2D]">30% advance</strong> on orders above ₹10,000, balance on delivery by <strong className="text-[#2D2D2D]">cash or UPI</strong>. Same on a first order and a tenth.</p>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function WholesaleResellersPage() {
           {notOffered.map((item) => (
             <div key={item.title} className="rounded-xl border border-[#E8E5E0] bg-[#F5F3F0] p-4">
               <div className="flex items-start gap-2.5">
-                <XCircle className="w-4 h-4 text-[#9A9A9A] shrink-0 mt-0.5" />
+                <XCircle className="w-4 h-4 text-[#6B6B6B] shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-semibold text-[#2D2D2D] text-sm">{item.title}</h3>
                   <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">{item.detail}</p>
@@ -277,7 +277,7 @@ export default function WholesaleResellersPage() {
         </section>
 
         <p className="text-sm text-[#6B6B6B] leading-relaxed mb-6">
-          Send your categories, piece count, size split and delivery city for a tier price. Prefer to write it out? Use the <Link href="/contact" className="text-[#C8956C] hover:underline">contact page</Link>, or the <Link href="/wholesale" className="text-[#C8956C] hover:underline">wholesale overview</Link>.
+          Send your categories, piece count, size split and delivery city for a tier price. Prefer to write it out? Use the <Link href="/contact" className="text-[#8F6240] hover:underline">contact page</Link>, or the <Link href="/wholesale" className="text-[#8F6240] hover:underline">wholesale overview</Link>.
         </p>
 
         {/* CTAs */}
@@ -300,12 +300,12 @@ export default function WholesaleResellersPage() {
 
         <div className="bg-white rounded-xl p-4 border border-[#E8E5E0] text-sm text-[#6B6B6B] mb-6">
           <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-[#C8956C] shrink-0 mt-0.5" />
+            <MapPin className="w-4 h-4 text-[#8F6240] shrink-0 mt-0.5" />
             <div>
               <p className="font-medium text-[#2D2D2D]">Wholesale Counter</p>
               <p>S64, South Anarkali, Som Bazar, Krishna Nagar, Delhi 110051</p>
               <p className="mt-1">
-                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#C8956C] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
+                <a href={`tel:${BUSINESS_PHONE_TEL}`} className="text-[#8F6240] hover:underline">{BUSINESS_PHONE_DISPLAY}</a>
                 {' '}— Open daily 10 AM – 9:30 PM
               </p>
             </div>

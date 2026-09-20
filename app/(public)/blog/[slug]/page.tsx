@@ -76,7 +76,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
       />
       <article className="fade-in max-w-3xl">
-        <nav className="flex items-center gap-1.5 text-xs text-[#9A9A9A] mb-4 md:mb-6">
+        <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
           <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3 shrink-0" />
           <Link href="/blog" className="hover:text-[#1B2A4A] transition-colors">Blog</Link>
@@ -114,7 +114,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               items={blogFaqs.map(({ id, question, answer }) => ({ id, question, answer }))}
             />
             <p className="mt-4 text-center">
-              <Link href="/faq" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+              <Link href="/faq" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
                 View all FAQs →
               </Link>
             </p>
@@ -123,13 +123,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <footer className="mt-10 pt-6 border-t border-[#E8E5E0] space-y-4">
           <div className="flex flex-wrap gap-4">
-            <Link href="/products" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+            <Link href="/products" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
               Shop fancy dress costumes →
             </Link>
-            <Link href="/rent" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+            <Link href="/rent" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
               Rent costumes →
             </Link>
-            <Link href="/wholesale" className="text-sm font-medium text-[#C8956C] hover:text-[#A07048] transition-colors">
+            <Link href="/wholesale" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
               Wholesale / bulk orders →
             </Link>
           </div>

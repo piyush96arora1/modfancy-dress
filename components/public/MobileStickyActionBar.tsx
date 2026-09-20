@@ -18,12 +18,12 @@ export function MobileStickyActionBar() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
             >
-                <Search className="w-3.5 h-3.5 text-[#C8956C] flex-shrink-0" />
+                <Search className="w-3.5 h-3.5 text-[#8F6240] flex-shrink-0" />
                 <span className="font-semibold text-xs">Search</span>
             </Button>
             <Link href="/products" className="flex-[0.65]">
                 <Button className="w-full h-10 px-2 rounded-xl bg-[#1B2A4A] text-white shadow-sm flex items-center justify-center gap-1.5 hover:bg-[#2A4070]">
-                    <LayoutGrid className="w-3.5 h-3.5 text-[#C8956C] flex-shrink-0" />
+                    <LayoutGrid className="w-3.5 h-3.5 text-[#8F6240] flex-shrink-0" />
                     <span className="font-semibold text-xs whitespace-nowrap">All Products</span>
                 </Button>
             </Link>

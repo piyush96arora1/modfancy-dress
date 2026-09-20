@@ -24,7 +24,7 @@ export function CatalogSearchBox({
       className="relative w-full max-w-xl"
       role="search"
     >
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9A9A9A] pointer-events-none" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B6B6B] pointer-events-none" />
       <input
         type="search"
         value={q}
@@ -32,7 +32,7 @@ export function CatalogSearchBox({
         autoFocus={autoFocus}
         placeholder="Search costumes, wigs, accessories..."
         aria-label="Search the catalogue"
-        className="w-full pl-11 pr-24 py-3 rounded-xl border border-[#E8E5E0] bg-white text-[#2C2C2C] placeholder:text-[#9A9A9A] focus:outline-none focus:border-[#C8956C] transition-colors"
+        className="w-full pl-11 pr-24 py-3 rounded-xl border border-[#E8E5E0] bg-white text-[#2C2C2C] placeholder:text-[#6B6B6B] focus:outline-none focus:border-[#C8956C] transition-colors"
         style={{ boxShadow: 'var(--shadow-card)' }}
       />
       <button

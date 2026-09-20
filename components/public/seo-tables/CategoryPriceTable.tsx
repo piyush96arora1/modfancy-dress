@@ -25,11 +25,11 @@ export async function CategoryPriceTable({ headingId = 'category-price-compariso
       <p className="text-sm text-[#6B6B6B] mb-4 max-w-3xl leading-relaxed">
         Live from our catalogue — product counts, typical retail bands, and sizes we list. Wholesale is quoted per
         order;{' '}
-        <Link href="/wholesale" className="text-[#C8956C] hover:text-[#A07048] font-medium">
+        <Link href="/wholesale" className="text-[#8F6240] hover:text-[#7F5636] font-medium">
           view wholesale
         </Link>{' '}
         or{' '}
-        <Link href="/contact" className="text-[#C8956C] hover:text-[#A07048] font-medium">
+        <Link href="/contact" className="text-[#8F6240] hover:text-[#7F5636] font-medium">
           contact us
         </Link>
         .
@@ -52,14 +52,14 @@ export async function CategoryPriceTable({ headingId = 'category-price-compariso
             {rows.map((r) => (
               <tr key={r.slug}>
                 <td>
-                  <Link href={`/category/${r.slug}`} className="text-[#1B2A4A] hover:text-[#C8956C] font-medium">
+                  <Link href={`/category/${r.slug}`} className="text-[#1B2A4A] hover:text-[#8F6240] font-medium">
                     {r.name}
                   </Link>
                 </td>
                 <td className="tabular-nums whitespace-nowrap">{r.productCount}</td>
                 <td className="tabular-nums whitespace-nowrap">{r.retailRange}</td>
                 <td className="text-sm">
-                  <Link href="/wholesale" className="text-[#C8956C] hover:text-[#A07048] font-medium whitespace-nowrap">
+                  <Link href="/wholesale" className="text-[#8F6240] hover:text-[#7F5636] font-medium whitespace-nowrap">
                     Get a quote →
                   </Link>
                 </td>

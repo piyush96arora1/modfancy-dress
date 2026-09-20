@@ -92,7 +92,7 @@ export function WholesaleEnquiryForm({ product, sizes, wholesaleDiscountPct = 30
             <div>
                 <p className="text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
                     {formatPrice(wholesalePrice)}
-                    <span className="text-sm font-normal text-[#9A9A9A] ml-1">/piece (wholesale)</span>
+                    <span className="text-sm font-normal text-[#6B6B6B] ml-1">/piece (wholesale)</span>
                 </p>
             </div>
 
@@ -132,7 +132,7 @@ export function WholesaleEnquiryForm({ product, sizes, wholesaleDiscountPct = 30
                 </div>
 
                 <div>
-                    <Label htmlFor="enquiry-email" className="text-xs">Email <span className="text-[#9A9A9A]">(optional)</span></Label>
+                    <Label htmlFor="enquiry-email" className="text-xs">Email <span className="text-[#6B6B6B]">(optional)</span></Label>
                     <Input
                         id="enquiry-email"
                         type="email"
@@ -179,7 +179,7 @@ export function WholesaleEnquiryForm({ product, sizes, wholesaleDiscountPct = 30
                 </div>
 
                 <div>
-                    <Label htmlFor="enquiry-message" className="text-xs">Additional Requirements <span className="text-[#9A9A9A]">(optional)</span></Label>
+                    <Label htmlFor="enquiry-message" className="text-xs">Additional Requirements <span className="text-[#6B6B6B]">(optional)</span></Label>
                     <Textarea
                         id="enquiry-message"
                         value={message}
@@ -211,7 +211,7 @@ export function WholesaleEnquiryForm({ product, sizes, wholesaleDiscountPct = 30
                     )}
                 </Button>
 
-                <p className="text-[10px] text-[#9A9A9A] text-center">
+                <p className="text-xs text-[#6B6B6B] text-center">
                     Our team will contact you within 24 hours with pricing and availability.
                 </p>
             </form>

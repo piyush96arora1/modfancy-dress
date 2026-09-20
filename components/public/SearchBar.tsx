@@ -202,7 +202,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
     <div ref={containerRef} className="relative w-full">
       <form onSubmit={handleSearch} className="flex gap-2.5 w-full">
         <div className="relative flex-1">
-          <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9A9A9A] pointer-events-none`} />
+          <Search className={`absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6B6B] pointer-events-none`} />
           <Input
             ref={inputRef}
             type="text"
@@ -215,19 +215,19 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                 setIsOpen(true)
               }
             }}
-            className={`w-full pl-10 pr-10 text-sm bg-white border-[#E8E5E0] focus:border-[#1B2A4A] focus:ring-[#1B2A4A]/10 rounded-lg ${isCompact ? 'h-10' : 'h-11 md:h-12'
+            className={`w-full pl-10 pr-10 text-sm bg-white border-[#949086] focus:border-[#1B2A4A] focus:ring-[#1B2A4A]/10 rounded-lg ${isCompact ? 'h-11' : 'h-11 md:h-12'
               }`}
             autoComplete="off"
           />
           {isLoading ? (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <Loader2 className="w-4 h-4 text-[#9A9A9A] animate-spin" />
+              <Loader2 className="w-4 h-4 text-[#6B6B6B] animate-spin" />
             </div>
           ) : hasSearchQuery ? (
             <button
               type="button"
               onClick={clearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#9A9A9A] hover:text-[#2D2D2D] rounded-full transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#6B6B6B] hover:text-[#2D2D2D] rounded-full transition-colors"
               aria-label="Clear search"
             >
               <X className="w-4 h-4" />
@@ -259,7 +259,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
           {/* Categories */}
           {results.categories && results.categories.length > 0 && (
             <div className="p-2">
-              <p className="text-[10px] uppercase tracking-widest text-[#9A9A9A] font-semibold px-3 py-1.5">
+              <p className="text-xs uppercase tracking-widest text-[#6B6B6B] font-semibold px-3 py-1.5">
                 Categories
               </p>
               {results.categories.map((cat, idx) => {
@@ -280,11 +280,11 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                       <p className="text-sm font-medium text-[#2D2D2D] truncate">
                         {cat.name}
                       </p>
-                      <p className="text-[11px] text-[#9A9A9A]">
+                      <p className="text-xs text-[#6B6B6B]">
                         {cat.product_count} {cat.product_count === 1 ? 'product' : 'products'}
                       </p>
                     </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#C8956C] flex-shrink-0 opacity-0 group-hover:opacity-100" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#8F6240] flex-shrink-0 opacity-0 group-hover:opacity-100" />
                   </button>
                 )
               })}
@@ -299,7 +299,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
           {/* Products */}
           {results.products && results.products.length > 0 && (
             <div className="p-2">
-              <p className="text-[10px] uppercase tracking-widest text-[#9A9A9A] font-semibold px-3 py-1.5">
+              <p className="text-xs uppercase tracking-widest text-[#6B6B6B] font-semibold px-3 py-1.5">
                 Products
               </p>
               {results.products.map((product, idx) => {
@@ -325,7 +325,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Search className="w-3.5 h-3.5 text-[#9A9A9A]" />
+                          <Search className="w-3.5 h-3.5 text-[#6B6B6B]" />
                         </div>
                       )}
                     </div>
@@ -335,12 +335,12 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
                       </p>
                       <div className="flex items-center gap-2">
                         {product.category_name && (
-                          <span className="text-[11px] text-[#9A9A9A] truncate">
+                          <span className="text-xs text-[#6B6B6B] truncate">
                             {product.category_name}
                           </span>
                         )}
                         {product.price && (
-                          <span className="text-[11px] font-semibold text-[#1B2A4A]">
+                          <span className="text-xs font-semibold text-[#1B2A4A]">
                             ₹{product.price}
                           </span>
                         )}
@@ -356,7 +356,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
           {query.trim().length >= 3 && (
             <button
               onClick={() => handleSearch(new Event('submit') as any)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 border-t border-[#E8E5E0]/60 text-sm font-medium text-[#C8956C] hover:bg-[#F5F3F0] transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 border-t border-[#E8E5E0]/60 text-sm font-medium text-[#8F6240] hover:bg-[#F5F3F0] transition-colors"
             >
               <Search className="w-3.5 h-3.5" />
               View all results for &ldquo;{query.trim()}&rdquo;

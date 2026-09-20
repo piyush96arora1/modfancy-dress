@@ -47,7 +47,7 @@ export function OccasionGuideTable({ includeFaqScript, headingId = 'occasion-cos
                 <td>
                   <Link
                     href={`/category/${row.categorySlug}`}
-                    className="text-[#C8956C] hover:text-[#A07048] font-medium whitespace-nowrap"
+                    className="text-[#8F6240] hover:text-[#7F5636] font-medium whitespace-nowrap"
                   >
                     {row.categoryLabel} →
                   </Link>

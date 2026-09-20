@@ -92,7 +92,7 @@ export function CategoryFilter({ categories }: CategoryFilterProps) {
         {currentCategory && (
           <Link
             href={clearCategory()}
-            className="flex-shrink-0 p-1.5 text-[#9A9A9A] hover:text-[#2D2D2D] transition-colors rounded-full"
+            className="flex-shrink-0 p-1.5 text-[#6B6B6B] hover:text-[#2D2D2D] transition-colors rounded-full"
             title="Clear category filter"
           >
             <X className="w-4 h-4" />
