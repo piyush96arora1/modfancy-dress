@@ -27,18 +27,25 @@ if (!input || !output) {
 }
 
 const corner = (flag('corner') ?? 'bottom-right') as Corner
-const targetRatio = args.includes('--no-pad') ? null : Number(flag('ratio') ?? 0.8)
+// --ratio forces an exact ratio; by default the image is only padded when it
+// falls outside Instagram's accepted range.
+const forced = flag('ratio') ? Number(flag('ratio')) : undefined
+const fit = args.includes('--no-pad')
+  ? null
+  : forced !== undefined
+    ? { min: forced, max: forced }
+    : undefined
 
 watermarkForSocial(readFileSync(input), {
   shopName: flag('name') ?? SHOP_NAME,
   phone: flag('phone') ?? PHONE,
   corner,
-  targetRatio,
+  fit,
 })
   .then(({ buffer, width, height, ratio }) => {
     writeFileSync(output, buffer)
     console.log(`${output}  ${width}x${height}  ratio ${ratio.toFixed(3)}  corner ${corner}`)
-    if (ratio < 0.8 || ratio > 1.91) {
+    if (ratio < 0.7999 || ratio > 1.9101) {
       console.error(`WARNING: ratio ${ratio.toFixed(3)} is outside Instagram's 0.80–1.91 range`)
       process.exit(1)
     }

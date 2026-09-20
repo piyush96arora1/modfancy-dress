@@ -1,0 +1,74 @@
+{
+  "occasion": "2 October 2026 — Gandhi Jayanti & Lal Bahadur Shastri Jayanti",
+  "ig_user_id": "28327242370230307",
+  "note": "Owner posts one per day by saying 'post next'. Post in `order`. Never post two on the same day: the account's worst-ever day was 7 posts at once, averaging 6 reach.",
+  "already_posted": [
+    {
+      "name": "Mahatma Gandhi Fancy Dress Costume",
+      "permalink": "https://www.instagram.com/p/DdgU66ZFW-l/",
+      "date": "2026-09-20"
+    }
+  ],
+  "posts": [
+    {
+      "order": 1,
+      "slug": "jawahar-lal-nehru-fancy-dress",
+      "file": "nehru",
+      "name": "Jawahar Lal Nehru Fancy Dress",
+      "price": 750,
+      "rent": 500,
+      "caption": "Chacha Nehru, right down to the rose in the pocket.\n\nWhite kurta-pyjama, navy Nehru jacket and the cap. Fits 5-7 yrs.\n\n₹750 to buy · ₹500 on rent\n\nGandhi or Nehru — which one is your child doing on 2 October? 👇\n\n📞 9953764137\n🌐 modfancydress.com\n\n#ChachaNehru #JawaharlalNehru #GandhiJayanti #FreedomFighterCostume #FancyDress #SchoolFancyDress #KidsCostume #DelhiNCR",
+      "image_url": "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public/product-images/social/oct2-nehru.jpg",
+      "status": "ready",
+      "posted_permalink": null
+    },
+    {
+      "order": 2,
+      "slug": "subhash-chander-bose-fancy-dress",
+      "file": "bose",
+      "name": "Subhash Chander Bose Fancy Dress",
+      "price": 750,
+      "rent": 400,
+      "caption": "Netaji, in full uniform.\n\nOlive green jacket with gold buttons and epaulettes, matching trousers, and the peaked cap.\n\n₹750 to buy · ₹400 on rent\n\n\"Tum mujhe khoon do...\" — does your child know the next line? 👇\n\n📞 9953764137\n🌐 modfancydress.com\n\n#SubhashChandraBose #Netaji #FreedomFighterCostume #FancyDress #SchoolFancyDress #AzadHindFauj #KidsCostume #DelhiNCR",
+      "image_url": "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public/product-images/social/oct2-bose.jpg",
+      "status": "ready",
+      "posted_permalink": null
+    },
+    {
+      "order": 3,
+      "slug": "jhansi-ki-rani-laxmi-bai-fancy-dress-costume",
+      "file": "jhansi",
+      "name": "Jhansi Ki Rani Laxmi Bai Fancy Dress Costume",
+      "price": 1600,
+      "rent": 300,
+      "caption": "Rani Lakshmibai — the one the girls always want.\n\nRed and gold warrior outfit with gold borders and the matching pagdi.\n\n₹1600 to buy · ₹300 on rent\n\nMost freedom fighter costumes are for boys. Which one is your daughter going as? 👇\n\n📞 9953764137\n🌐 modfancydress.com\n\n#JhansiKiRani #RaniLakshmibai #GirlsFancyDress #FreedomFighterCostume #FancyDress #SchoolFancyDress #KidsCostume #DelhiNCR",
+      "image_url": "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public/product-images/social/oct2-jhansi.jpg",
+      "status": "ready",
+      "posted_permalink": null
+    },
+    {
+      "order": 4,
+      "slug": "bal-gangadhar-tilak-fancy-dress-costume",
+      "file": "tilak",
+      "name": "Bal Gangadhar Tilak Fancy Dress Costume",
+      "price": 1000,
+      "rent": 300,
+      "caption": "Lokmanya Tilak — all white, finished with the Maharashtrian pheta.\n\nWhite kurta with shoulder drape and dhoti, red and gold turban.\n\n₹1000 to buy · ₹300 on rent\n\n\"Swaraj is my birthright\" — one of the easiest lines for a child to deliver on stage. Which leader is yours doing? 👇\n\n📞 9953764137\n🌐 modfancydress.com\n\n#BalGangadharTilak #Lokmanya #FreedomFighterCostume #FancyDress #SchoolFancyDress #GandhiJayanti #KidsCostume #DelhiNCR",
+      "image_url": "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public/product-images/social/oct2-tilak.jpg",
+      "status": "ready",
+      "posted_permalink": null
+    },
+    {
+      "order": 5,
+      "slug": "bhagat-singh-cap",
+      "file": "bhagat",
+      "name": "Bhagat Singh Cap",
+      "price": 250,
+      "rent": 100,
+      "caption": "₹250 for the one piece that makes the whole costume.\n\nThe Bhagat Singh hat — black, with the checked band. Put it with a kurta you already own and a stick-on moustache.\n\n₹250 to buy · ₹100 on rent\n\nCheapest freedom fighter look we do. Who is your child going as this 2 October? 👇\n\n📞 9953764137\n🌐 modfancydress.com\n\n#BhagatSingh #FreedomFighterCostume #FancyDress #SchoolFancyDress #BudgetCostume #GandhiJayanti #KidsCostume #DelhiNCR",
+      "image_url": "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public/product-images/social/oct2-bhagat.jpg",
+      "status": "ready",
+      "posted_permalink": null
+    }
+  ]
+}

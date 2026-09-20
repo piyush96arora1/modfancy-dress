@@ -19,8 +19,12 @@ export type WatermarkOptions = {
   shopName: string
   phone: string
   corner?: Corner
-  /** Pad to this width/height ratio before watermarking. Instagram feed: 0.8 (4:5). */
-  targetRatio?: number | null
+  /**
+   * Pad only when the image falls OUTSIDE this range, and only as far as the
+   * bound it broke. Defaults to Instagram's feed limits. Pass null to skip
+   * padding entirely, or a {min,max} with min===max to force an exact ratio.
+   */
+  fit?: { min: number; max: number } | null
   /** Colour of the bars added by padding. */
   padColour?: string
   jpegQuality?: number
@@ -50,14 +54,23 @@ export async function assertFontAvailable(): Promise<void> {
   }
 }
 
-/** Pads to `ratio` with bars on whichever axis is short. Never crops. */
-function padToRatio(width: number, height: number, ratio: number) {
+/**
+ * Pads an out-of-range image to the nearest allowed bound. Never crops, and
+ * never touches an image that is already acceptable.
+ *
+ * An earlier version forced every image to an exact ratio, which padded a
+ * perfectly valid 1.256 landscape cap photo into 4:5 with thick white bars above
+ * and below. Only fix what is actually broken.
+ *
+ * Math.ceil, not round: rounding a 1198-wide result down left the ratio at
+ * 0.79973, a hair under the 0.80 minimum it was supposed to satisfy, and the
+ * guard then rejected an image this function had just "fixed".
+ */
+function padToRange(width: number, height: number, min: number, max: number) {
   const current = width / height
-  if (Math.abs(current - ratio) < 0.001) return { width, height }
-  // Too tall/narrow -> widen. Too wide -> heighten. Either way nothing is lost.
-  return current < ratio
-    ? { width: Math.round(height * ratio), height }
-    : { width, height: Math.round(width / ratio) }
+  if (current < min) return { width: Math.ceil(height * min), height }
+  if (current > max) return { width, height: Math.ceil(width / max) }
+  return { width, height }
 }
 
 function badgeSvg(width: number, height: number, o: Required<Pick<WatermarkOptions,'shopName'|'phone'|'corner'>>) {
@@ -113,7 +126,8 @@ export async function watermarkForSocial(
   await assertFontAvailable()
 
   const corner = opts.corner ?? 'bottom-right'
-  const ratio = opts.targetRatio === undefined ? INSTAGRAM_FEED_RATIO : opts.targetRatio
+  const fit =
+    opts.fit === undefined ? { min: INSTAGRAM_MIN_RATIO, max: INSTAGRAM_MAX_RATIO } : opts.fit
 
   const meta = await sharp(input).metadata()
   if (!meta.width || !meta.height) throw new Error('could not read image dimensions')
@@ -122,8 +136,8 @@ export async function watermarkForSocial(
   let width = meta.width
   let height = meta.height
 
-  if (ratio) {
-    const target = padToRatio(width, height, ratio)
+  if (fit) {
+    const target = padToRange(width, height, fit.min, fit.max)
     if (target.width !== width || target.height !== height) {
       img = img.extend({
         top: Math.floor((target.height - height) / 2),
@@ -137,7 +151,12 @@ export async function watermarkForSocial(
     }
   }
 
-  const flattened = await img.jpeg({ quality: opts.jpegQuality ?? 90 }).toBuffer()
+  // Product PNGs carry an alpha channel; without an explicit flatten sharp
+  // composites transparency onto BLACK when encoding JPEG.
+  const flattened = await img
+    .flatten({ background: opts.padColour ?? '#ffffff' })
+    .jpeg({ quality: opts.jpegQuality ?? 90 })
+    .toBuffer()
   const buffer = await sharp(flattened)
     .composite([{ input: Buffer.from(badgeSvg(width, height, { shopName: opts.shopName, phone: opts.phone, corner })) }])
     .jpeg({ quality: opts.jpegQuality ?? 90 })

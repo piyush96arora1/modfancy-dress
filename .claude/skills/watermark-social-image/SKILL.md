@@ -48,9 +48,17 @@ and `bottom-left` sat on empty floor.
 
 Instagram feed accepts **0.80 (4:5) to 1.91**. Outside that it crops or rejects.
 
-Portrait product shots are often 2:3 (0.667) and get their edges chopped. The
-script pads with white bars rather than cropping, so nothing is lost, and it
-**exits non-zero** if the result is still out of range.
+The script pads with white bars rather than cropping, and only when the image is
+**outside** that range — a valid landscape shot is left alone. It exits non-zero
+if the result is still out of range. `--ratio 0.8` forces an exact ratio;
+`--no-pad` skips padding.
+
+Portrait product shots are often 2:3 (0.667) and do need the pad. A 1.256
+landscape shot does not: an earlier version forced everything to 4:5 and gave a
+cap photo thick white bars above and below for no reason.
+
+**Transparent PNGs** are flattened onto white first. Without that, sharp encodes
+transparency as **black** when it writes the JPEG.
 
 ## Always look at the output before posting
 
