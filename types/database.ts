@@ -169,6 +169,10 @@ export type BlogPost = {
   content: string
   excerpt: string | null
   published_at: string | null
+  /** Migration 20260923_blog_links: LCP image, BlogPosting image, OG image. */
+  cover_image_url?: string | null
+  /** Categories whose products fill the "Shop this guide" grid. */
+  related_category_slugs?: string[] | null
   created_at: string
   updated_at: string
 }

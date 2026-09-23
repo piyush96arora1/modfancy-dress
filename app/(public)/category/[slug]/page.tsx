@@ -14,6 +14,7 @@ import { CategoryListingJsonLd, FaqPageSchema } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
 import { getFaqsForCategoryPage } from '@/lib/faqs/queries'
+import { getCategoryGuideCached } from '@/lib/supabase/cached-seo-queries'
 import { FaqSection } from '@/components/public/FaqSection'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/ClassicalDanceComparisonTable'
@@ -69,7 +70,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const products = await getProductsForCategoryCached(category.id)
 
-  const categoryFaqs = await getFaqsForCategoryPage(slug)
+  const [categoryFaqs, guide] = await Promise.all([
+    getFaqsForCategoryPage(slug),
+    getCategoryGuideCached(slug),
+  ])
 
   const categoryListingJsonLd = CategoryListingJsonLd({
     variant: 'retail',
@@ -175,6 +179,23 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           >
             Costume guides & ideas
           </h2>
+          {guide && (
+            // The matching guide, linked by name: a keyword-bearing internal link
+            // from the category to its authority post, not a generic /blog link.
+            <Link
+              href={`/blog/${guide.slug}`}
+              className="group block mb-3 p-4 rounded-xl bg-white border border-[#E8E5E0] hover:border-[#C8956C]/40 transition-colors"
+            >
+              <span className="block text-sm md:text-base font-semibold text-[#1B2A4A] group-hover:text-[#8F6240] transition-colors">
+                Read the guide: {guide.title} →
+              </span>
+              {guide.excerpt && (
+                <span className="block mt-1 text-xs md:text-sm text-[#6B6B6B] leading-relaxed line-clamp-2">
+                  {guide.excerpt}
+                </span>
+              )}
+            </Link>
+          )}
           <Link href="/blog" className="text-sm font-medium text-[#8F6240] hover:text-[#7F5636] transition-colors">
             Fancy dress ideas & costume guides on our blog →
           </Link>

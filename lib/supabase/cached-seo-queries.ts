@@ -74,3 +74,55 @@ export const getDatedHomepageSectionsCached = unstable_cache(
   ['homepage-sections-dated'],
   { revalidate: ONE_DAY, tags: ['homepage-sections', 'categories'] }
 )
+
+export type GuideLink = { slug: string; title: string; excerpt: string | null }
+
+/**
+ * The published blog post a category page links to as "Read the guide"
+ * (`categories.guide_blog_slug`). `select('*')` so it returns null rather than
+ * erroring before migration 20260923_blog_links.sql is applied.
+ */
+export const getCategoryGuideCached = unstable_cache(
+  async (categorySlug: string): Promise<GuideLink | null> => {
+    const supabase = createPublicServerClient()
+    const { data: cat } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('slug', categorySlug)
+      .eq('is_active', true)
+      .maybeSingle()
+    const guideSlug = (cat as { guide_blog_slug?: string | null } | null)?.guide_blog_slug
+    if (!guideSlug) return null
+    const { data: post } = await supabase
+      .from('blog_posts')
+      .select('slug, title, excerpt')
+      .eq('slug', guideSlug)
+      .not('published_at', 'is', null)
+      .maybeSingle()
+    return post ?? null
+  },
+  ['category-guide'],
+  { revalidate: ONE_DAY, tags: ['categories', 'blog'] }
+)
+
+/**
+ * Active category slugs that name this post as their guide: the fallback
+ * source for a post's "Shop this guide" grid when `related_category_slugs` is
+ * empty, so both directions of the link stay in step. Empty before the
+ * migration (the filter column doesn't exist yet, so the query errors).
+ */
+export const getCategorySlugsForGuideCached = unstable_cache(
+  async (postSlug: string): Promise<string[]> => {
+    const supabase = createPublicServerClient()
+    const { data, error } = await supabase
+      .from('categories')
+      .select('slug')
+      .eq('guide_blog_slug', postSlug)
+      .eq('is_active', true)
+      .order('slug')
+    if (error) return []
+    return (data ?? []).map((c) => c.slug as string)
+  },
+  ['category-slugs-for-guide'],
+  { revalidate: ONE_DAY, tags: ['categories', 'blog'] }
+)
