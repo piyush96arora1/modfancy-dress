@@ -11,12 +11,12 @@
   },
   {
     "source": "/products/subash-chandra-bose-fancy-dress-costume",
-    "destination": "/products/subhash-chander-bose-fancy-dress",
+    "destination": "/products/subhash-chandra-bose-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/subash-chandra-bose-fancy-dress-costume",
-    "destination": "/wholesale/subhash-chander-bose-fancy-dress",
+    "destination": "/wholesale/subhash-chandra-bose-fancy-dress",
     "permanent": true
   },
   {
@@ -106,22 +106,22 @@
   },
   {
     "source": "/products/kathak-dance-dress-anarkali-style-gajri-golden",
-    "destination": "/products/kathak-dance-dress-anarkali-style-gajri-golden-fancy-dress",
+    "destination": "/category/kathak-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kathak-dance-dress-anarkali-style-gajri-golden",
-    "destination": "/wholesale/kathak-dance-dress-anarkali-style-gajri-golden-fancy-dress",
+    "destination": "/wholesale/category/kathak-dress",
     "permanent": true
   },
   {
     "source": "/products/folk-dance-dress-with-pagri-for-boys",
-    "destination": "/products/folk-dance-dress-with-pagri-for-boys-fancy-dress",
+    "destination": "/category/garba-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/folk-dance-dress-with-pagri-for-boys",
-    "destination": "/wholesale/folk-dance-dress-with-pagri-for-boys-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
     "permanent": true
   },
   {
@@ -226,12 +226,12 @@
   },
   {
     "source": "/products/minimouse-fancy-dress-costumes",
-    "destination": "/products/minnie-mouse-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
     "permanent": true
   },
   {
     "source": "/wholesale/minimouse-fancy-dress-costumes",
-    "destination": "/wholesale/minnie-mouse-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
     "permanent": true
   },
   {
@@ -246,32 +246,32 @@
   },
   {
     "source": "/products/orange-bhangra-dance-costume",
-    "destination": "/products/orange-bhangra-dance-costume-fancy-dress",
+    "destination": "/products/bhangra-dance-fancy-dress-costume-blue-yellow",
     "permanent": true
   },
   {
     "source": "/wholesale/orange-bhangra-dance-costume",
-    "destination": "/wholesale/orange-bhangra-dance-costume-fancy-dress",
+    "destination": "/wholesale/bhangra-dance-fancy-dress-costume-blue-yellow",
     "permanent": true
   },
   {
     "source": "/products/bharatnatyam-dance-costume",
-    "destination": "/products/bharatnatyam-dance-costume-fancy-dress",
+    "destination": "/category/bharatnatyam",
     "permanent": true
   },
   {
     "source": "/wholesale/bharatnatyam-dance-costume",
-    "destination": "/wholesale/bharatnatyam-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
     "permanent": true
   },
   {
     "source": "/products/bharatanatyam-dress-costume-white-red",
-    "destination": "/products/bharatanatyam-dress-costume-white-red-fancy-dress",
+    "destination": "/category/bharatnatyam",
     "permanent": true
   },
   {
     "source": "/wholesale/bharatanatyam-dress-costume-white-red",
-    "destination": "/wholesale/bharatanatyam-dress-costume-white-red-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
     "permanent": true
   },
   {
@@ -286,12 +286,12 @@
   },
   {
     "source": "/products/bharatnatyam",
-    "destination": "/products/bharatnatyam-fancy-dress-1",
+    "destination": "/products/magenta-bharatnatyam-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/bharatnatyam",
-    "destination": "/wholesale/bharatnatyam-fancy-dress-1",
+    "destination": "/wholesale/magenta-bharatnatyam-fancy-dress",
     "permanent": true
   },
   {
@@ -346,22 +346,22 @@
   },
   {
     "source": "/products/achkan-churidar-suit-for-boy",
-    "destination": "/products/achkan-churidar-suit-for-boy-fancy-dress",
+    "destination": "/products",
     "permanent": true
   },
   {
     "source": "/wholesale/achkan-churidar-suit-for-boy",
-    "destination": "/wholesale/achkan-churidar-suit-for-boy-fancy-dress",
+    "destination": "/wholesale",
     "permanent": true
   },
   {
     "source": "/products/bharatnatyam-dance-costume-pink",
-    "destination": "/products/bharatnatyam-dance-costume-pink-fancy-dress",
+    "destination": "/category/bharatnatyam",
     "permanent": true
   },
   {
     "source": "/wholesale/bharatnatyam-dance-costume-pink",
-    "destination": "/wholesale/bharatnatyam-dance-costume-pink-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
     "permanent": true
   },
   {
@@ -386,22 +386,22 @@
   },
   {
     "source": "/products/indo-western-dance-dress-in-silver-and-blue",
-    "destination": "/products/indo-western-dance-dress-in-silver-and-blue-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/indo-western-dance-dress-in-silver-and-blue",
-    "destination": "/wholesale/indo-western-dance-dress-in-silver-and-blue-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/rouf-dance-costume",
-    "destination": "/products/rouf-dance-costume-fancy-dress",
+    "destination": "/category/kashmiri-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/rouf-dance-costume",
-    "destination": "/wholesale/rouf-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
     "permanent": true
   },
   {
@@ -456,12 +456,12 @@
   },
   {
     "source": "/products/krishna-dress",
-    "destination": "/products/krishna-dress-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/krishna-dress",
-    "destination": "/wholesale/krishna-dress-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -476,12 +476,12 @@
   },
   {
     "source": "/products/pathani",
-    "destination": "/products/pathani-fancy-dress",
+    "destination": "/category/kashmiri-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/pathani",
-    "destination": "/wholesale/pathani-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
     "permanent": true
   },
   {
@@ -516,12 +516,12 @@
   },
   {
     "source": "/products/krishna-costume-for-janmashtami",
-    "destination": "/products/krishna-costume-for-janmashtami-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/krishna-costume-for-janmashtami",
-    "destination": "/wholesale/krishna-costume-for-janmashtami-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -536,22 +536,22 @@
   },
   {
     "source": "/products/western-dance-dress-in-red-and-black-color",
-    "destination": "/products/western-dance-dress-in-red-and-black-color-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-in-red-and-black-color",
-    "destination": "/wholesale/western-dance-dress-in-red-and-black-color-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/contemporary-and-indo-western-costume",
-    "destination": "/products/contemporary-and-indo-western-costume-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/contemporary-and-indo-western-costume",
-    "destination": "/wholesale/contemporary-and-indo-western-costume-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -576,22 +576,22 @@
   },
   {
     "source": "/products/indo-western-dance-dress-for-boy",
-    "destination": "/products/indo-western-dance-dress-for-boy-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/indo-western-dance-dress-for-boy",
-    "destination": "/wholesale/indo-western-dance-dress-for-boy-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/indian-fancy-folk-dance-costume",
-    "destination": "/products/indian-fancy-folk-dance-costume-fancy-dress",
+    "destination": "/category/folk-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/indian-fancy-folk-dance-costume",
-    "destination": "/wholesale/indian-fancy-folk-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/folk-dance-dress",
     "permanent": true
   },
   {
@@ -636,12 +636,12 @@
   },
   {
     "source": "/products/western-dance-dress-in-golden-and-black-color",
-    "destination": "/products/western-dance-dress-in-golden-and-black-color-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-in-golden-and-black-color",
-    "destination": "/wholesale/western-dance-dress-in-golden-and-black-color-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -656,22 +656,22 @@
   },
   {
     "source": "/products/western-dance-dress-for-girl-in-magenta-black-colour",
-    "destination": "/products/western-dance-dress-for-girl-in-magenta-black-colour-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-for-girl-in-magenta-black-colour",
-    "destination": "/wholesale/western-dance-dress-for-girl-in-magenta-black-colour-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/gujrati-garba-dance-dress-lehenga",
-    "destination": "/products/gujrati-garba-dance-dress-lehenga-fancy-dress",
+    "destination": "/category/garba-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/gujrati-garba-dance-dress-lehenga",
-    "destination": "/wholesale/gujrati-garba-dance-dress-lehenga-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
     "permanent": true
   },
   {
@@ -726,42 +726,42 @@
   },
   {
     "source": "/products/achkan-dhoti-dress-for-boy",
-    "destination": "/products/achkan-dhoti-dress-for-boy-fancy-dress",
+    "destination": "/products",
     "permanent": true
   },
   {
     "source": "/wholesale/achkan-dhoti-dress-for-boy",
-    "destination": "/wholesale/achkan-dhoti-dress-for-boy-fancy-dress",
+    "destination": "/wholesale",
     "permanent": true
   },
   {
     "source": "/products/gujarati-garba-chaniya-choli-costume-girls",
-    "destination": "/products/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
+    "destination": "/category/garba-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-chaniya-choli-costume-girls",
-    "destination": "/wholesale/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
     "permanent": true
   },
   {
     "source": "/products/black-and-golden-chhau-dance-costume",
-    "destination": "/products/black-and-golden-chhau-dance-costume-fancy-dress",
+    "destination": "/category/classical-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/black-and-golden-chhau-dance-costume",
-    "destination": "/wholesale/black-and-golden-chhau-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/krishna-dress-yellow-2023",
-    "destination": "/products/krishna-dress-yellow-2023-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/krishna-dress-yellow-2023",
-    "destination": "/wholesale/krishna-dress-yellow-2023-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -776,12 +776,12 @@
   },
   {
     "source": "/products/indian-semi-classical-dance-costumes-boy",
-    "destination": "/products/indian-semi-classical-dance-costumes-boy-fancy-dress",
+    "destination": "/category/classical-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/indian-semi-classical-dance-costumes-boy",
-    "destination": "/wholesale/indian-semi-classical-dance-costumes-boy-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
     "permanent": true
   },
   {
@@ -826,12 +826,12 @@
   },
   {
     "source": "/products/kashmiri-traditional-dress-for-boys-with-cap",
-    "destination": "/products/kashmiri-traditional-dress-for-boys-with-cap-fancy-dress",
+    "destination": "/category/kashmiri-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kashmiri-traditional-dress-for-boys-with-cap",
-    "destination": "/wholesale/kashmiri-traditional-dress-for-boys-with-cap-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
     "permanent": true
   },
   {
@@ -886,22 +886,22 @@
   },
   {
     "source": "/products/western-dance-frock-georgette",
-    "destination": "/products/western-dance-frock-georgette-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-frock-georgette",
-    "destination": "/wholesale/western-dance-frock-georgette-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/western-dance-dress-long-skirt-top",
-    "destination": "/products/western-dance-dress-long-skirt-top-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-long-skirt-top",
-    "destination": "/wholesale/western-dance-dress-long-skirt-top-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -976,12 +976,12 @@
   },
   {
     "source": "/products/kuchipudi",
-    "destination": "/products/kuchipudi-fancy-dress",
+    "destination": "/category/classical-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kuchipudi",
-    "destination": "/wholesale/kuchipudi-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
     "permanent": true
   },
   {
@@ -1056,12 +1056,12 @@
   },
   {
     "source": "/products/western-dance-dress-for-boys-orange",
-    "destination": "/products/western-dance-dress-for-boys-orange-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-for-boys-orange",
-    "destination": "/wholesale/western-dance-dress-for-boys-orange-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -1096,12 +1096,12 @@
   },
   {
     "source": "/products/water-melon",
-    "destination": "/products/water-melon-fancy-dress",
+    "destination": "/products/watermelon-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/water-melon",
-    "destination": "/wholesale/water-melon-fancy-dress",
+    "destination": "/wholesale/watermelon-fancy-dress",
     "permanent": true
   },
   {
@@ -1136,12 +1136,12 @@
   },
   {
     "source": "/products/semi-classical-dance-costume-dress",
-    "destination": "/products/semi-classical-dance-costume-dress-fancy-dress",
+    "destination": "/category/classical-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/semi-classical-dance-costume-dress",
-    "destination": "/wholesale/semi-classical-dance-costume-dress-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
     "permanent": true
   },
   {
@@ -1156,12 +1156,12 @@
   },
   {
     "source": "/products/contemporary-and-indo-western-dance-costume",
-    "destination": "/products/contemporary-and-indo-western-dance-costume-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/contemporary-and-indo-western-dance-costume",
-    "destination": "/wholesale/contemporary-and-indo-western-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -1206,22 +1206,22 @@
   },
   {
     "source": "/products/kashmiri-traditional-dress-with-cap-for-boys",
-    "destination": "/products/kashmiri-traditional-dress-with-cap-for-boys-fancy-dress",
+    "destination": "/category/kashmiri-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kashmiri-traditional-dress-with-cap-for-boys",
-    "destination": "/wholesale/kashmiri-traditional-dress-with-cap-for-boys-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
     "permanent": true
   },
   {
     "source": "/products/indo-western-dance-fancy-dres",
-    "destination": "/products/indo-western-dance-fancy-dress-1",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/indo-western-dance-fancy-dres",
-    "destination": "/wholesale/indo-western-dance-fancy-dress-1",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -1236,12 +1236,12 @@
   },
   {
     "source": "/products/western-dance-dress-for-boy-magenta-black-colour",
-    "destination": "/products/western-dance-dress-for-boy-magenta-black-colour-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-dress-for-boy-magenta-black-colour",
-    "destination": "/wholesale/western-dance-dress-for-boy-magenta-black-colour-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
@@ -1266,12 +1266,12 @@
   },
   {
     "source": "/products/tiranga-color-costume-for-boys",
-    "destination": "/products/tiranga-color-costume-for-boys-fancy-dress",
+    "destination": "/products/tiranga-color-costume-for-boys-girls-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/tiranga-color-costume-for-boys",
-    "destination": "/wholesale/tiranga-color-costume-for-boys-fancy-dress",
+    "destination": "/wholesale/tiranga-color-costume-for-boys-girls-fancy-dress",
     "permanent": true
   },
   {
@@ -1286,12 +1286,12 @@
   },
   {
     "source": "/products/kids-radha-dress-lehenga-fancy-costume",
-    "destination": "/products/kids-radha-dress-lehenga-fancy-costume-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kids-radha-dress-lehenga-fancy-costume",
-    "destination": "/wholesale/kids-radha-dress-lehenga-fancy-costume-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -1316,12 +1316,12 @@
   },
   {
     "source": "/products/radha-rani-lehenga-choli-dress-pink",
-    "destination": "/products/radha-rani-lehenga-choli-dress-pink-fancy-dress",
+    "destination": "/products/radha-rani-lehenga-choli-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/radha-rani-lehenga-choli-dress-pink",
-    "destination": "/wholesale/radha-rani-lehenga-choli-dress-pink-fancy-dress",
+    "destination": "/wholesale/radha-rani-lehenga-choli-fancy-dress",
     "permanent": true
   },
   {
@@ -1426,32 +1426,32 @@
   },
   {
     "source": "/products/western-dance-frock-costume-purple",
-    "destination": "/products/western-dance-frock-costume-purple-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-frock-costume-purple",
-    "destination": "/wholesale/western-dance-frock-costume-purple-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/captain-america-fancy-dress-costomes",
-    "destination": "/products/captain-america-fancy-dress-costumes",
+    "destination": "/category/superhero-costumes",
     "permanent": true
   },
   {
     "source": "/wholesale/captain-america-fancy-dress-costomes",
-    "destination": "/wholesale/captain-america-fancy-dress-costumes",
+    "destination": "/wholesale/category/superhero-costumes",
     "permanent": true
   },
   {
     "source": "/products/gujarati-garba-dance-chaniya-choli-for-girls",
-    "destination": "/products/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
+    "destination": "/category/garba-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-dance-chaniya-choli-for-girls",
-    "destination": "/wholesale/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
     "permanent": true
   },
   {
@@ -1476,22 +1476,22 @@
   },
   {
     "source": "/products/radha-rani-dress-lehenga-choli",
-    "destination": "/products/radha-rani-dress-lehenga-choli-fancy-dress",
+    "destination": "/products/radha-rani-lehenga-choli-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/radha-rani-dress-lehenga-choli",
-    "destination": "/wholesale/radha-rani-dress-lehenga-choli-fancy-dress",
+    "destination": "/wholesale/radha-rani-lehenga-choli-fancy-dress",
     "permanent": true
   },
   {
     "source": "/products/krishna-dress-for-janmashtami",
-    "destination": "/products/krishna-dress-for-janmashtami-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/krishna-dress-for-janmashtami",
-    "destination": "/wholesale/krishna-dress-for-janmashtami-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -1516,22 +1516,22 @@
   },
   {
     "source": "/products/western-dance-costume-red-silver",
-    "destination": "/products/western-dance-costume-red-silver-fancy-dress",
+    "destination": "/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/western-dance-costume-red-silver",
-    "destination": "/wholesale/western-dance-costume-red-silver-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
     "permanent": true
   },
   {
     "source": "/products/kids-bhangra-dance-dresses-for-boys",
-    "destination": "/products/kids-bhangra-dance-dresses-for-boys-fancy-dress",
+    "destination": "/products/bhangra-dance-costume-for-boys-orange-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/kids-bhangra-dance-dresses-for-boys",
-    "destination": "/wholesale/kids-bhangra-dance-dresses-for-boys-fancy-dress",
+    "destination": "/wholesale/bhangra-dance-costume-for-boys-orange-fancy-dress",
     "permanent": true
   },
   {
@@ -1566,12 +1566,12 @@
   },
   {
     "source": "/products/krishna-dress-2023",
-    "destination": "/products/krishna-dress-2023-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/krishna-dress-2023",
-    "destination": "/wholesale/krishna-dress-2023-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
@@ -1626,22 +1626,22 @@
   },
   {
     "source": "/products/radha-dress-lehenga-choli-costume",
-    "destination": "/products/radha-dress-lehenga-choli-costume-fancy-dress",
+    "destination": "/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/radha-dress-lehenga-choli-costume",
-    "destination": "/wholesale/radha-dress-lehenga-choli-costume-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
     "permanent": true
   },
   {
     "source": "/products/ghoomar-lehenga",
-    "destination": "/products/ghoomar-lehenga-fancy-dress",
+    "destination": "/category/rajasthani-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/ghoomar-lehenga",
-    "destination": "/wholesale/ghoomar-lehenga-fancy-dress",
+    "destination": "/wholesale/category/rajasthani-dress",
     "permanent": true
   },
   {
@@ -1715,6 +1715,2251 @@
     "permanent": true
   },
   {
+    "source": "/products/brinjal",
+    "destination": "/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/brinjal",
+    "destination": "/wholesale/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/apple",
+    "destination": "/category/fruit-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/apple",
+    "destination": "/wholesale/category/fruit-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/onion",
+    "destination": "/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/onion",
+    "destination": "/wholesale/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/pant-shirt-and-gallace-western-dance-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pant-shirt-and-gallace-western-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/minnie-mouse-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/minnie-mouse-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress-green",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress-green",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-frock-fancy-dress-costume-pink",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-frock-fancy-dress-costume-pink",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-style-long-skirt-top-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-style-long-skirt-top-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/german-dress",
+    "destination": "/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/german-dress",
+    "destination": "/wholesale/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/semi-classical-fusion-fancy-dress-costume",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/semi-classical-fusion-fancy-dress-costume",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-frock-fancy-dress-costume-red",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-frock-fancy-dress-costume-red",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-costume-purple-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-costume-purple-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/ice-cream-fancy-dress-costume",
+    "destination": "/products/ice-cream-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ice-cream-fancy-dress-costume",
+    "destination": "/wholesale/ice-cream-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pink-western-dance-frock-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pink-western-dance-frock-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress-costume-yellow",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress-costume-yellow",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kathak-dance-dress-anarkali-style-gajri-golden-fancy-dress",
+    "destination": "/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kathak-dance-dress-anarkali-style-gajri-golden-fancy-dress",
+    "destination": "/wholesale/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-fancy-dress-boys-costume",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-fancy-dress-boys-costume",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pink-donald-duck-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pink-donald-duck-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/chota-bheem-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/chota-bheem-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/tiranga-color-costume-for-boys-fancy-dress",
+    "destination": "/products/tiranga-color-costume-for-boys-girls-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/tiranga-color-costume-for-boys-fancy-dress",
+    "destination": "/wholesale/tiranga-color-costume-for-boys-girls-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-dress-2023-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-dress-2023-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-fusion-dance-fancy-dress-costume",
+    "destination": "/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-fusion-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kathak-dance-anarkali-fancy-dress",
+    "destination": "/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kathak-dance-anarkali-fancy-dress",
+    "destination": "/wholesale/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-fancy-dress-costume-combo",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-fancy-dress-costume-combo",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-for-boy-magenta-black-colour-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-for-boy-magenta-black-colour-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatnatyam-dance-costume-fancy-dress",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatnatyam-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-kids-adults",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-kids-adults",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/green-hulk-fancy-dress",
+    "destination": "/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/green-hulk-fancy-dress",
+    "destination": "/wholesale/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-fancy-dress-costumes",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-fancy-dress-costumes",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-in-red-and-black-color-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-in-red-and-black-color-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/brinjal-fancy-dress-costume",
+    "destination": "/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/brinjal-fancy-dress-costume",
+    "destination": "/wholesale/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-rani-lehenga-choli-dress-pink-fancy-dress",
+    "destination": "/products/radha-rani-lehenga-choli-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-rani-lehenga-choli-dress-pink-fancy-dress",
+    "destination": "/wholesale/radha-rani-lehenga-choli-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/gujrati-garba-dance-dress-lehenga-fancy-dress",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/gujrati-garba-dance-dress-lehenga-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/tomato",
+    "destination": "/products/tomato-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/tomato",
+    "destination": "/wholesale/tomato-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress-pink",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress-pink",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/sita-saree-fancy-dress-costume-for-girls",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/sita-saree-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-dress-in-silver-and-blue-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-dress-in-silver-and-blue-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/goddess-saraswati-mata-fancy-dress-costume",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/goddess-saraswati-mata-fancy-dress-costume",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/hindu-king-fancy-dress-costume-for-boys",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/hindu-king-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/pathani-fancy-dress",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pathani-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/muslim-pathani-suit-fancy-dress-costume-cap",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/muslim-pathani-suit-fancy-dress-costume-cap",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-style-skirt-top-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-style-skirt-top-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-semi-classical-dance-costumes-boy-fancy-dress",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-semi-classical-dance-costumes-boy-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/anarkali-kathak-fancy-dress",
+    "destination": "/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/anarkali-kathak-fancy-dress",
+    "destination": "/wholesale/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/long-skirt-top-western-dance-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/long-skirt-top-western-dance-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/folk-dance-dress-with-pagri-for-boys-fancy-dress",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/folk-dance-dress-with-pagri-for-boys-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/skirt-and-top-western-dance-fancy-dress-costume",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/skirt-and-top-western-dance-fancy-dress-costume",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-fancy-dress-for-boys",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-fancy-dress-for-boys",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-fancy-dress-costume-combo-set",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-fancy-dress-costume-combo-set",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/japanese-fancy-dress-costume-for-girls",
+    "destination": "/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/japanese-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-for-girl-in-magenta-black-colour-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-for-girl-in-magenta-black-colour-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-long-skirt-top-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-long-skirt-top-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-for-boys-orange-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-for-boys-orange-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-semi-classical-dance-fancy-dress",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-semi-classical-dance-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/fusion-dance-fancy-dress-costume-for-girls",
+    "destination": "/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/fusion-dance-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-skirt-and-top",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-skirt-and-top",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-skirt-top",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-skirt-top",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/skirt-top-western-dance-fancy-dress",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/skirt-top-western-dance-fancy-dress",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-dress-for-boy-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-dress-for-boy-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/dance-dress",
+    "destination": "/products/dance-dress-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dance-dress",
+    "destination": "/wholesale/dance-dress-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kashmiri-boy-fancy-dress",
+    "destination": "/products/kashmiri-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kashmiri-boy-fancy-dress",
+    "destination": "/wholesale/kashmiri-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-skirt-top-black",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-skirt-top-black",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/angry-bird-fancy-dress-costumes",
+    "destination": "/products/angry-bird-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/angry-bird-fancy-dress-costumes",
+    "destination": "/wholesale/angry-bird-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-for-boys",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-frock-fancy-dress-costume-girls",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-frock-fancy-dress-costume-girls",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-georgette-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-georgette-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dance-chaniya-choli-fancy-dress-costume",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dance-chaniya-choli-fancy-dress-costume",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/dog-fancy-dress-animal-costume-for-kids",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dog-fancy-dress-animal-costume-for-kids",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/dairy-milk-fancy-dress-costumes",
+    "destination": "/category/junk-food",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dairy-milk-fancy-dress-costumes",
+    "destination": "/wholesale/category/junk-food",
+    "permanent": true
+  },
+  {
+    "source": "/products/bhartnatyam-dress",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bhartnatyam-dress",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/sufi-dance-fancy-dress-costume",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/sufi-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-king-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-king-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/parrot-fancy-dress-costumes",
+    "destination": "/products/parrot-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/parrot-fancy-dress-costumes",
+    "destination": "/wholesale/parrot-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/donald-duck-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/donald-duck-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/mango-fancy-dress-costume",
+    "destination": "/products/mango-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mango-fancy-dress-costume",
+    "destination": "/wholesale/mango-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatanatyam-dress-costume-white-red-fancy-dress",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatanatyam-dress-costume-white-red-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatanatyam-dance-fancy-dress-in-yellow-purple-colour",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatanatyam-dance-fancy-dress-in-yellow-purple-colour",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/kuchipudi-fancy-dress",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kuchipudi-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatnatyam-dance-fancy-dress",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatnatyam-dance-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/cat-fancy-dress-costume-for-children",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/cat-fancy-dress-costume-for-children",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-fancy-dress-costume-yellow",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-fancy-dress-costume-yellow",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/orange-bhangra-dance-costume-fancy-dress",
+    "destination": "/products/bhangra-dance-fancy-dress-costume-blue-yellow",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/orange-bhangra-dance-costume-fancy-dress",
+    "destination": "/wholesale/bhangra-dance-fancy-dress-costume-blue-yellow",
+    "permanent": true
+  },
+  {
+    "source": "/products/western",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-fancy-dress-costume-green-yellow",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-fancy-dress-costume-green-yellow",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/harem-style-western-dance-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/harem-style-western-dance-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/watermelon-fancy-dress-costume",
+    "destination": "/products/watermelon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/watermelon-fancy-dress-costume",
+    "destination": "/wholesale/watermelon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/captain-america-fancy-dress-costumes",
+    "destination": "/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/captain-america-fancy-dress-costumes",
+    "destination": "/wholesale/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/shinchan-fancy-dress-costumes",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shinchan-fancy-dress-costumes",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/magenta-kids-saree-fancy-dress",
+    "destination": "/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/magenta-kids-saree-fancy-dress",
+    "destination": "/wholesale/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/products/multicolor-indo-western-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/multicolor-indo-western-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-dress-yellow-2023-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-dress-yellow-2023-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/ravan-fancy-dress-legacy-2026-03",
+    "destination": "/products/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ravan-fancy-dress-legacy-2026-03",
+    "destination": "/wholesale/ravan-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-fancy-dress-1",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-fancy-dress-1",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/mughal-king-fancy-dress-costume-for-boys",
+    "destination": "/products/mughal-king-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mughal-king-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/mughal-king-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-fancy-dress-boys",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-fancy-dress-boys",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/popcorn-fancy-dress-costume",
+    "destination": "/category/junk-food",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/popcorn-fancy-dress-costume",
+    "destination": "/wholesale/category/junk-food",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatanatyam-dance-dress-costume",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatanatyam-dance-dress-costume",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/achkan-churidar-suit-for-boy-fancy-dress",
+    "destination": "/products",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/achkan-churidar-suit-for-boy-fancy-dress",
+    "destination": "/wholesale",
+    "permanent": true
+  },
+  {
+    "source": "/products/lychee-fancy-dress-costumes",
+    "destination": "/category/fruit-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/lychee-fancy-dress-costumes",
+    "destination": "/wholesale/category/fruit-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/shark-fancy-dress-costume-grey",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shark-fancy-dress-costume-grey",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-skirt-top-pink",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-skirt-top-pink",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-kurta-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-kurta-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-white",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-white",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/shivaji-maharaj-fancy-dress-costume",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shivaji-maharaj-fancy-dress-costume",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/rouf-dance-costume-fancy-dress",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rouf-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-skirt-top-fancy-dress-costume",
+    "destination": "/products/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-skirt-top-fancy-dress-costume",
+    "destination": "/wholesale/golden-western-dance-fancy-dress-skirt-top",
+    "permanent": true
+  },
+  {
+    "source": "/products/potato-fancy-dress-costume",
+    "destination": "/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/potato-fancy-dress-costume",
+    "destination": "/wholesale/category/vegetable-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/meera-bai-fancy-dress-costume-for-girls",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/meera-bai-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatnatyam-dance-costume-pink-fancy-dress",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatnatyam-dance-costume-pink-fancy-dress",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress-costumes",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress-costumes",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/penguin-fancy-dresss-costume-for-kids",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/penguin-fancy-dresss-costume-for-kids",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-dress-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-dress-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/rajasthani-dance-fancy-dress-costume",
+    "destination": "/products/rajasthani-dance-fancy-dress-for-men",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rajasthani-dance-fancy-dress-costume",
+    "destination": "/wholesale/rajasthani-dance-fancy-dress-for-men",
+    "permanent": true
+  },
+  {
+    "source": "/products/mother-india-saree-fancy-dress-costume",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mother-india-saree-fancy-dress-costume",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/owl-bird-fancy-dress-costumes",
+    "destination": "/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/owl-bird-fancy-dress-costumes",
+    "destination": "/wholesale/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-fancy-dress-costume-boy",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-fancy-dress-costume-boy",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-fancy-folk-dance-costume-fancy-dress",
+    "destination": "/category/folk-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-fancy-folk-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/folk-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-fancy-dress-costume-in-yellow",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-fancy-dress-costume-in-yellow",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-fancy-dress-costume-magenta-green",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-fancy-dress-costume-magenta-green",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-costume-for-janmashtami-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-costume-for-janmashtami-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-fancy-dress-costume-japanese-satin",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-fancy-dress-costume-japanese-satin",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/lord-shiva-fancy-dress-costume-for-boys",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/lord-shiva-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/rabbit-fancy-dress-costume",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rabbit-fancy-dress-costume",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-frock-dance-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-frock-dance-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/contemporary-and-indo-western-costume-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/contemporary-and-indo-western-costume-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/tiranga-tricolour-sash",
+    "destination": "/category/accessories",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/tiranga-tricolour-sash",
+    "destination": "/wholesale/category/accessories",
+    "permanent": true
+  },
+  {
+    "source": "/products/japanese-kimono-fancy-dress-costume-girls",
+    "destination": "/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/japanese-kimono-fancy-dress-costume-girls",
+    "destination": "/wholesale/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/kumaoni",
+    "destination": "/products/kumaoni-dress-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kumaoni",
+    "destination": "/wholesale/kumaoni-dress-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-dress-in-golden-and-black-color-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-dress-in-golden-and-black-color-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kids-saree-fancy-dress-costume-firozi",
+    "destination": "/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kids-saree-fancy-dress-costume-firozi",
+    "destination": "/wholesale/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-for-boys",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-for-boys",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/king-fancy-dress-costume-for-boys",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/king-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/monkey-animal-fancy-dress",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/monkey-animal-fancy-dress",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/frock-western-dance-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/frock-western-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/subhash-chandra-bose-cap",
+    "destination": "/category/accessories",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/subhash-chandra-bose-cap",
+    "destination": "/wholesale/category/accessories",
+    "permanent": true
+  },
+  {
+    "source": "/products/water-drop-fancy-dress-costumes",
+    "destination": "/products/water-drop-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/water-drop-fancy-dress-costumes",
+    "destination": "/wholesale/water-drop-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/yellow-hulk-fancy-dress-costumes",
+    "destination": "/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/yellow-hulk-fancy-dress-costumes",
+    "destination": "/wholesale/category/superhero-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/king-fancy-dress",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/king-fancy-dress",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/peacock-bird-fancy-dress-costumes",
+    "destination": "/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/peacock-bird-fancy-dress-costumes",
+    "destination": "/wholesale/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-skirt",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-skirt",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/joker-fancy-dress-costume",
+    "destination": "/category/costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/joker-fancy-dress-costume",
+    "destination": "/wholesale/category/costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/angry-bird-fancy-dress-costume-selina",
+    "destination": "/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/angry-bird-fancy-dress-costume-selina",
+    "destination": "/wholesale/category/cartoon-characters",
+    "permanent": true
+  },
+  {
+    "source": "/products/hanuman-costume",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/hanuman-costume",
+    "destination": "/wholesale/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/achkan-dhoti-dress-for-boy-fancy-dress",
+    "destination": "/products",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/achkan-dhoti-dress-for-boy-fancy-dress",
+    "destination": "/wholesale",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-style-frock-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-style-frock-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/shark-fancy-dress-costume-red",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shark-fancy-dress-costume-red",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/king-akbar-fancy-dress-costume",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/king-akbar-fancy-dress-costume",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/umbrella-dance-fancy-dress-costume",
+    "destination": "/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/umbrella-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
+    "destination": "/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
+    "destination": "/wholesale/category/garba-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/frog-animal-costume",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/frog-animal-costume",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/japanese-kimono-fancy-dress-costume",
+    "destination": "/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/japanese-kimono-fancy-dress-costume",
+    "destination": "/wholesale/category/world-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/black-and-golden-chhau-dance-costume-fancy-dress",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/black-and-golden-chhau-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-army-fancy-dress-costume",
+    "destination": "/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-army-fancy-dress-costume",
+    "destination": "/wholesale/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatanatyam-dance-dress-in-blue-magenta-colour",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatanatyam-dance-dress-in-blue-magenta-colour",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/odissi-dance-fancy-dress-costume",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/odissi-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/zebra-fancy-dress-costume",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/zebra-fancy-dress-costume",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/bhangra-dance-fancy-dress-costume-for-girls",
+    "destination": "/category/bhangra-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bhangra-dance-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/bhangra-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/honey-bee-fancy-dress-costumes",
+    "destination": "/category/insect-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/honey-bee-fancy-dress-costumes",
+    "destination": "/wholesale/category/insect-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/kashmiri-traditional-dress-for-boys-with-cap-fancy-dress",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kashmiri-traditional-dress-for-boys-with-cap-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/vanvasi-sita-saree-fancy-dress-costume",
+    "destination": "/products/vanvasi-sita-saree-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/vanvasi-sita-saree-fancy-dress-costume",
+    "destination": "/wholesale/vanvasi-sita-saree-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/chanakya-fancy-dress-costume",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/chanakya-fancy-dress-costume",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costume-boys",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costume-boys",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-navy-fancy-dress-costume",
+    "destination": "/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-navy-fancy-dress-costume",
+    "destination": "/wholesale/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kathak-dance-costume-golden",
+    "destination": "/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kathak-dance-costume-golden",
+    "destination": "/wholesale/category/kathak-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pathani-suit-fancy-dress-costume-for-boys",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pathani-suit-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kashmiri-dance-fancy-dress-costume",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kashmiri-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/snake-fancy-dress-kids-costume",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/snake-fancy-dress-kids-costume",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/doraemon-fancy-dress-costume",
+    "destination": "/products/doraemon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/doraemon-fancy-dress-costume",
+    "destination": "/wholesale/doraemon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-pilot-fancy-dress-costume",
+    "destination": "/category/helper-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-pilot-fancy-dress-costume",
+    "destination": "/wholesale/category/helper-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/kids-saree-fancy-dress-costume-girls",
+    "destination": "/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kids-saree-fancy-dress-costume-girls",
+    "destination": "/wholesale/category/kids-saree",
+    "permanent": true
+  },
+  {
+    "source": "/products/vanvasi-ram-fancy-dress-costume-for-boys",
+    "destination": "/products/vanvasi-ram-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/vanvasi-ram-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/vanvasi-ram-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/south-indian-fancy-dress-costume",
+    "destination": "/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/south-indian-fancy-dress-costume",
+    "destination": "/wholesale/category/dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pathani-fancy-dress-costume",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pathani-fancy-dress-costume",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pant-shirt-gallace-western-dance-fancy-dress-costume",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pant-shirt-gallace-western-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/eagle-birds-fancy-dress-costumes",
+    "destination": "/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/eagle-birds-fancy-dress-costumes",
+    "destination": "/wholesale/category/bird-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/leopard-animal-fancy-dress-costume",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/leopard-animal-fancy-dress-costume",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/lehenga-fancy-dress-costume-for-girls",
+    "destination": "/products/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/lehenga-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/elephant-fancy-dress-costume",
+    "destination": "/products/elephant-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/elephant-fancy-dress-costume",
+    "destination": "/wholesale/elephant-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/shark-fancy-dress-costume-orange",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shark-fancy-dress-costume-orange",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/rajasthani-folk-dance-fancy-dress-costume",
+    "destination": "/products/rajasthani-folk-dance-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rajasthani-folk-dance-fancy-dress-costume",
+    "destination": "/wholesale/rajasthani-folk-dance-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-costumes-skirt",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-costumes-skirt",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/octopus-animal-fancy-dress",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/octopus-animal-fancy-dress",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/shark-fancy-dress-costume-yellow",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/shark-fancy-dress-costume-yellow",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/mahishasur-fancy-dress-costume",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mahishasur-fancy-dress-costume",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/semi-classical-dance-costume-dress-fancy-dress",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/semi-classical-dance-costume-dress-fancy-dress",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/seahorse-fancy-dress-costume-for-kids",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/seahorse-fancy-dress-costume-for-kids",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/panda-fancy-dress-animal-costume-for-kids",
+    "destination": "/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/panda-fancy-dress-animal-costume-for-kids",
+    "destination": "/wholesale/category/animal-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/bona-fancy-dress-costume",
+    "destination": "/category/costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bona-fancy-dress-costume",
+    "destination": "/wholesale/category/costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/caterpillar-fancy-dress-costume",
+    "destination": "/category/insect-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/caterpillar-fancy-dress-costume",
+    "destination": "/wholesale/category/insect-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/indo-western-dance-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indo-western-dance-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/contemporary-and-indo-western-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/contemporary-and-indo-western-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/contemporary-and-indo-western-dance-costume-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/contemporary-and-indo-western-dance-costume-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatanatyam-dance-dress-green-orange",
+    "destination": "/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatanatyam-dance-dress-green-orange",
+    "destination": "/wholesale/category/bharatnatyam",
+    "permanent": true
+  },
+  {
+    "source": "/products/kashmiri-traditional-dress-with-cap-for-boys-fancy-dress",
+    "destination": "/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kashmiri-traditional-dress-with-cap-for-boys-fancy-dress",
+    "destination": "/wholesale/category/kashmiri-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/british-soldier-fancy-dress-costumes",
+    "destination": "/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/british-soldier-fancy-dress-costumes",
+    "destination": "/wholesale/category/republic-day-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/indian-semi-classical-fancy-dress-costume",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/indian-semi-classical-fancy-dress-costume",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/hindu-king-fancy-dress-for-boys",
+    "destination": "/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/hindu-king-fancy-dress-for-boys",
+    "destination": "/wholesale/category/indian-mythology-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/narad-muni-fancy-dress-costume-for-boys",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/narad-muni-fancy-dress-costume-for-boys",
+    "destination": "/wholesale/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/chhau-dance-fancy-dress-costume",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/chhau-dance-fancy-dress-costume",
+    "destination": "/wholesale/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-fancy-dress-boys",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-fancy-dress-boys",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-fancy-dress-costume-pink-yellow",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-fancy-dress-costume-pink-yellow",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/hindu-rani-fancy-dress-costume-for-girls",
+    "destination": "/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/hindu-rani-fancy-dress-costume-for-girls",
+    "destination": "/wholesale/category/ramleela-costumes",
+    "permanent": true
+  },
+  {
+    "source": "/products/kids-radha-dress-lehenga-fancy-costume-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kids-radha-dress-lehenga-fancy-costume-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bhagat-singh-fancy-dress-costume",
+    "destination": "/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bhagat-singh-fancy-dress-costume",
+    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "permanent": true
+  },
+  {
+    "source": "/products/children-police-fancy-dress-costume",
+    "destination": "/products/police-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/children-police-fancy-dress-costume",
+    "destination": "/wholesale/police-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/krishna-dress-for-janmashtami-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/krishna-dress-for-janmashtami-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-frock-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-frock-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-rani-fancy-dress-pink-orange",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-rani-fancy-dress-pink-orange",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-rani-dress-lehenga-choli-fancy-dress",
+    "destination": "/products/radha-rani-lehenga-choli-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-rani-dress-lehenga-choli-fancy-dress",
+    "destination": "/wholesale/radha-rani-lehenga-choli-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/lehenga-fancy-dress-costume",
+    "destination": "/products/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/lehenga-fancy-dress-costume",
+    "destination": "/wholesale/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/western-dance-costume-red-silver-fancy-dress",
+    "destination": "/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/western-dance-costume-red-silver-fancy-dress",
+    "destination": "/wholesale/category/western-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kids-bhangra-dance-dresses-for-boys-fancy-dress",
+    "destination": "/products/bhangra-dance-costume-for-boys-orange-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kids-bhangra-dance-dresses-for-boys-fancy-dress",
+    "destination": "/wholesale/bhangra-dance-costume-for-boys-orange-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/fancy-dress-lehenga-costume",
+    "destination": "/products/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/fancy-dress-lehenga-costume",
+    "destination": "/wholesale/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-rani-fancy-dress-lehenga-golden-red",
+    "destination": "/products/radha-rani-lehenga-dress-pink-golden-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-rani-fancy-dress-lehenga-golden-red",
+    "destination": "/wholesale/radha-rani-lehenga-dress-pink-golden-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kids-lehenga-fancy-dress-costume",
+    "destination": "/products/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kids-lehenga-fancy-dress-costume",
+    "destination": "/wholesale/kids-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/ghoomar-lehenga-fancy-dress",
+    "destination": "/category/rajasthani-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ghoomar-lehenga-fancy-dress",
+    "destination": "/wholesale/category/rajasthani-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/radha-dress-lehenga-choli-costume-fancy-dress",
+    "destination": "/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/radha-dress-lehenga-choli-costume-fancy-dress",
+    "destination": "/wholesale/category/janmashtami-dress",
+    "permanent": true
+  },
+  {
+    "source": "/blog/garba-navratri-costume-kids-guide",
+    "destination": "/blog/navratri-garba-dandiya-dress-guide",
+    "permanent": true
+  },
+  {
+    "source": "/products/odisi-fancy-dress",
+    "destination": "/products/odissi-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/odisi-fancy-dress",
+    "destination": "/wholesale/odissi-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/bharatnatyam-fancy-dress-1",
+    "destination": "/products/magenta-bharatnatyam-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/bharatnatyam-fancy-dress-1",
+    "destination": "/wholesale/magenta-bharatnatyam-fancy-dress",
+    "permanent": true
+  },
+  {
     "source": "/products/vanvasi-ram",
     "destination": "/products/vanvasi-ram-fancy-dress",
     "permanent": true
@@ -1722,6 +3967,91 @@
   {
     "source": "/wholesale/vanvasi-ram",
     "destination": "/wholesale/vanvasi-ram-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/rajasthani-lehnga-fancy-dress",
+    "destination": "/products/yellow-rajasthani-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rajasthani-lehnga-fancy-dress",
+    "destination": "/wholesale/yellow-rajasthani-lehenga-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/kerala-fancy-dres",
+    "destination": "/products/kerala-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/kerala-fancy-dres",
+    "destination": "/wholesale/kerala-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/pahdi-boy-fancy-dress",
+    "destination": "/products/pahadi-boy-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/pahdi-boy-fancy-dress",
+    "destination": "/wholesale/pahadi-boy-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/purple-frock-fancys-dress",
+    "destination": "/products/purple-frock-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/purple-frock-fancys-dress",
+    "destination": "/wholesale/purple-frock-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/water-melon-fancy-dress",
+    "destination": "/products/watermelon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/water-melon-fancy-dress",
+    "destination": "/wholesale/watermelon-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/subhash-chander-bose-fancy-dress",
+    "destination": "/products/subhash-chandra-bose-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/subhash-chander-bose-fancy-dress",
+    "destination": "/wholesale/subhash-chandra-bose-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/ballroom-dance-fancy-dress-costume-2",
+    "destination": "/products/ballroom-dance-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ballroom-dance-fancy-dress-costume-2",
+    "destination": "/wholesale/ballroom-dance-fancy-dress-costume",
+    "permanent": true
+  },
+  {
+    "source": "/blog/school-annual-function-fancy-dress-guide",
+    "destination": "/blog/fancy-dress-ideas-school-annual-function",
+    "permanent": true
+  },
+  {
+    "source": "/blog/which-classical-dance-costume-for-your-child",
+    "destination": "/category/classical-dance-dress",
+    "permanent": true
+  },
+  {
+    "source": "/blog/republic-independence-day-fancy-dress-ideas",
+    "destination": "/blog/independence-day-fancy-dress-ideas",
     "permanent": true
   }
 ]
