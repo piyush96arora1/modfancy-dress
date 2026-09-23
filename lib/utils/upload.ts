@@ -35,6 +35,15 @@ function supportsWebpEncoding(): Promise<boolean> {
     return webpEncodingSupport
 }
 
+function isAlreadyExists(error: { message: string }): boolean {
+    const status = (error as { statusCode?: string | number }).statusCode
+    return String(status) === '409' || /already exists|duplicate/i.test(error.message)
+}
+
+/**
+ * @param filename Storage name without extension (the real extension is appended from what
+ *   the browser produced). Pass `imageStem(product.slug, index)` for product photos.
+ */
 export async function uploadCompressedImage(
     file: File,
     folder: UploadFolder,
@@ -75,20 +84,25 @@ export async function uploadCompressedImage(
     // that ever changes to rewrite extensions again, every non-webp upload here will 404.
     const ext = MIME_EXT[compressed.type] ?? 'jpg'
 
-    const name = filename
-        ? `${filename}.${ext}`
-        : `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    // With a descriptive `filename` (the product slug, see lib/utils/image-filename.ts) the
+    // first choice is the bare name, which is what Google Images reads. A clash with an
+    // existing file retries once with a timestamp suffix rather than overwriting it.
+    const stem = filename || `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
-    const storagePath = `${folder}/${name}`
-
-    // Step 3: Upload to Supabase
-    const { error } = await supabase.storage
-        .from('product-images')
-        .upload(storagePath, compressed, {
+    const put = (path: string) =>
+        supabase.storage.from('product-images').upload(path, compressed, {
             contentType: compressed.type || 'image/jpeg',
             cacheControl: '31536000', // 1 year
             upsert: false,
         })
+
+    // Step 3: Upload to Supabase
+    let storagePath = `${folder}/${stem}.${ext}`
+    let { error } = await put(storagePath)
+    if (error && filename && isAlreadyExists(error)) {
+        storagePath = `${folder}/${stem}-${Date.now()}.${ext}`
+        ;({ error } = await put(storagePath))
+    }
 
     if (error) throw new Error(`Upload failed: ${error.message}`)
 

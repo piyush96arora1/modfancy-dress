@@ -208,7 +208,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
                     {/* Images */}
                     <div>
                         {/* We don't guarantee primaryImage, but productData.images should have images. Passing all available images. */}
-                        <ProductGallery images={productData.images || []} productName={productData.name} />
+                        <ProductGallery images={productData.images || []} productName={productData.name} categoryName={productData.category?.name} />
                     </div>
 
                     {/* Product Info */}

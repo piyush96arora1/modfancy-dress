@@ -5,22 +5,27 @@ import Image from 'next/image'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getImageUrl } from '@/lib/imageUrl'
+import { buildAltText } from '@/lib/seo/alt-text'
 import type { ProductImage } from '@/types/database'
 
 interface ProductGalleryProps {
     images: ProductImage[]
     productName: string
+    /** Primary category name, used in the generated alt text when a photo has none. */
+    categoryName?: string | null
 }
 
 const ZOOM_LEVEL = 2.5
 
-export function ProductGallery({ images, productName }: ProductGalleryProps) {
+export function ProductGallery({ images, productName, categoryName }: ProductGalleryProps) {
     const primaryImage = images.find(img => img.is_primary) || images[0]
     const galleryImages = primaryImage
         ? [primaryImage, ...images.filter(img => img.id !== primaryImage.id)]
         : []
 
     const [selectedImage, setSelectedImage] = useState<ProductImage>(galleryImages[0])
+    const altFor = (img: ProductImage, index: number) =>
+        img.alt_text?.trim() || buildAltText({ name: productName, categoryName }, index)
 
     // Desktop Zoom State
     const [showDesktopZoom, setShowDesktopZoom] = useState(false)
@@ -108,7 +113,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 {/* The Base Image */}
                 <Image
                     src={getImageUrl(selectedImage.image_url)}
-                    alt={selectedImage.alt_text || `${productName} Main Image`}
+                    alt={altFor(selectedImage, Math.max(0, galleryImages.findIndex((g) => g.id === selectedImage.id)))}
                     fill
                     className="object-contain"
                     priority
@@ -164,7 +169,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             {/* Thumbnails Row */}
             {galleryImages.length > 1 && (
                 <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide snap-x">
-                    {galleryImages.map((img) => {
+                    {galleryImages.map((img, index) => {
                         const isSelected = selectedImage.id === img.id
                         return (
                             <button
@@ -189,7 +194,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 )}
                                 <Image
                                     src={getImageUrl(img.image_url)}
-                                    alt={img.alt_text || `${productName} Thumbnail`}
+                                    alt={altFor(img, index)}
                                     fill
                                     className="object-cover"
                                     sizes="96px"

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import type { ProductWithDetails, PricingMode } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
+import { buildAltText } from '@/lib/seo/alt-text'
 
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
@@ -62,7 +63,10 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
           {primaryImage ? (
             <Image
               src={getImageUrl(primaryImage.image_url)}
-              alt={primaryImage.alt_text || product.name}
+              alt={
+                primaryImage.alt_text?.trim() ||
+                buildAltText({ name: product.name, categoryName: product.category?.name }, 0)
+              }
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
