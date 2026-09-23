@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import type { ProductWithDetails } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
+import { cardImageUrl } from '@/lib/utils/image-variants'
 
 interface AssetPreloaderProps {
   products: ProductWithDetails[]
@@ -43,13 +44,14 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
     document.head.appendChild(apiLink)
 
     // 3) Warm the first section's product images on idle so they're cached by the
-    //    time the user scrolls — without blocking the banner LCP.
+    //    time the user scrolls — without blocking the banner LCP. Warm the 400w card
+    //    variant the cards actually render, not the ~450KB original (20 of those was ~9MB).
     const warmProductImages = () => {
       products.slice(0, 20).forEach((product) => {
         const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
         if (primaryImage?.image_url) {
           const img = new Image()
-          img.src = getImageUrl(primaryImage.image_url)
+          img.src = cardImageUrl(primaryImage.image_url)
         }
       })
     }

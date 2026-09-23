@@ -10,13 +10,16 @@ interface ImageUploadProps {
   bucket?: string
   pathPrefix?: string
   label?: string
+  /** Storage filename (no extension) for the next upload, e.g. from the product slug. */
+  filename?: string
 }
 
 export function ImageUpload({
   onUpload,
   bucket = 'product-images',
   pathPrefix = 'products-webp/',
-  label = 'Upload Image'
+  label = 'Upload Image',
+  filename,
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -34,7 +37,7 @@ export function ImageUpload({
       // Map pathPrefix to UploadFolder type
       const folder = pathPrefix.replace('/', '') as UploadFolder
 
-      const publicUrl = await uploadCompressedImage(file, folder)
+      const publicUrl = await uploadCompressedImage(file, folder, filename)
 
       onUpload(publicUrl)
 

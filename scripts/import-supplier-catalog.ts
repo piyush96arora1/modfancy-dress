@@ -172,7 +172,7 @@ async function uploadVariant(
   await withRetry(`upload ${objectPath}`, async () => {
     const { error } = await supabase.storage
       .from(BUCKET)
-      .upload(objectPath, processed.data, { contentType: 'image/webp', upsert: true })
+      .upload(objectPath, processed.data, { contentType: 'image/webp', cacheControl: '31536000', upsert: true })
     if (error) throw new Error(error.message)
   })
 

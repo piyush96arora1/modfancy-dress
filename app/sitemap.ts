@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+import { getImageUrl } from '@/lib/imageUrl'
 
 export const revalidate = 86400
 
@@ -9,13 +10,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { data: products } = await supabase
     .from('products')
-    .select('slug, updated_at')
+    .select('slug, updated_at, product_images(image_url, is_primary, order)')
     .eq('is_active', true)
     .is('deleted_at', null)
 
   const { data: categories } = await supabase
     .from('categories')
-    .select('id, slug, updated_at')
+    .select('id, slug, updated_at, image_url')
     .eq('is_active', true)
 
   // Category ids that actually have products — keeps empty categories out of the
@@ -40,10 +41,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .select('slug, updated_at')
     .not('published_at', 'is', null)
 
+  // Image sitemap entries: Google Images is the site's largest search surface, and
+  // listing each product's photos (primary first, gallery order after) is how they get
+  // discovered and tied to the product page. Google reads up to 1,000 per URL; five
+  // covers every gallery we have.
   const productUrls = products?.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: new Date(product.updated_at),
+    images: [...(product.product_images || [])]
+      .sort(
+        (a, b) =>
+          Number(!!b.is_primary) - Number(!!a.is_primary) || (a.order ?? 0) - (b.order ?? 0)
+      )
+      .slice(0, 5)
+      .map((img) => getImageUrl(img.image_url))
+      .filter(Boolean),
   })) || []
+
+  // `/` and `/products` change whenever the catalog does, so their lastmod is the newest
+  // product edit rather than a hard-coded date (a stale lastmod teaches Google to ignore it).
+  const catalogUpdatedAt = new Date(
+    Math.max(
+      Date.parse('2026-03-01'),
+      ...(products || []).map((p) => Date.parse(p.updated_at)).filter((t) => !Number.isNaN(t))
+    )
+  )
 
   const wholesaleProductUrls = products?.map((product) => ({
     url: `${baseUrl}/wholesale/${product.slug}`,
@@ -55,6 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((category) => ({
       url: `${baseUrl}/category/${category.slug}`,
       lastModified: new Date(category.updated_at),
+      ...(category.image_url ? { images: [getImageUrl(category.image_url)] } : {}),
     }))
 
   const wholesaleCategoryUrls = categories?.map((category) => ({
@@ -68,8 +91,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })) || []
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date('2026-03-01') },
-    { url: `${baseUrl}/products`, lastModified: new Date('2026-03-01') },
+    { url: baseUrl, lastModified: catalogUpdatedAt },
+    { url: `${baseUrl}/products`, lastModified: catalogUpdatedAt },
     { url: `${baseUrl}/wholesale`, lastModified: new Date('2026-08-08') },
     { url: `${baseUrl}/rent`, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/blog`, lastModified: new Date('2026-03-01') },

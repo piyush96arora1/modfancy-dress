@@ -127,6 +127,7 @@ function Listing({
             products={filtered}
             pricingMode={pricingMode}
             wholesaleDiscountPct={wholesaleDiscountPct}
+            priorityCount={4}
           />
         ) : (
           <div className="text-center py-12">

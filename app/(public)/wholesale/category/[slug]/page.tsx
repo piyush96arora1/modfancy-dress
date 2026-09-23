@@ -135,6 +135,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                         pricingMode="wholesale"
                         wholesaleDiscountPct={wholesaleDiscountPct}
                         productTitleTag="h4"
+                        priorityCount={4}
                     />
                 </section>
 

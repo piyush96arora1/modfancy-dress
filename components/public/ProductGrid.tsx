@@ -10,6 +10,8 @@ interface ProductGridProps {
   showViewAllCard?: boolean
   /** Passed to each ProductCard — use `h4` when this grid follows a section `h2`. */
   productTitleTag?: 'h3' | 'h4'
+  /** How many leading cards load eagerly (the first mobile rows hold the LCP image). */
+  priorityCount?: number
 }
 
 export function ProductGrid({
@@ -18,6 +20,7 @@ export function ProductGrid({
   wholesaleDiscountPct = 30,
   showViewAllCard = false,
   productTitleTag = 'h3',
+  priorityCount = 0,
 }: ProductGridProps) {
   if (products.length === 0) {
     return (
@@ -29,13 +32,14 @@ export function ProductGrid({
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 lg:gap-6">
-      {products.map((product) => (
+      {products.map((product, index) => (
         <ProductCard
           key={product.id}
           product={product}
           pricingMode={pricingMode}
           wholesaleDiscountPct={wholesaleDiscountPct}
           titleTag={productTitleTag}
+          priority={index < priorityCount}
         />
       ))}
 

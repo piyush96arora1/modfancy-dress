@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { slugify } from '@/lib/utils/slugify'
+import { imageStem } from '@/lib/utils/image-filename'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -139,6 +140,7 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
   })
 
   const name = watch('name')
+  const slug = watch('slug')
 
   // Auto-generate slug from name
   useEffect(() => {
@@ -720,7 +722,12 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
       {/* Images */}
       <div>
         <Label>Product Images *</Label>
-        <ImageUpload onUpload={handleImageUpload} />
+        {/* Name the file after the product slug (ravan-fancy-dress-2.webp) so Google Images
+            has a descriptive filename; falls back to a random name until a slug exists. */}
+        <ImageUpload
+          onUpload={handleImageUpload}
+          filename={slug?.trim() ? imageStem(slug, images.length) : undefined}
+        />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
           {images.map((img, index) => (
             <div key={index} className="relative group border rounded-lg bg-gray-50 p-2 flex flex-col shadow-sm">

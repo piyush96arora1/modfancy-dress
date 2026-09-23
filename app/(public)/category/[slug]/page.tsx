@@ -129,7 +129,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           >
             Products in this category
           </h2>
-          <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" />
+          <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" priorityCount={4} />
         </section>
 
         {category.description && (

@@ -2,10 +2,12 @@
 
 import { useTransition } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import type { ProductCardData, PricingMode } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
+import { cardImageUrl } from '@/lib/utils/image-variants'
+import { VariantImage } from './VariantImage'
+import { buildAltText } from '@/lib/seo/alt-text'
 
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
@@ -19,9 +21,11 @@ interface ProductCardProps {
   titleTag?: 'h3' | 'h4'
   /** Hide the category badge where the surrounding section already names the category. */
   showCategoryBadge?: boolean
+  /** Load eagerly with high priority: set on the first row of a listing (the LCP card). */
+  priority?: boolean
 }
 
-export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3', showCategoryBadge = true }: ProductCardProps) {
+export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3', showCategoryBadge = true, priority = false }: ProductCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const { mode: globalMode } = usePricingMode()
@@ -60,9 +64,14 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
         {/* Image */}
         <div className="aspect-[3/4] relative bg-[#F5F3F0] overflow-hidden">
           {primaryImage ? (
-            <Image
-              src={getImageUrl(primaryImage.image_url)}
-              alt={primaryImage.alt_text || product.name}
+            <VariantImage
+              src={cardImageUrl(primaryImage.image_url)}
+              fallbackSrc={getImageUrl(primaryImage.image_url)}
+              priority={priority}
+              alt={
+                primaryImage.alt_text?.trim() ||
+                buildAltText({ name: product.name, categoryName: product.category?.name }, 0)
+              }
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
