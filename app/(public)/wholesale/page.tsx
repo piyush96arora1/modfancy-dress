@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import {
-    getAllActiveProductsCached,
     getActiveCategoriesCached,
     getWholesaleDiscountPctCached,
 } from '@/lib/supabase/cached-queries'
+import { getProductCardsCached } from '@/lib/supabase/cached-seo-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
 import { WholesaleListSkeleton } from '@/components/public/WholesaleListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -13,7 +13,6 @@ import { FaqPageSchema } from '@/lib/seo/structured-data'
 import { Button } from '@/components/ui/button'
 import { MapPin, Phone, Package, Truck, Wallet, Clock } from 'lucide-react'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, whatsappUrl } from '@/lib/constants/contact'
-import type { ProductWithDetails } from '@/types/database'
 
 // Statically rendered (ISR); filtering is client-side. See /products for rationale.
 export const revalidate = 3600
@@ -67,7 +66,7 @@ const wholesaleFaqs = [
 
 async function WholesaleContent() {
     const [products, categories, wholesaleDiscountPct] = await Promise.all([
-        getAllActiveProductsCached(),
+        getProductCardsCached(),
         getActiveCategoriesCached(),
         getWholesaleDiscountPctCached(),
     ])
@@ -76,7 +75,7 @@ async function WholesaleContent() {
 
     return (
         <ProductsBrowser
-            products={products as unknown as ProductWithDetails[]}
+            products={products}
             categories={categories}
             heading="Wholesale Fancy Dress Costumes — Bulk Supplier in Delhi"
             basePath="/wholesale"

@@ -4,7 +4,7 @@ import { useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import type { ProductWithDetails, PricingMode } from '@/types/database'
+import type { ProductCardData, PricingMode } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
 
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
@@ -12,7 +12,7 @@ import { usePricingMode } from '@/lib/context/PricingModeContext'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface ProductCardProps {
-  product: ProductWithDetails
+  product: ProductCardData
   pricingMode?: PricingMode
   wholesaleDiscountPct?: number
   /** Use `h4` when the grid sits under a section `h2` (e.g. category pages). Default `h3` for listings under page `h1` only. */

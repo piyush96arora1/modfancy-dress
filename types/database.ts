@@ -121,6 +121,17 @@ export type ProductWithDetails = Product & {
   variants: ProductVariant[]
 }
 
+/**
+ * Exactly what a listing card (ProductCard) and the /products client filter read.
+ * ProductWithDetails is structurally assignable to it, so full rows still work.
+ */
+export type ProductCardData = Pick<Product, 'id' | 'slug' | 'name' | 'price' | 'wholesale_price' | 'rent_price'> & {
+  category: { name: string; slug?: string } | null
+  categories?: { category: { name: string; slug?: string } }[]
+  images: { image_url: string; is_primary: boolean; alt_text?: string | null }[]
+  variants: { price_override: number | null }[]
+}
+
 export type CartItem = {
   productId: string
   variantId?: string

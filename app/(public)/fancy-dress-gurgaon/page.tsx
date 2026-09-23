@@ -10,6 +10,7 @@ import {
 } from '@/lib/seo/structured-data'
 import { CustomerReviews } from '@/components/public/CustomerReviews'
 import { GURGAON_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
+import { MapFacade } from '@/components/public/MapFacade'
 
 export const metadata = generatePageMetadata({
   title: 'Costume on Rent in Gurgaon — Fancy Dress',
@@ -149,16 +150,7 @@ export default function FancyDressGurgaonPage() {
         </div>
       </div>
       <div className="rounded-xl overflow-hidden border border-[#E8E5E0] mt-6">
-        <iframe
-          src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
-          width="100%"
-          height="240"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Gurgaon)"
-        />
+        <MapFacade label="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Gurgaon)" height={240} />
       </div>
 
       <div className="mt-10">
