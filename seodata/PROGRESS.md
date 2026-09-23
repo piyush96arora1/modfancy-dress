@@ -76,3 +76,11 @@ Baselines: `seodata/gsc/2026-09-23-baseline.md` (Search Console), `seodata/gbp/2
 - ⏳ GBP posts from `seodata/GBP-POSTS-2026-AUTUMN.md` (profile calls peak 2–4 days before a festival, so Navratri posts go up 1–8 Oct).
 - ⏳ Vercel → Domains: apex → www in one hop. Search Console CWV report check in 28 days.
 - ⏳ Data fixes: navratri-chaniya-choli (rent ₹2500 > buy ₹1500), orange-fancy-dress (rent > buy); kathak-dance-dress-anarkali-style-1.webp returns 400; Kerala and Kathakali have no product images; Gabbar is only in the generic "costumes" category.
+
+### 23 Sep 2026 (later): done via Chrome with the owner logged in
+- ✅ Both migrations run in the Supabase SQL editor; `seed-seasonal-homepage` and `seed-guide-links` applied. Homepage sections are now date-windowed, categories link to their guides, and all posts have covers (4 hand-picked: Dussehra→Ravan, Diwali→Raja Ram, freedom fighters→Jhansi, Independence Day→Gandhi).
+- ✅ Search Console "Request indexing" (10/day quota): dandiya-dress, garba-dress, ramleela-costumes, navratri guide, dussehra guide, childrens-day guide, diwali guide, homepage, fancy-dress-ghaziabad, Nehru product. **Tomorrow:** halloween-costume-ideas-india, category/dance-dress, category/states-fancy-dress, category/festival-costumes, category/halloween.
+- ✅ Core Web Vitals report: "Not enough usage data" (mobile and desktop). Google has no field CWV for the site yet, so CWV isn't a ranking input today.
+- ✅ Merchant listings: 263 valid, 0 invalid. The ~150 "missing shippingDetails / hasMerchantReturnPolicy" came from /wholesale/<slug> emitting a second Product; removed (commit 6e61ccd), "Validate fix" started on both. `shippingRate` is omitted on purpose (charges vary per order). 4 SKUs are over 50 chars (non-critical).
+- ⚠️ **Vercel Hobby over quota:** ISR writes 306K / 200K in the cycle ending 23 Sep. Cause: /products and /wholesale (~750KB each) regenerating hourly, plus every deploy rewriting all prerendered pages. Fixed in ba9eee8: all public pages are daily now, and admin product saves call /api/revalidate (scope=catalog). **Keep pushes batched**: each deploy costs ISR writes. Check Vercel → Observability → ISR in a week (target under 6.5K write units/day).
+- ✅ Vercel domains were already correct (apex 308 → www). The extra http→https hop is Vercel's own and can't be removed.
