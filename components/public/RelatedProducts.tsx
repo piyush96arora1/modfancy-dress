@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { ProductCard } from './ProductCard'
-import { selectRelatedProducts, relatedHeading } from '@/lib/utils/related-products'
+import { selectRelatedWithTopUp, relatedHeading } from '@/lib/utils/related-products'
 import type { ProductWithDetails } from '@/types/database'
 
 interface RelatedProductsProps {
   /** Every active product in the category, including the one being viewed. */
   categoryProducts: ProductWithDetails[]
+  /** Fill-ins, in priority order, used only if the category can't fill the block. */
+  topUpProducts?: ProductWithDetails[][]
   currentProductId: string
   categoryName: string
   categorySlug: string
@@ -28,12 +30,16 @@ interface RelatedProductsProps {
  */
 export function RelatedProducts({
   categoryProducts,
+  topUpProducts = [],
   currentProductId,
   categoryName,
   categorySlug,
   className,
 }: RelatedProductsProps) {
-  const related = selectRelatedProducts(categoryProducts, currentProductId)
+  const related = selectRelatedWithTopUp(
+    { main: { categoryId: categorySlug, categoryName, categorySlug, products: categoryProducts }, topUp: topUpProducts },
+    currentProductId
+  )
   if (related.length === 0) return null
 
   return (

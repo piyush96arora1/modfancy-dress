@@ -140,3 +140,88 @@ test('no categories, or all of them empty, yields nothing', async () => {
     null
   )
 })
+
+// --- relevance first: the specific category leads, generic pools only top up --
+
+const pool = (id: string, slug: string, n: number, prefix = id) => ({
+  categoryId: id,
+  categoryName: id,
+  categorySlug: slug,
+  products: Array.from({ length: n }, (_, i) => p(`${prefix}-${String(i).padStart(3, '0')}`)),
+})
+
+test('a primary category with 8+ siblings supplies the whole block, even beside a bigger generic pool', async () => {
+  const { pickRelatedSources, selectRelatedWithTopUp } = await import('../lib/utils/related-products')
+  // the Gabbar case: primary "villains" with 9 siblings, plus the 70-product generic "costumes"
+  const primary = pool('villains', 'villains', 10, 'v')
+  const generic = pool('costumes', 'costumes', 70, 'g')
+  const src = pickRelatedSources([generic, primary], 'villains')
+  assert.equal(src?.main.categoryId, 'villains')
+  const block = selectRelatedWithTopUp(src!, 'v-000')
+  assert.equal(block.length, 8)
+  assert.ok(ids(block).every((id) => id.startsWith('v-')), `generic leaked in: ${ids(block)}`)
+})
+
+test('the "costumes" slug is generic even when small', async () => {
+  const { pickRelatedSources } = await import('../lib/utils/related-products')
+  // primary is thin, "costumes" is bigger: the specific one still leads
+  const src = pickRelatedSources([pool('costumes', 'costumes', 20, 'g'), pool('villains', 'villains', 4, 'v')], 'villains')
+  assert.equal(src?.main.categoryId, 'villains')
+})
+
+test('any category with 60+ products counts as generic, whatever its slug', async () => {
+  const { pickRelatedSources, selectRelatedWithTopUp } = await import('../lib/utils/related-products')
+  const primary = pool('krishna', 'krishna', 12, 'k')
+  const big = pool('accessories', 'accessories', 61, 'a')
+  const src = pickRelatedSources([big, primary], 'krishna')
+  assert.equal(src?.main.categoryId, 'krishna')
+  assert.ok(ids(selectRelatedWithTopUp(src!, 'k-000')).every((id) => id.startsWith('k-')))
+})
+
+test('a thin specific category keeps all its siblings and is only topped up from the generic pool', async () => {
+  const { pickRelatedSources, selectRelatedWithTopUp } = await import('../lib/utils/related-products')
+  const primary = pool('villains', 'villains', 4, 'v') // 3 siblings
+  const generic = pool('costumes', 'costumes', 70, 'g')
+  const src = pickRelatedSources([generic, primary], 'villains')
+  assert.equal(src?.main.categoryId, 'villains', 'heading and View all stay on the specific category')
+  const block = ids(selectRelatedWithTopUp(src!, 'v-000'))
+  assert.equal(block.length, 8)
+  assert.deepEqual(block.slice(0, 3), ['v-001', 'v-002', 'v-003'], 'specific siblings come first')
+  assert.ok(block.slice(3).every((id) => id.startsWith('g-')))
+  assert.equal(new Set(block).size, 8, 'no repeats')
+  assert.ok(!block.includes('v-000'), 'never itself')
+})
+
+test('a product in both pools is not repeated by the top-up', async () => {
+  const { pickRelatedSources, selectRelatedWithTopUp } = await import('../lib/utils/related-products')
+  const primary = pool('villains', 'villains', 3, 'v')
+  const generic = pool('costumes', 'costumes', 65, 'g')
+  generic.products = [...generic.products, p('v-000'), p('v-001'), p('v-002')]
+  const block = ids(selectRelatedWithTopUp(pickRelatedSources([primary, generic], 'villains')!, 'v-000'))
+  assert.equal(block.length, 8)
+  assert.equal(new Set(block).size, block.length)
+  assert.ok(!block.includes('v-000'))
+})
+
+test('a primary with few siblings falls back to the richest specific category before any generic one', async () => {
+  const { pickRelatedSources } = await import('../lib/utils/related-products')
+  // the Krishna case from pickRichestPool still holds
+  const src = pickRelatedSources(
+    [pool('mythological-characters', 'mc', 1), pool('indian-mythology', 'im', 12), pool('costumes', 'costumes', 80)],
+    'mythological-characters'
+  )
+  assert.equal(src?.main.categoryId, 'indian-mythology')
+})
+
+test('only generic pools available: still shows a block rather than nothing', async () => {
+  const { pickRelatedSources, selectRelatedWithTopUp } = await import('../lib/utils/related-products')
+  const src = pickRelatedSources([pool('costumes', 'costumes', 70, 'g')], 'costumes')
+  assert.equal(src?.main.categoryId, 'costumes')
+  assert.equal(selectRelatedWithTopUp(src!, 'g-000').length, 8)
+})
+
+test('no usable pools yields null', async () => {
+  const { pickRelatedSources } = await import('../lib/utils/related-products')
+  assert.equal(pickRelatedSources([], 'x'), null)
+  assert.equal(pickRelatedSources([pool('a', 'a', 1)], 'a'), null)
+})

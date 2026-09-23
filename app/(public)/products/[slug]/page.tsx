@@ -11,7 +11,7 @@ import { AddToCartButton } from '@/components/public/AddToCartButton'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { RelatedProducts } from '@/components/public/RelatedProducts'
 import { getProductCategoriesCached } from '@/lib/supabase/related-queries'
-import { pickRichestPool } from '@/lib/utils/related-products'
+import { pickRelatedSources } from '@/lib/utils/related-products'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { smartProductTitle } from '@/lib/seo/title-helpers'
 import { productKeywords } from '@/lib/seo/keywords'
@@ -95,12 +95,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
     getProductCategoriesCached(productData.id),
   ])
 
-  // Siblings come from whichever of the product's categories holds the most
-  // products, not necessarily its primary one — a costume filed primarily under a
-  // near-empty category still gets a full block. `getProductsForCategoryCached` is
+  // Relevance first: the primary category when it can fill the block, else the
+  // richest specific category; catch-all pools ("costumes", or 60+ products)
+  // only top up (see pickRelatedSources). `getProductsForCategoryCached` is
   // keyed by category, so these reads are shared by every product page in that
   // category and by the category page itself.
-  const relatedPool = pickRichestPool(
+  const relatedSources = pickRelatedSources(
     await Promise.all(
       productCategories.map(async (c) => ({
         categoryId: c.id,
@@ -108,8 +108,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         categorySlug: c.slug,
         products: (await getProductsForCategoryCached(c.id)) ?? [],
       }))
-    )
+    ),
+    productData.category?.id
   )
+  const relatedPool = relatedSources?.main ?? null
   const aggregateRating = aggregateRatingFromProductReviews(reviews ?? null)
 
   // Size guides are looked up by category id, so a product whose primary category
@@ -294,6 +296,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {relatedPool && (
           <RelatedProducts
             categoryProducts={relatedPool.products as ProductWithDetails[]}
+            topUpProducts={relatedSources?.topUp as ProductWithDetails[][] | undefined}
             currentProductId={productData.id}
             categoryName={relatedPool.categoryName}
             categorySlug={relatedPool.categorySlug}

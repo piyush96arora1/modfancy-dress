@@ -38,6 +38,9 @@ export type Banner = {
   alt_text: string | null
   sort_order: number
   is_enabled: boolean
+  /** Inclusive IST date window; null = open-ended (migration 20260923). */
+  starts_on?: string | null
+  ends_on?: string | null
   created_at: string
   updated_at: string
 }
@@ -50,6 +53,11 @@ export type HomepageSection = {
   product_count: number
   sort_order: number
   is_enabled: boolean
+  /** Inclusive IST date window; null = open-ended (migration 20260923). */
+  starts_on?: string | null
+  ends_on?: string | null
+  /** Hide until the category has at least this many live products. */
+  min_products?: number | null
   created_at: string
   updated_at: string
 }
@@ -161,6 +169,10 @@ export type BlogPost = {
   content: string
   excerpt: string | null
   published_at: string | null
+  /** Migration 20260923_blog_links: LCP image, BlogPosting image, OG image. */
+  cover_image_url?: string | null
+  /** Categories whose products fill the "Shop this guide" grid. */
+  related_category_slugs?: string[] | null
   created_at: string
   updated_at: string
 }

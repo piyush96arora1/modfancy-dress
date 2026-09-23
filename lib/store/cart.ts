@@ -63,6 +63,12 @@ export const useCart = create<CartState>()(
     {
       name: 'mod-fancy-dress-cart',
       storage: createJSONStorage(() => localStorage),
+      // Public pages are statically prerendered with an empty cart. Rehydrating
+      // synchronously at store creation made the first client render show the
+      // saved cart badge, which the static HTML doesn't have -> React #418 and
+      // a full client re-render of the page. Rehydrate after mount instead
+      // (Header calls `useCart.persist.rehydrate()` in an effect).
+      skipHydration: true,
     }
   )
 )
