@@ -1,10 +1,14 @@
 import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
 import {
-  getHomepageSectionsCached,
   getLatestProductsCached,
   getProductsForCategoryCached,
 } from '@/lib/supabase/cached-queries'
+import {
+  getDatedHomepageSectionsCached,
+  getNonEmptyCategoryIdsCached,
+} from '@/lib/supabase/cached-seo-queries'
+import { isActiveOn, meetsMinProducts, todayIST } from '@/lib/utils/seasonal'
 import { CategoryCard } from '@/components/public/CategoryCard'
 import { HomepageSection } from '@/components/public/HomepageSection'
 import { EventBanner } from '@/components/public/EventBanner'
@@ -15,7 +19,7 @@ import { generatePageMetadata } from '@/lib/seo/metadata'
 import { WebSiteSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
-import type { ProductWithDetails } from '@/types/database'
+import type { Banner, ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
   title: 'Fancy Dress Costumes - Buy Online | School & Events',
@@ -23,10 +27,15 @@ export const metadata = generatePageMetadata({
   path: '/',
 })
 
+// Must stay <= 1 day: the date windows below are evaluated at render time, so
+// this is how late a finished festival can linger on the homepage.
 export const revalidate = 86400
 
 export default async function HomePage() {
   const supabase = createPublicServerClient()
+  // Sections and banners carry optional IST date windows (starts_on/ends_on);
+  // evaluated per render so a finished festival drops off by the next regeneration.
+  const today = todayIST()
 
   // Fetch global settings (for Ticker)
   const { data: bannerSettings } = await supabase
@@ -36,28 +45,32 @@ export default async function HomePage() {
     .limit(1)
     .single()
 
-  // Fetch active carousel banners
-  const { data: banners } = await supabase
+  // Fetch active carousel banners that are inside their date window
+  const { data: bannerRows } = await supabase
     .from('banners')
     .select('*')
     .eq('is_enabled', true)
     .order('sort_order', { ascending: true })
+  const banners = ((bannerRows ?? []) as Banner[]).filter((b) => isActiveOn(b, today))
 
   const tickerText = bannerSettings?.ticker_text || null
   const tickerEnabled = bannerSettings?.ticker_enabled || false
 
   // Determine if we should show the carousel (at least one enabled banner exists)
-  const hasEventBanner = banners && banners.length > 0
+  const hasEventBanner = banners.length > 0
 
   // Fetch admin-configured homepage sections + their products.
   // Cached queries keep the page ISR-cacheable; product queries run in parallel.
-  const sections = await getHomepageSectionsCached()
+  const sections = (await getDatedHomepageSectionsCached()).filter((s) => isActiveOn(s, today))
   const sectionsWithProducts = await Promise.all(
     sections.map(async (section) => {
       let sectionProducts: ProductWithDetails[]
       if (section.source_type === 'category' && section.category_id) {
-        const all = await getProductsForCategoryCached(section.category_id)
-        sectionProducts = ((all ?? []) as ProductWithDetails[]).slice(0, section.product_count || 8)
+        const all = (await getProductsForCategoryCached(section.category_id)) ?? []
+        // A festival row (e.g. Halloween) can wait until enough stock is listed.
+        sectionProducts = meetsMinProducts(section, all.length)
+          ? (all as ProductWithDetails[]).slice(0, section.product_count || 8)
+          : []
       } else {
         sectionProducts = (await getLatestProductsCached(section.product_count || 8)) as ProductWithDetails[]
       }
@@ -67,12 +80,18 @@ export default async function HomePage() {
   const visibleSections = sectionsWithProducts.filter((s) => s.products.length > 0)
   const firstSectionProducts = visibleSections[0]?.products ?? []
 
-  // Fetch categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('id, name, slug, image_url')
-    .eq('is_active', true)
-    .order('name')
+  // Fetch categories — only those with live products, so the grid never links
+  // to a "No products found" page.
+  const [{ data: activeCategories }, nonEmptyIds] = await Promise.all([
+    supabase
+      .from('categories')
+      .select('id, name, slug, image_url')
+      .eq('is_active', true)
+      .order('name'),
+    getNonEmptyCategoryIdsCached(),
+  ])
+  const nonEmpty = new Set(nonEmptyIds)
+  const categories = (activeCategories ?? []).filter((c) => nonEmpty.has(c.id))
 
   const websiteSchema = WebSiteSchema()
 
@@ -168,7 +187,7 @@ export default async function HomePage() {
         </section>
 
         {/* Categories Section */}
-        {categories && categories.length > 0 && (
+        {categories.length > 0 && (
           <section className="mb-8 md:mb-14 fade-in">
             <div className="flex items-center justify-between mb-4 md:mb-6">
               <h2 className="text-lg md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Shop by Category</h2>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, Suspense } from 'react'
+import { useEffect, useState, useTransition, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/store/cart'
@@ -19,6 +19,13 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
   const itemCount = getItemCount()
+
+  // The cart store skips hydration so the first client render matches the
+  // static HTML; load the saved cart once mounted. Header is on every public
+  // page, including /cart, so this runs wherever the cart is read.
+  useEffect(() => {
+    void useCart.persist.rehydrate()
+  }, [])
 
   const handleLogout = async () => {
     setLoggingOut(true)

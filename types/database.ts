@@ -38,6 +38,9 @@ export type Banner = {
   alt_text: string | null
   sort_order: number
   is_enabled: boolean
+  /** Inclusive IST date window; null = open-ended (migration 20260923). */
+  starts_on?: string | null
+  ends_on?: string | null
   created_at: string
   updated_at: string
 }
@@ -50,6 +53,11 @@ export type HomepageSection = {
   product_count: number
   sort_order: number
   is_enabled: boolean
+  /** Inclusive IST date window; null = open-ended (migration 20260923). */
+  starts_on?: string | null
+  ends_on?: string | null
+  /** Hide until the category has at least this many live products. */
+  min_products?: number | null
   created_at: string
   updated_at: string
 }
