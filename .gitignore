@@ -51,3 +51,6 @@ public/worker-*.js.map
 # Vastra storefront scrape output (large image payload + generated JSON db)
 /vastra-data/
 /.playwright-mcp/
+
+# Local MCP config (holds private endpoint URLs)
+/.mcp.json
