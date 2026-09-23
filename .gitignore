@@ -54,3 +54,4 @@ public/worker-*.js.map
 
 # Local MCP config (holds private endpoint URLs)
 /.mcp.json
+/.scratch/

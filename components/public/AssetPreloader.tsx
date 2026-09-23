@@ -31,17 +31,10 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
       document.head.appendChild(link)
     }
 
-    // 2) Prefetch key routes for instant navigation.
-    ;['/products', '/contact'].forEach((route) => {
-      const link = document.createElement('link')
-      link.rel = 'prefetch'
-      link.href = route
-      document.head.appendChild(link)
-    })
-    const apiLink = document.createElement('link')
-    apiLink.rel = 'prefetch'
-    apiLink.href = '/api/products'
-    document.head.appendChild(apiLink)
+    // 2) No route or API prefetching here. /products is ~750KB of HTML and
+    //    /api/products ~1.8MB of JSON; prefetching them on page load competed
+    //    with the hero image on slow mobile connections (home LCP 8.9s -> 16.9s
+    //    in Lighthouse, 23 Sep 2026). next/link already prefetches on demand.
 
     // 3) Warm the first section's product images on idle so they're cached by the
     //    time the user scrolls — without blocking the banner LCP. Warm the 400w card
