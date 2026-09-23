@@ -225,9 +225,10 @@ export default function FancyDressDelhiPage() {
         </div>
         <p className="text-sm text-[#6B6B6B] leading-relaxed">
           Outside Delhi? We also serve the wider NCR from our Krishna Nagar store with delivery — see our{' '}
-          <Link href="/fancy-dress-gurgaon" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Gurgaon</Link>{' '}
-          and{' '}
+          <Link href="/fancy-dress-gurgaon" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Gurgaon</Link>,{' '}
           <Link href="/fancy-dress-noida" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Noida</Link>{' '}
+          and{' '}
+          <Link href="/fancy-dress-ghaziabad" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Ghaziabad</Link>{' '}
           pages.
         </p>
       </section>

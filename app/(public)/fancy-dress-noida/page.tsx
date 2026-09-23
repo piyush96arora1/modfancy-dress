@@ -163,6 +163,7 @@ export default function FancyDressNoidaPage() {
           <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline font-medium">States fancy dress</Link>
           <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline font-medium">Fancy dress Delhi</Link>
           <Link href="/fancy-dress-gurgaon" className="text-[#8F6240] hover:underline font-medium">Fancy dress Gurgaon</Link>
+          <Link href="/fancy-dress-ghaziabad" className="text-[#8F6240] hover:underline font-medium">Fancy dress Ghaziabad</Link>
         </div>
       </div>
 
