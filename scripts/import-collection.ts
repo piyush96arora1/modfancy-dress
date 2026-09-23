@@ -74,6 +74,7 @@ async function uploadImageToStorage(filePath: string, fileName: string): Promise
       .from('product-images')
       .upload(storagePath, fileBuffer, {
         contentType,
+        cacheControl: '31536000', // 1 year; the storage default is 3600
         upsert: true
       })
 

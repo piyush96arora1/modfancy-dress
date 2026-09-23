@@ -135,7 +135,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             Products in this category
           </h2>
           {products && products.length > 0 ? (
-            <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" />
+            <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" priorityCount={4} />
           ) : (
             <div className="text-center py-16">
               <p className="text-[#6B6B6B] text-sm">No products found in this category.</p>

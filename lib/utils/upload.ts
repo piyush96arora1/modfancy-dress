@@ -1,5 +1,6 @@
 import imageCompression from 'browser-image-compression'
 import { createClient } from '@/lib/supabase/client'
+import { variantPath } from '@/lib/utils/image-variants'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 
@@ -105,6 +106,42 @@ export async function uploadCompressedImage(
     }
 
     if (error) throw new Error(`Upload failed: ${error.message}`)
+
+    // Step 3b: resized card/gallery variants (products only), so a new product never
+    // waits for scripts/generate-image-variants.ts. Variants are always .webp, so they are
+    // written only where the browser really encodes WebP; elsewhere (Safari/iOS) the
+    // components' onError fallback serves the original. Best effort: a failed variant must
+    // not fail the upload.
+    if (folder === 'products-webp' && compressed.type === 'image/webp') {
+        await Promise.all(
+            ([400, 800] as const).map(async (width) => {
+                const path = variantPath(storagePath, width)
+                if (!path) return
+                try {
+                    const resized = await imageCompression(file, {
+                        maxSizeMB: width === 400 ? 0.06 : 0.15,
+                        maxWidthOrHeight: width,
+                        useWebWorker: true,
+                        fileType: 'image/webp',
+                        initialQuality: 0.8,
+                        alwaysKeepResolution: true,
+                        maxIteration: 3,
+                    })
+                    if (resized.type !== 'image/webp') return
+                    const { error: variantError } = await supabase.storage
+                        .from('product-images')
+                        .upload(path, resized, {
+                            contentType: 'image/webp',
+                            cacheControl: '31536000',
+                            upsert: true,
+                        })
+                    if (variantError) console.warn(`Variant ${path} failed: ${variantError.message}`)
+                } catch (e) {
+                    console.warn(`Variant ${path} failed`, e)
+                }
+            })
+        )
+    }
 
     // Step 4: Return public URL
     return `${SUPABASE_URL}/storage/v1/object/public/product-images/${storagePath}`

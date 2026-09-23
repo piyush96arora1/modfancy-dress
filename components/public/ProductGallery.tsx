@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState, useRef, MouseEvent, TouchEvent } from 'react'
-import Image from 'next/image'
+import React, { useState, useRef, useEffect, MouseEvent, TouchEvent } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getImageUrl } from '@/lib/imageUrl'
+import { variantUrl } from '@/lib/utils/image-variants'
+import { VariantImage } from './VariantImage'
 import { buildAltText } from '@/lib/seo/alt-text'
 import type { ProductImage } from '@/types/database'
 
@@ -16,6 +17,27 @@ interface ProductGalleryProps {
 }
 
 const ZOOM_LEVEL = 2.5
+
+/**
+ * The zoom panes are CSS backgrounds, which have no onError. Probe the 1600w variant once
+ * zoom is actually used and fall back to the original if it is missing (the admin uploader
+ * writes only the 400/800 variants). Until zoom is used, no zoom image is fetched at all:
+ * the mobile pane used to download the full original on every product page.
+ */
+function useZoomSrc(active: boolean, variant: string, original: string): string | null {
+    const [failed, setFailed] = useState<string | null>(null)
+    useEffect(() => {
+        if (!active || variant === original) return
+        const probe = new window.Image()
+        probe.onerror = () => setFailed(variant)
+        probe.src = variant
+        return () => {
+            probe.onerror = null
+        }
+    }, [active, variant, original])
+    if (!active) return null
+    return failed === variant ? original : variant
+}
 
 export function ProductGallery({ images, productName, categoryName }: ProductGalleryProps) {
     const primaryImage = images.find(img => img.is_primary) || images[0]
@@ -39,10 +61,17 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
 
     const imageContainerRef = useRef<HTMLDivElement>(null)
 
+    const selectedOriginal = selectedImage ? getImageUrl(selectedImage.image_url) : ''
+    const [zoomUsed, setZoomUsed] = useState(false)
+    const zoomSrc = useZoomSrc(zoomUsed, variantUrl(selectedOriginal, 1600), selectedOriginal)
+
     if (galleryImages.length === 0) return null
 
     // -- Desktop Handlers --
-    const handleMouseEnter = () => setShowDesktopZoom(true)
+    const handleMouseEnter = () => {
+        setZoomUsed(true)
+        setShowDesktopZoom(true)
+    }
     const handleMouseLeave = () => setShowDesktopZoom(false)
 
     const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
@@ -75,7 +104,10 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
     }
 
     // -- Mobile Handlers --
-    const handleTouchStart = () => setShowMobileZoom(true)
+    const handleTouchStart = () => {
+        setZoomUsed(true)
+        setShowMobileZoom(true)
+    }
     const handleTouchEnd = () => setShowMobileZoom(false)
 
     const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
@@ -111,8 +143,10 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
                 onTouchEnd={handleTouchEnd}
             >
                 {/* The Base Image */}
-                <Image
-                    src={getImageUrl(selectedImage.image_url)}
+                <VariantImage
+                    src={variantUrl(selectedOriginal, 800)}
+                    fallbackSrc={selectedOriginal}
+                    fetchPriority="high"
                     alt={altFor(selectedImage, Math.max(0, galleryImages.findIndex((g) => g.id === selectedImage.id)))}
                     fill
                     className="object-contain"
@@ -140,7 +174,7 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
                         showMobileZoom ? "opacity-100" : "opacity-0"
                     )}
                     style={{
-                        backgroundImage: `url(${getImageUrl(selectedImage.image_url)})`,
+                        backgroundImage: zoomSrc ? `url(${zoomSrc})` : undefined,
                         backgroundPosition: `${mobileBgPos.x}% ${mobileBgPos.y}%`,
                         backgroundSize: `${ZOOM_LEVEL * 100}% ${ZOOM_LEVEL * 100}%`,
                         backgroundRepeat: 'no-repeat'
@@ -158,7 +192,7 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
                         width: '500px', // Large zoom pane
                         height: '500px',
                         boxShadow: 'var(--shadow-xl)', /* large elevated drop shadow */
-                        backgroundImage: `url(${getImageUrl(selectedImage.image_url)})`,
+                        backgroundImage: zoomSrc ? `url(${zoomSrc})` : undefined,
                         backgroundPosition: `${bgPos.x}% ${bgPos.y}%`,
                         backgroundSize: `${ZOOM_LEVEL * 100}% ${ZOOM_LEVEL * 100}%`,
                         backgroundRepeat: 'no-repeat'
@@ -192,8 +226,9 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
                                         <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
                                     </span>
                                 )}
-                                <Image
-                                    src={getImageUrl(img.image_url)}
+                                <VariantImage
+                                    src={variantUrl(getImageUrl(img.image_url), 400)}
+                                    fallbackSrc={getImageUrl(img.image_url)}
                                     alt={altFor(img, index)}
                                     fill
                                     className="object-cover"
