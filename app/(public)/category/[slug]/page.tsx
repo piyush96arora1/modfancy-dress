@@ -1,11 +1,10 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
-  getCategoryBySlugCached,
   getCategoryMetaBySlugCached,
-  getProductsForCategoryCached,
   getActiveCategorySlugsCached,
 } from '@/lib/supabase/cached-queries'
+import { getListableCategory } from '@/lib/supabase/cached-seo-queries'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -36,13 +35,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { slug } = await params
+  // Missing, inactive and empty categories 404 here as well as in the page body:
+  // returning placeholder metadata instead let the route answer 200 (soft 404).
+  if (!(await getListableCategory(slug))) notFound()
   const category = await getCategoryMetaBySlugCached(slug)
-
-  if (!category) {
-    return {
-      title: 'Category Not Found',
-    }
-  }
+  if (!category) notFound()
 
   const description =
     category.meta_description ??
@@ -61,13 +58,9 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params
-  const category = await getCategoryBySlugCached(slug)
-
-  if (!category) {
-    notFound()
-  }
-
-  const products = await getProductsForCategoryCached(category.id)
+  const listable = await getListableCategory(slug)
+  if (!listable) notFound()
+  const { category, products } = listable
 
   const categoryFaqs = await getFaqsForCategoryPage(slug)
 
@@ -76,7 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     slug,
     categoryName: category.name,
     description: category.description,
-    products: (products ?? []).map((p) => ({ slug: p.slug, name: p.name })),
+    products: products.map((p) => ({ slug: p.slug, name: p.name })),
   })
 
   // FAQPage JSON-LD from the visible category FAQs. Google no longer shows FAQ rich
@@ -113,9 +106,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="mb-4 md:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <h1 className="text-xl md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
             {category.name}
-            {products && (
-              <span className="text-sm font-normal text-[#6B6B6B] ml-2">({products.length} {products.length === 1 ? 'product' : 'products'})</span>
-            )}
+            <span className="text-sm font-normal text-[#6B6B6B] ml-2">({products.length} {products.length === 1 ? 'product' : 'products'})</span>
           </h1>
           <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
         </div>
@@ -134,13 +125,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           >
             Products in this category
           </h2>
-          {products && products.length > 0 ? (
-            <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" />
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-[#6B6B6B] text-sm">No products found in this category.</p>
-            </div>
-          )}
+          <ProductGrid products={products as ProductWithDetails[]} productTitleTag="h4" />
         </section>
 
         {category.description && (

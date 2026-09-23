@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import {
+    getActiveCategorySlugsCached,
+    getCategoryMetaBySlugCached,
+} from '@/lib/supabase/cached-queries'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+import { getListableCategory } from '@/lib/supabase/cached-seo-queries'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -19,12 +24,8 @@ export const revalidate = 86400
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-    const supabase = createPublicServerClient()
-    const { data } = await supabase
-        .from('categories')
-        .select('slug')
-        .eq('is_active', true)
-    return (data ?? []).map(({ slug }) => ({ slug }))
+    const slugs = await getActiveCategorySlugsCached()
+    return slugs.map((slug) => ({ slug }))
 }
 
 interface WholesaleCategoryPageProps {
@@ -35,16 +36,11 @@ interface WholesaleCategoryPageProps {
 
 export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
     const { slug } = await params
-    const supabase = createPublicServerClient()
-    const { data: category } = await supabase
-        .from('categories')
-        .select('name, description, seo_title, meta_description, image_url')
-        .eq('slug', slug)
-        .single()
-
-    if (!category) {
-        return { title: 'Category Not Found' }
-    }
+    // Missing, inactive and empty categories must 404 here too: returning
+    // placeholder metadata let the route answer 200 (soft 404).
+    if (!(await getListableCategory(slug))) notFound()
+    const category = await getCategoryMetaBySlugCached(slug)
+    if (!category) notFound()
 
     const defaultDescription = category.description
         ? `Buy ${category.name} fancy dress costumes at wholesale bulk prices. ${category.description}`
@@ -68,55 +64,19 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
 
 export default async function WholesaleCategoryPage({ params }: WholesaleCategoryPageProps) {
     const { slug } = await params
-    const supabase = createPublicServerClient()
+    const listable = await getListableCategory(slug)
+    if (!listable) notFound()
+    const { category, products } = listable
 
-    // Fetch wholesale discount setting
+    // Read directly rather than via getWholesaleDiscountPctCached: that helper's
+    // 1h cache would drop this route's ISR window from 1d to 1h.
+    const supabase = createPublicServerClient()
     const { data: settings } = await supabase
         .from('site_settings')
         .select('value')
         .eq('key', 'wholesale_discount_pct')
         .single()
-
     const wholesaleDiscountPct = settings?.value?.value ?? 30
-
-    const { data: category } = await supabase
-        .from('categories')
-        .select('id, name, slug, description, image_url')
-        .eq('slug', slug)
-        .eq('is_active', true)
-        .single()
-
-    if (!category) {
-        notFound()
-    }
-
-    const { data: productCategories } = await supabase
-        .from('product_categories')
-        .select('product_id')
-        .eq('category_id', category.id)
-
-    const productIdsFromJunction = productCategories?.map(pc => pc.product_id) || []
-
-    let query = supabase
-        .from('products')
-        .select(`
-      *,
-      category:categories(name),
-      categories:product_categories(category:categories(name)),
-      images:product_images(image_url, is_primary),
-      variants:product_variants(price_override)
-    `)
-        .eq('is_active', true)
-        .is('deleted_at', null)
-
-    if (productIdsFromJunction.length > 0) {
-        query = query.or(`category_id.eq.${category.id},id.in.(${productIdsFromJunction.join(',')})`)
-    } else {
-        query = query.eq('category_id', category.id)
-    }
-
-    query = query.order('created_at', { ascending: false })
-    const { data: products } = await query
 
     const categoryFaqs = await getFaqsForCategoryPage(slug)
 
@@ -125,7 +85,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
         slug,
         categoryName: category.name,
         description: category.description,
-        products: (products ?? []).map((p) => ({ slug: p.slug, name: p.name })),
+        products: products.map((p) => ({ slug: p.slug, name: p.name })),
     })
 
     return (
@@ -148,9 +108,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                 <div className="mb-4 md:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h1 className="text-xl md:text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
                         {category.name} — Wholesale
-                        {products && (
-                            <span className="text-sm font-normal text-emerald-700 ml-2">({products.length} {products.length === 1 ? 'product' : 'products'})</span>
-                        )}
+                        <span className="text-sm font-normal text-emerald-700 ml-2">({products.length} {products.length === 1 ? 'product' : 'products'})</span>
                     </h1>
                     <PricingModeToggle currentMode="wholesale" basePath={`/category/${slug}`} />
                 </div>
@@ -172,18 +130,12 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                     >
                         Wholesale products in this category
                     </h2>
-                    {products && products.length > 0 ? (
-                        <ProductGrid
-                            products={products as ProductWithDetails[]}
-                            pricingMode="wholesale"
-                            wholesaleDiscountPct={wholesaleDiscountPct}
-                            productTitleTag="h4"
-                        />
-                    ) : (
-                        <div className="text-center py-16">
-                            <p className="text-[#6B6B6B] text-sm">No products found in this category.</p>
-                        </div>
-                    )}
+                    <ProductGrid
+                        products={products as ProductWithDetails[]}
+                        pricingMode="wholesale"
+                        wholesaleDiscountPct={wholesaleDiscountPct}
+                        productTitleTag="h4"
+                    />
                 </section>
 
                 {category.description && (
