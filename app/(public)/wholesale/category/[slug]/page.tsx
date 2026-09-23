@@ -1,4 +1,6 @@
 import { notFound } from 'next/navigation'
+import { plainText } from '@/lib/utils/category-intro'
+import { BlogContent } from '@/components/public/BlogContent'
 import Link from 'next/link'
 import {
     getActiveCategorySlugsCached,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: WholesaleCategoryPageProps) {
     if (!category) notFound()
 
     const defaultDescription = category.description
-        ? `Buy ${category.name} fancy dress costumes at wholesale bulk prices. ${category.description}`
+        ? `Buy ${category.name} fancy dress costumes at wholesale bulk prices. ${plainText(category.description)}`
         : `Buy ${category.name} fancy dress costumes at wholesale prices. Bulk discounts for schools, events, and cultural programs. Save up to 30%.`
     const description = category.meta_description
         ? category.meta_description
@@ -84,7 +86,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
         variant: 'wholesale',
         slug,
         categoryName: category.name,
-        description: category.description,
+        description: plainText(category.description),
         products: products.map((p) => ({ slug: p.slug, name: p.name })),
     })
 
@@ -147,7 +149,7 @@ export default async function WholesaleCategoryPage({ params }: WholesaleCategor
                         >
                             About this category
                         </h2>
-                        <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl">{category.description}</p>
+                        <div className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl"><BlogContent content={category.description} /></div>
                     </section>
                 )}
 

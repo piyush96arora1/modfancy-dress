@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { categoryIntro } from '../lib/utils/category-intro'
+import { categoryIntro, plainText } from '../lib/utils/category-intro'
 
 test('takes the first paragraph only', () =>
   assert.equal(categoryIntro('First para.\n\nSecond para.'), 'First para.'))
@@ -17,3 +17,6 @@ test('empty or null input → empty string', () => {
   assert.equal(categoryIntro(null), '')
   assert.equal(categoryIntro('   '), '')
 })
+test('plainText flattens the whole description for meta and JSON-LD', () =>
+  assert.equal(plainText('## Heading\n\nSee [Assam](/products/assam) and **Kerala**.\n\n- one\n- two'),
+    'Heading See Assam and Kerala. one two'))

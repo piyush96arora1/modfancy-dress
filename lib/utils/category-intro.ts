@@ -22,3 +22,14 @@ export function categoryIntro(description: string | null | undefined): string {
   const end = cut.lastIndexOf('. ')
   return end > 80 ? cut.slice(0, end + 1) : cut.replace(/\s+\S*$/, '') + '…'
 }
+
+/** The whole description as one line of plain text, for meta tags and JSON-LD. */
+export function plainText(description: string | null | undefined): string {
+  return (description ?? '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[-*]\s+/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}

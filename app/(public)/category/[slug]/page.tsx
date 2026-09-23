@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { categoryIntro } from '@/lib/utils/category-intro'
+import { categoryIntro, plainText } from '@/lib/utils/category-intro'
 import { BlogContent } from '@/components/public/BlogContent'
 import Link from 'next/link'
 import {
@@ -46,8 +46,8 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 
   const description =
     category.meta_description ??
-    (category.description && category.description.trim()
-      ? category.description.trim().slice(0, 155) + (category.description.length > 155 ? '…' : '')
+    (plainText(category.description)
+      ? plainText(category.description).slice(0, 155) + (plainText(category.description).length > 155 ? '…' : '')
       : `Browse our collection of ${category.name} fancy dress costumes. Quality costumes for school functions and events. 15+ years experience, 400+ successful events.`)
 
   return generatePageMetadata({
@@ -74,7 +74,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     variant: 'retail',
     slug,
     categoryName: category.name,
-    description: category.description,
+    description: plainText(category.description),
     products: products.map((p) => ({ slug: p.slug, name: p.name })),
   })
 
