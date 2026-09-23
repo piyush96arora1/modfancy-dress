@@ -63,6 +63,7 @@ Every task is ordered by the date it has to be live, because fancy-dress search 
   - At most **one** Roman-script Hinglish line, at the end of body copy.
   - Keep search-real spellings: `gujrati`, `chaniya`, `kediyu`, `ghoomar`, `ramleela`.
 - **Why metas stay in English** (you suggested Hinglish metas): Google rewrites a meta when it doesn't match the query, and mixed-script snippets read as spam on English queries. Hinglish queries like "dandiya ki dress" still match on the nouns (`dandiya`, `dress`), which the English meta already contains. Hinglish goes in the body line and in the existing Hindi blog posts.
+- **Never restore soft-deleted products** (owner decision, 23 Sep). The owner uploads replacements as new products through the admin panel. After each upload batch, run the **new-upload follow-up** (Task 19a): fill copy, alt text and category (the admin form leaves these empty, see [[admin-upload-leaves-seo-gaps]]), generate image variants, and add a 308 from the old soft-deleted slug to the new product so the old URL's Google history carries over.
 - Never write fake reviews, ratings or stock claims. Prices in copy are read from the DB at script time and never hard-coded.
 - Copy and page changes appear only after the ISR window or a redeploy ([[isr-bakes-in-supabase-outages]]). After a content task, trigger a redeploy (push to main) and request indexing for the key URLs.
 - Commit to `main` with conventional commits, ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Never stage the unrelated files in the working tree: `jobhai_*`, the `sqllab_*` CSVs, `env`, `.mcp.json`, `independence/`, the PDFs and the MP3.
@@ -88,7 +89,7 @@ Every task is ordered by the date it has to be live, because fancy-dress search 
 | **D: Annual-function season, Christmas, local, linking** | 25 Oct – 10 Nov | 13, 14, 15, 16 |
 | **E: Republic Day, then ongoing** | 10–20 Dec, then weekly | 17, 18 |
 
-Owner actions are collected in **Task 19**. They run in parallel from day one, and some content tasks wait on them (stock).
+Owner actions are collected in **Task 19**. They run in parallel from day one. Stock is confirmed for everything listed (23 Sep); content tasks wait only on the upload date.
 
 ---
 
@@ -805,11 +806,8 @@ Use the canonical Maps URL already in the schema `sameAs`.
 - A category with one product can't rank. Google needs a real product list to treat it as a category.
 - It's worth doing only if the shop can stock at least 6 costumes by about 5 Oct: witch, vampire, pumpkin, devil, Wednesday Addams, skeleton (have), joker (have wig).
 
-- [ ] **Step 1: Owner decision (Task 19 item H1).** Can the shop get at least 6 Halloween costumes by 5 Oct?
-  - **No:** keep the category, write a short useful description, and stop. Don't put Halloween on the homepage (the Task 2 row stays unseeded).
-- [ ] **Step 2: If yes, add the products** with `scripts/import-halloween-2026.ts`, modelled on `scripts/import-ramleela-catalogue.ts`:
-  - Photos go through `scripts/watermark-image.ts` into `products-webp/` with `imageFilename()` names, plus the Task 7 variants.
-  - Each product gets description, meta and title checked by `checkCopy`, plus alt text from `buildAltText`, the `halloween` category, and a price from the owner.
+- [ ] **Step 1: Owner confirmed stock (23 Sep).** The owner uploads at least 6 Halloween costumes (witch, vampire, pumpkin, devil, Wednesday Addams, plus the existing skeleton and joker wig) through the admin panel by **1 Oct**.
+- [ ] **Step 2: Run the new-upload follow-up (Task 19a) on the batch.** Each product gets description, meta and title checked by `checkCopy`, alt text from `buildAltText`, the `halloween` category, and the Task 7 variants. Seed the Task 2 Halloween homepage row once there are at least 6 live products.
 - [ ] **Step 3: Category copy.**
   - Title: `Halloween Costumes on Rent in Delhi – Kids & Adults`
   - Meta: `Halloween costumes for kids and adults: witch, vampire, skeleton, pumpkin and more. Rent or buy in Delhi NCR for Halloween parties on 31 October 2026.`
@@ -836,11 +834,7 @@ Use the canonical Maps URL already in the schema `sameAs`.
   - Title: `Diwali Fancy Dress for Kids – Lakshmi, Ram-Sita & Diya`
   - Meta: `Diwali fancy dress ideas for school competitions: Lakshmi Mata, Ram-Sita, diya and eco-friendly costumes. Buy or rent in Delhi NCR before 8 November 2026.`
 - [ ] **Step 2: Blog post** `/blog/diwali-fancy-dress-competition-ideas`: ideas by age, eco-friendly options, "what to say on stage" lines (these win informational queries), and product links. Publish by 4 Oct.
-- [ ] **Step 3: Restore relevant soft-deleted products** if the owner confirms stock (Task 19 R1), for example `goddess-saraswati-mata-fancy-dress-costume` and `mahishasur-fancy-dress-costume` (which also fits Navratri and Durga Puja).
-
-  To restore a product: set `deleted_at = null` and `is_active = true`, remove any redirect from its slug (the Task 5 test enforces this), check its copy, and run alt text and variants.
-
-  Restoring is better than re-creating because the old URL keeps whatever history Google has for it.
+- [ ] **Step 3: Owner uploads Saraswati and Mahishasur as new products** (Mahishasur also fits Navratri and Durga Puja, so upload it with the S1 batch). Then run Task 19a, which redirects `goddess-saraswati-mata-fancy-dress-costume` and `mahishasur-fancy-dress-costume` to the new slugs.
 - [ ] **Step 4: Deploy, request indexing, commit.** `git commit -m "feat(diwali): turn the empty festival category into the Diwali hub and publish the competition guide"`
 
 ---
@@ -851,7 +845,7 @@ Use the canonical Maps URL already in the schema `sameAs`.
 - The Nehru cluster was the site's biggest August earner: `/products/jawahar-lal-nehru-fancy-dress` got **31,297 web and 46,272 image impressions** in 90 days. "jawaharlal nehru dress" ranks at **position 1.1** with a 0.3% CTR.
 - Children's Day (14 Nov) is Chacha Nehru's day, so the same queries come back in November. But the product title still says "**for Kids – 15 August**".
 - Community-helper costumes are the other Children's Day demand: air hostess dress 5,400, pilot dress 2,900, doctor 880, farmer 880, postman 720, community helpers 1,600.
-- `indian-pilot-fancy-dress-costume` and `children-police-fancy-dress-costume` exist in the DB, soft-deleted.
+- `indian-pilot-fancy-dress-costume` and `children-police-fancy-dress-costume` are soft-deleted. The owner re-uploads them as new products, and their old URLs redirect to the new ones.
 - Doraemon (935 impressions, 1 click) and laptop (1,602 impressions, 1 click) already carry Children's Day titles, so they need a CTR fix, not a relabel.
 
 - [ ] **Step 1: Retitle the Nehru product (overwrite)**
@@ -859,7 +853,7 @@ Use the canonical Maps URL already in the schema `sameAs`.
   - Meta: `Jawaharlal Nehru fancy dress for Children's Day: white achkan, Nehru cap and red rose. Buy or rent in Delhi NCR for school events on 13–14 November 2026.`
   - In the body, keep "Independence Day / Republic Day" as secondary uses so the page stays relevant for those dates.
   - **Don't change the slug.**
-- [ ] **Step 2: Restore the helper and profession products** the owner confirms (Task 19 R1): pilot, police, army, navy. Attach them to `helper-costumes`, and fill copy and alt text.
+- [ ] **Step 2: Owner uploads the helper and profession products as new** (Task 19 S3): pilot, police, army, navy, doctor, nurse, postman, farmer, air hostess. Run Task 19a: attach them to `helper-costumes`, fill copy and alt text, and redirect the old pilot, police, army and navy slugs to the new products.
 - [ ] **Step 3: Refresh the `helper-costumes` category copy** to target "community helpers fancy dress" and "Children's Day fancy dress".
 - [ ] **Step 4: Blog post** `/blog/childrens-day-fancy-dress-ideas`, targeting "children's day fancy dress ideas", with Nehru, community helpers and cartoon sections plus product links.
   - Why a new post: our Independence Day post reached 13k impressions in a month, and there's no Children's Day post to refresh.
@@ -897,7 +891,7 @@ Use the canonical Maps URL already in the schema `sameAs`.
 - Also asked for: angel dress (390), angel head ring (390), snowman, elf.
 - The existing `tree-fancy-dress` gets **16,501 image impressions** and can be retitled to also cover "christmas tree costume".
 
-- [ ] **Step 1: Owner decision (Task 19 S4).** Santa (adult and kids, rent and wholesale), angel, snowman, elf. If yes, stock arrives by 5 Nov.
+- [ ] **Step 1: Owner uploads the Christmas batch by 5 Nov** (Task 19 S4, stock confirmed): Santa (adult and kids, rent and wholesale), angel, snowman, elf. Then run Task 19a.
 - [ ] **Step 2: Create a `christmas-costumes` category** (only with at least 5 products), import the products, and write copy targeting "santa claus dress on rent in Delhi".
 - [ ] **Step 3: Retitle `tree-fancy-dress`** to `Tree Fancy Dress – Christmas Tree & Save Trees Costume` (54 chars), and add it to the Christmas category.
 - [ ] **Step 4: Blog post** `/blog/christmas-fancy-dress-ideas-kids`, then deploy, request indexing and commit.
@@ -970,7 +964,7 @@ alter table categories add column if not exists guide_blog_slug text;
 - Republic Day (26 Jan) brings the same demand back, plus Republic-specific queries: ambedkar fancy dress competition **5,400** (KD 8, and we have no Ambedkar costume), bhagat singh dress 5,400, lady freedom fighters 2,900, subhash chandra bose dress 2,900.
 - `/products/bhagat-singh-fancy-dress-costume` is soft-deleted (404). Only the cap is live.
 
-- [ ] **Step 1: Restore or stock** the full Bhagat Singh costume (Task 19 R1) and an Ambedkar costume (S6).
+- [ ] **Step 1: Owner uploads the full Bhagat Singh costume and an Ambedkar costume as new products** (S6). Task 19a redirects `bhagat-singh-fancy-dress-costume` to the new Bhagat Singh product.
 - [ ] **Step 2: Refresh the three Independence Day posts** for Republic Day: dates, titles and product links. Merge `republic-independence-day-fancy-dress-ideas` (77 impressions) into the stronger `independence-day-fancy-dress-ideas` (14,217) as a "Republic Day" section, then 301. That leaves one strong page instead of two weak ones.
 - [ ] **Step 3: Retitle** the Nehru, Mangal Pandey, Bharat Mata and Indira Gandhi products to mention Republic Day from 1 Jan (the Children's Day title covers Nov–Dec).
 - [ ] **Step 4: Deploy, request indexing, commit.**
@@ -1003,15 +997,29 @@ These can't be done from code, or shouldn't be done without you: they're stock, 
 | **G3** | Reply to all unreplied reviews (drafts in `seodata/GBP-ACTION-PLAN.md`) and ask each Navratri customer for a review | Ongoing | Review recency is a top local-pack factor. |
 | **S1** | **Men's kediyu**, **couple dandiya set**, **Durga Maa costume** | 5 Oct | Autocomplete: "dandiya dress for men / couple". "durga costume" and "durga fancy dress" get about 320/mo each. The boys' garba products were deleted in June and Aug. |
 | **S2** | **Laxman**, **Ravan mukut**, **Ravan mask**, adult Ravan, Hanuman mask, Ram bow-and-arrow | 5 Oct | "ravan mukut" 590 (KD 17), "hanuman mask" 390, "ravan costume for adults". There's no Laxman at all. |
-| **H1** | Halloween: at least 6 costumes (witch, vampire, pumpkin, devil, Wednesday) or skip Halloween | Decide by 26 Sep | Task 10 depends on it. |
+| **H1** | Halloween batch: witch, vampire, pumpkin, devil, Wednesday Addams (stock confirmed) | Upload by 1 Oct | Task 10. |
 | **D1** | Lakshmi Mata, diya, cracker costumes | 20 Oct | Task 11. "lakshmi dress" 720/mo. |
 | **S3** | Doctor, nurse, postman, farmer, air hostess | 25 Oct | Children's Day helper demand (air hostess 5,400, pilot 2,900). |
 | **S4** | Santa (adult and kids, rent), angel, snowman, elf | 5 Nov | Task 14. Zero Santa stock today. |
 | **S5** | Lezim prop | Dec | 6,600/mo, not stocked. |
 | **S6** | Ambedkar costume, full Bhagat Singh costume | 15 Dec | 5,400 + 5,400 for Republic Day. |
-| **R1** | Confirm which **soft-deleted** products are still physically in stock, so I can restore them instead of re-creating them: pilot, police, army, navy, Bhagat Singh, Saraswati, Mahishasur, Shivaji, Ghoomar, the garba boys/girls sets | 28 Sep | Restoring keeps each URL's Google history. |
+| **R1** | **Re-upload as NEW products** (don't restore): pilot, police, army, navy, Bhagat Singh, Saraswati, Mahishasur, Shivaji, Ghoomar, garba boys'/girls' sets. I redirect each old URL to the new one (Task 19a). | With the batch they belong to (S1–S6) | The redirect passes the old URL's Google history to the new product. |
 | **P1** | New photos for Mother Teresa and Traffic Police (their images are a scraped HTML page from another shop) | Any | Task 4 deactivates them if they have no image. |
 | **C1** | Submit the citation pack (`seodata/CITATION-PACK.md`: JustDial, Sulekha, IndiaMART, Bing Places) | Oct | Still ❌ in PROGRESS.md. Citations support map-pack rankings all year. |
+
+---
+
+### Task 19a: New-upload follow-up (run after every owner upload batch)
+
+**Why:** Every admin-panel batch lands with empty description, meta, title and alt text, and usually one orphan ([[admin-upload-leaves-seo-gaps]]). A new product with none of these barely ranks, and without a redirect the old soft-deleted URL's history is thrown away.
+
+**Files:** Create `scripts/new-upload-followup.ts`, reusing `checkCopy`, `buildAltText`, `validateRedirects` and the Task 7 variant generator.
+
+- [ ] **Step 1: Find the batch.** Select live products with `created_at` in the last N days (`--since`). Print the 5-point gap check: description, meta, title, alt text, category.
+- [ ] **Step 2: Fill the copy.** Look at each product's photos first, then write description, meta and title aimed at that festival's keywords (`seodata/FESTIVAL-KEYWORDS-2026.md`). Run `checkCopy`, attach categories, and fill alt text.
+- [ ] **Step 3: Generate variants** for the new images (`scripts/generate-image-variants.ts --since`).
+- [ ] **Step 4: Redirect the old URLs.** For each new product that replaces a soft-deleted one (match on normalised name), add `{ source: '/products/<old-slug>', destination: '/products/<new-slug>', permanent: true }` to `redirects.json`, replacing any earlier Task 5 fallback redirect for that slug. Refresh `seodata/live-urls.json` and run `npm test` (the redirect test must pass).
+- [ ] **Step 5: Deploy, request indexing for the new products and their category, commit.** `git commit -m "feat(catalog): copy, alt text and old-URL redirects for the <batch> upload"`
 
 ---
 
