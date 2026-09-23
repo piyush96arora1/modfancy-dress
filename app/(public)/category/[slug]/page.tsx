@@ -1,4 +1,6 @@
 import { notFound } from 'next/navigation'
+import { categoryIntro } from '@/lib/utils/category-intro'
+import { BlogContent } from '@/components/public/BlogContent'
 import Link from 'next/link'
 import {
   getCategoryMetaBySlugCached,
@@ -115,9 +117,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <PricingModeToggle currentMode="retail" basePath={`/category/${slug}`} />
         </div>
 
-        {category.description && (
+        {categoryIntro(category.description) && (
           <p className="text-sm text-[#6B6B6B] leading-relaxed mb-5 md:mb-6 max-w-3xl">
-            {category.description}
+            {categoryIntro(category.description)}
           </p>
         )}
 
@@ -140,7 +142,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             >
               About this category
             </h2>
-            <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl">{category.description}</p>
+            <div className="text-sm text-[#6B6B6B] leading-relaxed max-w-3xl">
+              <BlogContent content={category.description} />
+            </div>
           </section>
         )}
 
