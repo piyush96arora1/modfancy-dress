@@ -1,12 +1,9 @@
 import { Suspense } from 'react'
-import {
-  getAllActiveProductsCached,
-  getActiveCategoriesCached,
-} from '@/lib/supabase/cached-queries'
+import { getActiveCategoriesCached } from '@/lib/supabase/cached-queries'
+import { getProductCardsCached } from '@/lib/supabase/cached-seo-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
 import { ProductsListSkeleton } from '@/components/public/ProductsListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import type { ProductWithDetails } from '@/types/database'
 
 // Statically rendered (ISR). Search + category filtering happen client-side
 // from the URL, so the page no longer reads searchParams and stays cacheable.
@@ -22,13 +19,13 @@ export const metadata = generatePageMetadata({
 
 async function ProductsList() {
   const [products, categories] = await Promise.all([
-    getAllActiveProductsCached(),
+    getProductCardsCached(),
     getActiveCategoriesCached(),
   ])
 
   return (
     <ProductsBrowser
-      products={products as unknown as ProductWithDetails[]}
+      products={products}
       categories={categories}
       heading="All Products"
       basePath="/products"

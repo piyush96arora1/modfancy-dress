@@ -1,10 +1,10 @@
 import { ProductCard } from './ProductCard'
-import type { ProductWithDetails, PricingMode } from '@/types/database'
+import type { ProductCardData, PricingMode } from '@/types/database'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 interface ProductGridProps {
-  products: ProductWithDetails[]
+  products: ProductCardData[]
   pricingMode?: PricingMode
   wholesaleDiscountPct?: number
   showViewAllCard?: boolean

@@ -11,6 +11,7 @@ import {
 } from '@/lib/seo/structured-data'
 import { CustomerReviews } from '@/components/public/CustomerReviews'
 import { DELHI_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
+import { MapFacade } from '@/components/public/MapFacade'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Delhi — Buy or Rent Fancy Dress',
@@ -145,16 +146,7 @@ export default function FancyDressDelhiPage() {
 
       {/* Google Maps embed */}
       <div className="rounded-xl overflow-hidden border border-[#E8E5E0] mb-6">
-        <iframe
-          src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
-          width="100%"
-          height="280"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Mod Fancy Dress store location — Krishna Nagar, Delhi"
-        />
+        <MapFacade label="Mod Fancy Dress store location — Krishna Nagar, Delhi" height={280} />
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -233,9 +225,10 @@ export default function FancyDressDelhiPage() {
         </div>
         <p className="text-sm text-[#6B6B6B] leading-relaxed">
           Outside Delhi? We also serve the wider NCR from our Krishna Nagar store with delivery — see our{' '}
-          <Link href="/fancy-dress-gurgaon" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Gurgaon</Link>{' '}
-          and{' '}
+          <Link href="/fancy-dress-gurgaon" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Gurgaon</Link>,{' '}
           <Link href="/fancy-dress-noida" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Noida</Link>{' '}
+          and{' '}
+          <Link href="/fancy-dress-ghaziabad" className="font-semibold text-[#1B2A4A] underline decoration-[#C8956C] underline-offset-2">fancy dress in Ghaziabad</Link>{' '}
           pages.
         </p>
       </section>

@@ -80,6 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/returns`, lastModified: new Date('2026-03-28') },
     { url: `${baseUrl}/fancy-dress-noida`, lastModified: new Date('2026-03-28') },
     { url: `${baseUrl}/fancy-dress-gurgaon`, lastModified: new Date('2026-03-28') },
+    { url: `${baseUrl}/fancy-dress-ghaziabad`, lastModified: new Date('2026-09-23') },
     { url: `${baseUrl}/fancy-dress-delhi`, lastModified: new Date('2026-04-14') },
     { url: `${baseUrl}/wholesale/schools`, lastModified: new Date('2026-04-14') },
     { url: `${baseUrl}/wholesale/delhi-market`, lastModified: new Date('2026-08-08') },

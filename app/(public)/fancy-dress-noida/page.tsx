@@ -11,6 +11,7 @@ import {
 } from '@/lib/seo/structured-data'
 import { CustomerReviews } from '@/components/public/CustomerReviews'
 import { NOIDA_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
+import { MapFacade } from '@/components/public/MapFacade'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Noida — Buy or Rent',
@@ -135,16 +136,7 @@ export default function FancyDressNoidaPage() {
         </div>
       </div>
       <div className="rounded-xl overflow-hidden border border-[#E8E5E0] mt-6">
-        <iframe
-          src="https://maps.google.com/maps?q=S64+South+Anarkali+Som+Bazar+Krishna+Nagar+Delhi+110051&output=embed"
-          width="100%"
-          height="240"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Noida)"
-        />
+        <MapFacade label="Mod Fancy Dress store — Krishna Nagar, Delhi (serves Noida)" height={240} />
       </div>
 
       <section className="mt-10">
@@ -171,6 +163,7 @@ export default function FancyDressNoidaPage() {
           <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline font-medium">States fancy dress</Link>
           <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline font-medium">Fancy dress Delhi</Link>
           <Link href="/fancy-dress-gurgaon" className="text-[#8F6240] hover:underline font-medium">Fancy dress Gurgaon</Link>
+          <Link href="/fancy-dress-ghaziabad" className="text-[#8F6240] hover:underline font-medium">Fancy dress Ghaziabad</Link>
         </div>
       </div>
 

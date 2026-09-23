@@ -7,11 +7,14 @@ import { SearchBar } from '@/components/public/SearchBar'
 import { CategoryFilter } from '@/components/public/CategoryFilter'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { PricingModeToggle } from '@/components/public/PricingModeToggle'
-import type { ProductWithDetails, PricingMode } from '@/types/database'
+import type { ProductCardData, PricingMode } from '@/types/database'
 
 interface ProductsBrowserProps {
-  /** Full active catalog. Rendered in full server-side (SEO); filtered client-side. */
-  products: ProductWithDetails[]
+  /**
+   * Full active catalog, card fields only (see getProductCardsCached). Rendered in
+   * full server-side (SEO); filtered client-side.
+   */
+  products: ProductCardData[]
   categories: Array<{ id: string; name: string; slug: string; image_url?: string | null }>
   /** Heading shown when there is no active search. */
   heading: string
@@ -22,27 +25,28 @@ interface ProductsBrowserProps {
   children?: ReactNode
 }
 
-function matchesCategory(product: ProductWithDetails, slug: string): boolean {
-  const primary = product.category as { slug?: string } | null
-  if (primary?.slug === slug) return true
-  return (product.categories ?? []).some(
-    (junction) => (junction?.category as { slug?: string } | undefined)?.slug === slug
-  )
+function matchesCategory(product: ProductCardData, slug: string): boolean {
+  if (product.category?.slug === slug) return true
+  return (product.categories ?? []).some((junction) => junction.category?.slug === slug)
 }
 
 function filterProducts(
-  products: ProductWithDetails[],
+  products: ProductCardData[],
   search: string,
   category: string
-): ProductWithDetails[] {
+): ProductCardData[] {
   let list = products
   if (category) list = list.filter((p) => matchesCategory(p, category))
   if (search) {
     const q = search.toLowerCase()
+    // Descriptions are no longer shipped to the client (payload trim), so match
+    // on the name and the category names instead. The header typeahead still
+    // uses /api/search, which searches the full text server-side.
     list = list.filter(
       (p) =>
         p.name?.toLowerCase().includes(q) ||
-        (p.description ?? '').toLowerCase().includes(q)
+        p.category?.name.toLowerCase().includes(q) ||
+        (p.categories ?? []).some((j) => j.category?.name.toLowerCase().includes(q))
     )
   }
   return list
