@@ -336,6 +336,15 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         }
       }
 
+      // Refresh the public catalogue now. /products and /wholesale only regenerate
+      // daily (ISR writes on the Hobby plan), so without this a new or edited
+      // product would take up to 24h to appear in the listings.
+      await fetch('/api/revalidate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scope: 'catalog' }),
+      }).catch(() => {})
+
       // If opened in a new tab, refresh the parent window and close this tab
       if (typeof window !== 'undefined' && window.opener) {
         window.opener.location.reload()

@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
-import { getActiveCategoriesCached } from '@/lib/supabase/cached-queries'
-import { getProductCardsCached } from '@/lib/supabase/cached-seo-queries'
+import { getProductCardsCached, getActiveCategoriesDailyCached } from '@/lib/supabase/cached-seo-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
 import { ProductsListSkeleton } from '@/components/public/ProductsListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -8,7 +7,7 @@ import { generatePageMetadata } from '@/lib/seo/metadata'
 // Statically rendered (ISR). Search + category filtering happen client-side
 // from the URL, so the page no longer reads searchParams and stays cacheable.
 // 1h window: new products appear on the listing within the hour.
-export const revalidate = 3600
+export const revalidate = 86400 // daily; admin product saves revalidate on demand (/api/revalidate scope=catalog)
 
 export const metadata = generatePageMetadata({
   title: 'All Fancy Dress Costumes - Buy Online',
@@ -20,7 +19,7 @@ export const metadata = generatePageMetadata({
 async function ProductsList() {
   const [products, categories] = await Promise.all([
     getProductCardsCached(),
-    getActiveCategoriesCached(),
+    getActiveCategoriesDailyCached(),
   ])
 
   return (

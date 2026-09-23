@@ -13,7 +13,6 @@ import type { ProductCardData } from '@/types/database'
  */
 
 const ONE_DAY = 86400
-const ONE_HOUR = 3600
 
 /**
  * Ids of categories that hold at least one live product, counting both the
@@ -173,7 +172,7 @@ export const getLivePricedProductsCached = unstable_cache(
     })
   },
   ['live-priced-products'],
-  { revalidate: ONE_HOUR, tags: ['products', 'categories'] }
+  { revalidate: ONE_DAY, tags: ['products', 'categories'] }
 )
 
 /**
@@ -217,5 +216,45 @@ export const getProductCardsCached = unstable_cache(
     return ((data ?? []) as unknown as ProductCardRow[]).map(toProductCardData)
   },
   ['product-cards'],
-  { revalidate: ONE_HOUR, tags: ['products'] }
+  { revalidate: ONE_DAY, tags: ['products'] }
+)
+
+/*
+ * Daily twins of two hourly queries in cached-queries.ts, for /products and
+ * /wholesale. A page regenerates as often as its shortest data-cache window, so
+ * the hourly originals kept those ~750KB pages rebuilding every hour — the
+ * largest ISR-write cost on the Hobby plan (Sep 2026). Admin product saves
+ * revalidate the 'products'/'categories' tags on demand (/api/revalidate
+ * scope=catalog), so a daily window does not delay new products.
+ */
+
+/** Active categories (with image) for the listing-page category filter — daily. */
+export const getActiveCategoriesDailyCached = unstable_cache(
+  async () => {
+    const supabase = createPublicServerClient()
+    const { data, error } = await supabase
+      .from('categories')
+      .select('id, name, slug, image_url')
+      .eq('is_active', true)
+      .order('name')
+    if (error) throw new Error(`[cached-seo-queries] active categories failed: ${error.message}`)
+    return data ?? []
+  },
+  ['active-categories-with-image-daily'],
+  { revalidate: ONE_DAY, tags: ['categories'] }
+)
+
+/** Wholesale discount percentage from site_settings (defaults to 30) — daily. */
+export const getWholesaleDiscountPctDailyCached = unstable_cache(
+  async (): Promise<number> => {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'wholesale_discount_pct')
+      .single()
+    return (data as { value?: { value?: number } } | null)?.value?.value ?? 30
+  },
+  ['wholesale-discount-pct-daily'],
+  { revalidate: ONE_DAY, tags: ['products', 'settings'] }
 )

@@ -1,10 +1,6 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import {
-    getActiveCategoriesCached,
-    getWholesaleDiscountPctCached,
-} from '@/lib/supabase/cached-queries'
-import { getProductCardsCached } from '@/lib/supabase/cached-seo-queries'
+import { getProductCardsCached, getActiveCategoriesDailyCached, getWholesaleDiscountPctDailyCached } from '@/lib/supabase/cached-seo-queries'
 import { ProductsBrowser } from '@/components/public/ProductsBrowser'
 import { WholesaleListSkeleton } from '@/components/public/WholesaleListSkeleton'
 import { generatePageMetadata } from '@/lib/seo/metadata'
@@ -15,7 +11,7 @@ import { MapPin, Phone, Package, Truck, Wallet, Clock } from 'lucide-react'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, whatsappUrl } from '@/lib/constants/contact'
 
 // Statically rendered (ISR); filtering is client-side. See /products for rationale.
-export const revalidate = 3600
+export const revalidate = 86400 // daily; admin product saves revalidate on demand (/api/revalidate scope=catalog)
 
 export const metadata = generatePageMetadata({
     title: 'Wholesale Fancy Dress Costumes - Bulk Prices for Schools & Events',
@@ -67,8 +63,8 @@ const wholesaleFaqs = [
 async function WholesaleContent() {
     const [products, categories, wholesaleDiscountPct] = await Promise.all([
         getProductCardsCached(),
-        getActiveCategoriesCached(),
-        getWholesaleDiscountPctCached(),
+        getActiveCategoriesDailyCached(),
+        getWholesaleDiscountPctDailyCached(),
     ])
 
     const faqSchema = FaqPageSchema(wholesaleFaqs)
