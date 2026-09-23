@@ -6,17 +6,10 @@ import { ProductGallery } from '@/components/public/ProductGallery'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { productKeywords } from '@/lib/seo/keywords'
 import { wholesaleProductTitle } from '@/lib/seo/title-helpers'
-import {
-    WholesaleProductPageJsonLdGraph,
-    toAbsoluteUrl,
-    siteUrl,
-    localBusinessEntityId,
-    aggregateRatingFromProductReviews,
-    reviewsForProductJsonLd,
-} from '@/lib/seo/structured-data'
+import { WholesaleProductPageJsonLdGraph } from '@/lib/seo/structured-data'
 import { ChevronRight } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
-import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
+import { formatPrice } from '@/lib/utils/pricing'
 import type { ProductWithDetails } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 
@@ -107,7 +100,6 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
     }
 
     const productData = product as ProductWithDetails
-    const primaryImage = productData.images?.find((img) => img.is_primary) || productData.images?.[0]
     const otherImages = productData.images?.filter((img) => !img.is_primary) || []
 
     const sizes = [...new Set([
@@ -115,61 +107,11 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
         ...(productData.variants?.map((v) => v.size).filter((s): s is string => Boolean(s)) || [])
     ])]
 
-    const wholesalePrice = getProductPrice(productData, 'wholesale', wholesaleDiscountPct)
-
-    const publicSb = createPublicServerClient()
-    const { data: reviews, error: reviewsError } = await publicSb
-        .from('product_reviews')
-        .select('rating, review_text, author_name, created_at')
-        .eq('product_id', productData.id)
-        .order('created_at', { ascending: false })
-
-    if (reviewsError) {
-        console.error('[WholesaleProductPage] product_reviews:', reviewsError.message)
-    }
-
-    const reviewAgg = aggregateRatingFromProductReviews(reviews ?? null)
-
-    // Wholesale structured data with UnitPriceSpecification
-    const productSchema: Record<string, unknown> = {
-        '@context': 'https://schema.org',
-        '@type': 'Product',
-        '@id': `${siteUrl}/wholesale/${slug}#product`,
-        name: `${productData.name} - Wholesale`,
-        description: productData.description || `${productData.name} available at wholesale bulk prices at Mod Fancy Dress`,
-        image: primaryImage ? [toAbsoluteUrl(getImageUrl(primaryImage.image_url))] : [],
-        brand: { '@type': 'Brand', name: 'Mod Fancy Dress' },
-        category: productData.category?.name || 'Fancy Dress Costume',
-        sku: productData.variants?.[0]?.sku || productData.slug,
-        offers: {
-            '@type': 'Offer',
-            url: `${siteUrl}/wholesale/${slug}`,
-            priceCurrency: 'INR',
-            price: wholesalePrice.toString(),
-            availability: 'https://schema.org/InStock',
-            itemCondition: 'https://schema.org/NewCondition',
-            priceSpecification: {
-                '@type': 'UnitPriceSpecification',
-                price: wholesalePrice.toString(),
-                priceCurrency: 'INR',
-                unitText: 'piece',
-            },
-            seller: { '@id': localBusinessEntityId() },
-        },
-    }
-    if (reviewAgg && reviewAgg.reviewCount >= 1) {
-        productSchema.aggregateRating = {
-            '@type': 'AggregateRating',
-            ratingValue: Math.round(reviewAgg.ratingValue * 10) / 10,
-            reviewCount: reviewAgg.reviewCount,
-            bestRating: 5,
-            worstRating: 1,
-        }
-        const reviewNodes = reviewsForProductJsonLd(reviews ?? [], slug)
-        if (reviewNodes.length > 0) {
-            productSchema.review = reviewNodes
-        }
-    }
+    // No Product/Offer node here. Wholesale pages are enquiry-only and canonicalise to
+    // /products/<slug>, which carries the one Product + Offer (with shipping and return
+    // details) that Google should list. A second Product at the wholesale price made
+    // Search Console report ~150 merchant listings missing shippingDetails and
+    // hasMerchantReturnPolicy (Sep 2026) and competed with the canonical listing.
 
     const breadcrumbItems = [
         { name: 'Home', url: '/' },
@@ -180,7 +122,7 @@ export default async function WholesaleProductPage({ params }: WholesaleProductP
         { name: productData.name, url: `/wholesale/${slug}` },
     ]
 
-    const wholesalePageJsonLd = WholesaleProductPageJsonLdGraph(productSchema, breadcrumbItems, slug)
+    const wholesalePageJsonLd = WholesaleProductPageJsonLdGraph(breadcrumbItems, slug)
 
     return (
         <>

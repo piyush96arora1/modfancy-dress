@@ -229,7 +229,6 @@ export function ProductPageJsonLdGraph(
 }
 
 export function WholesaleProductPageJsonLdGraph(
-  wholesaleProductNode: Record<string, unknown>,
   breadcrumbItems: Array<{ name: string; url: string }>,
   slug: string
 ): Record<string, unknown> {
@@ -237,10 +236,9 @@ export function WholesaleProductPageJsonLdGraph(
     ...stripJsonLdContext(BreadcrumbSchema(breadcrumbItems) as Record<string, unknown>),
     '@id': `${siteUrl}/wholesale/${slug}#breadcrumb`,
   }
-  const { '@context': _, ...productRest } = wholesaleProductNode
   return {
     '@context': 'https://schema.org',
-    '@graph': [crumbNode, productRest],
+    '@graph': [crumbNode],
   }
 }
 
