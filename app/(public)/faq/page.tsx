@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
-import { occasionGuideFaqPairs } from '@/lib/seo/occasion-guide-data'
+import { occasionGuideFaqPairs, withPriceBands } from '@/lib/seo/occasion-guide-data'
+import { getLivePricedProductsCached } from '@/lib/supabase/cached-seo-queries'
 import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { CategoryPriceTable } from '@/components/public/seo-tables/CategoryPriceTable'
@@ -33,7 +34,7 @@ export default async function FaqPage() {
   const faqs = sortFaqsForPage(await getFaqsForFaqPageCached())
 
   const faqPageSchema = FaqPageSchema([
-    ...occasionGuideFaqPairs(),
+    ...occasionGuideFaqPairs(withPriceBands(await getLivePricedProductsCached())),
     ...rentalFaqPairs(),
     ...faqs.map(({ question, answer }) => ({ question, answer })),
   ])

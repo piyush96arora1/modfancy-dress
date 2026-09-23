@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { priceBand, fromPrice } from '@/lib/seo/price-band'
+import { getLivePricedProductsCached } from '@/lib/supabase/cached-seo-queries'
 import { SeoTableWrap, seoTableClass } from '@/components/public/seo-tables/table-styles'
 
 const ROWS = [
@@ -6,63 +8,61 @@ const ROWS = [
     style: 'Kathak',
     costume: 'Anarkali / Lehenga',
     features: 'Flowing skirt, gota work',
-    from: '₹399',
+    match: /kathak/i,
     slug: 'kathak-dress',
   },
   {
     style: 'Bharatnatyam',
     costume: 'Flared skirt set',
     features: 'Gold temple jewellery',
-    from: '₹250',
+    match: /bharatnatyam/i,
     slug: 'bharatnatyam',
   },
   {
     style: 'Odissi',
     costume: 'Saree drape style',
     features: 'Silver jewellery, fan',
-    from: '₹550',
-    slug: 'bharatnatyam',
-  },
-  {
-    style: 'Kuchipudi',
-    costume: 'Skirt + blouse',
-    features: 'Tassel earrings, fan',
-    from: '₹550',
-    slug: 'bharatnatyam',
+    match: /odissi/i,
+    slug: 'classical-dance-dress',
   },
   {
     style: 'Garba',
     costume: 'Chaniya Choli',
     features: 'Mirror work, flared skirt',
-    from: '₹399',
+    match: /garba|chaniya|dandiya/i,
     slug: 'garba-dress',
   },
   {
     style: 'Bhangra',
     costume: 'Kurta + Pagri',
     features: 'Colourful phulkari',
-    from: '₹350',
+    match: /bhangra/i,
     slug: 'folk-dance-dress',
   },
   {
     style: 'Lavani',
     costume: 'Nauvari saree',
     features: 'Bold colours, nath',
-    from: '₹399',
+    match: /lavani/i,
     slug: 'folk-dance-dress',
   },
-] as const
+]
 
 type Props = {
   headingId?: string
   className?: string
 }
 
-/** Static editorial comparison — classical & folk dance costume styles. */
-export function ClassicalDanceComparisonTable({
+/** Editorial comparison of dance costume styles; entry prices come from live products whose name matches the style. */
+export async function ClassicalDanceComparisonTable({
   headingId = 'classical-dance-costume-comparison',
   className = '',
 }: Props) {
+  const products = await getLivePricedProductsCached()
+  const rows = ROWS.map((row) => ({
+    ...row,
+    from: fromPrice(priceBand(products.filter((p) => row.match.test(p.name)))),
+  })).filter((row) => row.from) // never list a style we have no priced stock for
   return (
     <section className={className} aria-labelledby={headingId}>
       <h2
@@ -72,7 +72,7 @@ export function ClassicalDanceComparisonTable({
         Costume comparison by dance style
       </h2>
       <p className="text-sm text-[#6B6B6B] mb-4 max-w-3xl leading-relaxed">
-        Starting prices are typical retail entry points; exact SKUs vary. Follow the links to see current stock.
+        Starting prices are the lowest current rent and buy price for that style. Follow the links to see current stock.
       </p>
       <SeoTableWrap>
         <table className={seoTableClass}>
@@ -87,12 +87,12 @@ export function ClassicalDanceComparisonTable({
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row) => (
+            {rows.map((row) => (
               <tr key={row.style}>
                 <td className="font-medium whitespace-nowrap">{row.style}</td>
                 <td>{row.costume}</td>
                 <td className="text-[#6B6B6B]">{row.features}</td>
-                <td className="tabular-nums whitespace-nowrap">{row.from}</td>
+                <td className="tabular-nums">{row.from}</td>
                 <td>
                   <Link
                     href={`/category/${row.slug}`}

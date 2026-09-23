@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { FaqPageSchema } from '@/lib/seo/structured-data'
-import { OCCASION_GUIDE_ROWS, occasionGuideFaqPairs } from '@/lib/seo/occasion-guide-data'
+import { occasionGuideFaqPairs, withPriceBands } from '@/lib/seo/occasion-guide-data'
+import { getLivePricedProductsCached } from '@/lib/supabase/cached-seo-queries'
 import { SeoTableWrap, seoTableClass } from '@/components/public/seo-tables/table-styles'
 
 type Props = {
@@ -10,8 +11,9 @@ type Props = {
   className?: string
 }
 
-export function OccasionGuideTable({ includeFaqScript, headingId = 'occasion-costume-guide', className = '' }: Props) {
-  const faqSchema = includeFaqScript ? FaqPageSchema(occasionGuideFaqPairs()) : null
+export async function OccasionGuideTable({ includeFaqScript, headingId = 'occasion-costume-guide', className = '' }: Props) {
+  const rows = withPriceBands(await getLivePricedProductsCached())
+  const faqSchema = includeFaqScript ? FaqPageSchema(occasionGuideFaqPairs(rows)) : null
 
   return (
     <section className={className} aria-labelledby={headingId}>
@@ -25,7 +27,7 @@ export function OccasionGuideTable({ includeFaqScript, headingId = 'occasion-cos
         Which costume for which occasion?
       </h2>
       <p className="text-sm text-[#6B6B6B] mb-4 max-w-3xl leading-relaxed">
-        Quick picks for school events and festivals — typical price bands and where to shop on our site.
+        Quick picks for school events and festivals — current price bands and where to shop on our site.
       </p>
       <SeoTableWrap>
         <table className={seoTableClass}>
@@ -39,11 +41,11 @@ export function OccasionGuideTable({ includeFaqScript, headingId = 'occasion-cos
             </tr>
           </thead>
           <tbody>
-            {OCCASION_GUIDE_ROWS.map((row) => (
+            {rows.map((row) => (
               <tr key={row.categorySlug + row.occasion}>
                 <td className="whitespace-nowrap">{row.occasion}</td>
                 <td>{row.bestCostume}</td>
-                <td className="whitespace-nowrap tabular-nums">{row.priceRange}</td>
+                <td className="tabular-nums">{row.priceRange ?? 'Ask in store'}</td>
                 <td>
                   <Link
                     href={`/category/${row.categorySlug}`}

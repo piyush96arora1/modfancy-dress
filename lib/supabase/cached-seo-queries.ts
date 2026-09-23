@@ -7,6 +7,7 @@ import { createPublicServerClient } from './public-server'
  */
 
 const ONE_DAY = 86400
+const ONE_HOUR = 3600
 
 /**
  * Ids of categories that hold at least one live product, counting both the
@@ -125,4 +126,46 @@ export const getCategorySlugsForGuideCached = unstable_cache(
   },
   ['category-slugs-for-guide'],
   { revalidate: ONE_DAY, tags: ['categories', 'blog'] }
+)
+
+export type LivePricedProduct = {
+  name: string
+  price: number | null
+  rent_price: number | null
+  categorySlugs: string[]
+}
+
+/**
+ * Every live product's name, prices and category slugs (primary + junction) —
+ * the source for the price bands in the editorial tables and their FAQ JSON-LD,
+ * so those never drift from the catalogue.
+ */
+export const getLivePricedProductsCached = unstable_cache(
+  async (): Promise<LivePricedProduct[]> => {
+    const supabase = createPublicServerClient()
+    const [{ data: products, error }, { data: categories }] = await Promise.all([
+      supabase
+        .from('products')
+        .select('name, price, rent_price, category_id, product_categories(category_id)')
+        .eq('is_active', true)
+        .is('deleted_at', null),
+      supabase.from('categories').select('id, slug').eq('is_active', true),
+    ])
+    if (error) throw new Error(`[cached-seo-queries] priced products failed: ${error.message}`)
+    const slugById = new Map((categories ?? []).map((c) => [c.id as string, c.slug as string]))
+    return (products ?? []).map((p) => {
+      const ids = new Set<string>([
+        ...(p.category_id ? [p.category_id as string] : []),
+        ...((p.product_categories as { category_id: string }[] | null) ?? []).map((pc) => pc.category_id),
+      ])
+      return {
+        name: p.name as string,
+        price: p.price as number | null,
+        rent_price: p.rent_price as number | null,
+        categorySlugs: [...ids].map((id) => slugById.get(id)).filter((s): s is string => !!s),
+      }
+    })
+  },
+  ['live-priced-products'],
+  { revalidate: ONE_HOUR, tags: ['products', 'categories'] }
 )
