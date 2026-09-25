@@ -12,6 +12,7 @@ import {
 import { CustomerReviews } from '@/components/public/CustomerReviews'
 import { DELHI_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
 import { MapFacade } from '@/components/public/MapFacade'
+import { LocationShowcase } from '@/components/public/LocationShowcase'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Delhi — Buy or Rent Fancy Dress',
@@ -19,6 +20,10 @@ export const metadata = generatePageMetadata({
     'Delhi fancy dress costume shop in Krishna Nagar. Buy or rent from ₹200. 700+ reviews, 4.7★. Visit our store or WhatsApp us today.',
   path: '/fancy-dress-delhi',
 })
+
+// Daily: the showcase follows the homepage festival calendar (date windows are
+// evaluated at render), and every query it reads is cached daily.
+export const revalidate = 86400
 
 const GOOGLE_PROFILE_URL = 'https://share.google/OvjwothbT7G0sBGws'
 
@@ -117,6 +122,12 @@ export default function FancyDressDelhiPage() {
 
         <p>Our store is easily accessible from most Delhi areas: <strong className="text-[#2D2D2D]">Krishna Nagar Metro Station</strong> (Pink Line) is a 5-minute walk. We regularly serve customers from East Delhi (Shahdara, Preet Vihar, Laxmi Nagar, Mayur Vihar), Central Delhi (Connaught Place, Karol Bagh), South Delhi (Saket, Hauz Khas, Greater Kailash), and North Delhi (Model Town, Pitampura, Rohini). Delivery is also available to all Delhi pin codes via Porter and Rapido.</p>
 
+      </div>
+
+      {/* Photo grid of occasions + in-season products (docs/superpowers/plans/2026-09-25-location-page-showcase.md) */}
+      <LocationShowcase city="Delhi" />
+
+      <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">What We Stock</h2>
         <p>Our Delhi store stocks costumes across every category schools and events need:</p>
         <ul className="list-disc pl-5 space-y-1">

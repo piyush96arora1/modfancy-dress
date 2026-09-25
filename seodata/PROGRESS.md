@@ -91,3 +91,7 @@ Baselines: `seodata/gsc/2026-09-23-baseline.md` (Search Console), `seodata/gbp/2
 - ✅ Dandiya sticks are buy-only (owner, 25 Sep): rent cleared, meta shows ₹80.
 - ⏳ Owner: check the women's lehengas really are adult sizes. Uploads from Safari/iOS don't get variants (the browser can't encode WebP), so run `scripts/generate-image-variants.ts --apply` after each batch.
 - ⏳ Request indexing: dandiya-dress category, ravan-mask, ravan-mukut, ravan-costume-for-adults, maa-durga-fancy-dress, orange-kediyu-garba-dress-for-boys.
+
+### 25–26 Sep 2026: product showcase on the Delhi and Noida pages (plan `docs/superpowers/plans/2026-09-25-location-page-showcase.md`)
+- ✅ After the two intro paragraphs: 8 occasion tiles (the homepage's live festival sections first, then evergreen categories) and "Popular in <city> Right Now" (8 in-season costumes, accessories only if a category has nothing else). A grid with 400w lazy images; all existing text, FAQs and JSON-LD unchanged. Pages now ISR daily (`○ 1d`).
+- ⏳ **Re-check 23 Oct** against the 28 days to 20 Sep: /fancy-dress-delhi 7,571 impressions / 107 clicks / pos 4.9; /fancy-dress-noida 1,102 / 25 / 8.0. If Delhi's position slips, revert this commit; if it holds or improves, roll out to Gurgaon and Ghaziabad.

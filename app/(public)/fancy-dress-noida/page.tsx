@@ -12,6 +12,7 @@ import {
 import { CustomerReviews } from '@/components/public/CustomerReviews'
 import { NOIDA_TESTIMONIALS } from '@/lib/reviews/customer-reviews'
 import { MapFacade } from '@/components/public/MapFacade'
+import { LocationShowcase } from '@/components/public/LocationShowcase'
 
 export const metadata = generatePageMetadata({
   title: 'Costume Shop in Noida — Buy or Rent',
@@ -19,6 +20,10 @@ export const metadata = generatePageMetadata({
     'Noida fancy dress costume shop — Krishna Nagar (Delhi) store, buy or rent from ₹200. 700+ reviews, 4.7★. WhatsApp for same-day Noida delivery.',
   path: '/fancy-dress-noida',
 })
+
+// Daily: the showcase follows the homepage festival calendar (date windows are
+// evaluated at render), and every query it reads is cached daily.
+export const revalidate = 86400
 
 const GOOGLE_PROFILE_URL = 'https://share.google/OvjwothbT7G0sBGws'
 
@@ -102,6 +107,12 @@ export default function FancyDressNoidaPage() {
         <p>Mod Fancy Dress is Delhi NCR&apos;s most trusted source for school function costumes, dance performance outfits, and special occasion fancy dress. While our store is located in <strong className="text-[#2D2D2D]">Krishna Nagar, East Delhi</strong> — just 20–30 minutes from most Noida sectors — we regularly deliver to Noida customers for school annual functions, Republic Day and Independence Day events, Diwali celebrations, Navratri performances, and themed parties. With 15+ years of experience and <strong className="text-[#2D2D2D]">700+ Google reviews at 4.7★</strong>, Noida families and schools rely on us every season.</p>
         <p>Our collection covers over <strong className="text-[#2D2D2D]">400 costume styles</strong>, including <Link href="/category/leaders-freedom-fighters" className="text-[#8F6240] hover:underline font-medium">freedom fighter costumes</Link> (Bhagat Singh, Subhas Chandra Bose, Gandhi), <Link href="/category/classical-dance-dress" className="text-[#8F6240] hover:underline font-medium">classical dance costumes</Link> (Bharatanatyam, Kathak, Garba), <Link href="/category/janmashtami-dress" className="text-[#8F6240] hover:underline font-medium">Janmashtami costumes</Link> (Krishna, Radha), <Link href="/category/states-fancy-dress" className="text-[#8F6240] hover:underline font-medium">states of India fancy dress</Link>, festival wear, mythological characters, and international fancy dress (doctor, police, chef, astronaut). Many Noida schools trust us for bulk orders of 50–200 costumes for annual functions.</p>
         <p>We also offer <Link href="/rent" className="text-[#8F6240] hover:underline font-medium">rental costumes</Link> starting at <strong className="text-[#2D2D2D]">₹200 per event</strong> — ideal for one-time school events where buying isn&apos;t practical. Rental costumes are available in child and adult sizes. A refundable deposit is taken and returned when the costume is returned.</p>
+      </div>
+
+      {/* Photo grid of occasions + in-season products (docs/superpowers/plans/2026-09-25-location-page-showcase.md) */}
+      <LocationShowcase city="Noida" />
+
+      <div className="space-y-4 text-[#6B6B6B] text-sm leading-relaxed mb-8">
         <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">How to Order from Noida</h2>
         <ol className="list-decimal pl-5 space-y-1.5">
           <li>Browse our costume catalogue on this website</li>
