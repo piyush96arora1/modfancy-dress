@@ -22,8 +22,9 @@
  *      seodata/pending-reupload-redirects.json are updated to match, and the whole graph
  *      is checked with validateRedirects before anything is written.
  *
- * Not fixed here, reported instead: dandiya-stick has rent ₹200 above its ₹80 price, a
- * data-entry error only the owner can correct, so its meta carries no price.
+ * dandiya-stick was uploaded with rent ₹200 above its ₹80 price. The owner confirmed
+ * (25 Sep) that it is buy-only, so rent_price/rent_deposit were cleared and its meta
+ * now quotes the buy price. A rerun leaves that meta alone (fields are only filled when empty).
  *
  * Dry run:  npx tsx scripts/followup-oct5-batch.ts
  * Apply:    npx tsx scripts/followup-oct5-batch.ts --apply
@@ -227,8 +228,8 @@ const ITEMS: Item[] = [
     body:
       'A pair of wooden dandiya sticks wrapped in bright ribbon — orange at the top, sky blue through the middle and maroon at the base, each band edged with gold and finished with a rubber cap so they are kinder on hands and floors. The standard length suits both kids and adults for dandiya raas. Add a pair to any dandiya dress or chaniya choli so the costume is ready for the dance floor.',
     hinglish: 'Dandiya ki sticks, ek jodi — garba aur dandiya raas ke liye.',
-    // Price omitted on purpose: rent (₹200) is above the price (₹80), reported to the owner.
-    meta: () => 'Ribbon-wrapped wooden dandiya sticks, sold as a pair with rubber caps — for dandiya raas and Navratri garba in Delhi NCR.',
+    // Buy-only: the owner does not rent dandiya sticks.
+    meta: ({ buy }) => `Ribbon-wrapped wooden dandiya sticks, sold as a pair with rubber caps — for dandiya raas and Navratri garba. Buy ₹${buy} in Delhi NCR.`,
     seo_title: 'Dandiya Sticks Pair - Navratri Garba',
     alt: {
       'dandiya-stick.jpg': 'Pair of dandiya sticks wrapped in orange, sky blue and maroon ribbon with gold bands',
@@ -525,7 +526,6 @@ async function main() {
     console.log('   wrote redirects.json, seodata/live-urls.json, seodata/pending-reupload-redirects.json')
   }
 
-  console.log('\nOwner to fix: dandiya-sticks rent ₹200 is above its ₹80 price.')
 }
 
 main().catch((e) => {
