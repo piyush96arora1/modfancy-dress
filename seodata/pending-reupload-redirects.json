@@ -10,21 +10,6 @@
     "expectedProduct": "Police Fancy Dress for Kids"
   },
   {
-    "oldSlug": "folk-dance-dress-with-pagri-for-boys-fancy-dress",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Dress for Boys (kediyu set)"
-  },
-  {
-    "oldSlug": "garba-dance-chaniya-choli-fancy-dress-costume",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Chaniya Choli for Girls"
-  },
-  {
-    "oldSlug": "garba-dance-fancy-dress-boys-costume",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Dress for Boys (kediyu set)"
-  },
-  {
     "oldSlug": "garba-dance-fancy-dress-costume-combo",
     "interimDestination": "/category/garba-dress",
     "expectedProduct": "Garba Couple Combo Set (boy and girl)"
@@ -40,11 +25,6 @@
     "expectedProduct": "Garba Dance Fancy Dress"
   },
   {
-    "oldSlug": "garba-dance-fancy-dress-for-boys",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Dress for Boys (kediyu set)"
-  },
-  {
     "oldSlug": "ghoomar-lehenga-fancy-dress",
     "interimDestination": "/category/rajasthani-dress",
     "expectedProduct": "Ghoomar Lehenga Fancy Dress"
@@ -53,16 +33,6 @@
     "oldSlug": "goddess-saraswati-mata-fancy-dress-costume",
     "interimDestination": "/category/indian-mythology-costumes",
     "expectedProduct": "Saraswati Mata Fancy Dress"
-  },
-  {
-    "oldSlug": "gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Chaniya Choli for Girls"
-  },
-  {
-    "oldSlug": "gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
-    "interimDestination": "/category/garba-dress",
-    "expectedProduct": "Garba Chaniya Choli for Girls"
   },
   {
     "oldSlug": "gujrati-garba-dance-dress-lehenga-fancy-dress",
@@ -83,11 +53,6 @@
     "oldSlug": "indian-pilot-fancy-dress-costume",
     "interimDestination": "/category/helper-costumes",
     "expectedProduct": "Indian Pilot Fancy Dress"
-  },
-  {
-    "oldSlug": "mahishasur-fancy-dress-costume",
-    "interimDestination": "/category/indian-mythology-costumes",
-    "expectedProduct": "Mahishasur Fancy Dress"
   },
   {
     "oldSlug": "shivaji-maharaj-fancy-dress-costume",

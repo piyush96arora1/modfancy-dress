@@ -736,12 +736,12 @@
   },
   {
     "source": "/products/gujarati-garba-chaniya-choli-costume-girls",
-    "destination": "/category/garba-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-chaniya-choli-costume-girls",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
@@ -1446,12 +1446,12 @@
   },
   {
     "source": "/products/gujarati-garba-dance-chaniya-choli-for-girls",
-    "destination": "/category/garba-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-dance-chaniya-choli-for-girls",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
@@ -1876,12 +1876,12 @@
   },
   {
     "source": "/products/garba-dance-fancy-dress-boys-costume",
-    "destination": "/category/garba-dress",
+    "destination": "/products/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
     "source": "/wholesale/garba-dance-fancy-dress-boys-costume",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
@@ -2166,12 +2166,12 @@
   },
   {
     "source": "/products/folk-dance-dress-with-pagri-for-boys-fancy-dress",
-    "destination": "/category/garba-dress",
+    "destination": "/products/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
     "source": "/wholesale/folk-dance-dress-with-pagri-for-boys-fancy-dress",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
@@ -2186,22 +2186,22 @@
   },
   {
     "source": "/products/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
-    "destination": "/category/garba-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-dance-chaniya-choli-for-girls-fancy-dress",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/products/garba-dance-fancy-dress-for-boys",
-    "destination": "/category/garba-dress",
+    "destination": "/products/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
     "source": "/wholesale/garba-dance-fancy-dress-for-boys",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/orange-kediyu-garba-dress-for-boys",
     "permanent": true
   },
   {
@@ -2396,12 +2396,12 @@
   },
   {
     "source": "/products/garba-dance-chaniya-choli-fancy-dress-costume",
-    "destination": "/category/garba-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/wholesale/garba-dance-chaniya-choli-fancy-dress-costume",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
@@ -3236,12 +3236,12 @@
   },
   {
     "source": "/products/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
-    "destination": "/category/garba-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
     "source": "/wholesale/gujarati-garba-chaniya-choli-costume-girls-fancy-dress",
-    "destination": "/wholesale/category/garba-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
     "permanent": true
   },
   {
@@ -3586,12 +3586,12 @@
   },
   {
     "source": "/products/mahishasur-fancy-dress-costume",
-    "destination": "/category/indian-mythology-costumes",
+    "destination": "/products/mahishasur-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/mahishasur-fancy-dress-costume",
-    "destination": "/wholesale/category/indian-mythology-costumes",
+    "destination": "/wholesale/mahishasur-fancy-dress",
     "permanent": true
   },
   {
@@ -4052,6 +4052,126 @@
   {
     "source": "/blog/republic-independence-day-fancy-dress-ideas",
     "destination": "/blog/independence-day-fancy-dress-ideas",
+    "permanent": true
+  },
+  {
+    "source": "/products/garba-dandiya-fancy-dress",
+    "destination": "/products/dusty-blue-floral-dandiya-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/garba-dandiya-fancy-dress",
+    "destination": "/wholesale/dusty-blue-floral-dandiya-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/products/multi-garba-dandiya-dress",
+    "destination": "/products/mustard-pink-patchwork-garba-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/multi-garba-dandiya-dress",
+    "destination": "/wholesale/mustard-pink-patchwork-garba-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/products/multi-color-dandiya-fancy-dress",
+    "destination": "/products/rainbow-bandhani-dandiya-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/multi-color-dandiya-fancy-dress",
+    "destination": "/wholesale/rainbow-bandhani-dandiya-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/products/black-dandiya-fancy-dress",
+    "destination": "/products/black-red-block-print-dandiya-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/black-dandiya-fancy-dress",
+    "destination": "/wholesale/black-red-block-print-dandiya-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/products/black-and-red-dandiya-lehnga",
+    "destination": "/products/black-maroon-ajrakh-border-garba-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/black-and-red-dandiya-lehnga",
+    "destination": "/wholesale/black-maroon-ajrakh-border-garba-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/products/white-and-red-dandiya-dress",
+    "destination": "/products/white-red-ajrakh-patchwork-dandiya-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/white-and-red-dandiya-dress",
+    "destination": "/wholesale/white-red-ajrakh-patchwork-dandiya-chaniya-choli",
+    "permanent": true
+  },
+  {
+    "source": "/products/boy-garba-dandiya-fancy-dress",
+    "destination": "/products/orange-kediyu-garba-dress-for-boys",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/boy-garba-dandiya-fancy-dress",
+    "destination": "/wholesale/orange-kediyu-garba-dress-for-boys",
+    "permanent": true
+  },
+  {
+    "source": "/products/girl-garba-dandiya-fancy-dress",
+    "destination": "/products/garba-chaniya-choli-for-girls",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/girl-garba-dandiya-fancy-dress",
+    "destination": "/wholesale/garba-chaniya-choli-for-girls",
+    "permanent": true
+  },
+  {
+    "source": "/products/dandiya-stick",
+    "destination": "/products/dandiya-sticks",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dandiya-stick",
+    "destination": "/wholesale/dandiya-sticks",
+    "permanent": true
+  },
+  {
+    "source": "/products/raavan-fancy-dress",
+    "destination": "/products/ravan-costume-for-adults",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/raavan-fancy-dress",
+    "destination": "/wholesale/ravan-costume-for-adults",
+    "permanent": true
+  },
+  {
+    "source": "/products/ravan-face",
+    "destination": "/products/ravan-mask",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/ravan-face",
+    "destination": "/wholesale/ravan-mask",
+    "permanent": true
+  },
+  {
+    "source": "/products/rudraksh-mala",
+    "destination": "/products/rudraksha-mala-set",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/rudraksh-mala",
+    "destination": "/wholesale/rudraksha-mala-set",
     "permanent": true
   }
 ]
