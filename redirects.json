@@ -4173,5 +4173,15 @@
     "source": "/wholesale/rudraksh-mala",
     "destination": "/wholesale/rudraksha-mala-set",
     "permanent": true
+  },
+  {
+    "source": "/products/harry-poter-fancy-dress",
+    "destination": "/products/harry-potter-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/harry-poter-fancy-dress",
+    "destination": "/wholesale/harry-potter-fancy-dress",
+    "permanent": true
   }
 ]
