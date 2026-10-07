@@ -19,6 +19,7 @@ import { ProductPageJsonLdGraph, aggregateRatingFromProductReviews } from '@/lib
 import { ChevronRight, Star } from 'lucide-react'
 import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
 import { DeliveryPromise } from '@/components/public/DeliveryPromise'
+import { WhatsAppFab } from '@/components/public/WhatsAppFab'
 import { getImageUrl } from '@/lib/imageUrl'
 import type { ProductWithDetails, ProductReview } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
@@ -356,16 +357,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         )}
       </div>
 
-      {/* WhatsApp FAB — mobile only, sits above bottom nav */}
-      <a
-        href={whatsappUrl(waBuyMessage)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed right-4 bottom-[4.5rem] z-40 md:hidden flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-[#1B2A4A] shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform"
-        aria-label="Chat on WhatsApp"
-      >
-        <WhatsAppIcon className="w-5 h-5" />
-      </a>
+      {/* WhatsApp FAB — mobile only, sits above bottom nav; steps aside over the delivery card */}
+      <WhatsAppFab message={waBuyMessage} hideWhileVisibleId="delivery-promise" />
     </>
   )
 }

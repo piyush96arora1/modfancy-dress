@@ -58,17 +58,17 @@ export function PincodeChecker({ productName, productUrl }: { productName: strin
 
   return (
     <div className="px-4 py-3">
+      <label htmlFor="delivery-pincode" className="block mb-2 text-xs font-semibold text-[#1B2A4A]">
+        Check delivery to your pincode
+      </label>
       <form onSubmit={onSubmit} className="flex gap-2" noValidate>
-        <label htmlFor="delivery-pincode" className="sr-only">
-          Delivery pincode
-        </label>
         <input
           id="delivery-pincode"
           name="pincode"
           inputMode="numeric"
           autoComplete="postal-code"
           maxLength={6}
-          placeholder="Enter pincode"
+          placeholder="6-digit pincode"
           ref={inputRef}
           onInput={(e) => {
             const el = e.currentTarget
@@ -97,7 +97,8 @@ export function PincodeChecker({ productName, productUrl }: { productName: strin
             <div className="text-xs leading-relaxed text-[#6B6B6B]">
               <p>
                 <strong className="text-emerald-700 font-semibold">Same-day delivery available</strong> to{' '}
-                {estimate.city}. Confirm before {cutoffLabel} and it reaches you today by Porter or Rapido.
+                {estimate.city}. Order or message us before {cutoffLabel} and it reaches you today by Porter or
+                Rapido, or collect it today from our Krishna Nagar store.
               </p>
               <a
                 href={whatsappUrl(waText(`Hi, I need "${productName}" delivered today.`))}
