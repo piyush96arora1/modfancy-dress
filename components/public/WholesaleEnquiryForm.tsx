@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ecommerce, track } from '@/lib/analytics/gtag'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -62,6 +63,12 @@ export function WholesaleEnquiryForm({ product, sizes, wholesaleDiscountPct = 30
                 throw new Error('Failed to submit enquiry')
             }
 
+            track('generate_lead', {
+                ...ecommerce([{ item_id: product.id, item_name: product.name, item_variant: selectedSize || undefined, price: wholesalePrice, quantity: parseInt(quantity) || 10 }]),
+                lead_intent: 'wholesale',
+                lead_channel: 'form',
+                cta_location: 'pdp_wholesale_form',
+            })
             setSubmitted(true)
         } catch (err) {
             setError('Something went wrong. Please try again or call us directly.')

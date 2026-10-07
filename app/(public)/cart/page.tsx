@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getImageUrl } from '@/lib/imageUrl'
 import { useCart } from '@/lib/store/cart'
+import { ecommerce, track } from '@/lib/analytics/gtag'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -96,6 +97,17 @@ export default function CartPage() {
 
       if (itemsError) throw itemsError
 
+      // Order details only — never the customer's name, phone or address.
+      track('purchase', {
+        transaction_id: orderNumber,
+        ...ecommerce(items.map((item) => ({
+          item_id: item.productId,
+          item_name: item.name,
+          item_variant: [item.size, item.color].filter(Boolean).join(' / ') || undefined,
+          price: item.price,
+          quantity: item.quantity,
+        }))),
+      })
       clearCart()
       setOrderSuccess(orderNumber)
     } catch (error) {

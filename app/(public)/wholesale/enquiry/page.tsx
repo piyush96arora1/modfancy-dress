@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ecommerce, track } from '@/lib/analytics/gtag'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -62,6 +63,12 @@ export default function WholesaleEnquiryPage() {
 
             if (!res.ok) throw new Error('Failed to submit')
 
+            track('generate_lead', {
+                ...ecommerce(items.map((item) => ({ item_id: item.product_id, item_name: item.product_name, item_variant: item.size || undefined, price: item.wholesale_price, quantity: item.quantity }))),
+                lead_intent: 'wholesale',
+                lead_channel: 'form',
+                cta_location: 'enquiry_basket',
+            })
             setSubmitted(true)
             clearBasket()
         } catch {

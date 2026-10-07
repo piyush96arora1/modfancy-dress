@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useEnquiryBasket, type EnquiryItem } from '@/lib/context/EnquiryBasketContext'
 import { getProductPrice, getVariantPrice, formatPrice } from '@/lib/utils/pricing'
 import { Check, Plus } from 'lucide-react'
+import { ecommerce, track } from '@/lib/analytics/gtag'
 import type { ProductWithDetails } from '@/types/database'
 
 interface AddToEnquiryButtonProps {
@@ -44,6 +45,11 @@ export function AddToEnquiryButton({ product, sizes, wholesaleDiscountPct = 30 }
             wholesale_price: wholesalePrice,
         }
         addItem(item)
+        // GA4 has no "enquiry basket" event; add_to_wishlist is the closest standard one.
+        track('add_to_wishlist', {
+            ...ecommerce([{ item_id: product.id, item_name: product.name, item_variant: selectedSize || undefined, price: wholesalePrice, quantity }]),
+            lead_intent: 'wholesale',
+        })
         setJustAdded(true)
         setTimeout(() => setJustAdded(false), 2000)
     }

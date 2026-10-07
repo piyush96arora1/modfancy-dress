@@ -5,6 +5,7 @@ import { EnquiryBasketProvider } from '@/lib/context/EnquiryBasketContext'
 import { PricingModeProvider } from '@/lib/context/PricingModeContext'
 import { FloatingEnquiryBadge } from '@/components/public/FloatingEnquiryBadge'
 import { LocalBusinessSchema } from '@/lib/seo/structured-data'
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
 
 export default function PublicLayout({
   children,
@@ -29,6 +30,7 @@ export default function PublicLayout({
           <Footer />
           <MobileBottomNav />
           <FloatingEnquiryBadge />
+          <GoogleAnalytics />
         </div>
       </EnquiryBasketProvider>
     </PricingModeProvider>

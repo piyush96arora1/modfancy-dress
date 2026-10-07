@@ -8,6 +8,7 @@ import {
   getProductsForCategoryCached,
 } from '@/lib/supabase/cached-queries'
 import { AddToCartButton } from '@/components/public/AddToCartButton'
+import { TrackViewItem } from '@/components/analytics/TrackViewItem'
 import { ProductGallery } from '@/components/public/ProductGallery'
 import { RelatedProducts } from '@/components/public/RelatedProducts'
 import { getProductCategoriesCached } from '@/lib/supabase/related-queries'
@@ -191,6 +192,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-4 leading-tight">{productData.name}</h1>
 
+            <TrackViewItem
+              item={{
+                item_id: productData.id,
+                item_name: productData.name,
+                item_category: productData.category?.name,
+                price: productData.price ?? undefined,
+              }}
+              hasRent={productData.rent_price != null}
+            />
+
             {/* Add to Cart */}
             <div className="mb-6">
               <AddToCartButton
@@ -212,6 +223,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Connect on WhatsApp — desktop only; mobile uses the FAB */}
             <a
               href={whatsappUrl(waBuyMessage)}
+              data-cta="pdp_buy"
+              data-item-id={productData.id}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center justify-center gap-2 w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-[#1B2A4A] font-semibold text-sm transition-colors mb-4"
@@ -241,6 +254,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </div>
                   <a
                     href={whatsappUrl(waRentMessage)}
+                    data-cta="pdp_rent"
+                    data-item-id={productData.id}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg bg-[#25D366] hover:bg-[#20BD5A] text-[#1B2A4A] text-xs font-semibold transition-colors touch-manipulation"

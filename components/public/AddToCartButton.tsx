@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Check } from 'lucide-react'
 import type { ProductWithDetails, ProductVariant, PricingMode } from '@/types/database'
+import { ecommerce, track } from '@/lib/analytics/gtag'
 import { getProductPrice, getVariantPrice, getSavingsPercent, formatPrice } from '@/lib/utils/pricing'
 
 interface AddToCartButtonProps {
@@ -87,6 +88,17 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
         quantity,
         size: selectedSize || undefined,
         color: selectedColor || undefined,
+      })
+
+      track('add_to_cart', {
+        ...ecommerce([{
+          item_id: product.id,
+          item_name: product.name,
+          item_variant: [selectedSize, selectedColor].filter(Boolean).join(' / ') || undefined,
+          price: currentPrice,
+          quantity,
+        }]),
+        pricing_mode: pricingMode,
       })
 
       setSelectedSize('')
