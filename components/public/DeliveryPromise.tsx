@@ -26,7 +26,7 @@ import { PincodeChecker } from '@/components/public/PincodeChecker'
  */
 export function DeliveryPromise({ productName, productUrl }: { productName: string; productUrl: string }) {
   return (
-    <div className="rounded-xl border border-[#E8E5E0] bg-white divide-y divide-[#E8E5E0]">
+    <div id="delivery-promise" className="rounded-xl border border-[#E8E5E0] bg-white divide-y divide-[#E8E5E0]">
       <PincodeChecker productName={productName} productUrl={productUrl} />
 
       <div className="flex items-start gap-3 px-4 py-2.5">
