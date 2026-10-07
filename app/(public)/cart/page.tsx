@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Trash2, ShoppingBag, ChevronRight, Check } from 'lucide-react'
+import { estimateDelivery, estimateLabel, readSavedPincode, savePincode, normalisePincode } from '@/lib/delivery/pincode'
 
 /**
  * Generate a client-side UUID for the order so we don't need to read the row
@@ -41,8 +42,20 @@ export default function CartPage() {
     shippingAddress: '',
     shippingCity: '',
     shippingPincode: '',
+    eventDate: '',
   })
   const router = useRouter()
+
+  // Carry over the pincode checked on a product page. The field is fixed-size,
+  // so filling it after mount moves nothing.
+  useEffect(() => {
+    const saved = readSavedPincode()
+    if (saved) setFormData((f) => (f.shippingPincode ? f : { ...f, shippingPincode: saved }))
+  }, [])
+
+  const deliveryEstimate = estimateDelivery(formData.shippingPincode)
+  // Today in IST, the earliest selectable event date.
+  const today = new Date(Date.now() + 330 * 60_000).toISOString().slice(0, 10)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,6 +80,10 @@ export default function CartPage() {
             address: formData.shippingAddress,
             city: formData.shippingCity,
             pincode: formData.shippingPincode,
+            ...(formData.eventDate ? { event_date: formData.eventDate } : {}),
+            ...(deliveryEstimate.kind !== 'invalid'
+              ? { delivery_estimate: estimateLabel(deliveryEstimate) }
+              : {}),
           },
           total_amount: totalAmount,
           status: 'pending',
@@ -96,6 +113,7 @@ export default function CartPage() {
 
       if (itemsError) throw itemsError
 
+      if (deliveryEstimate.kind !== 'invalid') savePincode(normalisePincode(formData.shippingPincode))
       clearCart()
       setOrderSuccess(orderNumber)
     } catch (error) {
@@ -282,11 +300,37 @@ export default function CartPage() {
                   <Input
                     id="shippingPincode"
                     required
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    maxLength={6}
+                    pattern="[1-9][0-9]{5}"
                     value={formData.shippingPincode}
-                    onChange={(e) => setFormData({ ...formData, shippingPincode: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, shippingPincode: normalisePincode(e.target.value) })}
+                    aria-describedby="delivery-estimate"
                     className="h-9 text-sm"
                   />
                 </div>
+              </div>
+
+              {/* Reserved line: always rendered so typing a pincode never reflows the form. */}
+              <p id="delivery-estimate" aria-live="polite" className="min-h-[1rem] text-xs leading-4 text-[#6B6B6B]">
+                {deliveryEstimate.kind === 'same-day' && (
+                  <span className="text-emerald-700 font-medium">{estimateLabel(deliveryEstimate)}</span>
+                )}
+                {deliveryEstimate.kind === 'india' && <>Delivery: {estimateLabel(deliveryEstimate)}</>}
+              </p>
+
+              <div>
+                <Label htmlFor="eventDate" className="text-xs">Event date (optional)</Label>
+                <Input
+                  id="eventDate"
+                  type="date"
+                  min={today}
+                  value={formData.eventDate}
+                  onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+                  className="h-9 text-sm"
+                />
+                <p className="text-[11px] text-[#6B6B6B] mt-1">So we can dispatch in time for your function.</p>
               </div>
 
               <Button type="submit" size="lg" className="w-full mt-2" loading={isSubmitting} disabled={isSubmitting}>

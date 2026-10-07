@@ -206,7 +206,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 inserted above pushes both down. Static server markup, so it costs no CLS
                 and no INP. Mirrors offers.shippingDetails in the Product schema. */}
             <div className="mb-4">
-              <DeliveryPromise />
+              <DeliveryPromise productName={productData.name} productUrl={productPageUrl} />
             </div>
 
             {/* Connect on WhatsApp — desktop only; mobile uses the FAB */}
