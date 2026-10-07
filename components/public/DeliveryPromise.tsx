@@ -1,4 +1,5 @@
 import { Truck, Package, Globe } from 'lucide-react'
+import { PincodeChecker } from '@/components/public/PincodeChecker'
 
 /**
  * Delivery expectations on the product page.
@@ -18,10 +19,16 @@ import { Truck, Package, Globe } from 'lucide-react'
  * The wording here is load-bearing: `productSchema` in lib/seo/structured-data.tsx
  * emits the same promise as `offers.shippingDetails`, and Google requires the
  * markup to match the visible page. Change one and change the other.
+ *
+ * The pincode checker on top is the one client island. It is opt-in rather than
+ * geo-detected for the reason above: its form renders server-side at full size
+ * and only a user's submit adds a result. See PincodeChecker for the contract.
  */
-export function DeliveryPromise() {
+export function DeliveryPromise({ productName, productUrl }: { productName: string; productUrl: string }) {
   return (
     <div className="rounded-xl border border-[#E8E5E0] bg-white divide-y divide-[#E8E5E0]">
+      <PincodeChecker productName={productName} productUrl={productUrl} />
+
       <div className="flex items-start gap-3 px-4 py-2.5">
         <Truck className="w-4 h-4 mt-0.5 shrink-0 text-[#8F6240]" aria-hidden="true" />
         <p className="text-xs leading-relaxed text-[#6B6B6B]">

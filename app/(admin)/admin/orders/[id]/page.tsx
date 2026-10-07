@@ -126,6 +126,22 @@ export default function OrderDetailPage() {
                 {(order.shipping_address as any).country && (
                   <div>{(order.shipping_address as any).country}</div>
                 )}
+                {order.shipping_address.event_date && (
+                  <div className="mt-2 text-[#1B2A4A]">
+                    <strong>Event date:</strong>{' '}
+                    {new Date(`${order.shipping_address.event_date}T00:00:00`).toLocaleDateString('en-IN', {
+                      weekday: 'short',
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </div>
+                )}
+                {order.shipping_address.delivery_estimate && (
+                  <div className="text-[#1B2A4A]">
+                    <strong>Delivery promised:</strong> {order.shipping_address.delivery_estimate}
+                  </div>
+                )}
               </div>
             )}
           </div>
