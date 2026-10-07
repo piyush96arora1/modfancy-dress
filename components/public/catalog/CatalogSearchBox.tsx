@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { track } from '@/lib/analytics/gtag'
 import { useState } from 'react'
 import { Search } from 'lucide-react'
 
@@ -19,6 +20,7 @@ export function CatalogSearchBox({
     <form
       onSubmit={(e) => {
         e.preventDefault()
+        if (!tooShort) track('search', { search_term: q.trim(), search_source: 'catalog' })
         if (!tooShort) router.push(`/catalog/search?q=${encodeURIComponent(q.trim())}`)
       }}
       className="relative w-full max-w-xl"

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { setUserProperties, track } from '@/lib/analytics/gtag'
 import { Store, Package } from 'lucide-react'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
 import type { PricingMode } from '@/types/database'
@@ -14,6 +15,13 @@ interface PricingModeToggleProps {
 export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeToggleProps) {
     const { setMode } = usePricingMode()
 
+    const choose = (mode: PricingMode) => {
+        setMode(mode)
+        if (mode === currentMode) return
+        setUserProperties({ pricing_mode: mode })
+        track('pricing_mode_toggle', { pricing_mode: mode })
+    }
+
     const retailHref = basePath?.startsWith('/category') ? basePath : (basePath ? `/products${basePath}` : '/products')
     const wholesaleHref = basePath?.startsWith('/category') ? `/wholesale${basePath}` : (basePath ? `/wholesale${basePath}` : '/wholesale')
 
@@ -21,7 +29,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
         <div className="inline-flex items-center rounded-xl border border-[#E8E5E0] p-1 bg-white" style={{ boxShadow: 'var(--shadow-xs)' }}>
             <Link
                 href={retailHref}
-                onClick={() => setMode('retail')}
+                onClick={() => choose('retail')}
                 className={`
           flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg text-sm font-medium transition-all duration-200
           ${currentMode === 'retail'
@@ -35,7 +43,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
             </Link>
             <Link
                 href={wholesaleHref}
-                onClick={() => setMode('wholesale')}
+                onClick={() => choose('wholesale')}
                 className={`
           flex items-center justify-center gap-1.5 min-h-[44px] px-4 rounded-lg text-sm font-medium transition-all duration-200
           ${currentMode === 'wholesale'

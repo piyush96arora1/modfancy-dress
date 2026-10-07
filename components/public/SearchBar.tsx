@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, useTransition } from 'react'
+import { track } from '@/lib/analytics/gtag'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -109,6 +110,7 @@ export function SearchBar({ variant = 'default', onNavigate }: SearchBarProps) {
     e.preventDefault()
     const trimmedQuery = query.trim()
     if (trimmedQuery) {
+      track('search', { search_term: trimmedQuery, search_source: 'header' })
       setIsOpen(false)
       startTransition(() => {
         const category = searchParams.get('category')
