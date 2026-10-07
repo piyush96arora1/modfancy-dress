@@ -1,11 +1,10 @@
 'use client'
 
-import Script from 'next/script'
 import { useEffect } from 'react'
-import { GA_MEASUREMENT_ID, inferLeadIntent, track } from '@/lib/analytics/gtag'
+import { GA_MEASUREMENT_ID, initGtag, inferLeadIntent, track } from '@/lib/analytics/gtag'
 
 /**
- * Loads gtag.js and tracks WhatsApp / phone clicks site-wide.
+ * Loads gtag.js (deferred, see below) and tracks WhatsApp / phone clicks site-wide.
  *
  * The wa.me and tel: links live in ~15 server-rendered pages (city pages, wholesale pages,
  * PDP, footer…). One delegated listener covers all of them without turning those pages into
@@ -17,6 +16,7 @@ import { GA_MEASUREMENT_ID, inferLeadIntent, track } from '@/lib/analytics/gtag'
 export function GoogleAnalytics() {
   useEffect(() => {
     if (!GA_MEASUREMENT_ID) return
+    initGtag()
     const onClick = (e: MouseEvent) => {
       const link = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null
       if (!link) return
@@ -37,23 +37,30 @@ export function GoogleAnalytics() {
       track(isWhatsApp ? 'whatsapp_click' : 'phone_click', params)
     }
     document.addEventListener('click', onClick, { capture: true })
-    return () => document.removeEventListener('click', onClick, { capture: true })
+
+    // gtag.js is ~500 KB of JS to parse. Fetch it on the first interaction, or 5 s after
+    // mount, so it never lands inside LCP or the initial main-thread work (TBT/INP).
+    // Everything tracked before then waits in dataLayer and is replayed on load.
+    const triggers = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const
+    let loaded = false
+    const load = () => {
+      if (loaded) return
+      loaded = true
+      triggers.forEach((t) => window.removeEventListener(t, load))
+      const s = document.createElement('script')
+      s.async = true
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`
+      document.head.appendChild(s)
+    }
+    triggers.forEach((t) => window.addEventListener(t, load, { once: true, passive: true }))
+    const timer = setTimeout(load, 5000)
+
+    return () => {
+      document.removeEventListener('click', onClick, { capture: true })
+      triggers.forEach((t) => window.removeEventListener(t, load))
+      clearTimeout(timer)
+    }
   }, [])
 
-  if (!GA_MEASUREMENT_ID) return null
-
-  return (
-    <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="ga4-init" strategy="afterInteractive">
-        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
-try{var m=localStorage.getItem('modfancy_pricing_mode');if(m)gtag('set','user_properties',{pricing_mode:m});}catch(e){}
-gtag('config','${GA_MEASUREMENT_ID}');`}
-      </Script>
-    </>
-  )
+  return null
 }
