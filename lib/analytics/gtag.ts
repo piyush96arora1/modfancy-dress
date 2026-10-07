@@ -1,8 +1,8 @@
 /**
  * GA4 event helpers. Measurement plan: docs/analytics/ga4-measurement-plan.md
  *
- * Every call is a no-op until gtag has loaded (dev, ad-blockers, admin pages), so
- * callers never need to guard. Never pass name, phone, email or address — GA4 bans PII.
+ * Calls queue until gtag.js loads, and are dropped harmlessly if it never does (ad-blockers),
+ * so callers never need to guard. Never pass name, phone, email or address — GA4 bans PII.
  */
 
 // A measurement ID is public (it ships in every page's HTML), so the fallback lives in code.
@@ -20,11 +20,37 @@ export interface GaItem {
   quantity?: number
 }
 
-type GtagFn = (command: 'event' | 'set' | 'config', name: string | object, params?: object) => void
+type GtagFn = (...args: unknown[]) => void
+type GaWindow = Window & { dataLayer?: unknown[]; gtag?: GtagFn }
 
+/**
+ * Sets up the dataLayer queue and config the first time anything is tracked. gtag.js itself
+ * loads lazily (idle time, see GoogleAnalytics.tsx) and replays this queue in order, so no
+ * event is lost while the ~500 KB script is still waiting — and it never competes with LCP.
+ */
 function gtag(): GtagFn | null {
-  if (typeof window === 'undefined') return null
-  return (window as unknown as { gtag?: GtagFn }).gtag ?? null
+  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID) return null
+  const w = window as GaWindow
+  if (!w.gtag) {
+    w.dataLayer = w.dataLayer || []
+    // gtag.js only accepts the `arguments` object, not an array.
+    w.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params
+      w.dataLayer!.push(arguments)
+    }
+    w.gtag('js', new Date())
+    try {
+      const mode = localStorage.getItem('modfancy_pricing_mode')
+      if (mode) w.gtag('set', 'user_properties', { pricing_mode: mode })
+    } catch {}
+    w.gtag('config', GA_MEASUREMENT_ID)
+  }
+  return w.gtag
+}
+
+/** Queues config (and so the page_view). Called once from GoogleAnalytics on mount. */
+export function initGtag(): void {
+  gtag()
 }
 
 export function track(event: string, params: Record<string, unknown> = {}): void {
