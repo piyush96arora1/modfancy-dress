@@ -4183,5 +4183,25 @@
     "source": "/wholesale/harry-poter-fancy-dress",
     "destination": "/wholesale/harry-potter-fancy-dress",
     "permanent": true
+  },
+  {
+    "source": "/products/manthra-fancy-dress",
+    "destination": "/products/manthara-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/manthra-fancy-dress",
+    "destination": "/wholesale/manthara-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/dandiya-lehnga",
+    "destination": "/products/mustard-peacock-print-dandiya-lehenga",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/dandiya-lehnga",
+    "destination": "/wholesale/mustard-peacock-print-dandiya-lehenga",
+    "permanent": true
   }
 ]
