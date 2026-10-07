@@ -2,6 +2,9 @@
 
 Property: **Mod Fancy Dresses - modfancydress.com** (GA account "Personal Account", 125638606; property 558057919), IST, INR.
 Web stream "modfancydress.com web" (16062859248), Measurement ID **G-WEKY2VM8CJ**.
+Performance: gtag.js (~500 KB) is fetched on first scroll/tap/key or after 5 s; events queue in dataLayer
+until then. Lighthouse mobile TBT with GA matched no-GA runs (8 Oct 2026).
+
 Code: `lib/analytics/gtag.ts`, `components/analytics/`. Loaded in `app/(public)/layout.tsx` only — admin never reports.
 
 ## North star
@@ -41,10 +44,10 @@ To name a CTA's placement, add `data-cta="…"` (and `data-item-id`) to the link
 
 ## GA4 Admin checklist
 
-- [ ] Data retention → **14 months** (year-on-year Navratri comparison)
+- [x] Data retention → **14 months** (year-on-year Navratri comparison)
 - [ ] Enhanced measurement: keep page views, scrolls, outbound clicks, file downloads; **turn off** site search and form interactions
-- [ ] Key events: `purchase`, `generate_lead`, `whatsapp_click`, `phone_click`
-- [ ] Custom dimensions (event): `lead_intent`, `cta_location`, `search_source`, `lead_channel`; (user) `pricing_mode`
+- [ ] Key events: `purchase`, `generate_lead`, `whatsapp_click`, `phone_click` — star them in Admin → Events once each appears (≤24h after first hit in production)
+- [x] Custom dimensions (event): `lead_intent`, `cta_location`, `search_source`, `lead_channel`; (user) `pricing_mode`
 - [ ] Internal traffic: shop IP(s) → define + activate the filter
 - [ ] Link Search Console (Admin → Product links)
 - [ ] UTMs: GBP website button `?utm_source=google&utm_medium=organic_local&utm_campaign=gbp_website`;
