@@ -374,6 +374,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* WhatsApp FAB — mobile only, sits above bottom nav */}
       <a
         href={whatsappUrl(waBuyMessage)}
+        data-cta="pdp_fab"
+        data-item-id={productData.id}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed right-4 bottom-[4.5rem] z-40 md:hidden flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-[#1B2A4A] shadow-lg shadow-[#25D366]/30 active:scale-95 transition-transform"

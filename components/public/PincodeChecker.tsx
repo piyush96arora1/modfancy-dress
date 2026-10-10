@@ -102,6 +102,7 @@ export function PincodeChecker({ productName, productUrl }: { productName: strin
               </p>
               <a
                 href={whatsappUrl(waText(`Hi, I need "${productName}" delivered today.`))}
+                data-cta="pincode_same_day"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-[#1B2A4A] underline underline-offset-2 hover:text-[#8F6240]"
@@ -124,6 +125,7 @@ export function PincodeChecker({ productName, productUrl }: { productName: strin
               </p>
               <a
                 href={whatsappUrl(waText(`Hi, I need "${productName}" today. I'll book my own Rapido/Porter pickup.`))}
+                data-cta="pincode_self_pickup"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-[#1B2A4A] underline underline-offset-2 hover:text-[#8F6240]"
@@ -146,6 +148,7 @@ export function PincodeChecker({ productName, productUrl }: { productName: strin
               </p>
               <a
                 href={whatsappUrl(waText(`Hi, I need "${productName}" urgently. My event date is: `))}
+                data-cta="pincode_urgent"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-[#1B2A4A] underline underline-offset-2 hover:text-[#8F6240]"
