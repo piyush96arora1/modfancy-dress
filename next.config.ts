@@ -18,12 +18,13 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // GA4 domains per Google's CSP guide: developers.google.com/tag-platform/security/guides/csp
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com",
+      // Meta Pixel: fbevents.js from connect.facebook.net, beacons to www.facebook.com.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://connect.facebook.net",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://maps.google.com https://maps.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com",
+      "img-src 'self' data: blob: https://*.supabase.co https://maps.google.com https://maps.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com",
       "frame-src https://maps.google.com https://www.google.com",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
     ].join('; '),
   },
 ]

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { GA_MEASUREMENT_ID, initGtag, inferLeadIntent, track } from '@/lib/analytics/gtag'
+import { FBEVENTS_SRC, META_PIXEL_ID, initFbq } from '@/lib/analytics/metaPixel'
 
 /**
  * Loads gtag.js (deferred, see below) and tracks WhatsApp / phone clicks site-wide.
@@ -11,12 +12,15 @@ import { GA_MEASUREMENT_ID, initGtag, inferLeadIntent, track } from '@/lib/analy
  * client components. A link can name its placement with data-cta="pdp_rent"; otherwise the
  * path is used.
  *
- * Mounted in the (public) layout only, so admin traffic never reaches GA.
+ * Also loads the Meta Pixel the same deferred way; track() feeds both (see metaPixel.ts).
+ *
+ * Mounted in the (public) layout only, so admin traffic never reaches GA or Meta.
  */
 export function GoogleAnalytics() {
   useEffect(() => {
     if (!GA_MEASUREMENT_ID) return
     initGtag()
+    initFbq()
     const onClick = (e: MouseEvent) => {
       const link = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null
       if (!link) return
@@ -51,6 +55,12 @@ export function GoogleAnalytics() {
       s.async = true
       s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`
       document.head.appendChild(s)
+      if (META_PIXEL_ID) {
+        const fb = document.createElement('script')
+        fb.async = true
+        fb.src = FBEVENTS_SRC
+        document.head.appendChild(fb)
+      }
     }
     triggers.forEach((t) => window.addEventListener(t, load, { once: true, passive: true }))
     const timer = setTimeout(load, 5000)

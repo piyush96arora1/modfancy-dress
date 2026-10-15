@@ -83,9 +83,7 @@ export function generatePageMetadata({
   path?: string
   image?: string
   type?: 'website' | 'product' | 'article'
-  verification?: {
-    google?: string
-  }
+  verification?: Metadata['verification']
   /**
    * Page-specific keywords, most important first. They are emitted ahead of a
    * short brand tail; pass nothing and the page keeps the site-wide list.
@@ -104,7 +102,9 @@ export function generatePageMetadata({
   return {
     title: fullTitle,
     description: fullDescription,
-    verification,
+    // Omit the key when unset: an explicit `verification: undefined` on a page wipes the
+    // root layout's tags, so the homepage would lose them.
+    ...(verification && { verification }),
     keywords: resolveKeywords(keywords),
     authors: [{ name: siteName }],
     creator: siteName,

@@ -23,6 +23,8 @@ export const metadata: Metadata = generatePageMetadata({
   path: "/",
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    // Meta Business portfolio "Mod Fancy Dresses" domain verification. Public token.
+    other: { 'facebook-domain-verification': '9h33r8i3urypo3jwrb8opk73nwwvbp' },
   },
 });
 

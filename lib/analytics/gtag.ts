@@ -5,6 +5,8 @@
  * so callers never need to guard. Never pass name, phone, email or address — GA4 bans PII.
  */
 
+import { trackMeta } from './metaPixel'
+
 // A measurement ID is public (it ships in every page's HTML), so the fallback lives in code.
 // The env var exists only to point a preview deployment at a separate property.
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-WEKY2VM8CJ'
@@ -55,6 +57,7 @@ export function initGtag(): void {
 
 export function track(event: string, params: Record<string, unknown> = {}): void {
   gtag()?.('event', event, params)
+  trackMeta(event, params)
 }
 
 export function setUserProperties(props: Record<string, unknown>): void {
