@@ -26,6 +26,8 @@ split by intent (buy / rent / wholesale) and by festival season.
 | `page_view` | gtag config + enhanced measurement (history changes) | — | |
 | `view_item` | `components/analytics/TrackViewItem.tsx` on `/products/[slug]` | items, `has_rent` | |
 | `add_to_cart` | `AddToCartButton.tsx` | items, value, `pricing_mode` | |
+| `view_cart` | `app/(public)/cart/page.tsx` on load with items | items, value | |
+| `begin_checkout` | `app/(public)/cart/page.tsx`, first focus in the order form (cart + form are one page) | items, value | |
 | `add_to_wishlist` | `AddToEnquiryButton.tsx` (wholesale enquiry basket) | items, value, `lead_intent=wholesale` | |
 | `purchase` | `app/(public)/cart/page.tsx` after the order rows insert | `transaction_id` = ORD-…, items, value | **yes** |
 | `generate_lead` | `WholesaleEnquiryForm.tsx`, `wholesale/enquiry/page.tsx` after a 200 | items, value, `lead_intent`, `lead_channel=form`, `cta_location` | **yes** |
@@ -39,7 +41,7 @@ To name a CTA's placement, add `data-cta="…"` (and `data-item-id`) to the link
 **Never send name, phone, email or address.**
 
 ### Next to add (not yet wired)
-`view_item_list` / `select_item` (ProductGrid, ProductCard), `view_cart` / `begin_checkout` (cart page),
+`view_item_list` / `select_item` (ProductGrid, ProductCard),
 `results_count` on search (zero-result searches = inventory gaps).
 
 ## GA4 Admin checklist

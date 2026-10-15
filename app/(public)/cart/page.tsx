@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -46,6 +46,30 @@ export default function CartPage() {
     eventDate: '',
   })
   const router = useRouter()
+  const checkoutTracked = useRef(false)
+
+  const gaItems = () =>
+    ecommerce(items.map((item) => ({
+      item_id: item.productId,
+      item_name: item.name,
+      item_variant: [item.size, item.color].filter(Boolean).join(' / ') || undefined,
+      price: item.price,
+      quantity: item.quantity,
+    })))
+
+  // Funnel step between add_to_cart and begin_checkout. Once per visit to the page.
+  const hasItems = items.length > 0
+  useEffect(() => {
+    if (hasItems) track('view_cart', gaItems())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasItems])
+
+  // Cart and form share this page, so the first tap into the form is the checkout start.
+  const handleFormFocus = () => {
+    if (checkoutTracked.current) return
+    checkoutTracked.current = true
+    track('begin_checkout', gaItems())
+  }
 
   // Carry over the pincode checked on a product page. The field is fixed-size,
   // so filling it after mount moves nothing.
@@ -117,16 +141,7 @@ export default function CartPage() {
       if (deliveryEstimate.kind !== 'invalid') savePincode(normalisePincode(formData.shippingPincode))
 
       // Order details only — never the customer's name, phone or address.
-      track('purchase', {
-        transaction_id: orderNumber,
-        ...ecommerce(items.map((item) => ({
-          item_id: item.productId,
-          item_name: item.name,
-          item_variant: [item.size, item.color].filter(Boolean).join(' / ') || undefined,
-          price: item.price,
-          quantity: item.quantity,
-        }))),
-      })
+      track('purchase', { transaction_id: orderNumber, ...gaItems() })
       clearCart()
       setOrderSuccess(orderNumber)
     } catch (error) {
@@ -250,7 +265,7 @@ export default function CartPage() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} onFocusCapture={handleFormFocus} className="space-y-3">
               <div>
                 <Label htmlFor="customerName" className="text-xs">Name *</Label>
                 <Input
