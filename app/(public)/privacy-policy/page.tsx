@@ -12,12 +12,12 @@ export default function PrivacyPolicyPage() {
       <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] mb-6 font-[family-name:var(--font-outfit)]">
         Privacy Policy
       </h1>
-      <p className="text-sm text-[#6B6B6B] mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-[#6B6B6B] mb-8">Last updated: October 2026</p>
 
       <div className="space-y-6 text-[#6B6B6B] text-sm leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Information We Collect</h2>
-          <p>When you contact us via WhatsApp, phone, or our enquiry form, we collect your name and contact details to process your order or enquiry. We do not collect payment information directly — all payments are handled in person or via standard payment methods.</p>
+          <p>When you place an order or contact us via WhatsApp, phone, or our enquiry form, we collect your name, mobile number, delivery address and (optionally) email to process your order or enquiry. Online payments are processed by Cashfree Payments; we never see or store your card details, UPI PIN or bank login — we only receive the payment status and reference number.</p>
         </section>
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">How We Use Your Information</h2>

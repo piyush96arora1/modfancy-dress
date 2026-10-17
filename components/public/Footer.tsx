@@ -136,13 +136,21 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-5 border-t border-white/10 text-center">
-          <div className="flex items-center justify-center gap-4 mb-2">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mb-2">
             <Link href="/privacy-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Privacy Policy
             </Link>
             <span className="text-white/20">·</span>
             <Link href="/returns" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Returns &amp; Refunds
+            </Link>
+            <span className="text-white/20">·</span>
+            <Link href="/shipping-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Shipping
+            </Link>
+            <span className="text-white/20">·</span>
+            <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Terms
             </Link>
           </div>
           <p className="text-xs text-white/40">

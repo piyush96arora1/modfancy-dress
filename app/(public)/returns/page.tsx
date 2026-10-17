@@ -13,12 +13,16 @@ export default function ReturnsPage() {
       <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] mb-6 font-[family-name:var(--font-outfit)]">
         Returns &amp; Refund Policy
       </h1>
-      <p className="text-sm text-[#6B6B6B] mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-[#6B6B6B] mb-8">Last updated: October 2026</p>
 
       <div className="space-y-6 text-[#6B6B6B] text-sm leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Purchase Returns</h2>
           <p>Costumes that are unworn and in original condition may be exchanged within 7 days of purchase. Please bring the item to our store with proof of purchase. We do not offer cash refunds on purchased items — store credit or exchange only.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Prepaid Online Orders</h2>
+          <p>If you paid online, you can cancel for a full refund any time before your order is dispatched or handed over — just WhatsApp us your order number. If an item you paid for turns out to be unavailable, we refund it in full. Refunds go back to your original payment method: UPI usually within 5 working days, cards within 7 working days. After delivery, the exchange policy above applies.</p>
         </section>
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Rental Deposits</h2>
