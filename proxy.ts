@@ -41,7 +41,7 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if (user.user_metadata?.role !== 'admin') {
+    if (user.app_metadata?.role !== 'admin') {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }

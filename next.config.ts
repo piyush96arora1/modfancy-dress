@@ -19,12 +19,15 @@ const securityHeaders = [
       "default-src 'self'",
       // GA4 domains per Google's CSP guide: developers.google.com/tag-platform/security/guides/csp
       // Meta Pixel: fbevents.js from connect.facebook.net, beacons to www.facebook.com.
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://connect.facebook.net",
+      // Cashfree checkout (loaded on the Pay tap only): sdk.cashfree.com serves the script, the
+      // api/sandbox hosts take the SDK pings. No form-action directive on purpose: Chrome applies
+      // it to the redirect chain after the checkout form POST, which ends on bank 3-D Secure pages.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://connect.facebook.net https://sdk.cashfree.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://*.supabase.co https://maps.google.com https://maps.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com",
-      "frame-src https://maps.google.com https://www.google.com",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
+      "frame-src https://maps.google.com https://www.google.com https://sdk.cashfree.com https://api.cashfree.com https://sandbox.cashfree.com https://payments.cashfree.com https://payments-test.cashfree.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com https://connect.facebook.net https://sdk.cashfree.com https://api.cashfree.com https://sandbox.cashfree.com",
     ].join('; '),
   },
 ]

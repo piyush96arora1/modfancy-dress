@@ -6,7 +6,7 @@ export async function isAdmin() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  return user?.user_metadata?.role === 'admin'
+  return user?.app_metadata?.role === 'admin'
 }
 
 export async function getCurrentUser() {

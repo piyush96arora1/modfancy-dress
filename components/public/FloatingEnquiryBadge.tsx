@@ -2,12 +2,15 @@
 
 import Link from 'next/link'
 import { useEnquiryBasket } from '@/lib/context/EnquiryBasketContext'
+import { usePathname } from 'next/navigation'
 import { Package } from 'lucide-react'
 
 export function FloatingEnquiryBadge() {
     const { itemCount } = useEnquiryBasket()
+    const pathname = usePathname()
 
-    if (itemCount === 0) return null
+    // Would sit on top of the checkout pay bar.
+    if (itemCount === 0 || pathname === '/cart') return null
 
     return (
         <Link

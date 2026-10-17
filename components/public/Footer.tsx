@@ -152,6 +152,10 @@ export function Footer() {
             <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Terms
             </Link>
+            <span className="text-white/20">·</span>
+            <Link href="/track" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+              Track order
+            </Link>
           </div>
           <p className="text-xs text-white/40">
             &copy; {new Date().getFullYear()} Mod Fancy Dress. All rights reserved.

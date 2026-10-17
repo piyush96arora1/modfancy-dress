@@ -8,6 +8,8 @@ interface CartState {
   removeItem: (productId: string, variantId?: string) => void
   updateQuantity: (productId: string, variantId: string | undefined, quantity: number) => void
   clearCart: () => void
+  /** Replace stored prices with the server's (checkout found they changed). */
+  syncPrices: (prices: { productId: string; variantId: string | null; price: number }[]) => void
   getTotal: () => number
   getItemCount: () => number
 }
@@ -53,6 +55,14 @@ export const useCart = create<CartState>()(
         set({ items })
       },
       clearCart: () => set({ items: [] }),
+      syncPrices: (prices) => {
+        set({
+          items: get().items.map((item) => {
+            const p = prices.find((x) => x.productId === item.productId && (x.variantId ?? undefined) === item.variantId)
+            return p ? { ...item, price: p.price } : item
+          }),
+        })
+      },
       getTotal: () => {
         return get().items.reduce((total, item) => total + item.price * item.quantity, 0)
       },

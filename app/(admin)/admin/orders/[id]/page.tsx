@@ -75,10 +75,122 @@ export default function OrderDetailPage() {
               </span>
             </div>
             <div>
+              <span className="text-gray-600">Products:</span>
+              <span className="ml-2">
+                ₹{Number(order.items_subtotal ?? Number(order.total_amount) - Number(order.delivery_fee ?? 0)).toFixed(2)}
+              </span>
+            </div>
+            <div>
+              <span className="text-gray-600">Delivery charge:</span>
+              <span className="ml-2">
+                {Number(order.delivery_fee ?? 0) > 0
+                  ? `₹${Number(order.delivery_fee).toFixed(2)}`
+                  : order.delivery_method === 'porter'
+                    ? '₹0 online (customer pays the rider)'
+                    : order.delivery_method === 'pickup'
+                      ? '₹0 (shop pickup)'
+                      : '—'}
+              </span>
+            </div>
+            <div>
               <span className="text-gray-600">Total:</span>
               <span className="ml-2 font-bold">₹{order.total_amount.toFixed(2)}</span>
             </div>
+            <div>
+              <span className="text-gray-600">Amount received online:</span>
+              <span className="ml-2 font-bold">
+                {order.payment_status === 'paid' ? `₹${Number(order.paid_amount ?? order.total_amount).toFixed(2)}` : '₹0 (not paid online)'}
+              </span>
+            </div>
           </div>
+        </div>
+
+        <div>
+          <h2 className="font-semibold mb-2">Payment &amp; Delivery</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+            <div>
+              <span className="text-gray-600">Payment:</span>
+              <span className="ml-2 font-medium">
+                {order.payment_status === 'paid'
+                  ? `Paid online ₹${Number(order.paid_amount ?? order.total_amount).toFixed(0)}${order.payment_group ? ` (${order.payment_group})` : ''}`
+                  : order.payment_status === 'awaiting_payment'
+                    ? 'Awaiting online payment'
+                    : order.payment_status === 'failed'
+                      ? 'Online payment failed'
+                      : order.payment_status === 'refunded'
+                        ? 'Refunded'
+                        : 'Pay later — confirm on WhatsApp'}
+              </span>
+            </div>
+            {order.paid_at && (
+              <div>
+                <span className="text-gray-600">Paid at:</span>
+                <span className="ml-2">{new Date(order.paid_at).toLocaleString('en-IN')}</span>
+              </div>
+            )}
+            {order.cf_payment_id && (
+              <div>
+                <span className="text-gray-600">Cashfree payment ID:</span>
+                <span className="ml-2 font-mono text-xs">{order.cf_payment_id}</span>
+              </div>
+            )}
+            <div>
+              <span className="text-gray-600">Delivery:</span>
+              <span className="ml-2 font-medium">
+                {order.delivery_method === 'porter'
+                  ? 'Same-day Porter — customer pays the rider'
+                  : order.delivery_method === 'pickup'
+                    ? 'Pickup from shop'
+                    : order.delivery_method === 'courier'
+                      ? `Courier (₹${Number(order.delivery_fee ?? 0).toFixed(0)} charged)`
+                      : '—'}
+              </span>
+            </div>
+          </div>
+          {order.customer_phone && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {order.delivery_method === 'porter' && (
+                <a
+                  href={whatsappChatUrl(order.customer_phone, `Hi ${order.customer_name}, your Mod Fancy Dress order ${order.order_number} is packed. The Porter fare is ₹___ — please pay the rider on delivery. Thank you!`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] text-[#1B2A4A] text-sm font-medium"
+                >
+                  <WhatsAppIcon className="w-4 h-4" /> Send Porter fare
+                </a>
+              )}
+              {order.delivery_method === 'pickup' && (
+                <a
+                  href={whatsappChatUrl(order.customer_phone, `Hi ${order.customer_name}, your Mod Fancy Dress order ${order.order_number} is ready to pick up at our Krishna Nagar shop (S64, South Anarkali, Som Bazar). See you soon!`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] text-[#1B2A4A] text-sm font-medium"
+                >
+                  <WhatsAppIcon className="w-4 h-4" /> Ready for pickup
+                </a>
+              )}
+              {order.delivery_method === 'courier' && (
+                <a
+                  href={whatsappChatUrl(order.customer_phone, `Hi ${order.customer_name}, your Mod Fancy Dress order ${order.order_number} has shipped. Tracking: ___`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#25D366] text-[#1B2A4A] text-sm font-medium"
+                >
+                  <WhatsAppIcon className="w-4 h-4" /> Shipped message
+                </a>
+              )}
+              {order.payment_method === 'pay_later' && order.payment_status !== 'paid' && (
+                <a
+                  href={whatsappChatUrl(order.customer_phone, `Hi ${order.customer_name}, thank you for your order ${order.order_number} (₹${Number(order.total_amount).toFixed(0)}). It's available — `)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#25D366] text-[#1B2A4A] text-sm font-medium"
+                >
+                  <WhatsAppIcon className="w-4 h-4" /> Confirm order
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

@@ -1,3 +1,4 @@
+import { COURIER_FEE } from '@/lib/delivery/config'
 import { Truck, Package, Globe } from 'lucide-react'
 import { PincodeChecker } from '@/components/public/PincodeChecker'
 
@@ -54,8 +55,9 @@ export function DeliveryPromise({ productName, productUrl }: { productName: stri
       </div>
 
       <p className="px-4 py-2.5 text-xs leading-relaxed text-[#6B6B6B]">
-        Shipping charges are extra according to location. Unworn items can be exchanged in
-        store within 7 days.
+        Courier across India ₹{COURIER_FEE}. In Delhi NCR, pay the bike rider or pick up free from
+        our shop. Pay online by UPI or card, or pay later. Unworn items can be exchanged in store
+        within 7 days.
       </p>
     </div>
   )

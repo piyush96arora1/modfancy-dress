@@ -6,6 +6,8 @@ import type { PricingMode } from '@/types/database'
 interface PricingModeContextType {
     mode: PricingMode
     setMode: (mode: PricingMode) => void
+    /** False until the saved mode has been read from localStorage (first client effect). */
+    ready: boolean
 }
 
 const PricingModeContext = createContext<PricingModeContextType | null>(null)
@@ -34,7 +36,7 @@ export function PricingModeProvider({ children }: { children: ReactNode }) {
     }, [])
 
     return (
-        <PricingModeContext.Provider value={{ mode, setMode }}>
+        <PricingModeContext.Provider value={{ mode, setMode, ready: mounted }}>
             {children}
         </PricingModeContext.Provider>
     )
@@ -44,7 +46,7 @@ export function usePricingMode(): PricingModeContextType {
     const ctx = useContext(PricingModeContext)
     if (!ctx) {
         // Fallback if used outside provider (e.g., admin pages)
-        return { mode: 'retail', setMode: () => { } }
+        return { mode: 'retail', setMode: () => { }, ready: true }
     }
     return ctx
 }

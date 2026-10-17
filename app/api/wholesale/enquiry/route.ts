@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
         if (error) {
             console.error('Error creating wholesale enquiry:', error)
-            return NextResponse.json({ error: 'Failed to submit enquiry: ' + error.message }, { status: 500 })
+            return NextResponse.json({ error: 'Failed to submit enquiry. Please try again or WhatsApp us.' }, { status: 500 })
         }
 
         return NextResponse.json({ success: true })

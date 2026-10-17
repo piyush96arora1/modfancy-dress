@@ -17,7 +17,7 @@ export function useAuth() {
       } = await supabase.auth.getUser()
 
       setUser(user)
-      setIsAdmin(user?.user_metadata?.role === 'admin')
+      setIsAdmin(user?.app_metadata?.role === 'admin')
       setLoading(false)
     }
 
@@ -27,7 +27,7 @@ export function useAuth() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      setIsAdmin(session?.user?.user_metadata?.role === 'admin')
+      setIsAdmin(session?.user?.app_metadata?.role === 'admin')
       setLoading(false)
     })
 

@@ -57,22 +57,73 @@ function CustomerWhatsApp({ phone }: { phone?: string }) {
   )
 }
 
+type PaymentFields = { status?: string; payment_status?: string | null; payment_method?: string | null }
+
+/** Online payment state, so the owner can tell "paid — ship it" from "confirm on WhatsApp". */
+function PaymentBadge({ order }: { order: PaymentFields }) {
+  const map: Record<string, [string, string]> = {
+    paid: ['Paid online', 'bg-emerald-100 text-emerald-800'],
+    awaiting_payment: ['Awaiting payment', 'bg-amber-100 text-amber-800'],
+    failed: ['Payment failed', 'bg-red-100 text-red-800'],
+    refunded: ['Refunded', 'bg-gray-100 text-gray-700'],
+    partially_refunded: ['Part refunded', 'bg-gray-100 text-gray-700'],
+  }
+  const [label, cls] = map[order.payment_status ?? ''] ?? ['Pay later', 'bg-sky-100 text-sky-800']
+  return <span className={`px-2 py-0.5 text-xs rounded whitespace-nowrap ${cls}`}>{label}</span>
+}
+
+function DeliveryBadge({ method }: { method?: string | null }) {
+  if (!method) return null
+  const label = method === 'porter' ? 'Porter — send fare' : method === 'pickup' ? 'Shop pickup' : 'Courier'
+  return <span className="px-2 py-0.5 text-xs rounded whitespace-nowrap bg-gray-100 text-gray-700">{label}</span>
+}
+
+const inr = (n: number) => `₹${Math.round(n).toLocaleString('en-IN')}`
+
+/** Total with its split: what the products cost vs what delivery added, and what was paid. */
+function OrderAmount({ order, large }: { order: { total_amount: number; items_subtotal?: number | null; delivery_fee?: number | null; delivery_method?: string | null; payment_status?: string | null; paid_amount?: number | null }; large?: boolean }) {
+  const fee = Number(order.delivery_fee ?? 0)
+  const products = order.items_subtotal != null ? Number(order.items_subtotal) : Number(order.total_amount) - fee
+  const deliveryText = fee > 0 ? inr(fee) : order.delivery_method === 'porter' ? 'rider fare (paid to rider)' : order.delivery_method === 'pickup' ? 'pickup, free' : null
+  return (
+    <div className={large ? 'text-right' : ''}>
+      <div className={`font-bold text-gray-900 ${large ? 'text-lg' : ''}`}>{inr(Number(order.total_amount))}</div>
+      <div className="text-xs text-gray-500 whitespace-nowrap">Products {inr(products)}</div>
+      {deliveryText && <div className="text-xs text-gray-500 whitespace-nowrap">Delivery {deliveryText}</div>}
+      {order.payment_status === 'paid' && (
+        <div className="text-xs font-medium text-emerald-700 whitespace-nowrap">Paid {inr(Number(order.paid_amount ?? order.total_amount))}</div>
+      )}
+    </div>
+  )
+}
+
+const NEXT_STATUS: Record<string, string> = { pending: 'confirmed', confirmed: 'shipped', shipped: 'delivered', delivered: 'pending', cancelled: 'pending' }
+const NEXT_LABEL: Record<string, string> = { pending: 'Confirm', confirmed: 'Ship', shipped: 'Delivered', delivered: 'Reset', cancelled: 'Reopen' }
+
+type Filter = 'all' | 'to_ship' | 'to_confirm' | 'awaiting'
+const FILTERS: [Filter, string][] = [['all', 'All'], ['to_ship', 'Paid – to ship'], ['to_confirm', 'Pay later – to confirm'], ['awaiting', 'Awaiting payment']]
+
+function matches(order: PaymentFields, f: Filter): boolean {
+  const open = order.status === 'pending' || order.status === 'confirmed'
+  if (f === 'to_ship') return order.payment_status === 'paid' && open
+  if (f === 'to_confirm') return (order.payment_method ?? 'pay_later') === 'pay_later' && order.status === 'pending'
+  if (f === 'awaiting') return order.payment_status === 'awaiting_payment' || order.payment_status === 'failed'
+  return true
+}
+
 export function OrderList({ orders }: OrderListProps) {
   const router = useRouter()
   const [localOrders, setLocalOrders] = useState(orders)
   const [updating, setUpdating] = useState<string | null>(null)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [filter, setFilter] = useState<Filter>('all')
 
   useEffect(() => {
     setLocalOrders(orders)
   }, [orders])
 
   const handleStatusUpdate = async (orderId: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'pending'
-      ? 'confirmed'
-      : currentStatus === 'confirmed'
-        ? 'shipped'
-        : 'pending'
+    const newStatus = NEXT_STATUS[currentStatus] ?? 'pending'
 
     setLocalOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
     setUpdating(orderId)
@@ -118,8 +169,26 @@ export function OrderList({ orders }: OrderListProps) {
     )
   }
 
+  const visible = localOrders.filter((o) => matches(o, filter))
+
   return (
     <>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {FILTERS.map(([key, label]) => {
+          const count = localOrders.filter((o) => matches(o, key)).length
+          return (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setFilter(key)}
+              className={`px-3 py-1.5 rounded-full text-sm border ${filter === key ? 'bg-[#1B2A4A] text-white border-[#1B2A4A]' : 'bg-white text-gray-700 border-gray-300'}`}
+            >
+              {label} ({count})
+            </button>
+          )
+        })}
+      </div>
+
       {/* Desktop Table View */}
       <div className="hidden md:block bg-white rounded-lg border overflow-hidden">
         <table className="w-full">
@@ -135,7 +204,7 @@ export function OrderList({ orders }: OrderListProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {localOrders.map((order) => {
+            {visible.map((order) => {
               const itemCount = order.items?.reduce(
                 (sum: number, item: any) => sum + item.quantity, 0
               ) || 0
@@ -156,15 +225,19 @@ export function OrderList({ orders }: OrderListProps) {
                       <div>{itemCount} item(s)</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900">₹{order.total_amount.toFixed(2)}</td>
+                  <td className="px-6 py-4"><OrderAmount order={order} /></td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-xs rounded ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
                       : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
-                        : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                        : order.status === 'shipped' || order.status === 'delivered' ? 'bg-green-100 text-green-800'
                           : 'bg-gray-100 text-gray-800'
                       }`}>
                       {order.status}
                     </span>
+                    <div className="mt-1.5 flex flex-col items-start gap-1">
+                      <PaymentBadge order={order} />
+                      <DeliveryBadge method={order.delivery_method} />
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {new Date(order.created_at).toLocaleDateString()}
@@ -178,11 +251,7 @@ export function OrderList({ orders }: OrderListProps) {
                         disabled={updating === order.id}
                         onClick={() => handleStatusUpdate(order.id, order.status)}
                       >
-                        {updating === order.id ? '...' : (
-                          order.status === 'pending' ? 'Confirm'
-                            : order.status === 'confirmed' ? 'Ship'
-                              : 'Reset'
-                        )}
+                        {updating === order.id ? '...' : (NEXT_LABEL[order.status] ?? 'Reset')}
                       </Button>
                       <Button
                         variant="destructive"
@@ -203,7 +272,7 @@ export function OrderList({ orders }: OrderListProps) {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {localOrders.map((order) => {
+        {visible.map((order) => {
           const itemCount = order.items?.reduce(
             (sum: number, item: any) => sum + item.quantity, 0
           ) || 0
@@ -219,11 +288,15 @@ export function OrderList({ orders }: OrderListProps) {
                 </div>
                 <span className={`px-2 py-1 text-xs rounded whitespace-nowrap ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800'
                   : order.status === 'confirmed' ? 'bg-blue-100 text-blue-800'
-                    : order.status === 'shipped' ? 'bg-green-100 text-green-800'
+                    : order.status === 'shipped' || order.status === 'delivered' ? 'bg-green-100 text-green-800'
                       : 'bg-gray-100 text-gray-800'
                   }`}>
                   {order.status}
                 </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <PaymentBadge order={order} />
+                <DeliveryBadge method={order.delivery_method} />
               </div>
 
               <div className="space-y-2 text-sm">
@@ -242,9 +315,9 @@ export function OrderList({ orders }: OrderListProps) {
                     <OrderThumbnails items={order.items} />
                   </div>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-start">
                   <span className="text-gray-600">Total:</span>
-                  <span className="font-bold text-lg text-gray-900">₹{order.total_amount.toFixed(2)}</span>
+                  <OrderAmount order={order} large />
                 </div>
               </div>
 
@@ -260,11 +333,7 @@ export function OrderList({ orders }: OrderListProps) {
                     disabled={updating === order.id}
                     onClick={() => handleStatusUpdate(order.id, order.status)}
                   >
-                    {updating === order.id ? '...' : (
-                      order.status === 'pending' ? 'Confirm'
-                        : order.status === 'confirmed' ? 'Ship'
-                          : 'Reset'
-                    )}
+                    {updating === order.id ? '...' : (NEXT_LABEL[order.status] ?? 'Reset')}
                   </Button>
                 </div>
                 <div className="flex-1">

@@ -11,11 +11,6 @@ export function MobileBottomNav() {
   const { getItemCount } = useCart()
   const itemCount = getItemCount()
 
-  // Don't show on admin pages or auth pages
-  if (pathname?.startsWith('/admin') || pathname?.startsWith('/login')) {
-    return null
-  }
-
   const navItems = [
     {
       href: '/',
@@ -68,6 +63,13 @@ export function MobileBottomNav() {
     el.appendChild(ripple)
     ripple.addEventListener('animationend', () => ripple.remove())
   }, [])
+
+  // Don't show on admin pages or auth pages; /cart has its own sticky pay bar in this slot.
+  // Kept below every hook: this condition flips with the cart count, so an early return
+  // above a hook changes the hook count between renders (React #300).
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/login') || (pathname === '/cart' && itemCount > 0)) {
+    return null
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-t border-[#E8E5E0]/60 safe-area-inset-bottom md:hidden" style={{ boxShadow: '0 -4px 20px rgba(27, 42, 74, 0.06)' }}>

@@ -25,7 +25,7 @@ export default function ShippingPolicyPage() {
           <h2 className={H2}>Delivery across India (courier)</h2>
           <p>
             Orders outside Delhi NCR are sent by courier and usually arrive in 3–5 business days. The delivery charge is a flat{' '}
-            <strong>₹{COURIER_FEE}</strong> per order{FREE_COURIER_ABOVE != null ? `, free on orders of ₹${FREE_COURIER_ABOVE} or more` : ''}, added to your order total. We dispatch within 1 business day of confirming your order and share the courier tracking details on WhatsApp.
+            <strong>₹{COURIER_FEE}</strong> per order{FREE_COURIER_ABOVE != null ? `, free on orders of ₹${FREE_COURIER_ABOVE} or more` : ''}, shown at checkout and included in the amount you pay. We dispatch within 1 business day of confirming your order and share the courier tracking details on WhatsApp.
           </p>
         </section>
         <section>
@@ -49,7 +49,8 @@ export default function ShippingPolicyPage() {
         <section>
           <h2 className={H2}>Questions</h2>
           <p>
-            WhatsApp {BUSINESS_WHATSAPP_DISPLAY} or call {BUSINESS_PHONE_DISPLAY} about any order. See also our{' '}
+            WhatsApp {BUSINESS_WHATSAPP_DISPLAY} or call {BUSINESS_PHONE_DISPLAY}. You can check an order any time on the{' '}
+            <Link href="/track" className="text-[#8F6240] hover:underline">Track order</Link> page. See also our{' '}
             <Link href="/returns" className="text-[#8F6240] hover:underline">Returns &amp; Refund Policy</Link>.
           </p>
         </section>
