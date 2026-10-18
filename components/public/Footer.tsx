@@ -36,42 +36,42 @@ export function Footer() {
             <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-3">Quick Links</h4>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
               <li>
-                <Link href="/products" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/products" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/blog" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/about" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/faq" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/rent" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/rent" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Rent
                 </Link>
               </li>
               <li>
-                <Link href="/fancy-dress-delhi" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/fancy-dress-delhi" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Delhi Store
                 </Link>
               </li>
               <li>
-                <Link href="/cart" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/cart" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Cart
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/contact" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Contact
                 </Link>
               </li>
@@ -84,27 +84,27 @@ export function Footer() {
             <h4 className="font-[family-name:var(--font-outfit)] font-semibold text-sm uppercase tracking-wider text-white/40 mb-3">Wholesale</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/wholesale" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/wholesale" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Wholesale Prices
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale/schools" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/wholesale/schools" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Schools &amp; Bulk Orders
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale/dance-academies" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/wholesale/dance-academies" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Dance Academies
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale/resellers" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/wholesale/resellers" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Retailers &amp; Resellers
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale/delhi-market" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                <Link prefetch={false} href="/wholesale/delhi-market" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Delhi Wholesale Market
                 </Link>
               </li>
@@ -137,23 +137,23 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-8 pt-5 border-t border-white/10 text-center">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mb-2">
-            <Link href="/privacy-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link prefetch={false} href="/privacy-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Privacy Policy
             </Link>
             <span className="text-white/20">·</span>
-            <Link href="/returns" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link prefetch={false} href="/returns" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Returns &amp; Refunds
             </Link>
             <span className="text-white/20">·</span>
-            <Link href="/shipping-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link prefetch={false} href="/shipping-policy" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Shipping
             </Link>
             <span className="text-white/20">·</span>
-            <Link href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link prefetch={false} href="/terms" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Terms
             </Link>
             <span className="text-white/20">·</span>
-            <Link href="/track" className="text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link prefetch={false} href="/track" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Track order
             </Link>
           </div>

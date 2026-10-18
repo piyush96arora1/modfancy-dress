@@ -80,9 +80,9 @@ export function MobileBottomNav() {
 
           return (
             <Link
+              prefetch={false}
               key={item.href}
               href={item.href}
-              prefetch={true}
               onClick={handleRipple}
               className={`
                 flex flex-col items-center justify-center 

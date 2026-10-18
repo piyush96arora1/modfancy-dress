@@ -43,7 +43,7 @@ export function Header() {
       <div className="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group truncate pr-2 min-h-[44px]">
+          <Link prefetch={false} href="/" className="flex items-center gap-2 group truncate pr-2 min-h-[44px]">
             <span className="font-[family-name:var(--font-outfit)] text-[1.1rem] sm:text-lg md:text-2xl font-bold text-[#1B2A4A] tracking-tight truncate">
               Mod Fancy Dress
             </span>
@@ -52,42 +52,43 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link
+              prefetch={false}
               href="/products"
-              prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
               Products
             </Link>
             <Link
+              prefetch={false}
               href="/rent"
-              prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
               Rent
             </Link>
             <Link
+              prefetch={false}
               href="/about"
-              prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
               About
             </Link>
             <Link
+              prefetch={false}
               href="/faq"
-              prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
               FAQ
             </Link>
             <Link
+              prefetch={false}
               href="/contact"
-              prefetch={true}
               className="text-[#2D2D2D] hover:text-[#1B2A4A] transition-colors font-medium text-sm tracking-wide relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#C8956C] after:transition-all hover:after:w-full"
             >
               Contact
             </Link>
             {isAdmin && (
               <Link
+              prefetch={false}
                 href="/admin/products"
                 onClick={(e) => {
                   e.preventDefault()
@@ -113,7 +114,7 @@ export function Header() {
           {/* Right Actions */}
           <div className="flex items-center gap-2 md:gap-4">
             {/* Cart */}
-            <Link href="/cart" className="relative flex items-center justify-center min-w-[44px] min-h-[44px] hover:bg-[#F5F3F0] rounded-lg transition-colors" aria-label="Cart">
+            <Link prefetch={false} href="/cart" className="relative flex items-center justify-center min-w-[44px] min-h-[44px] hover:bg-[#F5F3F0] rounded-lg transition-colors" aria-label="Cart">
               <ShoppingCart className="w-5 h-5 md:w-[22px] md:h-[22px] text-[#2D2D2D]" />
               {itemCount > 0 && (
                 <span className="absolute top-0.5 right-0.5 bg-[#C8956C] text-[#1B2A4A] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" style={{ boxShadow: 'var(--shadow-sm)' }}>
@@ -136,7 +137,7 @@ export function Header() {
                     </Button>
                   </div>
                 ) : (
-                  <Link href="/login">
+                  <Link prefetch={false} href="/login">
                     <Button variant="outline" size="sm" className="text-xs px-3">
                       <span className="hidden sm:inline">Login</span>
                       <User className="w-4 h-4 sm:hidden" />
@@ -152,6 +153,7 @@ export function Header() {
         {isAdmin && (
           <nav className="md:hidden pb-2 pt-1 border-t border-[#F5F3F0]">
             <Link
+              prefetch={false}
               href="/admin/products"
               onClick={(e) => {
                 e.preventDefault()
