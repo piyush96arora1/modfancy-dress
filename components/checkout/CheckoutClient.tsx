@@ -171,6 +171,20 @@ export function CheckoutClient() {
     if (!(el instanceof HTMLInputElement)) setTyping(false)
   }, 50)
 
+  // Focus alone is not "keyboard up": picking a Chrome autofill suggestion, or closing the
+  // keyboard with the back button, leaves the input focused with no blur. The visual
+  // viewport shrinks only while the keyboard is actually showing, so require both.
+  const [keyboardOpen, setKeyboardOpen] = useState<boolean | null>(null)
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+    const check = () => setKeyboardOpen(window.innerHeight - vv.height * vv.scale > 150)
+    check()
+    vv.addEventListener('resize', check)
+    return () => vv.removeEventListener('resize', check)
+  }, [])
+  const hidePayBar = typing && keyboardOpen !== false
+
   // Validation (mirrors the server's zod schema; the server has the final say) ------------
   function validate(): Errors {
     const e: Errors = {}
@@ -557,7 +571,7 @@ export function CheckoutClient() {
       <div
         className={cn(
           'lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white border-t border-[#E8E5E0] px-4 pt-2.5 pb-[calc(10px+env(safe-area-inset-bottom))] transition-transform duration-200',
-          typing ? 'translate-y-full' : 'translate-y-0',
+          hidePayBar ? 'translate-y-full' : 'translate-y-0',
         )}
         style={{ boxShadow: '0 -4px 16px rgba(27,42,74,0.08)' }}
       >
