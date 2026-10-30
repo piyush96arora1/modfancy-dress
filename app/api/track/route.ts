@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { loadOrder, publicOrderView, reconcileWithCashfree } from '@/lib/checkout/orders'
+import { loadOrder, publicOrderView, reconcilePayment } from '@/lib/checkout/orders'
 import { normaliseIndianMobile } from '@/lib/checkout/schema'
 import { orderToken } from '@/lib/checkout/return-token'
 
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
   let order = await loadOrder(orderNumber).catch(() => null)
   if (!order || normaliseIndianMobile(order.customer_phone) !== phone) return notFound
-  order = await reconcileWithCashfree(order).catch(() => order!)
+  order = await reconcilePayment(order).catch(() => order!)
 
   // The phone check proves ownership, so hand back the order page link too.
   return NextResponse.json({ order: publicOrderView(order), token: orderToken(order.order_number) })

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { verifyOrderToken } from '@/lib/checkout/return-token'
-import { alertOwnerOnce, hasPendingPayment, loadOrder, reconcileWithCashfree } from '@/lib/checkout/orders'
-import { startCashfreePayment } from '@/lib/checkout/start-payment'
+import { alertOwnerOnce, hasPendingPayment, loadOrder, reconcilePayment } from '@/lib/checkout/orders'
+import { startPayment } from '@/lib/checkout/start-payment'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { ORDER_NUMBER_RE } from '@/lib/checkout/order-number'
 import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404 })
 
   // A payment may have gone through since the page loaded: never charge twice.
-  order = await reconcileWithCashfree(order).catch(() => order!)
+  order = await reconcilePayment(order).catch(() => order!)
   if (order.payment_status === 'paid') return NextResponse.json({ paymentStatus: 'paid' })
   if (order.status === 'cancelled') return NextResponse.json({ error: 'This order was cancelled. Please WhatsApp us.' }, { status: 409 })
 
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const started = await startCashfreePayment(order, request)
+  const started = await startPayment(order, request)
   if (!started.ok) return NextResponse.json({ error: started.error }, { status: 502 })
-  return NextResponse.json({ paymentSessionId: started.paymentSessionId, cashfreeMode: started.mode })
+  return NextResponse.json({ payment: started.payment })
 }

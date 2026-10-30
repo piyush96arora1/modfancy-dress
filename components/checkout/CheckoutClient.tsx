@@ -18,13 +18,13 @@ import { ONLINE_PAYMENTS_ENABLED, PAY_LATER_NOTE } from '@/lib/constants/payment
 import { cn } from '@/lib/utils/cn'
 import {
   clearPendingOrder,
-  loadCashfree,
-  openCashfreeCheckout,
-  preconnectCashfree,
+  loadPayments,
+  openPaymentCheckout,
+  preconnectPayments,
   readPendingOrder,
   savePendingOrder,
   type PendingOrder,
-} from './cashfree-client'
+} from './payment-client'
 
 type Form = {
   pincode: string
@@ -162,7 +162,7 @@ export function CheckoutClient() {
 
   const handleFocus = (e: React.FocusEvent) => {
     if (e.target instanceof HTMLInputElement) setTyping(true)
-    if (ONLINE_PAYMENTS_ENABLED) preconnectCashfree()
+    if (ONLINE_PAYMENTS_ENABLED) preconnectPayments()
     if (checkoutTracked.current) return
     checkoutTracked.current = true
     track('begin_checkout', gaItems())
@@ -221,8 +221,8 @@ export function CheckoutClient() {
     setSubmitting(pay)
     await nextFrame()
 
-    // Start fetching Cashfree's script while the order is being created.
-    const sdk = pay === 'online' ? loadCashfree() : null
+    // Start fetching Razorpay's script while the order is being created.
+    const sdk = pay === 'online' ? loadPayments() : null
     sdk?.catch(() => {})
     track('add_payment_info', { ...gaItems(), payment_type: pay === 'online' ? 'online' : 'pay_later' })
 
@@ -288,19 +288,20 @@ export function CheckoutClient() {
       return
     }
 
-    // Online: the order exists. Remember it, then hand over to Cashfree.
+    // Online: the order exists. Remember it, then hand over to Razorpay Checkout.
     savePendingOrder({ orderNumber: data.orderNumber, token: data.token, total: data.total, at: Date.now() })
-    if (!ok || !data.paymentSessionId) {
+    if (!ok || !data.payment) {
       router.push(orderUrl) // the order page offers "try again" / "pay later"
       return
     }
     try {
-      const err = await openCashfreeCheckout(data.paymentSessionId, data.cashfreeMode, sdk!)
-      if (err) router.push(orderUrl)
-      // Otherwise the browser is navigating to Cashfree; keep the busy state.
+      // Pending while Checkout is open: paying redirects through the callback to the order
+      // page. Closing Checkout without paying lands on the order page too, which offers retry.
+      await openPaymentCheckout(data.payment, sdk!)
     } catch {
-      router.push(orderUrl)
+      // Script failed to load.
     }
+    router.push(orderUrl)
   }
 
   // Render ------------------------------------------------------------------------------

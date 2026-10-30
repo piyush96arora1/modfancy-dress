@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { verifyOrderToken } from '@/lib/checkout/return-token'
-import { loadOrder, paymentProgress, reconcileWithCashfree } from '@/lib/checkout/orders'
+import { loadOrder, paymentProgress, reconcilePayment } from '@/lib/checkout/orders'
 import { ORDER_NUMBER_RE } from '@/lib/checkout/order-number'
 
 export const dynamic = 'force-dynamic'
@@ -16,7 +16,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ orde
   let order = await loadOrder(orderNumber)
   if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404, headers: { 'cache-control': 'no-store' } })
   try {
-    order = await reconcileWithCashfree(order)
+    order = await reconcilePayment(order)
   } catch (error) {
     console.error('status: Cashfree check failed', orderNumber, error)
   }

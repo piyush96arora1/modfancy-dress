@@ -11,7 +11,7 @@ import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
 import { SHOP_PICKUP_LABEL } from '@/lib/delivery/config'
 import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
 import { cn } from '@/lib/utils/cn'
-import { clearPendingOrder, loadCashfree, openCashfreeCheckout, readPendingOrder, savePendingOrder } from './cashfree-client'
+import { clearPendingOrder, loadPayments, openPaymentCheckout, readPendingOrder, savePendingOrder } from './payment-client'
 
 type Progress = { attempted: boolean; bankPending: boolean }
 type Status = { paymentStatus: PublicOrderView['paymentStatus']; status: PublicOrderView['status']; paymentMethod: PublicOrderView['paymentMethod'] } & Progress
@@ -45,8 +45,8 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
   // Arriving from the cart's submit button (far down the page): start at the outcome.
   useEffect(() => { window.scrollTo(0, 0) }, [])
 
-  // Keep asking while the payment is unsettled. The API asks Cashfree directly, so this
-  // works even if Cashfree's webhook to us is slow.
+  // Keep asking while the payment is unsettled. The API asks the gateway directly, so this
+  // works even if its webhook to us is slow.
   useEffect(() => {
     if (!waiting) return
     const delay = pollDelay(Date.now() - started.current)
@@ -101,7 +101,7 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
     if (busy) return
     setBusy(action)
     setActionError(null)
-    const sdk = action === 'pay' ? loadCashfree() : null
+    const sdk = action === 'pay' ? loadPayments() : null
     sdk?.catch(() => {})
     try {
       const res = await fetch('/api/checkout/retry', {
@@ -116,11 +116,10 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
         setS((x) => ({ ...x, paymentStatus: 'unpaid', paymentMethod: 'pay_later' }))
         return
       }
-      if (!res.ok || !data.paymentSessionId) throw new Error(data.error || 'Could not start the payment')
+      if (!res.ok || !data.payment) throw new Error(data.error || 'Could not start the payment')
       savePendingOrder({ orderNumber: order.orderNumber, token, total: order.total, at: Date.now() })
-      const err = await openCashfreeCheckout(data.paymentSessionId, data.cashfreeMode, sdk!)
-      if (err) throw new Error(err)
-      return // navigating to Cashfree
+      // Pending while Checkout is open (paying redirects to the callback); returns if closed.
+      await openPaymentCheckout(data.payment, sdk!)
     } catch (e) {
       setActionError(e instanceof Error ? e.message : 'Something went wrong. Please try again.')
     } finally {
@@ -129,7 +128,7 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
   }
 
   // A few seconds of "checking" before concluding nobody paid, so a just-returned customer
-  // never sees "not paid" flash up while Cashfree is still recording the payment.
+  // never sees "not paid" flash up while the gateway is still recording the payment.
   const stillChecking = waiting && !s.attempted && !s.bankPending && checks < 2
   const confirming = waiting && (s.bankPending || s.attempted || stillChecking)
   const notPaidYet = waiting && !confirming

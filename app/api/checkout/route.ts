@@ -7,7 +7,7 @@ import { estimateDelivery, estimateLabel } from '@/lib/delivery/pincode'
 import { newOrderNumber } from '@/lib/checkout/order-number'
 import { orderToken } from '@/lib/checkout/return-token'
 import { alertOwnerOnce, loadOrder } from '@/lib/checkout/orders'
-import { startCashfreePayment } from '@/lib/checkout/start-payment'
+import { startPayment } from '@/lib/checkout/start-payment'
 import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
 import { getWholesaleDiscountPctCached } from '@/lib/supabase/cached-queries'
 
@@ -18,8 +18,8 @@ const MAX_BODY_BYTES = 16_000
 /**
  * Place an order. Both checkout buttons come here:
  * - pay: 'later'  → order saved as pay-later, owner alerted, customer goes to the order page.
- * - pay: 'online' → order saved as awaiting_payment, a Cashfree order is created, and the
- *                   browser opens Cashfree checkout with the returned paymentSessionId.
+ * - pay: 'online' → order saved as awaiting_payment, a Razorpay order is created, and the
+ *                   browser opens Razorpay Checkout with the returned `payment` handoff.
  *
  * Every amount is computed here from the database; nothing from the browser is trusted.
  */
@@ -163,10 +163,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ ...summary, pay: 'later' })
   }
 
-  const started = await startCashfreePayment(order, request)
+  const started = await startPayment(order, request)
   if (!started.ok) {
     // The order exists; the customer can retry payment or switch to pay later from its page.
     return NextResponse.json({ ...summary, pay: 'online', paymentError: started.error }, { status: 502 })
   }
-  return NextResponse.json({ ...summary, pay: 'online', paymentSessionId: started.paymentSessionId, cashfreeMode: started.mode })
+  return NextResponse.json({ ...summary, pay: 'online', payment: started.payment })
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyCashfreeSignature } from '@/lib/payments/cashfree'
-import { loadOrderByCashfreeId, reconcileWithCashfree } from '@/lib/checkout/orders'
+import { loadOrderByCashfreeId, reconcilePayment } from '@/lib/checkout/orders'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,7 +17,7 @@ type WebhookBody = {
  * Cashfree payment webhooks (sent to the notify_url given per order).
  *
  * The payload is only a nudge: after verifying the signature we ask Cashfree for the order's
- * real state (reconcileWithCashfree), so a forged, stale or out-of-order event can't mark
+ * real state (reconcilePayment), so a forged, stale or out-of-order event can't mark
  * anything paid. Duplicates (Cashfree delivers at least once) are dropped on the
  * idempotency key. Always answers 200 for events we've recorded, so Cashfree stops retrying.
  */
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await reconcileWithCashfree(order, cfOrderId)
+    await reconcilePayment(order, cfOrderId)
   } catch (error) {
     // Ask Cashfree to retry later; the order page poller will also catch up.
     console.error('webhook: reconcile failed', cfOrderId, error)

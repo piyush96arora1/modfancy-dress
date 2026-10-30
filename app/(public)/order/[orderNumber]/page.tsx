@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { ORDER_NUMBER_RE } from '@/lib/checkout/order-number'
 import { verifyOrderToken } from '@/lib/checkout/return-token'
-import { loadOrder, paymentProgress, publicOrderView, reconcileWithCashfree } from '@/lib/checkout/orders'
+import { loadOrder, paymentProgress, publicOrderView, reconcilePayment } from '@/lib/checkout/orders'
 import { OrderStatusClient } from '@/components/checkout/OrderStatusClient'
 
 // Per-customer, always fresh. No loading.tsx here: a Suspense boundary at the route level
@@ -35,7 +35,7 @@ export default async function OrderPage({
   if (!order) notFound()
   try {
     // Ask Cashfree now rather than wait for the webhook: most customers land here paid.
-    order = await reconcileWithCashfree(order)
+    order = await reconcilePayment(order)
   } catch (error) {
     console.error('order page: Cashfree check failed', orderNumber, error)
   }
