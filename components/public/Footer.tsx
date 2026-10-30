@@ -160,6 +160,9 @@ export function Footer() {
           <p className="text-xs text-white/40">
             &copy; {new Date().getFullYear()} Mod Fancy Dress. All rights reserved.
           </p>
+          <p className="mt-1 text-[11px] text-white/30">
+            Mod Fancy Dress · Proprietor: Piyush Arora · <a href="mailto:piyush96arora@gmail.com" className="hover:text-white/50">piyush96arora@gmail.com</a>
+          </p>
         </div>
       </div>
     </footer>

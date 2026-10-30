@@ -5,6 +5,7 @@ import { alertOwnerOnce, hasPendingPayment, loadOrder, reconcileWithCashfree } f
 import { startCashfreePayment } from '@/lib/checkout/start-payment'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { ORDER_NUMBER_RE } from '@/lib/checkout/order-number'
+import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,6 +24,9 @@ export async function POST(request: Request) {
   if (!parsed.success) return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   const { orderNumber, token, action } = parsed.data
   if (!verifyOrderToken(orderNumber, token)) return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+  if (action === 'pay' && !ONLINE_PAYMENTS_ENABLED) {
+    return NextResponse.json({ error: 'Online payment isn’t available right now. Please place the order and pay later.' }, { status: 400 })
+  }
 
   let order = await loadOrder(orderNumber)
   if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404 })

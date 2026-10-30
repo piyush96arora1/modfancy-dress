@@ -8,6 +8,7 @@ import { newOrderNumber } from '@/lib/checkout/order-number'
 import { orderToken } from '@/lib/checkout/return-token'
 import { alertOwnerOnce, loadOrder } from '@/lib/checkout/orders'
 import { startCashfreePayment } from '@/lib/checkout/start-payment'
+import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
 import { getWholesaleDiscountPctCached } from '@/lib/supabase/cached-queries'
 
 export const dynamic = 'force-dynamic'
@@ -41,6 +42,13 @@ export async function POST(request: Request) {
   }
   const req = parsed.data
   if (req.website) return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+
+  if (req.pay === 'online' && !ONLINE_PAYMENTS_ENABLED) {
+    return NextResponse.json(
+      { error: 'Online payment isn’t available right now. Please use “Place order”, and we’ll WhatsApp you payment options.' },
+      { status: 400 },
+    )
+  }
 
   if (req.pay === 'online' && req.pricingMode === 'wholesale') {
     return NextResponse.json(

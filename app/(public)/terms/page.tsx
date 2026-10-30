@@ -35,7 +35,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className={H2}>Online payment</h2>
-          <p>Online payments (UPI, cards, net banking, wallets) are processed securely by Cashfree Payments. We never see or store your card details or UPI PIN. If a payment fails but money is debited, it is returned to you by your bank or Cashfree, normally within 3–5 working days.</p>
+          <p>Online payments (UPI, cards, net banking, wallets) are processed securely by our RBI-authorised payment partner. We never see or store your card details or UPI PIN. If a payment fails but money is debited, it is returned to you by your bank or the payment partner, normally within 3–5 working days.</p>
         </section>
         <section>
           <h2 className={H2}>Delivery</h2>

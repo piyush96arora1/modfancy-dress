@@ -14,6 +14,7 @@ import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
 import { estimateDelivery, normalisePincode, readSavedPincode, savePincode, SAME_DAY_CUTOFF_HOUR_IST } from '@/lib/delivery/pincode'
 import { COURIER_FEE, deliveryFee, deliveryOptions, SHOP_PICKUP_LABEL, type DeliveryMethod } from '@/lib/delivery/config'
 import { EMAIL_RE, MOBILE_RE, normaliseIndianMobile } from '@/lib/checkout/phone'
+import { ONLINE_PAYMENTS_ENABLED, PAY_LATER_NOTE } from '@/lib/constants/payments'
 import { cn } from '@/lib/utils/cn'
 import {
   clearPendingOrder,
@@ -161,7 +162,7 @@ export function CheckoutClient() {
 
   const handleFocus = (e: React.FocusEvent) => {
     if (e.target instanceof HTMLInputElement) setTyping(true)
-    preconnectCashfree()
+    if (ONLINE_PAYMENTS_ENABLED) preconnectCashfree()
     if (checkoutTracked.current) return
     checkoutTracked.current = true
     track('begin_checkout', gaItems())
@@ -325,7 +326,7 @@ export function CheckoutClient() {
   }
 
   // Pay online needs a known (retail) pricing mode; until then keep its space, hidden.
-  const showPayOnline = pricingReady && !wholesale
+  const showPayOnline = ONLINE_PAYMENTS_ENABLED && pricingReady && !wholesale
   const primaryLabel = showPayOnline ? `Pay ${rupees(total)} now` : 'Place order'
   const fieldError = (k: FieldKey | 'method') =>
     errors[k] ? <p id={`${k}-error`} className="mt-1 text-xs text-red-600">{errors[k]}</p> : null
@@ -541,7 +542,9 @@ export function CheckoutClient() {
             )}
 
             <div className="space-y-2.5 lg:hidden">
-              <PayLater submitting={submitting} onClick={() => submit('later')} wholesale={wholesale} />
+              {ONLINE_PAYMENTS_ENABLED || wholesale
+                ? <PayLater submitting={submitting} onClick={() => submit('later')} wholesale={wholesale} />
+                : <p className="text-xs text-[#6B6B6B] text-center">{PAY_LATER_NOTE}</p>}
               <HelpLink items={items.map((i) => i.name)} />
             </div>
           </form>
@@ -561,6 +564,7 @@ export function CheckoutClient() {
               online={showPayOnline}
             />
             {showPayOnline && <PayLater submitting={submitting} onClick={() => submit('later')} wholesale={false} />}
+            {!ONLINE_PAYMENTS_ENABLED && !wholesale && <p className="text-xs text-[#6B6B6B] text-center">{PAY_LATER_NOTE}</p>}
             <HelpLink items={items.map((i) => i.name)} />
           </div>
         </aside>
@@ -716,9 +720,9 @@ function PayButton({
         )}
       </button>
       {!compact && online && (
-        <p className="mt-2 text-center text-xs text-[#6B6B6B]">UPI · GPay · PhonePe · Paytm · Cards · Netbanking — secured by Cashfree</p>
+        <p className="mt-2 text-center text-xs text-[#6B6B6B]">UPI · GPay · PhonePe · Paytm · Cards · Netbanking — secure payment</p>
       )}
-      {compact && online && <p className="mt-1 text-center text-[11px] text-[#6B6B6B]">UPI · Cards · Netbanking · secured by Cashfree</p>}
+      {compact && online && <p className="mt-1 text-center text-[11px] text-[#6B6B6B]">UPI · Cards · Netbanking · secure payment</p>}
     </div>
   )
 }

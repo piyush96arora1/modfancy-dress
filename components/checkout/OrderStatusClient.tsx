@@ -9,6 +9,7 @@ import { track } from '@/lib/analytics/gtag'
 import { whatsappUrl } from '@/lib/constants/contact'
 import { WhatsAppIcon } from '@/components/ui/whatsapp-icon'
 import { SHOP_PICKUP_LABEL } from '@/lib/delivery/config'
+import { ONLINE_PAYMENTS_ENABLED } from '@/lib/constants/payments'
 import { cn } from '@/lib/utils/cn'
 import { clearPendingOrder, loadCashfree, openCashfreeCheckout, readPendingOrder, savePendingOrder } from './cashfree-client'
 
@@ -157,20 +158,24 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
           <Hero tone="error" icon={XCircle} title="Payment didn’t go through"
             body="The payment wasn’t completed, so nothing was charged for this order. If your bank shows a debit, it’s returned automatically within 3–5 working days." />
         ) : notPaidYet ? (
-          <Hero tone="pending" icon={Clock} title="Payment not completed yet" body="Your order is saved. Complete the payment below, or place it now and pay later." />
+          <Hero tone="pending" icon={Clock} title="Payment not completed yet" body={ONLINE_PAYMENTS_ENABLED
+            ? 'Your order is saved. Complete the payment below, or place it now and pay later.'
+            : 'Online payment isn’t available right now. Place your order below and we’ll WhatsApp you payment options.'} />
         ) : null}
       </div>
 
       {/* Actions for an unpaid online order */}
       {(s.paymentStatus === 'failed' || notPaidYet) && s.status !== 'cancelled' && (
         <div className="mt-4 space-y-2.5">
-          <button type="button" onClick={() => act('pay')} disabled={!!busy} aria-busy={busy === 'pay' || undefined}
-            className="w-full min-h-[50px] rounded-xl bg-[#1B2A4A] text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-70">
-            {busy === 'pay' ? 'Opening payment…' : `Pay ${rupees(order.total)} now`}
-          </button>
+          {ONLINE_PAYMENTS_ENABLED && (
+            <button type="button" onClick={() => act('pay')} disabled={!!busy} aria-busy={busy === 'pay' || undefined}
+              className="w-full min-h-[50px] rounded-xl bg-[#1B2A4A] text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-70">
+              {busy === 'pay' ? 'Opening payment…' : `Pay ${rupees(order.total)} now`}
+            </button>
+          )}
           <button type="button" onClick={() => act('pay_later')} disabled={!!busy}
             className="w-full min-h-[44px] rounded-xl border border-[#1B2A4A] text-[#1B2A4A] font-medium disabled:opacity-60">
-            {busy === 'pay_later' ? 'Placing order…' : 'Place order, pay later instead'}
+            {busy === 'pay_later' ? 'Placing order…' : ONLINE_PAYMENTS_ENABLED ? 'Place order, pay later instead' : 'Place order, pay later'}
           </button>
           {actionError && <p role="alert" className="text-sm text-red-700 text-center">{actionError}</p>}
         </div>

@@ -17,7 +17,7 @@ export default function PrivacyPolicyPage() {
       <div className="space-y-6 text-[#6B6B6B] text-sm leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">Information We Collect</h2>
-          <p>When you place an order or contact us via WhatsApp, phone, or our enquiry form, we collect your name, mobile number, delivery address and (optionally) email to process your order or enquiry. Online payments are processed by Cashfree Payments; we never see or store your card details, UPI PIN or bank login — we only receive the payment status and reference number.</p>
+          <p>When you place an order or contact us via WhatsApp, phone, or our enquiry form, we collect your name, mobile number, delivery address and (optionally) email to process your order or enquiry. Online payments are processed by our RBI-authorised payment partner; we never see or store your card details, UPI PIN or bank login — we only receive the payment status and reference number.</p>
         </section>
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] mb-2 font-[family-name:var(--font-outfit)]">How We Use Your Information</h2>
