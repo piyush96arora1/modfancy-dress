@@ -13,6 +13,7 @@
  * Usage:
  *   npx tsx scripts/fix-meta-prices.ts          # dry run
  *   npx tsx scripts/fix-meta-prices.ts --apply  # write
+ *   --skip <slug>[,<slug>…]                     # leave these alone (e.g. a price the owner is checking)
  */
 import { config } from 'dotenv'
 import { resolve } from 'path'
@@ -22,6 +23,8 @@ import { checkCopy } from '../lib/seo/copy-limits'
 config({ path: resolve(__dirname, '../.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const APPLY = process.argv.includes('--apply')
+const skipArg = process.argv.indexOf('--skip')
+const SKIP = new Set(skipArg >= 0 ? (process.argv[skipArg + 1] ?? '').split(',').filter(Boolean) : [])
 
 const PHRASE = /Buy ₹\s?\d+(?:,\d{3})* or rent ₹\s?\d+(?:,\d{3})*/
 const fmt = (n: number) => String(Math.round(n)) // catalogue copy style: "₹1500", no grouping
@@ -39,6 +42,7 @@ async function main() {
   for (const p of data ?? []) {
     const meta = p.meta_description as string | null
     if (!meta || !PHRASE.test(meta)) continue
+    if (SKIP.has(p.slug)) { skipped.push(`${p.slug}: --skip (price under review)`); continue }
     const price = Number(p.price), rent = Number(p.rent_price)
     if (!(price > 0) || !(rent > 0)) { skipped.push(`${p.slug}: missing price or rent`); continue }
     if (rent > price) { skipped.push(`${p.slug}: rent ₹${rent} > buy ₹${price} (owner to check)`); continue }
