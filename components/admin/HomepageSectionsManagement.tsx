@@ -100,7 +100,7 @@ export function HomepageSectionsManagement({ initialSections, categories }: Prop
         setNewDraft(null)
       }
 
-      // Push changes live immediately (bypass the 24h ISR window)
+      // Push changes live immediately (bypass the weekly ISR window)
       await fetch('/api/revalidate', { method: 'POST' }).catch(() => {})
 
       alert('Homepage sections saved!')

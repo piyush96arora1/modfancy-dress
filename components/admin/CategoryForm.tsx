@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
+import { revalidateSite } from '@/lib/revalidate-client'
 import { slugify } from '@/lib/utils/slugify'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -92,6 +93,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
         if (error) throw error
       }
 
+      await revalidateSite('catalog')
       router.push('/admin/categories')
       router.refresh()
     } catch (error: any) {

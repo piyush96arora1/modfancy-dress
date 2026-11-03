@@ -11,7 +11,7 @@ export const metadata = generatePageMetadata({
   type: 'article',
 })
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 export default async function BlogListPage() {
   const supabase = createPublicServerClient()

@@ -21,7 +21,7 @@ import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/Cl
 import { BLOG_SLUG_ANNUAL_FUNCTION, BLOG_SLUG_CLASSICAL_DANCE, BLOG_SLUG_RENT_GUIDE, BLOG_SLUG_RENT_VS_BUY } from '@/lib/blog/seo-post-slugs'
 import type { BlogPost, ProductWithDetails } from '@/types/database'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 export const dynamicParams = true
 
 export async function generateStaticParams() {

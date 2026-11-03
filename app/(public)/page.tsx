@@ -29,7 +29,7 @@ export const metadata = generatePageMetadata({
 
 // Must stay <= 1 day: the date windows below are evaluated at render time, so
 // this is how late a finished festival can linger on the homepage.
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 export default async function HomePage() {
   const supabase = createPublicServerClient()

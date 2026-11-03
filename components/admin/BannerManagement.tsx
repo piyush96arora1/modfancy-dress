@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { revalidateSite } from '@/lib/revalidate-client'
 import { uploadCompressedImage } from '@/lib/utils/upload'
 import { getImageUrl } from '@/lib/imageUrl'
 import { Button } from '@/components/ui/button'
@@ -91,6 +92,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
         const { error } = await supabase.from('banner_settings').insert(updateData)
         if (error) throw error
       }
+      await revalidateSite('home')
       alert('Global ticker settings saved successfully!')
     } catch (error: any) {
       alert('Error saving ticker: ' + error.message)
@@ -135,6 +137,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
         return
       }
 
+      await revalidateSite('home')
       alert('Banners saved successfully!')
       window.location.reload()
     } catch (error: any) {
@@ -150,6 +153,7 @@ export function BannerManagement({ initialSettings, initialBanners }: BannerMana
       const { error } = await supabase.from('banners').delete().eq('id', id)
       if (error) throw error
       setBanners(prev => prev.filter(b => b.id !== id))
+      await revalidateSite('home')
     } catch (error: any) {
       alert("Error deleting banner: " + error.message)
     }

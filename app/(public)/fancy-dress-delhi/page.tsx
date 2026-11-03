@@ -23,7 +23,7 @@ export const metadata = generatePageMetadata({
 
 // Daily: the showcase follows the homepage festival calendar (date windows are
 // evaluated at render), and every query it reads is cached daily.
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 const GOOGLE_PROFILE_URL = 'https://share.google/OvjwothbT7G0sBGws'
 

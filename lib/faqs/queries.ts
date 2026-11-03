@@ -20,12 +20,12 @@ export async function getFaqsForFaqPage(): Promise<Faq[]> {
 
 /**
  * Cached wrapper so the /faq page renders as ISR instead of dynamic.
- * 24h cache; invalidate via revalidateTag('faqs') if an admin FAQ editor is added.
+ * Weekly cache (it sets the page ISR interval); /api/revalidate purges the faqs tag.
  */
 export const getFaqsForFaqPageCached = unstable_cache(
   getFaqsForFaqPage,
   ['faqs-for-faq-page'],
-  { revalidate: 86400, tags: ['faqs'] }
+  { revalidate: 604800, tags: ['faqs'] }
 )
 
 /** Curated subset for blog post footers (`show_on_blog`). */

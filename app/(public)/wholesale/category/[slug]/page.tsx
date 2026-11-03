@@ -22,7 +22,7 @@ import { ClassicalDanceComparisonTable } from '@/components/public/seo-tables/Cl
 import { isClassicalCostumeCategorySlug } from '@/lib/seo/classical-category-slugs'
 import type { ProductWithDetails } from '@/types/database'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 export const dynamicParams = true
 
 export async function generateStaticParams() {

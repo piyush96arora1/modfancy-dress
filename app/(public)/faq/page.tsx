@@ -13,7 +13,7 @@ import { FaqSection } from '@/components/public/FaqSection'
 import type { Faq } from '@/types/database'
 import { BUSINESS_WHATSAPP_DISPLAY } from '@/lib/constants/contact'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 export const metadata = generatePageMetadata({
   title: 'FAQ - Mod Fancy Dress | Orders, Sizing, Bulk & Delivery',

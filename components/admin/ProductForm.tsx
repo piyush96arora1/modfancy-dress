@@ -336,9 +336,9 @@ export function ProductForm({ product, categories: initialCategories }: ProductF
         }
       }
 
-      // Refresh the public catalogue now. /products and /wholesale only regenerate
-      // daily (ISR writes on the Hobby plan), so without this a new or edited
-      // product would take up to 24h to appear in the listings.
+      // Refresh the public catalogue now. Public pages only regenerate weekly
+      // (ISR writes on the Hobby plan), so without this a new or edited
+      // product would take up to a week to appear.
       await fetch('/api/revalidate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

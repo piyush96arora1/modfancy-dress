@@ -23,8 +23,10 @@ import {
  * is what makes these queries verifiable from a script or a test.
  */
 
-const ONE_DAY = 86400
-const ONE_HOUR = 3600
+// A page inherits the shortest revalidate of the caches it reads, so this is also its ISR
+// interval. Weekly keeps ISR writes inside the Hobby allowance; edits go live through
+// /api/revalidate (tags below), not by waiting for expiry.
+const ONE_WEEK = 604800
 export const CATALOG_PAGE_SIZE = 48
 
 /** PostgREST code for "single() matched zero rows" — a legitimate 404, not a failure. */
@@ -132,7 +134,7 @@ export async function fetchCatalogMarkupPct(): Promise<number> {
 export const getCatalogMarkupPctCached = unstable_cache(
   fetchCatalogMarkupPct,
   ['catalog-markup-pct'],
-  { revalidate: ONE_HOUR, tags: ['catalog', 'settings'] }
+  { revalidate: ONE_WEEK, tags: ['catalog', 'settings'] }
 )
 
 // ---------------------------------------------------------------- mapping
@@ -194,7 +196,7 @@ export async function fetchCatalogRootCategories(): Promise<CatalogCategory[]> {
 export const getCatalogRootCategoriesCached = unstable_cache(
   fetchCatalogRootCategories,
   ['catalog-root-categories'],
-  { revalidate: ONE_DAY, tags: ['catalog'] }
+  { revalidate: ONE_WEEK, tags: ['catalog'] }
 )
 
 export async function fetchCatalogCategoryBySlug(
@@ -241,7 +243,7 @@ export async function fetchCatalogCategoryBySlug(
 export const getCatalogCategoryBySlugCached = unstable_cache(
   fetchCatalogCategoryBySlug,
   ['catalog-category'],
-  { revalidate: ONE_DAY, tags: ['catalog'] }
+  { revalidate: ONE_WEEK, tags: ['catalog'] }
 )
 
 // ---------------------------------------------------------------- products
@@ -300,7 +302,7 @@ export async function fetchCatalogProductsForCategory(slug: string, page: number
 export const getCatalogProductsForCategoryCached = unstable_cache(
   fetchCatalogProductsForCategory,
   ['catalog-category-products'],
-  { revalidate: ONE_DAY, tags: ['catalog'] }
+  { revalidate: ONE_WEEK, tags: ['catalog'] }
 )
 
 export async function fetchCatalogProductBySlug(
@@ -357,7 +359,7 @@ export async function fetchCatalogProductBySlug(
 export const getCatalogProductBySlugCached = unstable_cache(
   fetchCatalogProductBySlug,
   ['catalog-product'],
-  { revalidate: ONE_DAY, tags: ['catalog'] }
+  { revalidate: ONE_WEEK, tags: ['catalog'] }
 )
 
 // ---------------------------------------------------------------- counts & search
@@ -384,7 +386,7 @@ export async function fetchCatalogCounts() {
 }
 
 export const getCatalogCountsCached = unstable_cache(fetchCatalogCounts, ['catalog-counts'], {
-  revalidate: ONE_DAY,
+  revalidate: ONE_WEEK,
   tags: ['catalog'],
 })
 

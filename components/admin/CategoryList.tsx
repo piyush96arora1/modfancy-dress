@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { createClient } from '@/lib/supabase/client'
+import { revalidateSite } from '@/lib/revalidate-client'
 import { EditCategoryButton } from './EditCategoryButton'
 import Image from 'next/image'
 import { Image as ImageIcon } from 'lucide-react'
@@ -29,6 +30,8 @@ export function CategoryList({ categories }: CategoryListProps) {
 
     if (error) {
       alert(`Failed to update category status: ${error.message}`)
+    } else {
+      await revalidateSite('catalog')
     }
     setToggling(null)
     router.refresh()

@@ -41,6 +41,7 @@ import { createClient } from '@supabase/supabase-js'
 import { checkCopy } from '../lib/seo/copy-limits'
 import { validateRedirects, type Redirect } from '../lib/seo/redirect-graph'
 import { hinglishProblems } from './lib/seo-copy-run'
+import { revalidateSite } from './lib/revalidate'
 
 config({ path: resolve(process.cwd(), '.env.local'), quiet: true })
 
@@ -265,7 +266,9 @@ async function main() {
   }
 }
 
-main().catch((e) => {
+main()
+  .then(() => (APPLY ? revalidateSite('catalog') : undefined))
+  .catch((e) => {
   console.error(e)
   process.exit(1)
 })

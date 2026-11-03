@@ -12,7 +12,10 @@ import type { ProductCardData } from '@/types/database'
  * as `cached-queries.ts` (unstable_cache + anon client, so pages stay ISR).
  */
 
-const ONE_DAY = 86400
+// A page inherits the shortest revalidate of the caches it reads, so this is also its ISR
+// interval. Weekly keeps ISR writes inside the Hobby allowance; edits go live through
+// /api/revalidate (tags below), not by waiting for expiry.
+const ONE_WEEK = 604800
 
 /**
  * Ids of categories that hold at least one live product, counting both the
@@ -40,7 +43,7 @@ export const getNonEmptyCategoryIdsCached = unstable_cache(
     return [...ids].sort()
   },
   ['non-empty-category-ids'],
-  { revalidate: ONE_DAY, tags: ['products', 'categories'] }
+  { revalidate: ONE_WEEK, tags: ['products', 'categories'] }
 )
 
 export type DatedHomepageSection = {
@@ -78,7 +81,7 @@ export const getDatedHomepageSectionsCached = unstable_cache(
     })) as DatedHomepageSection[]
   },
   ['homepage-sections-dated'],
-  { revalidate: ONE_DAY, tags: ['homepage-sections', 'categories'] }
+  { revalidate: ONE_WEEK, tags: ['homepage-sections', 'categories'] }
 )
 
 export type GuideLink = { slug: string; title: string; excerpt: string | null }
@@ -108,7 +111,7 @@ export const getCategoryGuideCached = unstable_cache(
     return post ?? null
   },
   ['category-guide'],
-  { revalidate: ONE_DAY, tags: ['categories', 'blog'] }
+  { revalidate: ONE_WEEK, tags: ['categories', 'blog'] }
 )
 
 /**
@@ -130,7 +133,7 @@ export const getCategorySlugsForGuideCached = unstable_cache(
     return (data ?? []).map((c) => c.slug as string)
   },
   ['category-slugs-for-guide'],
-  { revalidate: ONE_DAY, tags: ['categories', 'blog'] }
+  { revalidate: ONE_WEEK, tags: ['categories', 'blog'] }
 )
 
 export type LivePricedProduct = {
@@ -172,7 +175,7 @@ export const getLivePricedProductsCached = unstable_cache(
     })
   },
   ['live-priced-products'],
-  { revalidate: ONE_DAY, tags: ['products', 'categories'] }
+  { revalidate: ONE_WEEK, tags: ['products', 'categories'] }
 )
 
 /**
@@ -216,7 +219,7 @@ export const getProductCardsCached = unstable_cache(
     return ((data ?? []) as unknown as ProductCardRow[]).map(toProductCardData)
   },
   ['product-cards'],
-  { revalidate: ONE_DAY, tags: ['products'] }
+  { revalidate: ONE_WEEK, tags: ['products'] }
 )
 
 /*
@@ -241,7 +244,7 @@ export const getActiveCategoriesDailyCached = unstable_cache(
     return data ?? []
   },
   ['active-categories-with-image-daily'],
-  { revalidate: ONE_DAY, tags: ['categories'] }
+  { revalidate: ONE_WEEK, tags: ['categories'] }
 )
 
 /** Wholesale discount percentage from site_settings (defaults to 30) — daily. */
@@ -256,5 +259,5 @@ export const getWholesaleDiscountPctDailyCached = unstable_cache(
     return (data as { value?: { value?: number } } | null)?.value?.value ?? 30
   },
   ['wholesale-discount-pct-daily'],
-  { revalidate: ONE_DAY, tags: ['products', 'settings'] }
+  { revalidate: ONE_WEEK, tags: ['products', 'settings'] }
 )

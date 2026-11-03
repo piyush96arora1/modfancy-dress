@@ -7,7 +7,7 @@ import { CatalogGallery } from '@/components/public/catalog/CatalogGallery'
 import { ShareLinkButton } from '@/components/public/catalog/ShareLinkButton'
 import { whatsappUrl } from '@/lib/constants/contact'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 export const dynamicParams = true
 
 interface Props {

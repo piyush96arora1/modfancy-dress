@@ -7,7 +7,7 @@ import { CatalogCategoryCard } from '@/components/public/catalog/CatalogCategory
 import { CatalogSearchBox } from '@/components/public/catalog/CatalogSearchBox'
 import { ShareLinkButton } from '@/components/public/catalog/ShareLinkButton'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 /**
  * Private catalogue. Kept out of search engines by four independent layers: this robots

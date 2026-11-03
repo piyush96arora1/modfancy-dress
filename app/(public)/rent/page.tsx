@@ -8,7 +8,7 @@ import { getImageUrl } from '@/lib/imageUrl'
 import { BUSINESS_PHONE_DISPLAY, whatsappUrl } from '@/lib/constants/contact'
 import Image from 'next/image'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 export const metadata = generatePageMetadata({
   title: 'Fancy Dress on Rent in Delhi - Krishna Nagar Shop',

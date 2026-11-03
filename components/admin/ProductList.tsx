@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
+import { revalidateSite } from '@/lib/revalidate-client'
 import { EditProductButton } from './EditProductButton'
 import { getImageUrl } from '@/lib/imageUrl'
 
@@ -27,6 +28,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
       .update({ deleted_at: new Date().toISOString() })
       .eq('id', id)
     if (error) alert(`Failed to delete product: ${error.message}`)
+    else await revalidateSite('catalog')
     setActing(null)
     router.refresh()
   }
@@ -40,6 +42,7 @@ export function ProductList({ products, showDeleted = false }: ProductListProps)
       .update({ deleted_at: null })
       .eq('id', id)
     if (error) alert(`Failed to restore product: ${error.message}`)
+    else await revalidateSite('catalog')
     setActing(null)
     router.refresh()
   }

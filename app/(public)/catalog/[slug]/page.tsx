@@ -18,7 +18,7 @@ import { ShareLinkButton } from '@/components/public/catalog/ShareLinkButton'
  * is still cached for 24h via unstable_cache, so a request is a cheap render rather than a
  * database round trip — and this is a private, low-traffic section.
  */
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 interface Props {
   params: Promise<{ slug: string }>

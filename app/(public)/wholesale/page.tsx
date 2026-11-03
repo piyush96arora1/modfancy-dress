@@ -11,7 +11,7 @@ import { MapPin, Phone, Package, Truck, Wallet, Clock } from 'lucide-react'
 import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_TEL, whatsappUrl } from '@/lib/constants/contact'
 
 // Statically rendered (ISR); filtering is client-side. See /products for rationale.
-export const revalidate = 86400 // daily; admin product saves revalidate on demand (/api/revalidate scope=catalog)
+export const revalidate = 604800 // weekly; admin saves and data scripts revalidate on demand (/api/revalidate)
 
 export const metadata = generatePageMetadata({
     title: 'Wholesale Fancy Dress Costumes - Bulk Prices for Schools & Events',

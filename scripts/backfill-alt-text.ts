@@ -29,6 +29,7 @@ import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
 import { buildAltText, inferAudience } from '../lib/seo/alt-text'
+import { revalidateSite } from './lib/revalidate'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
@@ -133,7 +134,9 @@ async function main() {
   console.log('Audience inferred:', audiences)
 }
 
-main().catch((e) => {
+main()
+  .then(() => (APPLY ? revalidateSite('catalog') : undefined))
+  .catch((e) => {
   console.error(e)
   process.exit(1)
 })

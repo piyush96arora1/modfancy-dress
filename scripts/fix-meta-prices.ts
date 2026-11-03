@@ -19,6 +19,7 @@ import { config } from 'dotenv'
 import { resolve } from 'path'
 import { createClient } from '@supabase/supabase-js'
 import { checkCopy } from '../lib/seo/copy-limits'
+import { revalidateSite } from './lib/revalidate'
 
 config({ path: resolve(__dirname, '../.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
@@ -61,4 +62,6 @@ async function main() {
   skipped.forEach((s) => console.log(`  skip ${s}`))
 }
 
-main().catch((e) => { console.error(e); process.exit(1) })
+main()
+  .then(() => (APPLY ? revalidateSite('catalog') : undefined))
+  .catch((e) => { console.error(e); process.exit(1) })

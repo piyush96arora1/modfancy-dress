@@ -25,7 +25,7 @@ import type { ProductWithDetails, ProductReview } from '@/types/database'
 import { SizeGuideTable } from '@/components/public/seo-tables/SizeGuideTable'
 import { siteBaseUrl, whatsappUrl } from '@/lib/constants/contact'
 
-export const revalidate = 86400
+export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 export const dynamicParams = true
 
 export async function generateStaticParams() {

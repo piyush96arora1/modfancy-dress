@@ -1,7 +1,10 @@
 import { unstable_cache } from 'next/cache'
 import { createPublicServerClient } from './public-server'
 
-const ONE_DAY = 86400
+// A page inherits the shortest revalidate of the caches it reads, so this is also its ISR
+// interval. Weekly keeps ISR writes inside the Hobby allowance; edits go live through
+// /api/revalidate (tags below), not by waiting for expiry.
+const ONE_WEEK = 604800
 
 /** PostgREST code for "single() matched zero rows" — a legitimate 404, not a failure. */
 const NO_ROWS = 'PGRST116'
@@ -56,5 +59,5 @@ export const getProductCategoriesCached = unstable_cache(
     return (catRes.data ?? []).sort((a, b) => a.id.localeCompare(b.id))
   },
   ['product-categories'],
-  { revalidate: ONE_DAY, tags: ['products', 'categories'] }
+  { revalidate: ONE_WEEK, tags: ['products', 'categories'] }
 )

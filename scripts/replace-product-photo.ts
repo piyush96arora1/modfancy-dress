@@ -14,8 +14,7 @@
  * 3. Deletes the old product_images rows and inserts one primary row for the new photo.
  *
  * Old storage objects are left in place, so restoring is just re-inserting the backed-up rows.
- * Product pages cache for 24h; call /api/revalidate { scope: 'catalog' } as an admin (or save
- * the product in the admin panel) to show the change immediately.
+ * --apply then calls /api/revalidate (scope 'catalog') so the new photo shows immediately.
  */
 import { config } from 'dotenv'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
@@ -23,6 +22,7 @@ import { resolve } from 'path'
 import sharp from 'sharp'
 import { createClient } from '@supabase/supabase-js'
 import { VARIANT_WIDTHS, variantPath } from '../lib/utils/image-variants'
+import { revalidateSite } from './lib/revalidate'
 
 config({ path: resolve(process.cwd(), '.env.local') })
 
@@ -117,7 +117,9 @@ async function main() {
   console.log(`Done: ${product.slug} now has 1 image → ${imageUrl}`)
 }
 
-main().catch((e) => {
+main()
+  .then(() => (APPLY ? revalidateSite('catalog') : undefined))
+  .catch((e) => {
   console.error(e instanceof Error ? e.message : e)
   process.exit(1)
 })
