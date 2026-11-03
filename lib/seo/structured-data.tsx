@@ -96,13 +96,9 @@ export function LocalBusinessSchema() {
       closes: '21:30',
     },
     priceRange: '₹₹',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.7',
-      reviewCount: 700,
-      bestRating: 5,
-      worstRating: 1,
-    },
+    // No aggregateRating here: the 700+ reviews live on Google Business, not on
+    // this site. Self-served store ratings never earn stars and Search Console
+    // flagged the homepage for "Review has multiple aggregate ratings".
     sameAs: [
       'https://www.google.com/maps?cid=17989257548569961947',
     ],

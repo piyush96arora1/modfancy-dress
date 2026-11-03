@@ -22,8 +22,8 @@ import { getImageUrl } from '@/lib/imageUrl'
 import type { Banner, ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
-  title: 'Fancy Dress Costumes - Buy Online | School & Events',
-  description: 'Buy or rent fancy dress costumes and accessories. 15+ years experience, 400+ successful school functions. Dance, festival and competition costumes from Delhi.',
+  title: 'Fancy Dress Shop in Delhi – Rent or Buy from ₹200',
+  description: 'Fancy dress costume shop in Krishna Nagar, Delhi. Rent or buy from ₹200 for school functions, festivals and parties. 700+ Google reviews, 4.7★.',
   path: '/',
 })
 
