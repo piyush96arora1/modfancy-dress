@@ -78,17 +78,20 @@ export function OrderStatusClient({ initial, initialProgress, token }: { initial
       clearPendingOrder(order.orderNumber)
       try { localStorage.removeItem('mfd-checkout-draft') } catch {}
     }
-    if (s.paymentStatus !== 'paid') return
-    const key = `mfd-purchase-sent:${order.orderNumber}`
+    // `purchase` stays paid-only (GA revenue + Meta Purchase optimise on real money). Pay-later
+    // orders, which are most real orders, get their own `place_order` event so they're visible too.
+    const paid = s.paymentStatus === 'paid'
+    const key = `mfd-${paid ? 'purchase' : 'order'}-sent:${order.orderNumber}`
     try {
       if (localStorage.getItem(key)) return
       localStorage.setItem(key, '1')
     } catch {}
-    track('purchase', {
+    track(paid ? 'purchase' : 'place_order', {
       transaction_id: order.orderNumber,
       currency: 'INR',
       value: order.total,
       shipping: order.deliveryFee,
+      payment_type: paid ? 'online' : 'pay_later',
       items: order.items.map((i, n) => ({ item_id: `${order.orderNumber}-${n}`, item_name: i.name, item_variant: i.size ?? undefined, price: i.price, quantity: i.quantity })),
     })
   }, [s.paymentStatus, s.paymentMethod, order, clearCart])
