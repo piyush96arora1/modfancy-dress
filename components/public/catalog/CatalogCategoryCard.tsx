@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import Image from 'next/image'
 import { ImageOff } from 'lucide-react'
 import type { CatalogCategory } from '@/lib/supabase/supplier-queries'
@@ -6,7 +6,7 @@ import type { CatalogCategory } from '@/lib/supabase/supplier-queries'
 export function CatalogCategoryCard({ category }: { category: CatalogCategory }) {
   const img = category.thumbnailUrl ?? category.imageUrl
   return (
-    <Link href={`/catalog/${category.slug}`} className="group block">
+    <IntentLink href={`/catalog/${category.slug}`} className="group block">
       <div
         className="bg-white rounded-xl overflow-hidden border border-[#E8E5E0] group-hover:border-[#C8956C]/30 transition-all duration-300 group-hover:-translate-y-1 h-full"
         style={{ boxShadow: 'var(--shadow-card)' }}
@@ -40,6 +40,6 @@ export function CatalogCategoryCard({ category }: { category: CatalogCategory })
           )}
         </div>
       </div>
-    </Link>
+    </IntentLink>
   )
 }

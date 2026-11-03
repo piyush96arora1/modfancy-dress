@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import { useRouter } from 'next/navigation'
 import type { ProductCardData, PricingMode } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
@@ -54,7 +54,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
   }
 
   return (
-    <Link href={`${basePath}/${product.slug}`} onClick={handleClick} className="group relative block">
+    <IntentLink href={`${basePath}/${product.slug}`} onClick={handleClick} className="group relative block">
       {isPending && (
         <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-10 rounded-xl" style={{ boxShadow: 'var(--shadow-md)' }}>
           <LoadingSpinner size="lg" />
@@ -114,6 +114,6 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
           )}
         </div>
       </div>
-    </Link>
+    </IntentLink>
   )
 }

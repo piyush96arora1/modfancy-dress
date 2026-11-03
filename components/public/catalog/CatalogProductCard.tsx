@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import Image from 'next/image'
 import type { CatalogProduct } from '@/lib/supabase/supplier-queries'
 
@@ -16,7 +16,7 @@ export function CatalogProductCard({
 }) {
   const TitleTag = titleTag
   return (
-    <Link href={`/catalog/p/${product.slug}`} className="group relative block">
+    <IntentLink href={`/catalog/p/${product.slug}`} className="group relative block">
       <div
         className="bg-white rounded-xl overflow-hidden border border-[#E8E5E0] group-hover:border-[#C8956C]/30 transition-all duration-300 group-hover:-translate-y-1 h-full flex flex-col"
         style={{ boxShadow: 'var(--shadow-card)' }}
@@ -50,6 +50,6 @@ export function CatalogProductCard({
           )}
         </div>
       </div>
-    </Link>
+    </IntentLink>
   )
 }

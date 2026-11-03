@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import { useRouter } from 'next/navigation'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
@@ -63,7 +63,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   const emoji = getCategoryEmoji(category.name)
 
   return (
-    <Link
+    <IntentLink
       href={`${basePath}/${category.slug}`}
       onClick={handleClick}
       className="flex-shrink-0 w-24 md:w-auto flex flex-col items-center gap-2 p-3 md:p-4 rounded-xl bg-white border border-[#E8E5E0] hover:border-[#C8956C]/40 transition-all duration-300 hover:-translate-y-0.5 relative group"
@@ -97,6 +97,6 @@ export function CategoryCard({ category }: CategoryCardProps) {
       <h3 className={`text-center font-medium text-xs md:text-sm text-[#2D2D2D] group-hover:text-[#1B2A4A] transition-colors leading-tight ${isPending ? 'opacity-50' : ''}`}>
         {category.name}
       </h3>
-    </Link>
+    </IntentLink>
   )
 }
