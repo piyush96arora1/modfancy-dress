@@ -7,7 +7,7 @@ import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
 import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
 import { ChevronRight, MapPin, MessageCircle, Clock } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
-import { BUSINESS_PHONE_DISPLAY, whatsappUrl } from '@/lib/constants/contact'
+import { BUSINESS_WHATSAPP_DISPLAY, whatsappUrl } from '@/lib/constants/contact'
 import Image from 'next/image'
 
 export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
@@ -167,7 +167,7 @@ export default async function RentPage() {
               <MessageCircle className="hidden sm:block w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs sm:text-sm font-medium text-[#1B2A4A]">WhatsApp enquiry</p>
-                <p className="hidden sm:block text-xs text-[#6B6B6B]">{BUSINESS_PHONE_DISPLAY}</p>
+                <p className="hidden sm:block text-xs text-[#6B6B6B]">{BUSINESS_WHATSAPP_DISPLAY}</p>
               </div>
             </div>
           </div>
@@ -180,9 +180,9 @@ export default async function RentPage() {
               Costumes on rent this season
             </h2>
             <p className="text-sm text-[#6B6B6B] mb-4">
-              Leaders, Republic Day, annual-function dance and theme costumes. Rent price is per event; the deposit is refunded on return.
+              Leaders, Republic Day, annual-function dance and theme costumes. Every one is available on rent; WhatsApp us the costume name for the rent and to book.
             </p>
-            <ProductGrid products={seasonProducts} productTitleTag="h3" priorityCount={4} showRent />
+            <ProductGrid products={seasonProducts} productTitleTag="h3" priorityCount={4} />
           </section>
         )}
 
@@ -235,9 +235,9 @@ export default async function RentPage() {
             animal and fruit costumes, in kids&apos; sizes and selected adult sizes.
           </p>
           <p>
-            <strong className="text-[#2D2D2D]">Rent and deposit.</strong> Rent starts at ₹200 per event and most
-            costumes rent for ₹250–₹500. A refundable deposit is taken with the rent: ₹500 for costumes up to ₹200 rent,
-            ₹1,000 for ₹201–₹500 and ₹2,000 above ₹500. You get it back in full when the costume comes back.
+            <strong className="text-[#2D2D2D]">Rent and deposit.</strong> Rent starts at ₹200 per event and depends on
+            the costume, so send us the costume name on WhatsApp for the exact rent. A refundable deposit of ₹500–₹2,000
+            is taken with the rent, and you get it back in full when the costume comes back.
           </p>
           <p>
             <strong className="text-[#2D2D2D]">Pickup or delivery.</strong> Visit our{' '}

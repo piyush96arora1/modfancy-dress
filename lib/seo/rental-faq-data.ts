@@ -9,7 +9,7 @@ export function rentalFaqPairs(): { question: string; answer: string }[] {
     {
       question: 'What is the security deposit for renting a costume?',
       answer:
-        'We take a refundable security deposit along with the rent. It depends on the costume: ₹500 deposit for costumes up to ₹200 rent, ₹1,000 for ₹201–₹500 rent, and ₹2,000 for costumes above ₹500 rent. You get the full deposit back when you return the costume.',
+        'We take a refundable security deposit along with the rent, from ₹500 to ₹2,000 depending on the costume. WhatsApp us the costume name and we will tell you the rent and deposit. You get the full deposit back when you return the costume.',
     },
     {
       question: 'How does the costume rental process work?',

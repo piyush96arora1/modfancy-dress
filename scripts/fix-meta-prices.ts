@@ -1,5 +1,9 @@
 /**
- * Correct stale prices quoted in product meta descriptions.
+ * Correct stale buy prices quoted in product meta descriptions.
+ *
+ * The phrase is "Buy ₹<n> or rent" — rent rates are not published (owner decision
+ * Aug 2026, reconfirmed 4 Nov 2026; scripts/followups/remove-rent-prices-2026-11.ts
+ * took the rent figure out of every meta). Only the buy price is kept in sync.
  *
  * Why: 96 of 321 live products (23 Sep 2026) had a meta saying e.g. "Buy ₹1500 or
  * rent ₹1000" after the catalogue prices changed. The meta is the Google snippet,
@@ -27,7 +31,7 @@ const APPLY = process.argv.includes('--apply')
 const skipArg = process.argv.indexOf('--skip')
 const SKIP = new Set(skipArg >= 0 ? (process.argv[skipArg + 1] ?? '').split(',').filter(Boolean) : [])
 
-const PHRASE = /Buy ₹\s?\d+(?:,\d{3})* or rent ₹\s?\d+(?:,\d{3})*/
+const PHRASE = /Buy ₹\s?\d+(?:,\d{3})* or rent(?! ₹)/
 const fmt = (n: number) => String(Math.round(n)) // catalogue copy style: "₹1500", no grouping
 
 async function main() {
@@ -45,9 +49,9 @@ async function main() {
     if (!meta || !PHRASE.test(meta)) continue
     if (SKIP.has(p.slug)) { skipped.push(`${p.slug}: --skip (price under review)`); continue }
     const price = Number(p.price), rent = Number(p.rent_price)
-    if (!(price > 0) || !(rent > 0)) { skipped.push(`${p.slug}: missing price or rent`); continue }
+    if (!(price > 0)) { skipped.push(`${p.slug}: missing price`); continue }
     if (rent > price) { skipped.push(`${p.slug}: rent ₹${rent} > buy ₹${price} (owner to check)`); continue }
-    const next = meta.replace(PHRASE, `Buy ₹${fmt(price)} or rent ₹${fmt(rent)}`)
+    const next = meta.replace(PHRASE, `Buy ₹${fmt(price)} or rent`)
     if (next === meta) continue
     const problems = checkCopy({ seoTitle: p.seo_title ?? '', metaDescription: next })
     if (problems.length) { skipped.push(`${p.slug}: ${problems.join('; ')}`); continue }

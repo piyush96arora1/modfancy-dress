@@ -91,8 +91,14 @@ export function assertCopy(label: string, seoTitle: string, metaDescription: str
   console.log(`   ✔ copy ok — title ${seoTitle.length}, meta ${metaDescription.length}`)
 }
 
-/** Fills {{price|rent|deposit|size:slug}} from the live row. */
+/**
+ * Fills {{price|size:slug}} from the live row. {{rent:…}} and {{deposit:…}} are
+ * refused: rent rates are not published (owner decision Aug 2026, reconfirmed
+ * 4 Nov 2026), so copy says "available on rent" and the rate is given on WhatsApp.
+ */
 export function fill(cat: Catalog, text: string): string {
+  const rentRef = /\{\{(rent|deposit):[a-z0-9-]+\}\}/.exec(text)
+  if (rentRef) throw new Error(`${rentRef[0]}: rent rates are not published; write "available on rent" instead`)
   return text.replace(/\{\{(price|rent|deposit|size):([a-z0-9-]+)\}\}/g, (_, field: string, slug: string) => {
     const p = cat.products.get(slug)
     if (!p) throw new Error(`placeholder ${field}:${slug} — product not live`)

@@ -12,8 +12,6 @@ interface ProductGridProps {
   productTitleTag?: 'h3' | 'h4'
   /** How many leading cards load eagerly (the first mobile rows hold the LCP image). */
   priorityCount?: number
-  /** Show each card's rent price (rent landing page). */
-  showRent?: boolean
   /** Hide the per-card category badge where the page already is that category. */
   showCategoryBadge?: boolean
 }
@@ -25,7 +23,6 @@ export function ProductGrid({
   showViewAllCard = false,
   productTitleTag = 'h3',
   priorityCount = 0,
-  showRent = false,
   showCategoryBadge = true,
 }: ProductGridProps) {
   if (products.length === 0) {
@@ -46,7 +43,6 @@ export function ProductGrid({
           wholesaleDiscountPct={wholesaleDiscountPct}
           titleTag={productTitleTag}
           priority={index < priorityCount}
-          showRent={showRent}
           showCategoryBadge={showCategoryBadge}
         />
       ))}
