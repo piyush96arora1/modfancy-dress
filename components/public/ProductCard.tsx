@@ -23,9 +23,11 @@ interface ProductCardProps {
   showCategoryBadge?: boolean
   /** Load eagerly with high priority: set on the first row of a listing (the LCP card). */
   priority?: boolean
+  /** Show the per-event rent price under the buy price (rent landing page). */
+  showRent?: boolean
 }
 
-export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3', showCategoryBadge = true, priority = false }: ProductCardProps) {
+export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountPct = 30, titleTag = 'h3', showCategoryBadge = true, priority = false, showRent = false }: ProductCardProps) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const { mode: globalMode } = usePricingMode()
@@ -110,6 +112,11 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
                   <span className="text-xs font-normal text-[#6B6B6B] ml-1">/piece</span>
                 )}
               </p>
+              {showRent && product.rent_price != null && pricingMode === 'retail' && (
+                <p className="text-xs md:text-sm font-medium text-[#8F6240]">
+                  Rent {formatPrice(Number(product.rent_price))}/event
+                </p>
+              )}
             </div>
           )}
         </div>

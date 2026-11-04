@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import { getRentCategoriesCached } from '@/lib/supabase/cached-queries'
+import { getRentCategoriesCached, getAllActiveProductsCached } from '@/lib/supabase/cached-queries'
+import { ProductGrid } from '@/components/public/ProductGrid'
+import type { ProductCardData } from '@/types/database'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, FaqPageSchema } from '@/lib/seo/structured-data'
 import { rentalFaqPairs } from '@/lib/seo/rental-faq-data'
@@ -11,14 +13,71 @@ import Image from 'next/image'
 export const revalidate = 604800 // weekly; edits revalidate on demand via /api/revalidate
 
 export const metadata = generatePageMetadata({
-  title: 'Fancy Dress on Rent in Delhi - Krishna Nagar Shop',
+  title: 'Costumes & Fancy Dress on Rent in Delhi NCR – From ₹200',
   description:
-    'Rent fancy dress costumes in Delhi — dance, festival and competition costumes from ₹200/event. Visit our Krishna Nagar shop or enquire on WhatsApp. Refundable deposit.',
+    'Costume rental near you in Delhi NCR: 300+ fancy dress costumes on rent from ₹200 per event for school functions, dance and competitions. Try them at our Krishna Nagar shop or get delivery.',
   path: '/rent',
 })
 
+/**
+ * Categories shown first in the "on rent now" grid, in order. Update per season
+ * (see seodata/SEASONAL-CALENDAR.md): Nov–Jan = Children's Day, annual functions,
+ * Christmas and Republic Day.
+ */
+const SEASON_CATEGORIES = [
+  'leaders-freedom-fighters',
+  'republic-day-dress',
+  'independence-day-dress',
+  'states-fancy-dress',
+  'folk-dance-dress',
+  'kathak-dress',
+  'western-dance-dress',
+  'cartoon-characters',
+  'animal-costumes',
+  'festival-costumes',
+  'ramleela-costumes',
+  'nature-costumes',
+  'fruit-costumes',
+  'rajasthani-dress',
+]
+const PER_CATEGORY = 3
+const GRID_SIZE = 24
+
+type RentProduct = ProductCardData & { category: { name: string; slug?: string } | null }
+
+/** Round-robin across the season categories so the grid isn't one category deep. */
+function pickSeasonProducts(products: RentProduct[]): RentProduct[] {
+  const slugsOf = (p: RentProduct) => [
+    p.category?.slug,
+    ...(p.categories ?? []).map((c) => c.category?.slug),
+  ]
+  const buckets = SEASON_CATEGORIES.map((slug) =>
+    products.filter((p) => p.images.length > 0 && p.category?.slug !== 'accessories' && slugsOf(p).includes(slug)).slice(0, PER_CATEGORY * 2)
+  )
+  const picked: RentProduct[] = []
+  const seen = new Set<string>()
+  for (let round = 0; round < PER_CATEGORY && picked.length < GRID_SIZE; round++) {
+    for (const bucket of buckets) {
+      const next = bucket.find((p) => !seen.has(p.id))
+      if (!next) continue
+      seen.add(next.id)
+      picked.push(next)
+      if (picked.length >= GRID_SIZE) break
+    }
+  }
+  return picked
+}
+
 export default async function RentPage() {
-  const categories = await getRentCategoriesCached()
+  const [categories, allProducts] = await Promise.all([
+    getRentCategoriesCached(),
+    getAllActiveProductsCached(),
+  ])
+  const rentable = (allProducts as unknown as RentProduct[]).filter((p) => p.rent_price != null)
+  const seasonProducts = pickSeasonProducts(rentable)
+  const costumeCount = Math.floor(
+    rentable.filter((p) => p.category?.slug !== 'accessories').length / 50
+  ) * 50
 
   const breadcrumbSchema = BreadcrumbSchema([
     { name: 'Home', url: '/' },
@@ -34,7 +93,7 @@ export default async function RentPage() {
     '@id': 'https://www.modfancydress.com/rent#service',
     name: 'Fancy Dress Costume Rental',
     serviceType: 'Costume Rental',
-    description: 'Rent fancy dress costumes in Delhi NCR. 400+ styles including dance, festival, and competition costumes. Prices from ₹200 per event with refundable deposit.',
+    description: 'Rent fancy dress costumes in Delhi NCR. 300+ styles including dance, festival, and competition costumes. Prices from ₹200 per event with refundable deposit.',
     url: 'https://www.modfancydress.com/rent',
     provider: {
       '@type': 'ClothingStore',
@@ -81,11 +140,12 @@ export default async function RentPage() {
         {/* Hero */}
         <header className="mb-8 md:mb-12">
           <h1 className="text-2xl md:text-3xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-3">
-            Fancy Dress on Rent in Delhi
+            Costumes &amp; Fancy Dress on Rent in Delhi NCR
           </h1>
           <p className="text-sm md:text-base text-[#6B6B6B] leading-relaxed max-w-2xl">
-            Rent costumes for school annual functions, dance recitals, and competitions — starting from ₹200/event.
-            Pick up from our Krishna Nagar, Delhi shop or get it delivered via Porter/Rapido.
+            Rent {costumeCount}+ fancy dress costumes for school annual functions, dance performances and
+            competitions, from ₹200 per event. Try them at our Krishna Nagar, Delhi shop or get delivery
+            anywhere in Delhi, Noida, Gurgaon, Ghaziabad and Faridabad.
           </p>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -113,10 +173,23 @@ export default async function RentPage() {
           </div>
         </header>
 
+        {/* Season products */}
+        {seasonProducts.length > 0 && (
+          <section className="mb-12 md:mb-16">
+            <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-1">
+              Costumes on rent this season
+            </h2>
+            <p className="text-sm text-[#6B6B6B] mb-4">
+              Leaders, Republic Day, annual-function dance and theme costumes. Rent price is per event; the deposit is refunded on return.
+            </p>
+            <ProductGrid products={seasonProducts} productTitleTag="h3" priorityCount={4} showRent />
+          </section>
+        )}
+
         {/* Category grid */}
         <section>
           <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)] mb-4">
-            Categories available on rent
+            All costume categories on rent
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
             {categories.map((cat) => (
@@ -148,6 +221,40 @@ export default async function RentPage() {
               </Link>
             ))}
           </div>
+        </section>
+
+        {/* Rental guide */}
+        <section className="mt-12 md:mt-16 pt-8 border-t border-[#E8E5E0] max-w-3xl space-y-3 text-sm text-[#6B6B6B] leading-relaxed">
+          <h2 className="text-lg font-semibold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">
+            Costume rental near you in Delhi NCR
+          </h2>
+          <p>
+            Most fancy dress is worn once: a school annual function, a dance competition, Children&apos;s Day or a
+            Republic Day programme. Renting costs a fraction of buying and leaves nothing to store. Every costume in
+            our shop can be rented, from freedom fighters and state dresses to Kathak, Garba, western dance, cartoon,
+            animal and fruit costumes, in kids&apos; sizes and selected adult sizes.
+          </p>
+          <p>
+            <strong className="text-[#2D2D2D]">Rent and deposit.</strong> Rent starts at ₹200 per event and most
+            costumes rent for ₹250–₹500. A refundable deposit is taken with the rent: ₹500 for costumes up to ₹200 rent,
+            ₹1,000 for ₹201–₹500 and ₹2,000 above ₹500. You get it back in full when the costume comes back.
+          </p>
+          <p>
+            <strong className="text-[#2D2D2D]">Pickup or delivery.</strong> Visit our{' '}
+            <Link href="/fancy-dress-delhi" className="text-[#8F6240] hover:underline font-medium">Krishna Nagar costume shop in East Delhi</Link>{' '}
+            to try sizes, or book a Porter or Rapido and we send it to your door in{' '}
+            <Link href="/fancy-dress-noida" className="text-[#8F6240] hover:underline">Noida</Link>,{' '}
+            <Link href="/fancy-dress-gurgaon" className="text-[#8F6240] hover:underline">Gurgaon</Link>,{' '}
+            <Link href="/fancy-dress-ghaziabad" className="text-[#8F6240] hover:underline">Ghaziabad</Link> or Faridabad.
+            Rentals are for Delhi NCR only. Outside NCR you can{' '}
+            <Link href="/products" className="text-[#8F6240] hover:underline">buy any costume</Link> with courier delivery across India.
+          </p>
+          <p>
+            <strong className="text-[#2D2D2D]">Schools and dance academies.</strong> Renting 10 or more costumes for a
+            class, house or group dance? Send the list on WhatsApp for a group rate, or see{' '}
+            <Link href="/wholesale" className="text-[#8F6240] hover:underline">wholesale</Link> if you want to buy in bulk.
+            Book a week ahead from November to February, when annual functions and Republic Day keep costumes busy.
+          </p>
         </section>
 
         {/* How it works */}
