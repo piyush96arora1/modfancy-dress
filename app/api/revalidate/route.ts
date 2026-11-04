@@ -47,6 +47,7 @@ export async function POST(request: Request) {
     revalidatePath('/products')
     revalidatePath('/wholesale')
     revalidatePath('/')
+    revalidatePath('/sitemap.xml')
     return NextResponse.json({ revalidated: true, scope: 'catalog' })
   }
 
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
     for (const tag of CONTENT_TAGS) revalidateTag(tag, { expire: 3600 })
     revalidatePath('/blog')
     revalidatePath('/faq')
+    revalidatePath('/sitemap.xml')
     return NextResponse.json({ revalidated: true, scope: 'content' })
   }
 
