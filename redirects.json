@@ -4206,12 +4206,22 @@
   },
   {
     "source": "/products/santa-clause-fancy-dress",
-    "destination": "/products/santa-claus-dress-for-kids",
+    "destination": "/products/santa-claus-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/santa-clause-fancy-dress",
-    "destination": "/wholesale/santa-claus-dress-for-kids",
+    "destination": "/wholesale/santa-claus-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/santa-claus-dress-for-kids",
+    "destination": "/products/santa-claus-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/santa-claus-dress-for-kids",
+    "destination": "/wholesale/santa-claus-dress",
     "permanent": true
   }
 ]
