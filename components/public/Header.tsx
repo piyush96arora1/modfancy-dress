@@ -7,7 +7,6 @@ import { useCart } from '@/lib/store/cart'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/client'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import { SearchBar } from '@/components/public/SearchBar'
 
@@ -30,6 +29,8 @@ export function Header() {
   const handleLogout = async () => {
     setLoggingOut(true)
     try {
+      // Loaded on demand: supabase-js stays out of the public bundle (see useAuth).
+      const { createClient } = await import('@/lib/supabase/client')
       const supabase = createClient()
       await supabase.auth.signOut()
       window.location.href = '/'

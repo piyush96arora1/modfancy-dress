@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { categoryIntro, plainText } from '@/lib/utils/category-intro'
 import { BlogContent } from '@/components/public/BlogContent'
 import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import {
   getCategoryMetaBySlugCached,
   getActiveCategorySlugsCached,
@@ -101,9 +102,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div className="fade-in">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
-          <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
+          <IntentLink href="/" className="hover:text-[#1B2A4A] transition-colors">Home</IntentLink>
           <ChevronRight className="w-3 h-3 flex-shrink-0" />
-          <Link href="/products" className="hover:text-[#1B2A4A] transition-colors">Products</Link>
+          <IntentLink href="/products" className="hover:text-[#1B2A4A] transition-colors">Products</IntentLink>
           <ChevronRight className="w-3 h-3 flex-shrink-0" />
           <span className="text-[#2D2D2D]">{category.name}</span>
         </nav>

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { IntentLink } from './IntentLink'
 import { ProductGrid } from './ProductGrid'
 import { PricingModeToggle } from './PricingModeToggle'
 import { Button } from '@/components/ui/button'
@@ -58,11 +58,13 @@ export function HomepageSection({
           </h2>
           {showPricingToggle && <PricingModeToggle currentMode="retail" />}
         </div>
-        <Link href={viewAllHref} prefetch={true} className="w-full sm:w-auto">
+        {/* Intent prefetch: a full prefetch of every section's category page as it scrolled
+            into view cost a CDN request + RSC parse per section (Hobby limits, TBT). */}
+        <IntentLink href={viewAllHref} className="w-full sm:w-auto">
           <Button variant="outline" className="w-full sm:w-auto text-sm">
             View All →
           </Button>
-        </Link>
+        </IntentLink>
       </div>
       <ProductGrid products={products} productTitleTag="h4" />
     </section>

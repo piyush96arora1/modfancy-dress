@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import { setUserProperties, track } from '@/lib/analytics/gtag'
 import { Store, Package } from 'lucide-react'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
@@ -27,7 +27,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
 
     return (
         <div className="inline-flex items-center rounded-xl border border-[#E8E5E0] p-1 bg-white" style={{ boxShadow: 'var(--shadow-xs)' }}>
-            <Link
+            <IntentLink
                 href={retailHref}
                 onClick={() => choose('retail')}
                 className={`
@@ -40,8 +40,8 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
             >
                 <Store className="w-3.5 h-3.5" />
                 Retail
-            </Link>
-            <Link
+            </IntentLink>
+            <IntentLink
                 href={wholesaleHref}
                 onClick={() => choose('wholesale')}
                 className={`
@@ -54,7 +54,7 @@ export function PricingModeToggle({ currentMode, basePath = '' }: PricingModeTog
             >
                 <Package className="w-3.5 h-3.5" />
                 Wholesale
-            </Link>
+            </IntentLink>
         </div>
     )
 }

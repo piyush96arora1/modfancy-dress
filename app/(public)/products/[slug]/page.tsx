@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import {
   getProductBySlugCached,
   getProductMetaBySlugCached,
@@ -154,13 +155,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="fade-in">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6 overflow-x-auto">
-          <Link href="/" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Home</Link>
+          <IntentLink href="/" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Home</IntentLink>
           <ChevronRight className="w-3 h-3 flex-shrink-0" />
-          <Link href="/products" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Products</Link>
+          <IntentLink href="/products" className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">Products</IntentLink>
           {productData.category && (
             <>
               <ChevronRight className="w-3 h-3 flex-shrink-0" />
-              <Link href={`/category/${productData.category.slug}`} className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">{productData.category.name}</Link>
+              <IntentLink href={`/category/${productData.category.slug}`} className="hover:text-[#1B2A4A] transition-colors whitespace-nowrap">{productData.category.name}</IntentLink>
             </>
           )}
           <ChevronRight className="w-3 h-3 flex-shrink-0" />

@@ -2,6 +2,7 @@ import { ProductCard } from './ProductCard'
 import type { ProductCardData, PricingMode } from '@/types/database'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { toCardData } from '@/lib/utils/card-data'
 
 interface ProductGridProps {
   products: ProductCardData[]
@@ -38,7 +39,7 @@ export function ProductGrid({
       {products.map((product, index) => (
         <ProductCard
           key={product.id}
-          product={product}
+          product={toCardData(product)}
           pricingMode={pricingMode}
           wholesaleDiscountPct={wholesaleDiscountPct}
           titleTag={productTitleTag}

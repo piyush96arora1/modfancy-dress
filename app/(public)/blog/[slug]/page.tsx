@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import {
   getBlogPostBySlugCached,
   getCategoryBySlugCached,
@@ -9,6 +10,8 @@ import {
 import { getCategorySlugsForGuideCached } from '@/lib/supabase/cached-seo-queries'
 import { interleaveGuideProducts } from '@/lib/utils/guide-products'
 import { getImageUrl } from '@/lib/imageUrl'
+import { variantUrl } from '@/lib/utils/image-variants'
+import { VariantImage } from '@/components/public/VariantImage'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { BreadcrumbSchema, BlogPostingSchema } from '@/lib/seo/structured-data'
@@ -100,9 +103,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
       <article className="fade-in max-w-3xl">
         <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-4 md:mb-6">
-          <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
+          <IntentLink href="/" className="hover:text-[#1B2A4A] transition-colors">Home</IntentLink>
           <ChevronRight className="w-3 h-3 shrink-0" />
-          <Link href="/blog" className="hover:text-[#1B2A4A] transition-colors">Blog</Link>
+          <IntentLink href="/blog" className="hover:text-[#1B2A4A] transition-colors">Blog</IntentLink>
           <ChevronRight className="w-3 h-3 shrink-0" />
           <span className="text-[#2D2D2D] truncate">{post.title}</span>
         </nav>
@@ -115,15 +118,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {coverImageUrl && (
           // The LCP element on a post: eager + high priority, fixed aspect box so
-          // nothing shifts while it loads. Plain <img>: next/image optimisation is off.
+          // nothing shifts while it loads. Covers are product photos, so the 800w variant
+          // (~25 KB vs ~65 KB original) is enough for the <=768px-wide box; VariantImage
+          // falls back to the original if a cover has no variant.
           <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-xl bg-[#F5F3F0] mb-6 md:mb-8">
-            <img
-              src={coverImageUrl}
+            <VariantImage
+              src={variantUrl(coverImageUrl, 800)}
+              fallbackSrc={coverImageUrl}
               alt={post.title}
-              className="absolute inset-0 h-full w-full object-contain"
-              loading="eager"
+              fill
+              priority
               fetchPriority="high"
-              decoding="async"
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-contain"
             />
           </div>
         )}

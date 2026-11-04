@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { ProductCard } from './ProductCard'
+import { toCardData } from '@/lib/utils/card-data'
 import { selectRelatedWithTopUp, relatedHeading } from '@/lib/utils/related-products'
 import type { ProductWithDetails } from '@/types/database'
 
@@ -66,7 +67,7 @@ export function RelatedProducts({
         {related.map((product) => (
           <div key={product.id} className="w-[45%] shrink-0 snap-start md:w-auto">
             {/* h4 keeps the outline h1 -> h2 -> h4, matching the category grid. */}
-            <ProductCard product={product} titleTag="h4" showCategoryBadge={false} />
+            <ProductCard product={toCardData(product)} titleTag="h4" showCategoryBadge={false} />
           </div>
         ))}
       </div>

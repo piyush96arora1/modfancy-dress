@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
 import {
   getLatestProductsCached,
@@ -14,11 +13,13 @@ import { HomepageSection } from '@/components/public/HomepageSection'
 import { EventBanner } from '@/components/public/EventBanner'
 import { TickerStrip } from '@/components/public/TickerStrip'
 import { AssetPreloader } from '@/components/public/AssetPreloader'
+import { IntentLink } from '@/components/public/IntentLink'
 import { OccasionGuideTable } from '@/components/public/seo-tables/OccasionGuideTable'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { WebSiteSchema } from '@/lib/seo/structured-data'
 import { Star, Award, Calendar } from 'lucide-react'
 import { getImageUrl } from '@/lib/imageUrl'
+import { cardImageUrl } from '@/lib/utils/image-variants'
 import type { Banner, ProductWithDetails } from '@/types/database'
 
 export const metadata = generatePageMetadata({
@@ -78,7 +79,10 @@ export default async function HomePage() {
     })
   )
   const visibleSections = sectionsWithProducts.filter((s) => s.products.length > 0)
-  const firstSectionProducts = visibleSections[0]?.products ?? []
+  const firstSectionImageUrls = (visibleSections[0]?.products ?? []).flatMap((p) => {
+    const primary = p.images?.find((img) => img.is_primary) || p.images?.[0]
+    return primary?.image_url ? [cardImageUrl(primary.image_url)] : []
+  })
 
   // Fetch categories — only those with live products, so the grid never links
   // to a "No products found" page.
@@ -102,7 +106,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       <AssetPreloader
-        products={firstSectionProducts}
+        productImageUrls={firstSectionImageUrls}
         bannerImages={{
           desktop: getImageUrl(banners?.[0]?.desktop_image_url) || null,
           mobile: getImageUrl(banners?.[0]?.mobile_image_url) || null
@@ -203,7 +207,7 @@ export default async function HomePage() {
 
         {/* Rent Banner */}
         <section className="mb-8 md:mb-14 fade-in">
-          <Link
+          <IntentLink
             href="/rent"
             className="group flex items-center gap-4 px-5 py-4 rounded-xl bg-[#F5F3F0] border border-[#E8E5E0] hover:border-[#C8956C]/40 transition-colors"
           >
@@ -219,7 +223,7 @@ export default async function HomePage() {
             <span className="shrink-0 text-[#8F6240] group-hover:translate-x-0.5 transition-transform text-sm font-medium hidden sm:block">
               Explore →
             </span>
-          </Link>
+          </IntentLink>
         </section>
 
         {/* Configurable homepage sections (managed in Admin → Homepage) */}

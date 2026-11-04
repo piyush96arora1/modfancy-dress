@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { IntentLink } from '@/components/public/IntentLink'
 import { getRentCategoriesCached, getAllActiveProductsCached } from '@/lib/supabase/cached-queries'
 import { ProductGrid } from '@/components/public/ProductGrid'
 import type { ProductCardData } from '@/types/database'
@@ -132,7 +133,7 @@ export default async function RentPage() {
       />
       <div className="fade-in">
         <nav className="flex items-center gap-1.5 text-xs text-[#6B6B6B] mb-6">
-          <Link href="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link>
+          <IntentLink href="/" className="hover:text-[#1B2A4A] transition-colors">Home</IntentLink>
           <ChevronRight className="w-3 h-3 shrink-0" />
           <span className="text-[#2D2D2D]">Rent</span>
         </nav>

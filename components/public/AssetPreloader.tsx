@@ -1,19 +1,19 @@
 'use client'
 
 import { useEffect } from 'react'
-import type { ProductWithDetails } from '@/types/database'
 import { getImageUrl } from '@/lib/imageUrl'
-import { cardImageUrl } from '@/lib/utils/image-variants'
 
 interface AssetPreloaderProps {
-  products: ProductWithDetails[]
+  /** 400w card image URLs of the first section, warmed on idle. URLs only: whole product
+   *  rows here were serialised into the page's RSC payload a second time. */
+  productImageUrls: string[]
   bannerImages?: {
     desktop?: string | null
     mobile?: string | null
   }
 }
 
-export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) {
+export function AssetPreloader({ productImageUrls, bannerImages }: AssetPreloaderProps) {
   useEffect(() => {
     const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
 
@@ -40,12 +40,9 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
     //    time the user scrolls — without blocking the banner LCP. Warm the 400w card
     //    variant the cards actually render, not the ~450KB original (20 of those was ~9MB).
     const warmProductImages = () => {
-      products.slice(0, 20).forEach((product) => {
-        const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0]
-        if (primaryImage?.image_url) {
-          const img = new Image()
-          img.src = cardImageUrl(primaryImage.image_url)
-        }
+      productImageUrls.slice(0, 20).forEach((url) => {
+        const img = new Image()
+        img.src = url
       })
     }
     if ('requestIdleCallback' in window) {
@@ -53,7 +50,7 @@ export function AssetPreloader({ products, bannerImages }: AssetPreloaderProps) 
     } else {
       setTimeout(warmProductImages, 2000)
     }
-  }, [products, bannerImages])
+  }, [productImageUrls, bannerImages])
 
   return null // This component doesn't render anything
 }
