@@ -85,14 +85,14 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
           )}
           {/* Category badge */}
           {!showCategoryBadge ? null : product.categories && product.categories.length > 0 ? (
-            <div className="absolute top-2 left-2">
-              <span className="text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+            <div className="absolute top-2 left-2 right-2 flex">
+              <span className="block max-w-full truncate text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
                 {product.categories[0].category.name}
               </span>
             </div>
           ) : product.category && (
-            <div className="absolute top-2 left-2">
-              <span className="text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
+            <div className="absolute top-2 left-2 right-2 flex">
+              <span className="block max-w-full truncate text-xs px-2 py-0.5 bg-white/90 backdrop-blur-sm text-[#1B2A4A] rounded-full font-medium" style={{ boxShadow: 'var(--shadow-xs)' }}>
                 {product.category.name}
               </span>
             </div>
