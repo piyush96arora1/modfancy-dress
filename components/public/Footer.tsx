@@ -41,6 +41,16 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link prefetch={false} href="/fancy-dress-for-girls" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Girls Fancy Dress
+                </Link>
+              </li>
+              <li>
+                <Link prefetch={false} href="/fancy-dress-for-boys" className="text-white/70 hover:text-[#C8956C] transition-colors">
+                  Boys Fancy Dress
+                </Link>
+              </li>
+              <li>
                 <Link prefetch={false} href="/blog" className="text-white/70 hover:text-[#C8956C] transition-colors">
                   Blog
                 </Link>

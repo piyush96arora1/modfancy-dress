@@ -98,6 +98,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/products`, lastModified: catalogUpdatedAt },
     { url: `${baseUrl}/wholesale`, lastModified: new Date('2026-08-08') },
     { url: `${baseUrl}/rent`, lastModified: new Date('2026-03-01') },
+    { url: `${baseUrl}/fancy-dress-for-girls`, lastModified: catalogUpdatedAt },
+    { url: `${baseUrl}/fancy-dress-for-boys`, lastModified: catalogUpdatedAt },
     { url: `${baseUrl}/blog`, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/about`, lastModified: new Date('2026-03-01') },
     { url: `${baseUrl}/faq`, lastModified: new Date('2026-03-01') },
