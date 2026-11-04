@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { createPublicServerClient } from '@/lib/supabase/public-server'
 import { getImageUrl } from '@/lib/imageUrl'
+import { variantUrl } from '@/lib/utils/image-variants'
 
 export const revalidate = 86400
 
@@ -54,7 +55,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           Number(!!b.is_primary) - Number(!!a.is_primary) || (a.order ?? 0) - (b.order ?? 0)
       )
       .slice(0, 5)
-      .map((img) => getImageUrl(img.image_url))
+      // 1600w WebP variant, not the stored original: ~55% fewer bytes per crawl (Supabase
+      // egress) at a size still large for Google Images.
+      .map((img) => variantUrl(getImageUrl(img.image_url), 1600))
       .filter(Boolean),
   })) || []
 

@@ -1,4 +1,6 @@
 import { createPublicServerClient } from '@/lib/supabase/public-server'
+import { getImageUrl } from '@/lib/imageUrl'
+import { variantUrl } from '@/lib/utils/image-variants'
 
 /**
  * Product feed for the Meta catalogue ("Mod Fancy Dresses" business portfolio → Commerce
@@ -58,30 +60,33 @@ function clean(text: string, max = 5000): string {
     .slice(0, max)
 }
 
+const feedImage = (url: string) => variantUrl(getImageUrl(url), 1600)
+
 function toRow(p: FeedProduct): Row | null {
-  // Rent-only products have no sale price; Meta requires one, so they list at the rent price
-  // and say so in the title.
-  const amount = p.price ?? p.rent_price
+  // Only products with a buy price are listed. Rent rates are never published (owner rule,
+  // Aug 2026, reconfirmed 4 Nov 2026), so a rent-only product is left out rather than listed
+  // at its rent price.
+  const amount = p.price
   const images = [...(p.product_images || [])].sort(
     (a, b) => Number(!!b.is_primary) - Number(!!a.is_primary) || (a.order ?? 0) - (b.order ?? 0),
   )
   if (!amount || images.length === 0) return null
-
-  const rentOnly = p.price == null
   const description = clean(p.description || p.meta_description || p.name)
   return {
     id: p.id,
-    title: clean(rentOnly ? `${p.name} (on rent)` : p.name, 200),
+    title: clean(p.name, 200),
     description,
     // Stock is never the blocker for this shop: costumes are made or sourced to order.
     availability: 'in stock',
     condition: 'new',
     price: `${amount.toFixed(2)} INR`,
     link: `${SITE_URL}/products/${p.slug}`,
-    image_link: images[0].image_url,
+    // 1600w WebP variants: ~55% smaller than the stored originals (Supabase egress), still
+    // above Meta's 1024px recommendation for the source photos we have.
+    image_link: feedImage(images[0].image_url),
     additional_image_link: images
       .slice(1, 10)
-      .map((i) => i.image_url)
+      .map((i) => feedImage(i.image_url))
       .join(','),
     brand: 'Mod Fancy Dress',
     google_product_category: GOOGLE_PRODUCT_CATEGORY,
