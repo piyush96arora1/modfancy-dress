@@ -8,6 +8,7 @@ import { Check } from 'lucide-react'
 import type { ProductWithDetails, ProductVariant, PricingMode } from '@/types/database'
 import { ecommerce, track } from '@/lib/analytics/gtag'
 import { getProductPrice, getVariantPrice, getSavingsPercent, formatPrice } from '@/lib/utils/pricing'
+import { whatsappUrl } from '@/lib/constants/contact'
 
 interface AddToCartButtonProps {
   product: ProductWithDetails
@@ -111,6 +112,29 @@ export function AddToCartButton({ product, sizes, colors, variants, pricingMode 
     } finally {
       setAdding(false)
     }
+  }
+
+  // No price in the catalogue yet (e.g. a fresh upload): never show "₹0" with a cart
+  // button that checkout will refuse. Point to WhatsApp instead.
+  if (!(currentPrice > 0)) {
+    return (
+      <div className="space-y-3">
+        <p className="text-2xl font-bold text-[#1B2A4A] font-[family-name:var(--font-outfit)]">Price on request</p>
+        {pricingMode === 'retail' && product.rent_price != null && (
+          <p className="text-xs text-[#8F6240] font-medium">Also available on rent</p>
+        )}
+        <a
+          href={whatsappUrl(`Hi, please share the price of ${product.name}.`)}
+          data-cta="pdp_price_request"
+          data-item-id={product.id}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center w-full min-h-[48px] rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-[#1B2A4A] font-semibold text-sm transition-colors"
+        >
+          Ask the price on WhatsApp
+        </a>
+      </div>
+    )
   }
 
   return (
