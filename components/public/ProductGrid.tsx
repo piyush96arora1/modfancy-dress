@@ -14,6 +14,8 @@ interface ProductGridProps {
   priorityCount?: number
   /** Show each card's rent price (rent landing page). */
   showRent?: boolean
+  /** Hide the per-card category badge where the page already is that category. */
+  showCategoryBadge?: boolean
 }
 
 export function ProductGrid({
@@ -24,6 +26,7 @@ export function ProductGrid({
   productTitleTag = 'h3',
   priorityCount = 0,
   showRent = false,
+  showCategoryBadge = true,
 }: ProductGridProps) {
   if (products.length === 0) {
     return (
@@ -44,6 +47,7 @@ export function ProductGrid({
           titleTag={productTitleTag}
           priority={index < priorityCount}
           showRent={showRent}
+          showCategoryBadge={showCategoryBadge}
         />
       ))}
 

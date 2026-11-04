@@ -148,26 +148,26 @@ export default async function RentPage() {
             anywhere in Delhi, Noida, Gurgaon, Ghaziabad and Faridabad.
           </p>
 
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <MapPin className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
+          <div className="mt-4 sm:mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="flex items-start gap-3 p-2 sm:p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
+              <MapPin className="hidden sm:block w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-[#1B2A4A]">Visit our shop</p>
-                <p className="text-xs text-[#6B6B6B]">Krishna Nagar, East Delhi</p>
+                <p className="text-xs sm:text-sm font-medium text-[#1B2A4A]">Visit our shop</p>
+                <p className="hidden sm:block text-xs text-[#6B6B6B]">Krishna Nagar, East Delhi</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <Clock className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-2 sm:p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
+              <Clock className="hidden sm:block w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-[#1B2A4A]">Refundable deposit</p>
-                <p className="text-xs text-[#6B6B6B]">₹500 – ₹2,000 based on costume</p>
+                <p className="text-xs sm:text-sm font-medium text-[#1B2A4A]">Refundable deposit</p>
+                <p className="hidden sm:block text-xs text-[#6B6B6B]">₹500 – ₹2,000 based on costume</p>
               </div>
             </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
-              <MessageCircle className="w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-3 p-2 sm:p-3 rounded-lg bg-[#F5F3F0] border border-[#E8E5E0]">
+              <MessageCircle className="hidden sm:block w-5 h-5 text-[#8F6240] shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-[#1B2A4A]">WhatsApp enquiry</p>
-                <p className="text-xs text-[#6B6B6B]">{BUSINESS_PHONE_DISPLAY}</p>
+                <p className="text-xs sm:text-sm font-medium text-[#1B2A4A]">WhatsApp enquiry</p>
+                <p className="hidden sm:block text-xs text-[#6B6B6B]">{BUSINESS_PHONE_DISPLAY}</p>
               </div>
             </div>
           </div>
