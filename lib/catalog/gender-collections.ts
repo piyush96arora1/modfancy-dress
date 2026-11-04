@@ -138,8 +138,38 @@ export function audiencesFor(p: Categorised): Audience[] {
  * first) so the first screen shows a mix of themes rather than eight kathak dresses in
  * a row. Input order (newest first) is kept within each category.
  */
+/**
+ * Lead products shown first (season + strongest photos), in this order, when they are in
+ * the collection. Update per season: Nov–Jan = leaders, Republic Day, Christmas,
+ * annual-function dance. Everything else follows in the round-robin order below.
+ */
+const LEAD: Record<Audience, string[]> = {
+  girls: [
+    'jhansi-ki-rani-laxmi-bai-fancy-dress-costume',
+    'kathak-fancy-dress',
+    'bharat-mata-fancy-dress-costume',
+    'angel-fancy-dress',
+    'indira-gandhi-fancy-dress-costume',
+    'himachal-fancy-dress',
+    'kalbelia-dress-costume-for-girls-fancy-dress',
+    'punjabi-fancy-dress-costume-boy-girl',
+  ],
+  boys: [
+    'subhash-chandra-bose-fancy-dress',
+    'rajasthani-boy-fancy-dress',
+    'jawahar-lal-nehru-fancy-dress',
+    'army-fancy-dress-costume-kargil-print',
+    'santa-claus-dress',
+    'mahatma-gandhi-fancy-dress-costume',
+    'police-fancy-dress',
+    'mangal-pandey-fancy-dress',
+  ],
+}
+
 export function pickGenderCollection<T extends Categorised>(products: T[], audience: Audience): T[] {
-  const members = products.filter((p) => audiencesFor(p).includes(audience))
+  const all = products.filter((p) => audiencesFor(p).includes(audience))
+  const lead = LEAD[audience].map((s) => all.find((p) => p.slug === s)).filter((p): p is T => !!p)
+  const members = all.filter((p) => !lead.includes(p))
   const buckets = new Map<string, T[]>()
   for (const p of members) {
     const key = p.category?.slug ?? 'other'
@@ -152,7 +182,7 @@ export function pickGenderCollection<T extends Categorised>(products: T[], audie
   for (let i = 0; out.length < members.length; i++) {
     for (const q of queues) if (q[i]) out.push(q[i])
   }
-  return out
+  return [...lead, ...out]
 }
 
 /** Categories never offered as theme chips (too generic to help). */
