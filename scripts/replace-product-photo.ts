@@ -4,6 +4,8 @@
  *
  *   npx tsx scripts/replace-product-photo.ts <slug> <image-file>           (dry run)
  *   npx tsx scripts/replace-product-photo.ts <slug> <image-file> --apply
+ *   add --primary-only to swap just the primary photo and keep the others (e.g. a good
+ *   flat-lay or back view), which move up one place in the order.
  *
  * What --apply does:
  * 1. Backs up the product's current product_images rows to
@@ -35,6 +37,7 @@ const BACKUP_DIR = resolve(process.cwd(), '.scratch/ai-photos/backup')
 
 const [slug, file] = process.argv.slice(2).filter((a) => !a.startsWith('--'))
 const APPLY = process.argv.includes('--apply')
+const PRIMARY_ONLY = process.argv.includes('--primary-only')
 
 const kb = (n: number) => `${(n / 1024).toFixed(0)}KB`
 
@@ -60,7 +63,10 @@ async function main() {
     .is('deleted_at', null)
     .single()
   if (error || !product) throw new Error(`Product "${slug}" not found: ${error?.message}`)
-  const oldRows = (product.product_images ?? []) as Record<string, unknown>[]
+  const allRows = (product.product_images ?? []) as Record<string, unknown>[]
+  const primaryRow = allRows.find((r) => r.is_primary) ?? allRows[0]
+  const oldRows = PRIMARY_ONLY ? (primaryRow ? [primaryRow] : []) : allRows
+  const keptRows = allRows.filter((r) => !oldRows.includes(r))
 
   const source = readFileSync(file)
   const original = await sharp(source)
@@ -83,7 +89,7 @@ async function main() {
   )
 
   console.log(`${product.name} (${product.slug})`)
-  console.log(`  replacing ${oldRows.length} image(s):`)
+  console.log(`  replacing ${oldRows.length} image(s)${keptRows.length ? `, keeping ${keptRows.length}` : ''}:`)
   oldRows.forEach((r) => console.log(`    - ${r.image_url}`))
   console.log(`  with ${path} (${meta.width}x${meta.height}, ${kb(original.length)})`)
   variants.forEach((v) => console.log(`    + ${v.path} (${kb(v.body.length)})`))
@@ -103,7 +109,12 @@ async function main() {
   console.log('Uploaded original and variants.')
 
   const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`
-  const alt = (oldRows.find((r) => r.is_primary)?.alt_text as string | undefined) ?? product.name
+  const alt = (primaryRow?.alt_text as string | undefined) ?? product.name
+  // Kept photos (--primary-only) step down so the new primary is first.
+  for (const [i, r] of keptRows.entries()) {
+    const { error: e } = await sb.from('product_images').update({ order: i + 1, is_primary: false }).eq('id', r.id as string)
+    if (e) throw new Error(`Reorder failed: ${e.message}`)
+  }
   const { error: insertError } = await sb
     .from('product_images')
     .insert({ product_id: product.id, image_url: imageUrl, is_primary: true, order: 0, alt_text: alt })
@@ -114,7 +125,7 @@ async function main() {
     const { error: deleteError } = await sb.from('product_images').delete().in('id', oldIds)
     if (deleteError) throw new Error(`New row added but old rows not removed: ${deleteError.message}`)
   }
-  console.log(`Done: ${product.slug} now has 1 image → ${imageUrl}`)
+  console.log(`Done: ${product.slug} now has ${1 + keptRows.length} image(s), primary → ${imageUrl}`)
 }
 
 main()
