@@ -4203,5 +4203,15 @@
     "source": "/wholesale/dandiya-lehnga",
     "destination": "/wholesale/mustard-peacock-print-dandiya-lehenga",
     "permanent": true
+  },
+  {
+    "source": "/products/santa-clause-fancy-dress",
+    "destination": "/products/santa-claus-dress-for-kids",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/santa-clause-fancy-dress",
+    "destination": "/wholesale/santa-claus-dress-for-kids",
+    "permanent": true
   }
 ]

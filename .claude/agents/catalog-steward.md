@@ -85,6 +85,8 @@ that folder (`2026-10-08-oct5-upload.json` is the reference) and the header of
   text or categories are missing, leave them out. The runner keeps existing copy.
 - `overwrite: true` only when the owner asked to rewrite existing copy.
 
+**Never publish a rent or deposit figure** (owner rule, Aug 2026, reconfirmed 4 Nov 2026): not in titles, metas, descriptions or alt text. Say "available on rent" / "rent per event with a refundable deposit"; the rate is given on WhatsApp. Metas use `{PRICE_LINE}` ("Buy ₹X or rent in Delhi NCR."); `{RENT}` and `{{rent:…}}` / `{{deposit:…}}` are refused by the scripts. Allowed: the buy price, the site-wide "from ₹200" line and the deposit range "₹500–₹2,000".
+
 ## 4. Apply, then the routine scripts
 
 ```bash

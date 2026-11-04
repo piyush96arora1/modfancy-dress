@@ -15,7 +15,7 @@
  *       "size": "Adult",                              // only written when size is empty
  *       "body": "…English description…",             // body/meta/seo_title: required only when that DB field is empty
  *       "hinglish": "…one Roman-script line…",       // optional, placed last before the store line
- *       "meta": "… {PRICE_LINE}",                     // {PRICE_LINE} {BUY} {RENT} filled from live prices
+ *       "meta": "… {PRICE_LINE}",                     // {PRICE_LINE} {BUY} filled from live prices
  *       "seo_title": "…",
  *       "alt": { "<image filename>": "…" },           // every image whose alt_text is empty
  *       "addCategories": ["ramleela-costumes"],
@@ -24,7 +24,8 @@
  *     }]
  *   }
  *
- * {PRICE_LINE} is "Buy ₹X or rent ₹Y in Delhi NCR." (the phrase scripts/fix-meta-prices.ts
+ * {PRICE_LINE} is "Buy ₹X or rent in Delhi NCR." — no rent figure: rent rates are not published
+ * (owner decision Aug 2026, reconfirmed 4 Nov 2026) (the phrase scripts/fix-meta-prices.ts
  * keeps in sync), or "Buy ₹X in Delhi NCR." for buy-only products.
  *
  * Phases per product: rename slug + name, fill empty copy (or all of it with overwrite),
@@ -94,8 +95,9 @@ function fillMeta(meta: string, row: Row): string {
   const rent = Number(row.rent_price)
   if (!(buy > 0) && /\{(PRICE_LINE|BUY)\}/.test(meta)) throw new Error('no buy price')
   if (!(rent > 0) && meta.includes('{RENT}')) throw new Error('no rent price')
-  const line = rent > 0 ? `Buy ₹${buy} or rent ₹${rent} in Delhi NCR.` : `Buy ₹${buy} in Delhi NCR.`
-  return meta.replaceAll('{PRICE_LINE}', line).replaceAll('{BUY}', String(buy)).replaceAll('{RENT}', String(rent))
+  if (/\{RENT\}/.test(meta)) throw new Error('{RENT}: rent rates are not published; use {PRICE_LINE}')
+  const line = rent > 0 ? `Buy ₹${buy} or rent in Delhi NCR.` : `Buy ₹${buy} in Delhi NCR.`
+  return meta.replaceAll('{PRICE_LINE}', line).replaceAll('{BUY}', String(buy))
 }
 
 const bodyOf = (it: Item) => [it.body!.trim(), it.hinglish?.trim(), it.body!.includes(STORE_TAIL) ? '' : STORE_TAIL].filter(Boolean).join('\n')
