@@ -26,7 +26,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googletagmanager.com https://connect.facebook.net https://checkout.razorpay.com https://cdn.razorpay.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://maps.google.com https://maps.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://cdn.razorpay.com",
+      "img-src 'self' data: blob: https://img.modfancydress.com https://*.supabase.co https://maps.google.com https://maps.gstatic.com https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com https://cdn.razorpay.com",
       "frame-src https://maps.google.com https://www.google.com https://checkout.razorpay.com https://api.razorpay.com",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com https://connect.facebook.net https://checkout.razorpay.com https://api.razorpay.com https://lumberjack.razorpay.com",
     ].join('; '),
@@ -59,6 +59,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.modfancydress.com',
+      },
       {
         protocol: 'https',
         hostname: 'udnidqllpmyoothwznbv.supabase.co',

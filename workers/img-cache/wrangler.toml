@@ -1,0 +1,11 @@
+name = "modfancydress-img"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+
+# Served on its own subdomain; the zone (modfancydress.com) lives in Cloudflare,
+# while the site itself stays on Vercel via DNS-only records.
+routes = [{ pattern = "img.modfancydress.com", custom_domain = true }]
+
+[vars]
+SUPABASE_PUBLIC = "https://udnidqllpmyoothwznbv.supabase.co/storage/v1/object/public"
