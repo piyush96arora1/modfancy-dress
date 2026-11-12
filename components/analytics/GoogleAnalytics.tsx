@@ -39,6 +39,12 @@ export function GoogleAnalytics() {
         link_url: href.split('?')[0],
       }
       track(isWhatsApp ? 'whatsapp_click' : 'phone_click', params)
+      // One GA event per intent, so rent / buy / wholesale leads can each be a key event
+      // without GA-admin custom events. Meta has no mapping for these names (no double
+      // Contact). 'general' clicks stay whatsapp_click/phone_click only.
+      if (params.lead_intent !== 'general') {
+        track(`${params.lead_intent}_lead`, { ...params, method: isWhatsApp ? 'whatsapp' : 'phone' })
+      }
     }
     document.addEventListener('click', onClick, { capture: true })
 
