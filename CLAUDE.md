@@ -2,6 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Owner's goal: applies to every task, no need to be told again
+
+**Rank #1 on Google India for costumes, fancy dress, school-event and rental searches, with excellent mobile UX and Core Web Vitals.** Every change is judged against four targets:
+
+1. **Mobile UX:** most customers are on phones. Check every changed page at 390×844 *and* 1366×800 (Playwright screenshots). The thing the customer came for (products, price, WhatsApp/enquiry) is on the first screen; no horizontal scroll; nothing covering faces in photos; tap targets ≥44px.
+2. **Core Web Vitals:** LCP, INP/TBT and CLS must not get worse. Measure before and after with Lighthouse mobile (`npx -y lighthouse@12.2.1 <url> --only-categories=performance`; Chrome at `~/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome`). Pages stay statically rendered (○/● in the build table). Images: 400/800/1600 WebP variants, never full originals in grids. Third-party scripts stay deferred.
+3. **SEO:** title ≤60 chars leading with the searched phrase, meta ≤155, one H1, canonical, structured data valid, internal links working, page in the sitemap, image alt text from what the photo shows. Don't create two pages competing for the same phrase.
+4. **Ranking #1:** decide with evidence. A change is "working" only after Google Search Console shows more clicks for that page over 2–4 comparable weeks (ideally more enquiries or orders), not from a one-day Semrush estimate. Keep commercial demand (dress, costume, buy, rent) separate from informational demand (speech, dialogue, ideas).
+
+Work from `seodata/semrush-2026-11/BACKLOG.md` (the single current list). Review your own and any agent's work against the four targets before it goes live, then verify on the live site.
+
+### Standing owner rules (never undo)
+- **Never publish rent or deposit figures** anywhere: copy, metas, FAQs, tables, cards, feeds or schema. Say "available on rent" and point to WhatsApp. Allowed: buy prices, the site-wide "from ₹200" line, and the deposit range "₹500–₹2,000".
+- Product pages: **no fabric claims**; prices only from admin; **no MRP or discounts**.
+- **Never contact Sanskriti / fancydressnoida.com** (competitor).
+- Describe products only from what their photo shows; don't invent included props or sizes.
+
 ## Commands
 
 ```bash
