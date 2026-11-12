@@ -373,21 +373,18 @@ function returnPolicy() {
   }
 }
 
-export function ProductSchema(
-  product: ProductWithDetails,
-  options?: {
-    aggregateRating?: ProductAggregateRating | null
-    /** Newest-first rows from `product_reviews`; first 5 become `review` in JSON-LD when aggregate exists. */
-    reviewsForJsonLd?: ProductReviewRowForSchema[]
+/**
+ * The buy price the product page shows on load. Mirrors the buy box (AddToCartButton): it
+ * preselects the first size/colour and shows that variant's price, else the product price.
+ * Product JSON-LD and the Google Merchant feed both use this, because their price MUST equal
+ * the displayed price or Merchant Center rejects the product as a price mismatch.
+ * Never a rent price.
+ */
+export function getSchemaDisplayPrice(
+  product: Pick<ProductWithDetails, 'price' | 'wholesale_price' | 'size'> & {
+    variants?: Pick<ProductWithDetails['variants'][number], 'size' | 'color' | 'price_override' | 'wholesale_price_override'>[] | null
   }
-) {
-  const imageUrls = sortProductImagesForSchema(product.images)
-    .map((img) => toAbsoluteUrl(getImageUrl(img.image_url)))
-    .filter(Boolean)
-
-  // Mirror the buy box (AddToCartButton): it preselects the first size/colour and shows that
-  // variant's price, else the product price. The structured-data price MUST equal the displayed
-  // price, or Google Merchant Center rejects the product as a price mismatch.
+): number {
   const schemaVariants = product.variants ?? []
   const schemaSizes = [
     ...new Set([
@@ -407,6 +404,22 @@ export function ProductSchema(
     )
     if (defaultVariant) displayPrice = getVariantPrice(product, defaultVariant, 'retail')
   }
+  return displayPrice
+}
+
+export function ProductSchema(
+  product: ProductWithDetails,
+  options?: {
+    aggregateRating?: ProductAggregateRating | null
+    /** Newest-first rows from `product_reviews`; first 5 become `review` in JSON-LD when aggregate exists. */
+    reviewsForJsonLd?: ProductReviewRowForSchema[]
+  }
+) {
+  const imageUrls = sortProductImagesForSchema(product.images)
+    .map((img) => toAbsoluteUrl(getImageUrl(img.image_url)))
+    .filter(Boolean)
+
+  const displayPrice = getSchemaDisplayPrice(product)
 
   // Single sale Offer at the displayed price. Rent is shown on-page for customers but is
   // intentionally NOT emitted as an offer (a LeaseOut offer breaks Merchant Center price extraction).
