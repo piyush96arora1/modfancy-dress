@@ -8,6 +8,8 @@
 // TTL is safe; w400/w800/w1600 variants can be regenerated in place, so browsers revalidate
 // weekly rather than holding them for a year.
 
+import { BLOCKED } from './blocked.js'
+
 const ALLOWED_BUCKETS = new Set(['product-images'])
 const EDGE_TTL = 60 * 60 * 24 * 30 // 30 days at Cloudflare
 const BROWSER_TTL = 60 * 60 * 24 * 7 // 7 days in the browser
@@ -23,6 +25,10 @@ export default {
     const bucket = path.split('/', 1)[0]
     if (!ALLOWED_BUCKETS.has(bucket) || path.includes('..') || path === bucket) {
       return new Response('Not found', { status: 404 })
+    }
+    // Photos taken down: the edge cache may still hold them for up to 30 days, so answer here.
+    if (BLOCKED.has(decodeURIComponent(path))) {
+      return new Response('Gone', { status: 410, headers: { 'Cache-Control': 'public, max-age=86400' } })
     }
 
     // Query strings never change the stored object; drop them so ?v=1 style busting
