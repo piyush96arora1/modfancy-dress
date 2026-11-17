@@ -1,6 +1,7 @@
 import { IntentLink } from '@/components/public/IntentLink'
 import Image from 'next/image'
 import type { CatalogProduct } from '@/lib/supabase/supplier-queries'
+import { PhotoComingSoon } from '@/components/public/PhotoComingSoon'
 
 /**
  * Card for the private catalog. Mirrors the retail ProductCard's visual language deliberately
@@ -33,9 +34,7 @@ export function CatalogProductCard({
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[#6B6B6B]">
-              <span className="text-xs">No Image</span>
-            </div>
+            <PhotoComingSoon productName={product.name} compact />
           )}
         </div>
         <div className="p-3 sm:p-4 flex flex-col flex-1">

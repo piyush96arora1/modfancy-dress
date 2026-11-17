@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import { PhotoComingSoon } from '@/components/public/PhotoComingSoon'
 
 export function CatalogGallery({
   images,
@@ -13,11 +14,7 @@ export function CatalogGallery({
   const [active, setActive] = useState(0)
 
   if (images.length === 0) {
-    return (
-      <div className="aspect-[3/4] rounded-xl bg-[#F5F3F0] border border-[#E8E5E0] flex items-center justify-center text-[#6B6B6B]">
-        No Image
-      </div>
-    )
+    return <PhotoComingSoon productName={alt} />
   }
 
   return (

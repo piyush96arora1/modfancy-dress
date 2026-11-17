@@ -12,6 +12,7 @@ import { buildAltText } from '@/lib/seo/alt-text'
 import { getProductPrice, formatPrice } from '@/lib/utils/pricing'
 import { usePricingMode } from '@/lib/context/PricingModeContext'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { PhotoComingSoon } from '@/components/public/PhotoComingSoon'
 
 interface ProductCardProps {
   product: ProductCardData
@@ -77,9 +78,7 @@ export function ProductCard({ product, pricingMode: propMode, wholesaleDiscountP
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-[#6B6B6B]">
-              <span className="text-xs">No Image</span>
-            </div>
+            <PhotoComingSoon productName={product.name} compact />
           )}
           {/* Category badge */}
           {!showCategoryBadge ? null : product.categories && product.categories.length > 0 ? (

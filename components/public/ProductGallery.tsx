@@ -8,6 +8,7 @@ import { variantUrl } from '@/lib/utils/image-variants'
 import { VariantImage } from './VariantImage'
 import { buildAltText } from '@/lib/seo/alt-text'
 import type { ProductImage } from '@/types/database'
+import { PhotoComingSoon } from '@/components/public/PhotoComingSoon'
 
 interface ProductGalleryProps {
     images: ProductImage[]
@@ -65,7 +66,7 @@ export function ProductGallery({ images, productName, categoryName }: ProductGal
     const [zoomUsed, setZoomUsed] = useState(false)
     const zoomSrc = useZoomSrc(zoomUsed, variantUrl(selectedOriginal, 1600), selectedOriginal)
 
-    if (galleryImages.length === 0) return null
+    if (galleryImages.length === 0) return <PhotoComingSoon productName={productName} />
 
     // -- Desktop Handlers --
     const handleMouseEnter = () => {
