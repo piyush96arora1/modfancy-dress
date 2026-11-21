@@ -55,7 +55,16 @@ function argValue(flag: string): string | undefined {
 const kb = (n: number) => `${(n / 1024).toFixed(0)}KB`
 const mb = (n: number) => `${(n / 1048576).toFixed(1)}MB`
 
-/** Every distinct stored image of a live product or active category, as a public URL. */
+/**
+ * getImageUrl() now returns the img.modfancydress.com edge-cache URL (lib/imageUrl.ts cdnUrl).
+ * This script reads and writes Supabase Storage directly, so map it back to the origin URL;
+ * otherwise no URL matches PUBLIC_PREFIX and the run silently finds zero originals
+ * (which it did from 10 Nov to 21 Nov 2026).
+ */
+const originUrl = (url: string) =>
+  getImageUrl(url).replace(/^https:\/\/img\.modfancydress\.com\//, `${SUPABASE_URL}/storage/v1/object/public/`)
+
+/** Every distinct stored image of a live product or active category, as a public (origin) URL. */
 async function liveImageUrls(): Promise<string[]> {
   const { data, error } = await sb
     .from('products')
@@ -66,7 +75,7 @@ async function liveImageUrls(): Promise<string[]> {
   const urls = new Set<string>()
   for (const p of data ?? []) {
     for (const img of (p.product_images ?? []) as { image_url: string }[]) {
-      if (img.image_url) urls.add(getImageUrl(img.image_url))
+      if (img.image_url) urls.add(originUrl(img.image_url))
     }
   }
   // Category thumbnails are product photos too (and render as 64px circles).
@@ -75,7 +84,7 @@ async function liveImageUrls(): Promise<string[]> {
     .select('image_url')
     .eq('is_active', true)
   if (catError) throw catError
-  for (const c of cats ?? []) if (c.image_url) urls.add(getImageUrl(c.image_url))
+  for (const c of cats ?? []) if (c.image_url) urls.add(originUrl(c.image_url))
   return [...urls]
 }
 

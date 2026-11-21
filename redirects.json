@@ -2786,12 +2786,12 @@
   },
   {
     "source": "/products/shivaji-maharaj-fancy-dress-costume",
-    "destination": "/category/leaders-freedom-fighters",
+    "destination": "/products/shivaji-maharaj-fancy-dress",
     "permanent": true
   },
   {
     "source": "/wholesale/shivaji-maharaj-fancy-dress-costume",
-    "destination": "/wholesale/category/leaders-freedom-fighters",
+    "destination": "/wholesale/shivaji-maharaj-fancy-dress",
     "permanent": true
   },
   {
@@ -4222,6 +4222,26 @@
   {
     "source": "/wholesale/santa-claus-dress-for-kids",
     "destination": "/wholesale/santa-claus-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/chatarpati-shiva-ji-fancy-dress",
+    "destination": "/products/shivaji-maharaj-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/chatarpati-shiva-ji-fancy-dress",
+    "destination": "/wholesale/shivaji-maharaj-fancy-dress",
+    "permanent": true
+  },
+  {
+    "source": "/products/mexico-fancy-dress-girl",
+    "destination": "/products/mexican-fancy-dress-for-girls",
+    "permanent": true
+  },
+  {
+    "source": "/wholesale/mexico-fancy-dress-girl",
+    "destination": "/wholesale/mexican-fancy-dress-for-girls",
     "permanent": true
   }
 ]
